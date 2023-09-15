@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/cisse/Documents/L2-info/S3/PA/ProjetS3/LittleVideoGames/include
+CXX_INCLUDES = -I/home/mmmatth/Documents/S3/progAvance/include
 
 CXX_FLAGS = -std=gnu++17
 

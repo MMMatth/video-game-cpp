@@ -1,4 +1,4 @@
-# Install script for directory: /home/cisse/Documents/L2-info/S3/PA/ProjetS3/LittleVideoGames
+# Install script for directory: /home/mmmatth/Documents/S3/progAvance
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/cisse/Documents/L2-info/S3/PA/ProjetS3/LittleVideoGames/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/mmmatth/Documents/S3/progAvance/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

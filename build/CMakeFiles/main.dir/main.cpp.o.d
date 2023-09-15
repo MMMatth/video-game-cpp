@@ -1,5 +1,5 @@
 CMakeFiles/main.dir/main.cpp.o: \
- /home/cisse/Documents/L2-info/S3/PA/ProjetS3/LittleVideoGames/main.cpp \
+ /home/mmmatth/Documents/S3/progAvance/main.cpp \
  /usr/include/stdc-predef.h /usr/include/SDL2/SDL.h \
  /usr/include/SDL2/SDL_main.h /usr/include/SDL2/SDL_stdinc.h \
  /usr/include/SDL2/SDL_config.h \

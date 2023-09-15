@@ -1,3 +1,0 @@
-/home/cisse/Documents/L2-info/S3/PA/ProjetS3/LittleVideoGames/Afficher une fenêtre  en SDL2/build/CMakeFiles/main.dir
-/home/cisse/Documents/L2-info/S3/PA/ProjetS3/LittleVideoGames/Afficher une fenêtre  en SDL2/build/CMakeFiles/edit_cache.dir
-/home/cisse/Documents/L2-info/S3/PA/ProjetS3/LittleVideoGames/Afficher une fenêtre  en SDL2/build/CMakeFiles/rebuild_cache.dir

@@ -10,7 +10,6 @@ set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 # Ajout des fichiers sources 
 set(SOURCES
     "${SRC_DIR}/main.cpp"
-   
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES}) # ajout d'un executable avec le nom du projet
