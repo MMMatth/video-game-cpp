@@ -7,9 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src") 
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-set(SOURCES
-    "${SRC_DIR}/main.cpp"
-    "${SRC_DIR}/cartes.cpp"
+file ( GLOB SOURCES
+    "${SRC_DIR}/*.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES}) 

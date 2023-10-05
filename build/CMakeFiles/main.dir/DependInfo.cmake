@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/mmmatth/Documents/S3/progAvance/miniJeu/src/cartes.cpp" "CMakeFiles/main.dir/src/cartes.cpp.o" "gcc" "CMakeFiles/main.dir/src/cartes.cpp.o.d"
   "/home/mmmatth/Documents/S3/progAvance/miniJeu/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.o" "gcc" "CMakeFiles/main.dir/src/main.cpp.o.d"
+  "/home/mmmatth/Documents/S3/progAvance/miniJeu/src/personnage.cpp" "CMakeFiles/main.dir/src/personnage.cpp.o" "gcc" "CMakeFiles/main.dir/src/personnage.cpp.o.d"
   )
 
 # Targets to which this target links.

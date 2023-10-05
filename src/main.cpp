@@ -1,21 +1,29 @@
 #include <SFML/Graphics.hpp>
 #include "../include/cartes.hpp"
 #include "../include/const.hpp"
+#include "../include/personnage.hpp"
 
 using namespace std;
 using namespace sf;
 
-void drawRectangle(int x, int y, Color color, RenderWindow* window){
-    RectangleShape rectangle(Vector2f(TAILLE_CASE, TAILLE_CASE));
+void drawMap(int x, int y, Color color, RenderWindow* window, int largeur, int hauteur){
+    RectangleShape rectangle(Vector2f(largeur, hauteur));
     rectangle.setFillColor(color);
-    rectangle.setPosition(x*TAILLE_CASE, y*TAILLE_CASE);
+    rectangle.setPosition(x*largeur, y*hauteur);
+    window->draw(rectangle);
+}
+
+void drawRectangle(int x, int y, Color color, RenderWindow* window, int largeur, int hauteur){
+    RectangleShape rectangle(Vector2f(largeur, hauteur));
+    rectangle.setFillColor(color);
+    rectangle.setPosition(x, y);
     window->draw(rectangle);
 }
 
 int main()
 {
     Carte carte;
-
+    Personnage perso(0, 0, TAILLE_PERSONNAGE);
     RenderWindow window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), "jeu");
     
 
@@ -28,22 +36,39 @@ int main()
                 window.close();
             if (event.type == Event::KeyPressed)
             {
-                if (event.key.code == Keyboard::Escape)
-                    window.close();
+                switch (event.key.code)
+                {
+                case Keyboard::Up:
+                    perso.deplacerY(-5);
+                    break;
+                case Keyboard::Down:
+                    perso.deplacerY(5);
+                    break;
+                case Keyboard::Left:
+                    perso.deplacerX(-5);
+                    break;
+                case Keyboard::Right:
+                    perso.deplacerX(5);
+                    break;
+                default:
+                    break;
+                }
             }
         }
 
-
+        perso.printPersonnage();
 
         window.clear(COULEUR_CIEL);
+
+        drawRectangle(perso.getX(), perso.getY(), Color::Blue, &window, TAILLE_PERSONNAGE/2, TAILLE_PERSONNAGE);
 
         for (int x = 0; x < carte.getCarte().size() ; x++){
             for (int y = 0; y < carte.getCarte()[x].size(); y++){
                 if (carte.getCarte()[x][y] == '1'){
-                    drawRectangle(y, x, Color::Green, &window);
+                    drawMap(y, x, Color::Green, &window, TAILLE_CASE, TAILLE_CASE);
                 }
                 if (carte.getCarte()[x][y] == '2'){
-                    drawRectangle(y, x, Color::Red, &window);
+                    drawMap(y, x, Color::Red, &window, TAILLE_CASE, TAILLE_CASE);
                 }
             }
         }
