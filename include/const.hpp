@@ -1,0 +1,9 @@
+#ifndef CONST_HPP
+#define CONST_HPP
+
+#define TAILLE_CASE 32
+#define TAILLE_FENETRE_X 800
+#define TAILLE_FENETRE_Y 600
+#define COULEUR_CIEL Color(135,206,250)
+
+#endif
