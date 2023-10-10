@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7.0) 
-project(main) 
+project(jeu) 
 
 set(CMAKE_CXX_STANDARD 17) 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,3 +25,16 @@ if(SFML_FOUND)
 else()
     message(STATUS "Could not locate SFML") 
 endif()
+
+# Ajout des commandes pour effacer le build et lancer le programme
+add_custom_target(run
+    COMMAND ./jeu
+    DEPENDS jeu
+    WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
+)
+
+add_custom_target(clear
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}
+    WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
+)

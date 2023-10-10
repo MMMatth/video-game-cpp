@@ -9,6 +9,12 @@ Personnage::Personnage(int x, int y, int taille){
     this->taille = taille;
 }
 
+Personnage::Personnage(){
+    this->x = 0;
+    this->y = 0;
+    this->taille = 0;
+}
+
 int Personnage::getTaille(){
     return taille;
 }
@@ -39,4 +45,8 @@ void Personnage::deplacerY(int y){
 
 void Personnage::printPersonnage(){
     cout << "x: " << x << " y: " << y << endl;
+}
+
+void Personnage::clean(){
+    // pas de memoir aloué
 }

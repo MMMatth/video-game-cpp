@@ -1,3 +1,0 @@
-/home/mmmatth/Documents/S3/progAvance/miniJeu/build/CMakeFiles/main.dir
-/home/mmmatth/Documents/S3/progAvance/miniJeu/build/CMakeFiles/edit_cache.dir
-/home/mmmatth/Documents/S3/progAvance/miniJeu/build/CMakeFiles/rebuild_cache.dir

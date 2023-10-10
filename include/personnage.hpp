@@ -6,6 +6,8 @@ class Personnage{
     public:
         Personnage(int x, int y, int taille);
 
+        Personnage();
+
         int getTaille();
 
         int getX();
@@ -21,6 +23,8 @@ class Personnage{
         void deplacerY(int y);
 
         void printPersonnage();
+
+        void clean();
 
     private:
         int x, y;

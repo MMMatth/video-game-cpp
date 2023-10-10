@@ -28,6 +28,7 @@ void Carte::initCarte(const char* nomFichier){
     }
 }
 
+
 vector<vector<char>> Carte::getCarte(){
     return carte;
 }
@@ -46,4 +47,10 @@ void Carte::printCarte(){
         }
         cout << endl;
     }
+}
+
+void Carte::clean(){
+    for (int i = 0; i < carte.size(); i++){
+        carte[i].clear();
+    } carte.clear();
 }

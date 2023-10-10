@@ -19,6 +19,8 @@ class Carte
         void libererCarte();
 
         void printCarte();
+
+        void clean();
         // void sauvegarderCarte(const char* nomFichier);
 
         
