@@ -1,6 +1,8 @@
 #ifndef PERSONNAGE_HPP
 #define PERSONNAGE_HPP
 
+#include "point.hpp"
+
 class Personnage{
 
     public:
@@ -27,7 +29,7 @@ class Personnage{
         void clean();
 
     private:
-        int x, y;
+        point coord;
         int taille;
 
 };

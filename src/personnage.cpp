@@ -4,14 +4,14 @@
 using namespace std;
 
 Personnage::Personnage(int x, int y, int taille){
-    this->x = x;
-    this->y = y;
+    this->coord.x = x;
+    this->coord.y = y;
     this->taille = taille;
 }
 
 Personnage::Personnage(){
-    this->x = 0;
-    this->y = 0;
+    this->coord.x = 0;
+    this->coord.y = 0;
     this->taille = 0;
 }
 
@@ -20,31 +20,31 @@ int Personnage::getTaille(){
 }
 
 int Personnage::getX(){
-    return x;
+    return coord.x;
 }
 
 int Personnage::getY(){
-    return y;
+    return coord.y;
 }
 
 void Personnage::setX(int x){
-    this->x = x;
+    this->coord.x = x;
 }
 
 void Personnage::setY(int y){
-    this->y = y;
+    this->coord.y = y;
 }
 
 void Personnage::deplacerX(int x){
-    this->x += x;
+    this->coord.x += x;
 }
 
 void Personnage::deplacerY(int y){
-    this->y += y;
+    this->coord.y += y;
 }
 
 void Personnage::printPersonnage(){
-    cout << "x: " << x << " y: " << y << endl;
+    cout << "x: " << coord.x << " y: " << coord.y << endl;
 }
 
 void Personnage::clean(){

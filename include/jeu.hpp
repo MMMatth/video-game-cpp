@@ -10,12 +10,16 @@
 using namespace std;
 using namespace sf;
 
+
+
 class Jeu{
     private:
         Carte carte;
         Personnage perso;
         RenderWindow window;
+        View miniWindow;
         double posCam[2];
+
 
     public:
         Jeu();
@@ -25,6 +29,7 @@ class Jeu{
         void render();
         void clean();
         void event();
+        void drawMiniMap();
 };
 
 #endif

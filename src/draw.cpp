@@ -16,3 +16,11 @@ void drawRectangle(int x, int y, Color color, RenderWindow* window, int largeur,
     rectangle.setPosition(x, y);
     window->draw(rectangle);
 }
+
+void drawMiniCarte(int x, int y, Color color, RenderWindow* window, int largeur, int hauteur){
+    RectangleShape miniCarteRect;
+    miniCarteRect.setSize(sf::Vector2f(largeur, hauteur));
+    miniCarteRect.setFillColor(color);
+    miniCarteRect.setPosition( x, y);
+    window->draw(miniCarteRect);
+}

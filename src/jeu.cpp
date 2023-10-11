@@ -3,6 +3,7 @@
 using namespace std;
 using namespace sf;
 
+
 Jeu::Jeu() : 
 window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
 perso(0,0,TAILLE_PERSONNAGE),
@@ -12,11 +13,13 @@ posCam{0, 0}
 }
 
 void Jeu::run(){
+    miniWindow.setViewport(sf::FloatRect(0.9f, 0.1f, 0.2f, 0.25f)); // position du mini carte
     while (window.isOpen())
     {
         event();
         update();
         render();
+      
     }   
     clean();
 }
@@ -25,6 +28,8 @@ void Jeu::update(){
     posCam[0] += (perso.getX() + perso.getTaille() / 4 - posCam[0]) / 20;
     posCam[1] += (perso.getY() + perso.getTaille() / 2 - posCam[1]) / 20;
     window.setView(View(Vector2f(posCam[0], posCam[1]), Vector2f(TAILLE_FENETRE_X, TAILLE_FENETRE_Y)));
+    
+    
 }
 
 void Jeu::clean(){
@@ -39,6 +44,7 @@ void Jeu::event(){
         {
             if (event.type == Event::Closed)
                 window.close();
+               
 
             if (event.type == Event::KeyPressed)
             {
@@ -78,13 +84,32 @@ void Jeu::render(){
                 drawMap(y, x, Color::Green, &window, TAILLE_CASE, TAILLE_CASE);
             }
             if (carte.getCarte()[x][y] == '2'){
-                drawMap(y, x, Color::Red, &window, TAILLE_CASE, TAILLE_CASE);
+                drawMap(y, x, Color::Red, &window,TAILLE_CASE, TAILLE_CASE);
             }
         }
     }
 
+    drawMiniMap();
+    
     window.display();
 }
+
+void Jeu::drawMiniMap() {
+
+    window.setView(miniWindow);
+    drawMiniCarte(perso.getX(), perso.getY(), Color::Blue, &window, TAILLE_PERSONNAGE_MINI_CARTE/2, TAILLE_PERSONNAGE_MINI_CARTE);
+    for (int x = 0; x < carte.getCarte().size() ; x++){
+        for (int y = 0; y < carte.getCarte()[x].size(); y++){
+            if (carte.getCarte()[x][y] == '1'){
+                drawMap(y, x, Color::Green, &window, TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
+            }
+            if (carte.getCarte()[x][y] == '2'){
+                drawMap(y, x, Color::Red, &window,TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
+            }
+        }
+    }
+}
+
 
 int main(int arg, char ** argv)
 {
