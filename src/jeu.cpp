@@ -4,8 +4,9 @@ using namespace std;
 using namespace sf;
 
 Jeu::Jeu() : 
-window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), "jeu"),
-perso(0,0,TAILLE_PERSONNAGE)
+window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
+perso(0,0,TAILLE_PERSONNAGE),
+posCam{0, 0}
 {
     this->carte = Carte();
 }
@@ -21,7 +22,9 @@ void Jeu::run(){
 }
 
 void Jeu::update(){
-    // pass
+    posCam[0] += (perso.getX() + perso.getTaille() / 4 - posCam[0]) / 20;
+    posCam[1] += (perso.getY() + perso.getTaille() / 2 - posCam[1]) / 20;
+    window.setView(View(Vector2f(posCam[0], posCam[1]), Vector2f(TAILLE_FENETRE_X, TAILLE_FENETRE_Y)));
 }
 
 void Jeu::clean(){

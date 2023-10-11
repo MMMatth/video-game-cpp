@@ -15,6 +15,7 @@ class Jeu{
         Carte carte;
         Personnage perso;
         RenderWindow window;
+        double posCam[2];
 
     public:
         Jeu();
