@@ -12,6 +12,8 @@ class Personnage{
 
         int getTaille();
 
+        int getLargeur();
+
         int getX();
 
         int getY();

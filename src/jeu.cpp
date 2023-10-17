@@ -11,6 +11,7 @@ perso(TAILLE_FENETRE_X/2, TAILLE_FENETRE_Y/2, TAILLE_PERSONNAGE),
 posCam{0, 0}
 {
     this->carte = Carte();
+    this->isCollision = false;
 }
 
 void Jeu::run(){
@@ -20,7 +21,6 @@ void Jeu::run(){
         event();
         update();
         render();
-      
     }   
     clean();
 }
@@ -37,9 +37,8 @@ bool Jeu::collisionAvecCarte(int x, int y) {
 void Jeu::update(){
     posCam[0] += (perso.getX() + perso.getTaille() / 4 - posCam[0]) / 20;
     posCam[1] += (perso.getY() + perso.getTaille() / 2 - posCam[1]) / 20;
-    window.setView(View(Vector2f(posCam[0], posCam[1]), Vector2f(TAILLE_FENETRE_X, TAILLE_FENETRE_Y)));
+    window.setView(View(Vector2f(posCam[0], posCam[1]), Vector2f(TAILLE_FENETRE_X / 1.5, TAILLE_FENETRE_Y  / 1.5)));
     
-    perso.printPersonnage();
 }
 
 
@@ -55,26 +54,24 @@ void Jeu::event(){
         {
             if (event.type == Event::Closed)
                 window.close();
-               
-
             if (event.type == Event::KeyPressed)
             {
-                int nouvelleX = perso.getX();
-                int nouvelleY = perso.getY();
+                int newX = perso.getX();
+                int newY = perso.getY();
                 
                 switch (event.key.code)
                 {
                 case Keyboard::Up:
-                    nouvelleY -= DEPLACEMENT;
+                    newY -= DEPLACEMENT;
                     break;
                 case Keyboard::Down:
-                    nouvelleY += DEPLACEMENT;
+                    newY += DEPLACEMENT;
                     break;
                 case Keyboard::Left:
-                    nouvelleX -= DEPLACEMENT;
+                    newX -= DEPLACEMENT;
                     break;
                 case Keyboard::Right:
-                    nouvelleX += DEPLACEMENT;
+                    newX += DEPLACEMENT;
                     break;
                 case Keyboard::Escape:
                     window.close(); 
@@ -82,13 +79,13 @@ void Jeu::event(){
                 default:
                     break;
                 }
-                
-                if (!collisionAvecCarte(nouvelleX, nouvelleY)) {
-                    perso.setX(nouvelleX);
-                    perso.setY(nouvelleY);
+                if (!this->isCollision){
+                    perso.setX(newX);
+                    perso.setY(newY);
                 }
+
+                
             }
-           
         }
 
 }
@@ -98,14 +95,38 @@ void Jeu::render(){
 
     drawRectangle(perso.getX(), perso.getY(), Color::Blue, &window, TAILLE_PERSONNAGE/2, TAILLE_PERSONNAGE);
 
-    for (int x = 0; x < carte.getCarte().size() ; x++){
-        for (int y = 0; y < carte.getCarte()[x].size(); y++){
-            if (carte.getCarte()[x][y] == '1'){
-                drawMap(y, x, Color::Green, &window, TAILLE_CASE, TAILLE_CASE);
-            }
-            if (carte.getCarte()[x][y] == '2'){
-                drawMap(y, x, Color::Red, &window,TAILLE_CASE, TAILLE_CASE);
-            }
+    for (int y = 0; y < carte.getCarte().size() ; y++){
+        for (int x = 0; x < carte.getCarte()[y].size(); x++){
+            if ( y * TAILLE_CASE < posCam[1] + TAILLE_FENETRE_Y/ 3 &&
+                x * TAILLE_CASE < posCam[0] + TAILLE_FENETRE_X / 3 &&
+                y * TAILLE_CASE > posCam[1] - TAILLE_FENETRE_Y / 3 &&
+                x * TAILLE_CASE > posCam[0] - TAILLE_FENETRE_X / 3){
+
+                    if (carte.getCarte()[y][x] == '1' || carte.getCarte()[y][x] == '2' || carte.getCarte()[y][x] == '3'){
+                        if ( y * TAILLE_CASE < perso.getY() + perso.getTaille() &&
+                            y * TAILLE_CASE + TAILLE_CASE > perso.getY() &&
+                            x * TAILLE_CASE < perso.getX() + perso.getLargeur() &&
+                            x * TAILLE_CASE + TAILLE_CASE > perso.getX())
+                        {
+                            cout << "collision" << endl;
+                        }
+                    }
+                    switch (carte.getCarte()[y][x])
+                    {
+                    case '1':
+                        drawSprite(x * TAILLE_CASE, y * TAILLE_CASE, &window, "../assets/img/grass.png");
+                        break;
+                    case '2':
+                        drawSprite(x * TAILLE_CASE, y * TAILLE_CASE, &window, "../assets/img/dirt.png");
+                        break;
+                    case '3':
+                        drawSprite(x * TAILLE_CASE, y * TAILLE_CASE, &window, "../assets/img/stone.png");
+                        break;
+                    
+                    default:
+                        break;
+                    }
+                }
         }
     }
 
@@ -115,16 +136,23 @@ void Jeu::render(){
 }
 
 void Jeu::drawMiniMap() {
-
     window.setView(miniWindow);
     drawMiniCarte(perso.getX(), perso.getY(), Color::Blue, &window, TAILLE_PERSONNAGE_MINI_CARTE/2, TAILLE_PERSONNAGE_MINI_CARTE);
-    for (int x = 0; x < carte.getCarte().size() ; x++){
-        for (int y = 0; y < carte.getCarte()[x].size(); y++){
-            if (carte.getCarte()[x][y] == '1'){
-                drawMap(y, x, Color::Green, &window, TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
-            }
-            if (carte.getCarte()[x][y] == '2'){
-                drawMap(y, x, Color::Red, &window,TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
+    for (int y = 0; y < carte.getCarte().size() ; y++){
+        for (int x = 0; x < carte.getCarte()[y].size(); x++){
+            switch (carte.getCarte()[y][x])
+            {
+            case '1':
+                drawMap(x, y, Color(0,100,0), &window, TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
+                break;
+            case '2':
+                drawMap(x, y, Color(91,60,17), &window,TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
+                break;
+            case '3':
+                drawMap(x, y, Color(128,128,128), &window, TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
+                break;
+            default:
+                break;
             }
         }
     }

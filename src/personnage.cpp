@@ -19,6 +19,10 @@ int Personnage::getTaille(){
     return taille;
 }
 
+int Personnage::getLargeur(){
+    return taille / 2;
+}
+
 int Personnage::getX(){
     return coord.x;
 }

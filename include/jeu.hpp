@@ -18,6 +18,7 @@ class Jeu{
         Personnage perso;
         RenderWindow window;
         View miniWindow;
+        bool isCollision;
         double posCam[2];
         
 

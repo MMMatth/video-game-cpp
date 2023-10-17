@@ -1,7 +1,17 @@
 #include "../include/draw.hpp"
+#include "../include/const.hpp"
 
 using namespace std;
 using namespace sf;
+
+void drawSprite(int x, int y, RenderWindow* window, string path ){
+    Sprite sprite; Texture texture;
+    texture.loadFromFile(path);
+    sprite.setTexture(texture);
+    sprite.setPosition(x, y);
+    sprite.setScale(TAILLE_CASE /sprite.getLocalBounds().width, TAILLE_CASE/sprite.getLocalBounds().height);
+    window->draw(sprite);
+}
 
 void drawMap(int x, int y, Color color, RenderWindow* window, int largeur, int hauteur){
     RectangleShape rectangle(Vector2f(largeur, hauteur));
