@@ -19,6 +19,7 @@ class Jeu{
         RenderWindow window;
         View miniWindow;
         double posCam[2];
+        
 
 
     public:
@@ -30,6 +31,8 @@ class Jeu{
         void clean();
         void event();
         void drawMiniMap();
+        bool collisionAvecCarte (int x, int y);
+
 };
 
 #endif

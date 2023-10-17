@@ -27,6 +27,7 @@ class Personnage{
         void printPersonnage();
 
         void clean();
+        
 
     private:
         point coord;

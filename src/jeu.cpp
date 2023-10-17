@@ -1,12 +1,13 @@
 #include "../include/jeu.hpp"
 
+
 using namespace std;
 using namespace sf;
 
 
 Jeu::Jeu() : 
 window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
-perso(0,0,TAILLE_PERSONNAGE),
+perso(TAILLE_FENETRE_X/2, TAILLE_FENETRE_Y/2, TAILLE_PERSONNAGE),
 posCam{0, 0}
 {
     this->carte = Carte();
@@ -24,13 +25,23 @@ void Jeu::run(){
     clean();
 }
 
+bool Jeu::collisionAvecCarte(int x, int y) {
+    if (x < 0 || x  >= TAILLE_FENETRE_X || y < 0 || y  >= TAILLE_FENETRE_Y) {
+        return true; 
+    }
+
+    return false;
+}
+
+
 void Jeu::update(){
     posCam[0] += (perso.getX() + perso.getTaille() / 4 - posCam[0]) / 20;
     posCam[1] += (perso.getY() + perso.getTaille() / 2 - posCam[1]) / 20;
     window.setView(View(Vector2f(posCam[0], posCam[1]), Vector2f(TAILLE_FENETRE_X, TAILLE_FENETRE_Y)));
     
-    
+    perso.printPersonnage();
 }
+
 
 void Jeu::clean(){
     this->window.clear();
@@ -48,19 +59,22 @@ void Jeu::event(){
 
             if (event.type == Event::KeyPressed)
             {
+                int nouvelleX = perso.getX();
+                int nouvelleY = perso.getY();
+                
                 switch (event.key.code)
                 {
                 case Keyboard::Up:
-                    perso.deplacerY(-5);
+                    nouvelleY -= DEPLACEMENT;
                     break;
                 case Keyboard::Down:
-                    perso.deplacerY(5);
+                    nouvelleY += DEPLACEMENT;
                     break;
                 case Keyboard::Left:
-                    perso.deplacerX(-5);
+                    nouvelleX -= DEPLACEMENT;
                     break;
                 case Keyboard::Right:
-                    perso.deplacerX(5);
+                    nouvelleX += DEPLACEMENT;
                     break;
                 case Keyboard::Escape:
                     window.close(); 
@@ -68,7 +82,13 @@ void Jeu::event(){
                 default:
                     break;
                 }
+                
+                if (!collisionAvecCarte(nouvelleX, nouvelleY)) {
+                    perso.setX(nouvelleX);
+                    perso.setY(nouvelleY);
+                }
             }
+           
         }
 
 }

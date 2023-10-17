@@ -47,6 +47,9 @@ void Personnage::printPersonnage(){
     cout << "x: " << coord.x << " y: " << coord.y << endl;
 }
 
+
+
+
 void Personnage::clean(){
     // pas de memoir aloué
 }
