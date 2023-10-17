@@ -19,7 +19,7 @@ class Jeu{
         RenderWindow window;
         View miniWindow;
         bool isCollision;
-        double posCam[2];
+        point posCam;
         
 
 

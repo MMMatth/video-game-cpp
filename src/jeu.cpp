@@ -7,11 +7,12 @@ using namespace sf;
 
 Jeu::Jeu() : 
 window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
-perso(TAILLE_FENETRE_X/2, TAILLE_FENETRE_Y/2, TAILLE_PERSONNAGE),
-posCam{0, 0}
+perso(TAILLE_FENETRE_X/2, TAILLE_FENETRE_Y/2, TAILLE_PERSONNAGE)
 {
     this->carte = Carte();
     this->isCollision = false;
+    this->posCam.x = 0;
+    this->posCam.y = 0;
 }
 
 void Jeu::run(){
@@ -35,9 +36,9 @@ bool Jeu::collisionAvecCarte(int x, int y) {
 
 
 void Jeu::update(){
-    posCam[0] += (perso.getX() + perso.getTaille() / 4 - posCam[0]) / 20;
-    posCam[1] += (perso.getY() + perso.getTaille() / 2 - posCam[1]) / 20;
-    window.setView(View(Vector2f(posCam[0], posCam[1]), Vector2f(TAILLE_FENETRE_X / 1.5, TAILLE_FENETRE_Y  / 1.5)));
+    posCam.x += (perso.getX() + perso.getTaille() / 4 - posCam.x) / 20;
+    posCam.y += (perso.getY() + perso.getTaille() / 2 - posCam.y) / 20;
+    window.setView(View(Vector2f(posCam.x, posCam.y), Vector2f(TAILLE_FENETRE_X / 1.5, TAILLE_FENETRE_Y  / 1.5)));
     
 }
 
@@ -97,10 +98,10 @@ void Jeu::render(){
 
     for (int y = 0; y < carte.getCarte().size() ; y++){
         for (int x = 0; x < carte.getCarte()[y].size(); x++){
-            if ( y * TAILLE_CASE < posCam[1] + TAILLE_FENETRE_Y/ 3 &&
-                x * TAILLE_CASE < posCam[0] + TAILLE_FENETRE_X / 3 &&
-                y * TAILLE_CASE > posCam[1] - TAILLE_FENETRE_Y / 3 &&
-                x * TAILLE_CASE > posCam[0] - TAILLE_FENETRE_X / 3){
+            if ( y * TAILLE_CASE < posCam.y + TAILLE_FENETRE_Y/ 3 &&
+                x * TAILLE_CASE < posCam.x + TAILLE_FENETRE_X / 3 &&
+                y * TAILLE_CASE > posCam.y - TAILLE_FENETRE_Y / 3 &&
+                x * TAILLE_CASE > posCam.x - TAILLE_FENETRE_X / 3){
 
                     if (carte.getCarte()[y][x] == '1' || carte.getCarte()[y][x] == '2' || carte.getCarte()[y][x] == '3'){
                         if ( y * TAILLE_CASE < perso.getY() + perso.getTaille() &&
