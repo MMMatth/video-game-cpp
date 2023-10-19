@@ -12,6 +12,7 @@ posCam(0,0)
 {
     this->carte = Carte();
     this->isCollision = false;
+
 }
 
 void Jeu::run(){
@@ -97,37 +98,28 @@ void Jeu::render(){
 
     Texture spritesheet;
     spritesheet.loadFromFile("../assets/img/spritesheet.png");
-    Sprite grass (spritesheet, IntRect(0, 0, 16, 16));
-    Sprite dirt (spritesheet, IntRect(16, 0, 16, 16));
-    Sprite stone (spritesheet, IntRect(32, 0, 16, 16));
+    sprites.emplace(make_pair("grass", Sprite(spritesheet, IntRect(0, 0, 16, 16))));
+    sprites.emplace(make_pair("dirt", Sprite(spritesheet, IntRect(16, 0, 16, 16))));
+    sprites.emplace(make_pair("stone", Sprite(spritesheet, IntRect(32, 0, 16, 16))));
+
     for (int i = 0; i < carte.getSize(); i++)
     {
         int x,y;
         x = carte.getBlock(i).getX();
         y = carte.getBlock(i).getY();
 
-        if ( carte.getBlock(i).estDansCam(posCam, TAILLE_FENETRE_X, TAILLE_FENETRE_Y))
+        if ( carte.getBlock(i).estDansCam(posCam.getX(), posCam.getY() , TAILLE_FENETRE_X, TAILLE_FENETRE_Y))
         {
-            switch (carte.getBlock(i).getNumber())
-            {
-            case 1:
-                drawSprites(x, y, grass, &window);
-                break;
-            case 2:
-                drawSprites(x, y, dirt, &window);
-                break;
-            case 3:
-                drawSprites(x, y, stone, &window);
-                break;
-            
-            default:
-                break;
-            }
+            drawSprites(x, y, sprites[carte.getBlock(i).getName()], &window);
         }
     }
+
+    // drawMiniMap();
     
     window.display();
 }
+
+
 
 
 int main(int arg, char ** argv)

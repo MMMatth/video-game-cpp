@@ -17,7 +17,7 @@ public:
     // Constructeur avec initialisation des attributs
     Block(int spriteSheetX, int spriteSheetY, int number, std::string name, int blockX, int blockY, bool isSolid);
 
-    bool estDansCam(Point posCam, int largeur, int hauteur);
+    bool estDansCam(int posCamX,int posCamY, int largeur, int hauteur);
     bool collide(int persoX, int persoY, int persoLargeur, int persoHauteur);
 
     // Getters

@@ -22,14 +22,15 @@ class Jeu{
         View miniWindow;
         bool isCollision;
         Point posCam;
+        unordered_map<string, Sprite> sprites;
         
         
 
 
     public:
         Jeu();
-        void initJeu();
         void run();
+        void initSprites();
         void update();
         void render();
         void clean();

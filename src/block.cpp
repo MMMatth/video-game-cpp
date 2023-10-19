@@ -31,8 +31,8 @@ std::string Block::getName() const {
     return m_name;
 }
 
-bool Block::estDansCam(Point posCam, int largeur, int hauteur){
-    if (m_position.getX() >= posCam.getX() - largeur && m_position.getX() <= posCam.getX() + largeur && m_position.getY() >= posCam.getY() - hauteur && m_position.getY() <= posCam.getY() + hauteur){
+bool Block::estDansCam(int posCamX, int posCamY, int largeur, int hauteur){
+    if (m_position.getX() >= posCamX - largeur && m_position.getX() <= posCamX + largeur && m_position.getY() >= posCamY - hauteur && m_position.getY() <= posCamY + hauteur){
         return true;
     }
     return false;
