@@ -7,12 +7,11 @@ using namespace sf;
 
 Jeu::Jeu() : 
 window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
-perso(TAILLE_FENETRE_X/2, TAILLE_FENETRE_Y/2, TAILLE_PERSONNAGE)
+perso(TAILLE_FENETRE_X/2, TAILLE_FENETRE_Y/2, TAILLE_PERSONNAGE),
+posCam(0,0)
 {
     this->carte = Carte();
     this->isCollision = false;
-    this->posCam.x = 0;
-    this->posCam.y = 0;
 }
 
 void Jeu::run(){
@@ -36,9 +35,9 @@ bool Jeu::collisionAvecCarte(int x, int y) {
 
 
 void Jeu::update(){
-    posCam.x += (perso.getX() + perso.getTaille() / 4 - posCam.x) / 20;
-    posCam.y += (perso.getY() + perso.getTaille() / 2 - posCam.y) / 20;
-    window.setView(View(Vector2f(posCam.x, posCam.y), Vector2f(TAILLE_FENETRE_X / 1.5, TAILLE_FENETRE_Y  / 1.5)));
+    posCam.setX(posCam.getX() + (perso.getX() + perso.getHauteur() / 4 - posCam.getX()) / 20);
+    posCam.setY(posCam.getY() + (perso.getY() + perso.getHauteur() / 2 - posCam.getY()) / 20);
+    window.setView(View(Vector2f(posCam.getX(), posCam.getY()), Vector2f(TAILLE_FENETRE_X / 1.5, TAILLE_FENETRE_Y  / 1.5)));
     
 }
 
@@ -80,7 +79,7 @@ void Jeu::event(){
                 default:
                     break;
                 }
-                if (!this->isCollision){
+                if (!collisionAvecCarte(newX, newY) && !carte.collide(newX, newY, perso.getLargeur(), perso.getHauteur())){
                     perso.setX(newX);
                     perso.setY(newY);
                 }
@@ -96,67 +95,38 @@ void Jeu::render(){
 
     drawRectangle(perso.getX(), perso.getY(), Color::Blue, &window, TAILLE_PERSONNAGE/2, TAILLE_PERSONNAGE);
 
-    for (int y = 0; y < carte.getCarte().size() ; y++){
-        for (int x = 0; x < carte.getCarte()[y].size(); x++){
-            if ( y * TAILLE_CASE < posCam.y + TAILLE_FENETRE_Y/ 3 &&
-                x * TAILLE_CASE < posCam.x + TAILLE_FENETRE_X / 3 &&
-                y * TAILLE_CASE > posCam.y - TAILLE_FENETRE_Y / 3 &&
-                x * TAILLE_CASE > posCam.x - TAILLE_FENETRE_X / 3){
+    Texture spritesheet;
+    spritesheet.loadFromFile("../assets/img/spritesheet.png");
+    Sprite grass (spritesheet, IntRect(0, 0, 16, 16));
+    Sprite dirt (spritesheet, IntRect(16, 0, 16, 16));
+    Sprite stone (spritesheet, IntRect(32, 0, 16, 16));
+    for (int i = 0; i < carte.getSize(); i++)
+    {
+        int x,y;
+        x = carte.getBlock(i).getX();
+        y = carte.getBlock(i).getY();
 
-                    if (carte.getCarte()[y][x] == '1' || carte.getCarte()[y][x] == '2' || carte.getCarte()[y][x] == '3'){
-                        if ( y * TAILLE_CASE < perso.getY() + perso.getTaille() &&
-                            y * TAILLE_CASE + TAILLE_CASE > perso.getY() &&
-                            x * TAILLE_CASE < perso.getX() + perso.getLargeur() &&
-                            x * TAILLE_CASE + TAILLE_CASE > perso.getX())
-                        {
-                            cout << "collision" << endl;
-                        }
-                    }
-                    switch (carte.getCarte()[y][x])
-                    {
-                    case '1':
-                        drawSprite(x * TAILLE_CASE, y * TAILLE_CASE, &window, "../assets/img/grass.png");
-                        break;
-                    case '2':
-                        drawSprite(x * TAILLE_CASE, y * TAILLE_CASE, &window, "../assets/img/dirt.png");
-                        break;
-                    case '3':
-                        drawSprite(x * TAILLE_CASE, y * TAILLE_CASE, &window, "../assets/img/stone.png");
-                        break;
-                    
-                    default:
-                        break;
-                    }
-                }
-        }
-    }
-
-    drawMiniMap();
-    
-    window.display();
-}
-
-void Jeu::drawMiniMap() {
-    window.setView(miniWindow);
-    drawMiniCarte(perso.getX(), perso.getY(), Color::Blue, &window, TAILLE_PERSONNAGE_MINI_CARTE/2, TAILLE_PERSONNAGE_MINI_CARTE);
-    for (int y = 0; y < carte.getCarte().size() ; y++){
-        for (int x = 0; x < carte.getCarte()[y].size(); x++){
-            switch (carte.getCarte()[y][x])
+        if ( carte.getBlock(i).estDansCam(posCam, TAILLE_FENETRE_X, TAILLE_FENETRE_Y))
+        {
+            switch (carte.getBlock(i).getNumber())
             {
-            case '1':
-                drawMap(x, y, Color(0,100,0), &window, TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
+            case 1:
+                drawSprites(x, y, grass, &window);
                 break;
-            case '2':
-                drawMap(x, y, Color(91,60,17), &window,TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
+            case 2:
+                drawSprites(x, y, dirt, &window);
                 break;
-            case '3':
-                drawMap(x, y, Color(128,128,128), &window, TAILLE_CASE_MINI_CARTE, TAILLE_CASE_MINI_CARTE);
+            case 3:
+                drawSprites(x, y, stone, &window);
                 break;
+            
             default:
                 break;
             }
         }
     }
+    
+    window.display();
 }
 
 

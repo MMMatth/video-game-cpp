@@ -2,6 +2,7 @@
 #define PERSONNAGE_HPP
 
 #include "point.hpp"
+#include <string>
 
 class Personnage{
 
@@ -10,7 +11,7 @@ class Personnage{
 
         Personnage();
 
-        int getTaille();
+        int getHauteur();
 
         int getLargeur();
 
@@ -26,13 +27,13 @@ class Personnage{
 
         void deplacerY(int y);
 
-        void printPersonnage();
+        std::string toString();
 
         void clean();
         
 
     private:
-        point coord;
+        Point coord;
         int taille;
 
 };

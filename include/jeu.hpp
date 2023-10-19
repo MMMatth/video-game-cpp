@@ -2,10 +2,12 @@
 #define JEU_HPP
 
 #include <SFML/Graphics.hpp>
+#include <unordered_map>
 #include "cartes.hpp"
 #include "const.hpp"
 #include "personnage.hpp"
 #include "draw.hpp"
+#include "point.hpp"
 
 using namespace std;
 using namespace sf;
@@ -19,7 +21,8 @@ class Jeu{
         RenderWindow window;
         View miniWindow;
         bool isCollision;
-        point posCam;
+        Point posCam;
+        
         
 
 

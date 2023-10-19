@@ -3,19 +3,19 @@
 
 using namespace std;
 
-Personnage::Personnage(int x, int y, int taille){
-    this->coord.x = x;
-    this->coord.y = y;
+Personnage::Personnage(int x, int y, int taille):
+    coord(x, y)
+{
     this->taille = taille;
 }
 
-Personnage::Personnage(){
-    this->coord.x = 0;
-    this->coord.y = 0;
+Personnage::Personnage():
+    coord(0, 0)
+{
     this->taille = 0;
 }
 
-int Personnage::getTaille(){
+int Personnage::getHauteur(){
     return taille;
 }
 
@@ -24,32 +24,32 @@ int Personnage::getLargeur(){
 }
 
 int Personnage::getX(){
-    return coord.x;
+    return coord.getX();
 }
 
 int Personnage::getY(){
-    return coord.y;
+    return coord.getY();
 }
 
 void Personnage::setX(int x){
-    this->coord.x = x;
+    coord.setX(x);
 }
 
 void Personnage::setY(int y){
-    this->coord.y = y;
+    coord.setY(y);
 }
 
 void Personnage::deplacerX(int x){
-    this->coord.x += x;
+    cout << "deplacerX pas fait" << endl;
 }
 
 void Personnage::deplacerY(int y){
-    this->coord.y += y;
+    cout << "deplacerY pas fait" << endl;
 }
 
-void Personnage::printPersonnage(){
-    cout << "x: " << coord.x << " y: " << coord.y << endl;
-}
+// std::string Personnage::toString(){
+//     return "personnage(" + coord.toString() + ", " + to_string(taille) + ")";
+// }
 
 
 

@@ -4,10 +4,17 @@
 using namespace std;
 using namespace sf;
 
+
 void drawSprite(int x, int y, RenderWindow* window, string path ){
     Sprite sprite; Texture texture;
     texture.loadFromFile(path);
     sprite.setTexture(texture);
+    sprite.setPosition(x, y);
+    sprite.setScale(TAILLE_CASE /sprite.getLocalBounds().width, TAILLE_CASE/sprite.getLocalBounds().height);
+    window->draw(sprite);
+}
+
+void drawSprites(int x, int y, Sprite sprite, RenderWindow* window){
     sprite.setPosition(x, y);
     sprite.setScale(TAILLE_CASE /sprite.getLocalBounds().width, TAILLE_CASE/sprite.getLocalBounds().height);
     window->draw(sprite);

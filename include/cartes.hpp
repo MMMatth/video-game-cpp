@@ -3,6 +3,11 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
+#include <fstream>
+#include <SFML/Graphics.hpp>
+#include "const.hpp"
+#include "block.hpp"
 
 using namespace std;
 
@@ -14,20 +19,21 @@ class Carte
 
         void initCarte(const char* nomFichier);
 
-        vector<vector<char>> getCarte();
-
-        void libererCarte();
-
-        void printCarte();
+        // getters
+        vector<Block> getCarte();
+        int getSize();
+        Block getBlock(int i);
+        bool collide(int persoX, int persoY, int persoLargeur, int persoHauteur);
+        Block chooseBlock(char c, int x, int y);
 
         void clean();
-        // void sauvegarderCarte(const char* nomFichier);
 
+        string toString();
         
 
     private:
 
-        vector<vector<char>> carte;
+        vector<Block> carte;
 
 };
 
