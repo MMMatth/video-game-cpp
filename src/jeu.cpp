@@ -12,7 +12,6 @@ posCam(0,0)
 {
     this->carte = Carte();
     this->collide = false;
-
 }
 
 void Jeu::run(){
