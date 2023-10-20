@@ -18,7 +18,10 @@ public:
     Block(int spriteSheetX, int spriteSheetY, int number, std::string name, int blockX, int blockY, bool isSolid);
 
     bool estDansCam(int posCamX,int posCamY, int largeur, int hauteur);
+    
+    // collision
     bool collide(int persoX, int persoY, int persoLargeur, int persoHauteur);
+    bool collide(int persoX, int persoY, int persoLargeur, int persoHauteur, int persoVitesseX, int persoVitesseY);
 
     // Getters
     Point getSpriteSheet() const;

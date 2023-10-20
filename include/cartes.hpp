@@ -24,6 +24,10 @@ class Carte
         int getSize();
         Block getBlock(int i);
         bool collide(int persoX, int persoY, int persoLargeur, int persoHauteur);
+        bool collideTop(int persoX, int persoY, int persoLargeur, int persoHauteur);
+        bool collideBottom(int persoX, int persoY, int persoLargeur, int persoHauteur);
+        bool collideRight(int persoX, int persoY, int persoLargeur, int persoHauteur);
+        bool collideLeft(int persoX, int persoY, int persoLargeur, int persoHauteur);
         Block chooseBlock(char c, int x, int y);
 
         void clean();

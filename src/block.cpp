@@ -44,7 +44,7 @@ bool Block::collide(int persoX, int persoY, int persoLargeur, int persoHauteur) 
     int persoRight = persoX + persoLargeur;
     int persoBottom = persoY + persoHauteur;
 
-    if (m_isSolid && blockRight >= persoX && m_position.getX() <= persoRight && blockBottom >= persoY && m_position.getY() <= persoBottom) {
+    if (m_isSolid && blockRight >= persoX && m_position.getX() <= persoRight && blockBottom >= persoY && m_position.getY() < persoBottom) {
         return true;
     }
     return false;

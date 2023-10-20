@@ -34,6 +34,8 @@ bool Carte::collide(int persoX, int persoY, int persoLargeur, int persoHauteur){
     return false;
 }
 
+
+
 void Carte::initCarte(const char* nomFichier){
     ifstream fichier(nomFichier);
     if (fichier){
