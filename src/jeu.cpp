@@ -48,10 +48,6 @@ void Jeu::updateCam(){
 }
 
 void Jeu::updateCollide(){
-    // collideDown = carte.collide(perso.getX() , perso.getY()  , perso.getLargeur(), perso.getHauteur());
-    // collideSide = carte.collide(perso.getX() + perso.getVitesse() , perso.getY() - perso.getVitesse() , perso.getLargeur(), perso.getHauteur());
-    // cout << "collideDown : " << collideDown << endl;
-    // cout << "collideSide : " << collideSide << endl;
     carte.collide(&perso);
 }
 
@@ -85,6 +81,7 @@ void Jeu::event(){
                     perso.setGoingLeft(true);
                     break;
                 case Keyboard::Right:
+                    // perso.setCollision("left", false);
                     perso.setGoingRight(true);
                     break;
                 case Keyboard::Escape:

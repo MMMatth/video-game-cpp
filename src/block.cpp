@@ -39,12 +39,62 @@ bool Block::estDansCam(int posCamX, int posCamY, int largeur, int hauteur){
 }
 
 void Block::collide(Personnage* perso) {
-    if (m_isSolid && m_position.getX() + TAILLE_CASE > perso->getX() && m_position.getX() < perso->getX() + perso->getLargeur() && m_position.getY() + TAILLE_CASE > perso->getY() && m_position.getY() < perso->getY() + perso->getHauteur() + perso->getVitesse()) {
+    int persoX = perso->getX();
+    int persoY = perso->getY();
+    int persoLargeur = perso->getLargeur();
+    int persoHauteur = perso->getHauteur();
+    int persoVitesse = perso->getVitesse();
+
+    int blockX = m_position.getX();
+    int blockY = m_position.getY();
+
+    // perso->setCollision("down", false);
+    // perso->setCollision("right", false);
+    // perso->setCollision("left", false);
+    // perso->setCollision("up", false);
+
+    if (m_isSolid && 
+    blockX + TAILLE_CASE > persoX && 
+    blockX < persoX + persoLargeur && 
+    blockY + TAILLE_CASE > persoY && 
+    blockY < persoY + persoHauteur + persoVitesse) {
+        // printf("collision down\n");
         perso->setCollision("down", true);
-    }    
-    if (m_isSolid && m_position.getX() + TAILLE_CASE - perso->getVitesse() > perso->getX() && m_position.getX() < perso->getX() + perso->getLargeur() && m_position.getY() + TAILLE_CASE > perso->getY() && m_position.getY() < perso->getY() + perso->getHauteur()) {
+    }
+    if (m_isSolid && 
+        blockX + TAILLE_CASE  > persoX  && // left
+        blockX < persoX + persoLargeur + persoVitesse &&  
+        blockY + TAILLE_CASE > persoY && 
+        blockY < persoY + persoHauteur // down
+        ) {
+        printf("collision right\n");
         perso->setCollision("right", true);
     }
+    if (m_isSolid && 
+        blockX + TAILLE_CASE > persoX - persoVitesse && 
+        blockX < persoX + persoLargeur && 
+        blockY + TAILLE_CASE > persoY && 
+        blockY < persoY + persoHauteur) {
+        printf("collision left\n");
+        perso->setCollision("left", true);
+    }
+    if (m_isSolid && 
+        blockX + TAILLE_CASE > persoX - persoVitesse && 
+        blockX < persoX + persoLargeur && 
+        blockY + TAILLE_CASE > persoY && 
+        blockY < persoY + persoHauteur) {
+        printf("collision left\n");
+        perso->setCollision("left", true);
+    }
+    if (m_isSolid && 
+        blockX + TAILLE_CASE > persoX && 
+        blockX < persoX + persoLargeur && 
+        blockY + TAILLE_CASE > persoY - persoVitesse && 
+        blockY < persoY + persoHauteur) {
+        printf("collision up\n");
+        perso->setCollision("up", true);
+    }
+
 }
 
 int Block::getX() const {

@@ -70,7 +70,6 @@ void Personnage::update(){
         }
         
     }
-    printf("collisiondown : %d\n", collision["down"]);
     if (direction["isFalling"] && !collision["down"] && !direction["isGoingUp"]){
         this->setY(this->getY() + vitesse);
     }
