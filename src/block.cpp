@@ -38,18 +38,14 @@ bool Block::estDansCam(int posCamX, int posCamY, int largeur, int hauteur){
     return false;
 }
 
-bool Block::collide(int persoX, int persoY, int persoLargeur, int persoHauteur) {
-    int blockRight = m_position.getX() + TAILLE_CASE;
-    int blockBottom = m_position.getY() + TAILLE_CASE;
-    int persoRight = persoX + persoLargeur;
-    int persoBottom = persoY + persoHauteur;
-
-    if (m_isSolid && blockRight >= persoX && m_position.getX() <= persoRight && blockBottom >= persoY && m_position.getY() < persoBottom) {
-        return true;
+void Block::collide(Personnage* perso) {
+    if (m_isSolid && m_position.getX() + TAILLE_CASE > perso->getX() && m_position.getX() < perso->getX() + perso->getLargeur() && m_position.getY() + TAILLE_CASE > perso->getY() && m_position.getY() < perso->getY() + perso->getHauteur() + perso->getVitesse()) {
+        perso->setCollision("down", true);
+    }    
+    if (m_isSolid && m_position.getX() + TAILLE_CASE - perso->getVitesse() > perso->getX() && m_position.getX() < perso->getX() + perso->getLargeur() && m_position.getY() + TAILLE_CASE > perso->getY() && m_position.getY() < perso->getY() + perso->getHauteur()) {
+        perso->setCollision("right", true);
     }
-    return false;
 }
-
 
 int Block::getX() const {
     return m_position.getX();

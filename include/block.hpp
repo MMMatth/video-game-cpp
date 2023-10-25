@@ -2,9 +2,11 @@
 #define BLOCK_HPP
 
 #include <string>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "point.hpp"
 #include "const.hpp"
+#include "personnage.hpp"
 
 using namespace std;
 
@@ -20,8 +22,7 @@ public:
     bool estDansCam(int posCamX,int posCamY, int largeur, int hauteur);
     
     // collision
-    bool collide(int persoX, int persoY, int persoLargeur, int persoHauteur);
-    bool collide(int persoX, int persoY, int persoLargeur, int persoHauteur, int persoVitesseX, int persoVitesseY);
+    void collide(Personnage * perso);
 
     // Getters
     Point getSpriteSheet() const;

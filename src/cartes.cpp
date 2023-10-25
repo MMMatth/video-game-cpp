@@ -25,13 +25,10 @@ Block Carte::chooseBlock(char c, int x, int y){
     }
 }
 
-bool Carte::collide(int persoX, int persoY, int persoLargeur, int persoHauteur){
+void Carte::collide(Personnage * perso){
     for (int i = 0; i < carte.size(); i++){
-        if (carte[i].collide(persoX, persoY, persoLargeur, persoHauteur)){
-            return true;
-        }
+        carte[i].collide(perso);
     }
-    return false;
 }
 
 

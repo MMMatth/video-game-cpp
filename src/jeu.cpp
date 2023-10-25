@@ -7,11 +7,12 @@ using namespace sf;
 
 Jeu::Jeu() : 
 window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
-perso(TAILLE_FENETRE_X/2, TAILLE_FENETRE_Y/2, TAILLE_PERSONNAGE),
+perso(0, 0, TAILLE_PERSONNAGE),
 posCam(0,0)
 {
     this->carte = Carte();
-    this->collide = false;
+    // this->collideDown = false;
+    // this->collideSide = false;
 }
 
 void Jeu::run(){
@@ -47,13 +48,17 @@ void Jeu::updateCam(){
 }
 
 void Jeu::updateCollide(){
-    collide = carte.collide(perso.getX(), perso.getY(), perso.getLargeur(), perso.getHauteur());
+    // collideDown = carte.collide(perso.getX() , perso.getY()  , perso.getLargeur(), perso.getHauteur());
+    // collideSide = carte.collide(perso.getX() + perso.getVitesse() , perso.getY() - perso.getVitesse() , perso.getLargeur(), perso.getHauteur());
+    // cout << "collideDown : " << collideDown << endl;
+    // cout << "collideSide : " << collideSide << endl;
+    carte.collide(&perso);
 }
 
 void Jeu::update(){
     updateCam();
     updateCollide();
-    perso.update(collide);
+    perso.update();
 }
 
 void Jeu::clean(){
@@ -113,7 +118,7 @@ void Jeu::event(){
 void Jeu::render(){
     window.clear(COULEUR_CIEL);
 
-    drawRectangle(perso.getX(), perso.getY(), Color::Blue, &window, TAILLE_PERSONNAGE/2, TAILLE_PERSONNAGE);
+    drawRectangle(perso.getX(), perso.getY(), Color::Blue, &window, perso.getLargeur(), perso.getHauteur());
 
     Texture spritesheet;
     spritesheet.loadFromFile("../assets/img/spritesheet.png");

@@ -2,7 +2,10 @@
 #define PERSONNAGE_HPP
 
 #include "point.hpp"
+#include <map>
 #include <string>
+
+using namespace std;
 
 class Personnage{
 
@@ -11,7 +14,7 @@ class Personnage{
 
         Personnage();
 
-        void update(bool colide);
+        void update();
 
         void jump();
 
@@ -22,6 +25,7 @@ class Personnage{
         int getY();
         int getTimeJump();
         int getJumpHeight();
+        int getVitesse();
 
         // setter
         void setX(int x);
@@ -32,6 +36,7 @@ class Personnage{
         void setTimeJump(int time);
         void setGoingRight(bool inRight);
         void setGoingLeft(bool inLeft);
+        void setCollision(string key, bool value);
 
         void deplacerX(int x);
         void deplacerY(int y);
@@ -47,14 +52,13 @@ class Personnage{
     private:
         Point coord;
         bool isFalling;
-        bool isJumping;
-        bool isGoingUp;
-        bool isGoingRight;
-        bool isGoingLeft;
+        map<string, bool> direction;
+        map<string , bool> collision;
         int timeJump;
         int jumpHeight;
         int taille;
         int tempSaut;
+        int vitesse;
 
 };
 

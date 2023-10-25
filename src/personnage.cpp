@@ -8,66 +8,83 @@ Personnage::Personnage(int x, int y, int taille):
 {
     this->taille = taille;
 
-    this->isFalling = true;
-    this->isJumping = false;
-    this->isGoingUp = false;
-    this->isGoingRight = false;
-    this->isGoingLeft = false;
+    this->direction  = {
+        {"isJumping", false},
+        {"isGoingUp", false},
+        {"isFalling", true},
+        {"isGoingRight", false},
+        {"isGoingLeft", false}
+    };
+
+    this->collision = {
+        {"up", false},
+        {"down", false},
+        {"left", false},
+        {"right", false}
+    };
+
     this->jumpHeight = 15;
     this->timeJump = 0;
+    this->vitesse = 3;
 }
 
 Personnage::Personnage():
     coord(0, 0)
 {
     this->taille = 0;
-    this->isFalling = true;
-    this->isJumping = false;
-    this->isGoingUp = false;
-    this->isGoingRight = false;
-    this->isGoingLeft = false;
+    this->direction["isFalling"] = true;
+        this->direction  = {
+        {"isJumping", false},
+        {"isGoingUp", false},
+        {"isFalling", false},
+        {"isGoingRight", false},
+        {"isGoingLeft", false}
+    };
+
+    this->collision = {
+        {"up", false},
+        {"down", false},
+        {"left", false},
+        {"right", false}
+    };
     this->jumpHeight = 0;
 }
 
-void Personnage::update(bool collide){
-    if (isJumping && collide && !isGoingUp){
-        this->isGoingUp = true;
+void Personnage::update(){
+    if (direction["isJumping"] && collision["down"] && !direction["isGoingUp"]){
+        this->direction["isGoingUp"] = true;
         this->timeJump = 0;
+        this->collision["down"] = false;
     }
-    if (!isJumping){
-        this->isGoingUp = false;
-        this->isFalling = true;
+    if (!direction["isJumping"]){
+        this->direction["isGoingUp"] = false;
+        this->direction["isFalling"] = true;
     }
-    if (isGoingUp){
+    if (direction["isGoingUp"]){
         this->timeJump++;
         if (timeJump < jumpHeight){
-            this->setY(this->getY() - 3);
+            this->setY(this->getY() - vitesse);
         }else{
-            this->isGoingUp = false;
-            this->isFalling = true;
+            this->direction["isGoingUp"] = false;
+            this->direction["isFalling"] = true;
         }
         
     }
-    if (isFalling && !collide && !isGoingUp){
-        this->setY(this->getY() + 3);
+    printf("collisiondown : %d\n", collision["down"]);
+    if (direction["isFalling"] && !collision["down"] && !direction["isGoingUp"]){
+        this->setY(this->getY() + vitesse);
     }
-    if (isGoingRight){
-        this->setX(this->getX() + 3);
+    if (direction["isGoingRight"] && !collision["right"]){
+        this->setX(this->getX() + vitesse);
     }
-    if (isGoingLeft){
-        this->setX(this->getX() - 3);
+    if (direction["isGoingLeft"] && !collision["left"]){
+        this->setX(this->getX() - vitesse);
     }
-    if (isGoingUp){
-        this->setY(this->getY() - 3);
+    if (direction["isGoingUp"]){
+        this->setY(this->getY() - vitesse);
     }
 }
 
-void Personnage::jump(){
-    if (timeJump >= jumpHeight){
-        this->isGoingUp = false;
-        this->isFalling = true;
-    }
-}
 
 // getters
 int Personnage::getHauteur(){
@@ -93,6 +110,10 @@ int Personnage::getJumpHeight(){
     return jumpHeight;
 }
 
+int Personnage::getVitesse(){
+    return vitesse;
+}
+
 // setters
 void Personnage::setX(int x){
     coord.setX(x);
@@ -102,24 +123,28 @@ void Personnage::setY(int y){
     coord.setY(y);
 }
 
+void Personnage::setCollision(string key, bool value){
+    this->collision[key] = true;
+}
+
 void Personnage::setTimeJump(int time){
     this->timeJump = time;
 }
 
 void Personnage::setFalling(bool falling){
-    this->isFalling = falling;
+    this->direction["isFalling"] = falling;
 }
 void Personnage::setJumping(bool jumping){
-    this->isJumping = jumping;
+    this->direction["isJumping"] = jumping;
 }
 void Personnage::setGoingUp(bool jumping ){
-    this->isGoingUp = jumping;
+    this->direction["isGoingUp"] = jumping;
 }
 void Personnage::setGoingRight(bool inRight ){
-    this->isGoingRight = inRight;
+    this->direction["isGoingRight"] = inRight;
 }
 void Personnage::setGoingLeft(bool inLeft ){
-    this->isGoingLeft = inLeft;
+    this->direction["isGoingLeft"] = inLeft;
 }
 
 
@@ -134,10 +159,10 @@ void Personnage::deplacerY(int y){
 }
 
 bool Personnage::isInFall(){
-    return isFalling;
+    return direction["isFalling"];
 }
 bool Personnage::isInJump(){
-    return isGoingUp;
+    return direction["isGoingUp"];
 }
 
 void Personnage::clean(){

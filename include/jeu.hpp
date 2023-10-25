@@ -20,7 +20,8 @@ class Jeu{
         Personnage perso;
         RenderWindow window;
         View miniWindow;
-        bool collide;
+        bool collideDown;
+        bool collideSide;
         Point posCam;
         unordered_map<string, Sprite> sprites;
         
