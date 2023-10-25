@@ -7,59 +7,58 @@
 
 using namespace std;
 
-class Personnage{
+class Personnage {
 
-    public:
-        Personnage(int x, int y, int taille);
+public:
+  Personnage(int x, int y, int taille);
 
-        Personnage();
+  Personnage();
 
-        void update();
+  void update();
 
-        void jump();
+  void jump();
 
-        // getter
-        int getHauteur();
-        int getLargeur();
-        int getX();
-        int getY();
-        int getTimeJump();
-        int getJumpHeight();
-        int getVitesse();
+  // getter
+  int getHauteur();
+  int getLargeur();
+  int getX();
+  int getY();
+  int getTimeJump();
+  int getJumpHeight();
+  int getVitesse();
 
-        // setter
-        void setX(int x);
-        void setY(int y);
-        void setFalling(bool falling);
-        void setJumping(bool jumping);
-        void setGoingUp(bool inUp);
-        void setTimeJump(int time);
-        void setGoingRight(bool inRight);
-        void setGoingLeft(bool inLeft);
-        void setCollision(string key, bool value);
+  // setter
+  void setX(int x);
+  void setY(int y);
+  void setFalling(bool falling);
+  void setJumping(bool jumping);
+  void setGoingUp(bool inUp);
+  void setTimeJump(int time);
+  void setGoingRight(bool inRight);
+  void setGoingLeft(bool inLeft);
+  void setCollision(string key, bool value);
+  void setCollisionFalseExcept(string key);
 
-        void deplacerX(int x);
-        void deplacerY(int y);
+  void deplacerX(int x);
+  void deplacerY(int y);
 
-        std::string toString();
+  std::string toString();
 
-        bool isInFall();
-        bool isInJump();
+  bool isInFall();
+  bool isInJump();
 
-        void clean();
-        
+  void clean();
 
-    private:
-        Point coord;
-        bool isFalling;
-        map<string, bool> direction;
-        map<string , bool> collision;
-        int timeJump;
-        int jumpHeight;
-        int taille;
-        int tempSaut;
-        int vitesse;
-
+private:
+  Point coord;
+  bool isFalling;
+  map<string, bool> direction;
+  map<string, bool> collision;
+  int timeJump;
+  int jumpHeight;
+  int taille;
+  int tempSaut;
+  int vitesse;
 };
 
 #endif

@@ -7,9 +7,9 @@
 using namespace std;
 
 struct point {
-    int x;
-    int y;
+  int x;
+  int y;
 };
 typedef struct point Point;
-    
+
 #endif

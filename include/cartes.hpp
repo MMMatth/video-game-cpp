@@ -1,41 +1,37 @@
 #ifndef CARTE_HPP
 #define CARTE_HPP
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <fstream>
-#include <SFML/Graphics.hpp>
-#include "const.hpp"
 #include "block.hpp"
+#include "const.hpp"
 #include "personnage.hpp"
+#include <SFML/Graphics.hpp>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
-class Carte
-{
+class Carte {
 
-    public:
-        Carte();
+public:
+  Carte();
 
-        void initCarte(const char* nomFichier);
+  void initCarte(const char *nomFichier);
 
-        // getters
-        vector<Block> getCarte();
-        int getSize();
-        Block getBlock(int i);
-        void collide(Personnage * perso);
-        Block chooseBlock(char c, int x, int y);
+  // getters
+  vector<Block> getCarte();
+  int getSize();
+  Block getBlock(int i);
+  void collide(Personnage *perso);
+  Block chooseBlock(char c, int x, int y);
 
-        void clean();
+  void clean();
 
-        string toString();
-        
+  string toString();
 
-    private:
-
-        vector<Block> carte;
-
+private:
+  vector<Block> carte;
 };
 
 #endif // CARTE_HPP
