@@ -44,7 +44,7 @@ void Personnage::update() {
     this->direction["isGoingUp"] = false;
     this->direction["isFalling"] = true;
   }
-  if (direction["isGoingUp"]) {
+  if (direction["isGoingUp"] && !collision["up"] && !direction["isGoingdown"]) {
     this->timeJump++;
     if (timeJump < jumpHeight) {
       this->deplacerY(-vitesse);
@@ -65,7 +65,7 @@ void Personnage::update() {
     this->setCollisionFalseExcept("left");
     this->deplacerX(-vitesse);
   }
-  if (direction["isGoingUp"]) {
+  if (direction["isGoingUp"] && !collision["up"] && !direction["isGoingDown"]) {
     this->setCollisionFalseExcept("up");
     this->deplacerY(-vitesse);
   }
@@ -91,7 +91,7 @@ void Personnage::setX(int x) { coord.setX(x); }
 void Personnage::setY(int y) { coord.setY(y); }
 
 void Personnage::setCollision(string key, bool value) {
-  this->collision[key] = true;
+  this->collision[key] = value;
 }
 
 void Personnage::setTimeJump(int time) { this->timeJump = time; }
