@@ -1,15 +1,20 @@
 #ifndef POINT_HPP
 #define POINT_HPP
 
-#include <iostream>
-#include <string>
+/*!
+ * \file point.hpp
+ * \brief Définition de la structure Point.
+ * \author Votre nom
+ * \version 2023
+ */
 
-using namespace std;
-
-struct point {
-  int x;
-  int y;
+/*!
+ * \struct Point
+ * \brief Structure représentant un point dans un espace 2D.
+ */
+struct Point {
+  int x; /*!< Coordonnée horizontale du point. */
+  int y; /*!< Coordonnée verticale du point. */
 };
-typedef struct point Point;
 
-#endif
+#endif /* POINT_HPP */
