@@ -1,0 +1,178 @@
+\hypertarget{draw_8hpp}{}\doxysection{draw.\+hpp File Reference}
+\label{draw_8hpp}\index{draw.hpp@{draw.hpp}}
+
+
+Fonctions de dessin.  
+
+
+{\ttfamily \#include $<$SFML/\+Graphics.\+hpp$>$}\newline
+Include dependency graph for draw.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{draw_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=141pt]{draw_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{draw_8hpp_abd8ae5ca4336b9af2ee13715b9de2a8f}{draw\+Sprite}} (int x, int y, Render\+Window $\ast$window, string path)
+\begin{DoxyCompactList}\small\item\em Dessine un sprite à une position donnée. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{draw_8hpp_a38fd90776030909f1c1f184f6a33d987}{draw\+Sprites}} (int x, int y, Sprite sprite, Render\+Window $\ast$window)
+\begin{DoxyCompactList}\small\item\em Dessine un sprite à une position donnée. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{draw_8hpp_a79d17db460eb673478c1ca926792b359}{draw\+Map}} (int x, int y, Color color, Render\+Window $\ast$window, int largeur, int hauteur)
+\begin{DoxyCompactList}\small\item\em Dessine une carte de couleur unie. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{draw_8hpp_a295b7db5d4fc48c7f2603987bcb8960d}{draw\+Rectangle}} (int x, int y, Color color, Render\+Window $\ast$window, int largeur, int hauteur)
+\begin{DoxyCompactList}\small\item\em Dessine un rectangle de couleur unie. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{draw_8hpp_a92502e0f58fa986831f187b941124587}{draw\+Mini\+Carte}} (int x, int y, Color color, Render\+Window $\ast$window, int largeur, int hauteur)
+\begin{DoxyCompactList}\small\item\em Dessine une mini-\/carte de couleur unie. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Fonctions de dessin. 
+
+\begin{DoxyAuthor}{Author}
+Mathieu Gaudel and Papa El Hadji G Cissé 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2023 
+\end{DoxyVersion}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{draw_8hpp_a79d17db460eb673478c1ca926792b359}\label{draw_8hpp_a79d17db460eb673478c1ca926792b359}} 
+\index{draw.hpp@{draw.hpp}!drawMap@{drawMap}}
+\index{drawMap@{drawMap}!draw.hpp@{draw.hpp}}
+\doxysubsubsection{\texorpdfstring{drawMap()}{drawMap()}}
+{\footnotesize\ttfamily void draw\+Map (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{Color}]{color,  }\item[{Render\+Window $\ast$}]{window,  }\item[{int}]{largeur,  }\item[{int}]{hauteur }\end{DoxyParamCaption})}
+
+
+
+Dessine une carte de couleur unie. 
+
+Cette fonction dessine une carte de couleur unie à une position donnée dans une fenêtre.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & La position horizontale de la carte. \\
+\hline
+{\em y} & La position verticale de la carte. \\
+\hline
+{\em color} & La couleur de la carte. \\
+\hline
+{\em window} & Un pointeur vers la fenêtre de rendu. \\
+\hline
+{\em largeur} & La largeur de la carte. \\
+\hline
+{\em hauteur} & La hauteur de la carte. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{draw_8hpp_a92502e0f58fa986831f187b941124587}\label{draw_8hpp_a92502e0f58fa986831f187b941124587}} 
+\index{draw.hpp@{draw.hpp}!drawMiniCarte@{drawMiniCarte}}
+\index{drawMiniCarte@{drawMiniCarte}!draw.hpp@{draw.hpp}}
+\doxysubsubsection{\texorpdfstring{drawMiniCarte()}{drawMiniCarte()}}
+{\footnotesize\ttfamily void draw\+Mini\+Carte (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{Color}]{color,  }\item[{Render\+Window $\ast$}]{window,  }\item[{int}]{largeur,  }\item[{int}]{hauteur }\end{DoxyParamCaption})}
+
+
+
+Dessine une mini-\/carte de couleur unie. 
+
+Cette fonction dessine une mini-\/carte de couleur unie à une position donnée dans une fenêtre.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & La position horizontale de la mini-\/carte. \\
+\hline
+{\em y} & La position verticale de la mini-\/carte. \\
+\hline
+{\em color} & La couleur de la mini-\/carte. \\
+\hline
+{\em window} & Un pointeur vers la fenêtre de rendu. \\
+\hline
+{\em largeur} & La largeur de la mini-\/carte. \\
+\hline
+{\em hauteur} & La hauteur de la mini-\/carte. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{draw_8hpp_a295b7db5d4fc48c7f2603987bcb8960d}\label{draw_8hpp_a295b7db5d4fc48c7f2603987bcb8960d}} 
+\index{draw.hpp@{draw.hpp}!drawRectangle@{drawRectangle}}
+\index{drawRectangle@{drawRectangle}!draw.hpp@{draw.hpp}}
+\doxysubsubsection{\texorpdfstring{drawRectangle()}{drawRectangle()}}
+{\footnotesize\ttfamily void draw\+Rectangle (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{Color}]{color,  }\item[{Render\+Window $\ast$}]{window,  }\item[{int}]{largeur,  }\item[{int}]{hauteur }\end{DoxyParamCaption})}
+
+
+
+Dessine un rectangle de couleur unie. 
+
+Cette fonction dessine un rectangle de couleur unie à une position donnée dans une fenêtre.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & La position horizontale du rectangle. \\
+\hline
+{\em y} & La position verticale du rectangle. \\
+\hline
+{\em color} & La couleur du rectangle. \\
+\hline
+{\em window} & Un pointeur vers la fenêtre de rendu. \\
+\hline
+{\em largeur} & La largeur du rectangle. \\
+\hline
+{\em hauteur} & La hauteur du rectangle. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{draw_8hpp_abd8ae5ca4336b9af2ee13715b9de2a8f}\label{draw_8hpp_abd8ae5ca4336b9af2ee13715b9de2a8f}} 
+\index{draw.hpp@{draw.hpp}!drawSprite@{drawSprite}}
+\index{drawSprite@{drawSprite}!draw.hpp@{draw.hpp}}
+\doxysubsubsection{\texorpdfstring{drawSprite()}{drawSprite()}}
+{\footnotesize\ttfamily void draw\+Sprite (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{Render\+Window $\ast$}]{window,  }\item[{string}]{path }\end{DoxyParamCaption})}
+
+
+
+Dessine un sprite à une position donnée. 
+
+Cette fonction dessine un sprite à une position spécifiée dans une fenêtre.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & La position horizontale du sprite. \\
+\hline
+{\em y} & La position verticale du sprite. \\
+\hline
+{\em window} & Un pointeur vers la fenêtre de rendu. \\
+\hline
+{\em path} & Le chemin du fichier image du sprite. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{draw_8hpp_a38fd90776030909f1c1f184f6a33d987}\label{draw_8hpp_a38fd90776030909f1c1f184f6a33d987}} 
+\index{draw.hpp@{draw.hpp}!drawSprites@{drawSprites}}
+\index{drawSprites@{drawSprites}!draw.hpp@{draw.hpp}}
+\doxysubsubsection{\texorpdfstring{drawSprites()}{drawSprites()}}
+{\footnotesize\ttfamily void draw\+Sprites (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{Sprite}]{sprite,  }\item[{Render\+Window $\ast$}]{window }\end{DoxyParamCaption})}
+
+
+
+Dessine un sprite à une position donnée. 
+
+Cette fonction dessine un sprite à une position spécifiée dans une fenêtre.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & La position horizontale du sprite. \\
+\hline
+{\em y} & La position verticale du sprite. \\
+\hline
+{\em sprite} & Le sprite à dessiner. \\
+\hline
+{\em window} & Un pointeur vers la fenêtre de rendu. \\
+\hline
+\end{DoxyParams}

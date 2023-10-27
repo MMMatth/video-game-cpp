@@ -1,0 +1,6 @@
+<map id="personnage.hpp" name="personnage.hpp">
+<area shape="rect" id="node1" title="Définition de la classe Personnage." alt="" coords="65,5,191,32"/>
+<area shape="rect" id="node2" href="$block_8hpp.html" title="Définition de la classe Block." alt="" coords="5,80,91,107"/>
+<area shape="rect" id="node3" href="$cartes_8hpp_source.html" title=" " alt="" coords="51,155,141,181"/>
+<area shape="rect" id="node4" href="$jeu_8hpp.html" title="Définition de la classe Jeu." alt="" coords="102,229,173,256"/>
+</map>

@@ -1,0 +1,127 @@
+\hypertarget{classCarte}{}\doxysection{Carte Class Reference}
+\label{classCarte}\index{Carte@{Carte}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCarte_a06daaca86c31c80f8308f4a81d46dc9b}{Carte}} ()
+\item 
+void \mbox{\hyperlink{classCarte_aaae58d7f4a965a0fec2e8a378cd898ad}{init\+Carte}} (const char $\ast$nom\+Fichier)
+\item 
+vector$<$ \mbox{\hyperlink{classBlock}{Block}} $>$ \mbox{\hyperlink{classCarte_a99476b8caf8314bb46be974874f7ec94}{get\+Carte}} ()
+\item 
+int \mbox{\hyperlink{classCarte_ac51255be34972d9a42a842bfa2a41914}{get\+Size}} ()
+\item 
+\mbox{\hyperlink{classBlock}{Block}} \mbox{\hyperlink{classCarte_ac6bd522c47b5835751da5dacb98b80f9}{get\+Block}} (int i)
+\item 
+void \mbox{\hyperlink{classCarte_a06684568e0a3bbf237094e3862181104}{collide}} (\mbox{\hyperlink{classPersonnage}{Personnage}} $\ast$perso)
+\item 
+\mbox{\hyperlink{classBlock}{Block}} \mbox{\hyperlink{classCarte_a78b7d98c1e7599f816e17939df188c8e}{choose\+Block}} (char c, int x, int y)
+\item 
+void \mbox{\hyperlink{classCarte_a25f9341e14f954cbfe70f0c643bc0241}{clean}} ()
+\item 
+string \mbox{\hyperlink{classCarte_aa87e41eb0a7e1c296e89a3f8f1bdf98b}{to\+String}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCarte_a06daaca86c31c80f8308f4a81d46dc9b}\label{classCarte_a06daaca86c31c80f8308f4a81d46dc9b}} 
+\index{Carte@{Carte}!Carte@{Carte}}
+\index{Carte@{Carte}!Carte@{Carte}}
+\doxysubsubsection{\texorpdfstring{Carte()}{Carte()}}
+{\footnotesize\ttfamily Carte\+::\+Carte (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructeur par défaut de la classe \mbox{\hyperlink{classCarte}{Carte}}. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCarte_a78b7d98c1e7599f816e17939df188c8e}\label{classCarte_a78b7d98c1e7599f816e17939df188c8e}} 
+\index{Carte@{Carte}!chooseBlock@{chooseBlock}}
+\index{chooseBlock@{chooseBlock}!Carte@{Carte}}
+\doxysubsubsection{\texorpdfstring{chooseBlock()}{chooseBlock()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classBlock}{Block}} Carte\+::choose\+Block (\begin{DoxyParamCaption}\item[{char}]{c,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Sélectionne un block en fonction d\textquotesingle{}un caractère du fichier de définition de la carte. 
+\begin{DoxyParams}{Parameters}
+{\em c} & Le caractère spécifiant le type de block. \\
+\hline
+{\em x} & La position horizontale du block. \\
+\hline
+{\em y} & La position verticale du block. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classBlock}{Block}} Le block correspondant au caractère spécifié. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classCarte_a25f9341e14f954cbfe70f0c643bc0241}\label{classCarte_a25f9341e14f954cbfe70f0c643bc0241}} 
+\index{Carte@{Carte}!clean@{clean}}
+\index{clean@{clean}!Carte@{Carte}}
+\doxysubsubsection{\texorpdfstring{clean()}{clean()}}
+{\footnotesize\ttfamily void Carte\+::clean (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Nettoie la carte en libérant la mémoire allouée. \mbox{\Hypertarget{classCarte_a06684568e0a3bbf237094e3862181104}\label{classCarte_a06684568e0a3bbf237094e3862181104}} 
+\index{Carte@{Carte}!collide@{collide}}
+\index{collide@{collide}!Carte@{Carte}}
+\doxysubsubsection{\texorpdfstring{collide()}{collide()}}
+{\footnotesize\ttfamily void Carte\+::collide (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classPersonnage}{Personnage}} $\ast$}]{perso }\end{DoxyParamCaption})}
+
+Gère les collisions entre un personnage et les blocks de la carte. 
+\begin{DoxyParams}{Parameters}
+{\em perso} & Un pointeur vers l\textquotesingle{}objet \mbox{\hyperlink{classPersonnage}{Personnage}} avec lequel vérifier les collisions. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCarte_ac6bd522c47b5835751da5dacb98b80f9}\label{classCarte_ac6bd522c47b5835751da5dacb98b80f9}} 
+\index{Carte@{Carte}!getBlock@{getBlock}}
+\index{getBlock@{getBlock}!Carte@{Carte}}
+\doxysubsubsection{\texorpdfstring{getBlock()}{getBlock()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classBlock}{Block}} Carte\+::get\+Block (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})}
+
+Récupère un bloc spécifique dans la carte. 
+\begin{DoxyParams}{Parameters}
+{\em i} & L\textquotesingle{}indice du block dans la carte. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classBlock}{Block}} Le bloc à l\textquotesingle{}indice spécifié. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classCarte_a99476b8caf8314bb46be974874f7ec94}\label{classCarte_a99476b8caf8314bb46be974874f7ec94}} 
+\index{Carte@{Carte}!getCarte@{getCarte}}
+\index{getCarte@{getCarte}!Carte@{Carte}}
+\doxysubsubsection{\texorpdfstring{getCarte()}{getCarte()}}
+{\footnotesize\ttfamily vector$<$\mbox{\hyperlink{classBlock}{Block}}$>$ Carte\+::get\+Carte (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Récupère la carte sous forme d\textquotesingle{}un vecteur de blocks. \begin{DoxyReturn}{Returns}
+vector$<$\+Block$>$ Un vecteur contenant les blocks de la carte. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classCarte_ac51255be34972d9a42a842bfa2a41914}\label{classCarte_ac51255be34972d9a42a842bfa2a41914}} 
+\index{Carte@{Carte}!getSize@{getSize}}
+\index{getSize@{getSize}!Carte@{Carte}}
+\doxysubsubsection{\texorpdfstring{getSize()}{getSize()}}
+{\footnotesize\ttfamily int Carte\+::get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Récupère le nombre de blocks dans la carte. \begin{DoxyReturn}{Returns}
+int Le nombre de blocks dans la carte. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classCarte_aaae58d7f4a965a0fec2e8a378cd898ad}\label{classCarte_aaae58d7f4a965a0fec2e8a378cd898ad}} 
+\index{Carte@{Carte}!initCarte@{initCarte}}
+\index{initCarte@{initCarte}!Carte@{Carte}}
+\doxysubsubsection{\texorpdfstring{initCarte()}{initCarte()}}
+{\footnotesize\ttfamily void Carte\+::init\+Carte (\begin{DoxyParamCaption}\item[{const char $\ast$}]{nom\+Fichier }\end{DoxyParamCaption})}
+
+Initialise la carte à partir d\textquotesingle{}un fichier. 
+\begin{DoxyParams}{Parameters}
+{\em nom\+Fichier} & Le nom du fichier contenant la définition de la carte. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCarte_aa87e41eb0a7e1c296e89a3f8f1bdf98b}\label{classCarte_aa87e41eb0a7e1c296e89a3f8f1bdf98b}} 
+\index{Carte@{Carte}!toString@{toString}}
+\index{toString@{toString}!Carte@{Carte}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily string Carte\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Renvoie une représentation textuelle de la carte. \begin{DoxyReturn}{Returns}
+string Une chaîne de caractères représentant la carte. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+cartes.\+hpp\end{DoxyCompactItemize}

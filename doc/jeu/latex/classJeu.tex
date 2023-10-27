@@ -1,0 +1,110 @@
+\hypertarget{classJeu}{}\doxysection{Jeu Class Reference}
+\label{classJeu}\index{Jeu@{Jeu}}
+
+
+Classe représentant le jeu.  
+
+
+
+
+{\ttfamily \#include $<$jeu.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classJeu_acc5795ee00edf75516d3dfe65be3e6d6}{Jeu}} ()
+\item 
+void \mbox{\hyperlink{classJeu_a5bc56be835d0e0080ade744d0ed34325}{run}} ()
+\item 
+void \mbox{\hyperlink{classJeu_a6b6b7d4683d04ebab6dd03e82b41a1c3}{update}} ()
+\item 
+void \mbox{\hyperlink{classJeu_a0e25adbc39e3a562103b6a79d368369c}{update\+Cam}} ()
+\item 
+void \mbox{\hyperlink{classJeu_adf985f765d74df662617e506932110f5}{update\+Collide}} ()
+\item 
+void \mbox{\hyperlink{classJeu_ab27e706b5cf376c16f156a2bdcfdfb06}{render}} ()
+\item 
+void \mbox{\hyperlink{classJeu_aeff0d4f89b2dcaf4e883d8f9e9ae079a}{clean}} ()
+\item 
+void \mbox{\hyperlink{classJeu_a02d27b7bf0e5dc7403147a7530aed5f8}{event}} ()
+\item 
+bool \mbox{\hyperlink{classJeu_a974d3930a1a062edfc603a3a6e2ccad2}{collision\+Avec\+Carte}} (int x, int y)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Classe représentant le jeu. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classJeu_acc5795ee00edf75516d3dfe65be3e6d6}\label{classJeu_acc5795ee00edf75516d3dfe65be3e6d6}} 
+\index{Jeu@{Jeu}!Jeu@{Jeu}}
+\index{Jeu@{Jeu}!Jeu@{Jeu}}
+\doxysubsubsection{\texorpdfstring{Jeu()}{Jeu()}}
+{\footnotesize\ttfamily Jeu\+::\+Jeu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructeur par défaut de la classe \mbox{\hyperlink{classJeu}{Jeu}}. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classJeu_aeff0d4f89b2dcaf4e883d8f9e9ae079a}\label{classJeu_aeff0d4f89b2dcaf4e883d8f9e9ae079a}} 
+\index{Jeu@{Jeu}!clean@{clean}}
+\index{clean@{clean}!Jeu@{Jeu}}
+\doxysubsubsection{\texorpdfstring{clean()}{clean()}}
+{\footnotesize\ttfamily void Jeu\+::clean (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Nettoie les ressources du jeu. \mbox{\Hypertarget{classJeu_a974d3930a1a062edfc603a3a6e2ccad2}\label{classJeu_a974d3930a1a062edfc603a3a6e2ccad2}} 
+\index{Jeu@{Jeu}!collisionAvecCarte@{collisionAvecCarte}}
+\index{collisionAvecCarte@{collisionAvecCarte}!Jeu@{Jeu}}
+\doxysubsubsection{\texorpdfstring{collisionAvecCarte()}{collisionAvecCarte()}}
+{\footnotesize\ttfamily bool Jeu\+::collision\+Avec\+Carte (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Vérifie s\textquotesingle{}il y a une collision avec la carte à une position donnée. 
+\begin{DoxyParams}{Parameters}
+{\em x} & La position horizontale. \\
+\hline
+{\em y} & La position verticale. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true s\textquotesingle{}il y a une collision, false sinon. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classJeu_a02d27b7bf0e5dc7403147a7530aed5f8}\label{classJeu_a02d27b7bf0e5dc7403147a7530aed5f8}} 
+\index{Jeu@{Jeu}!event@{event}}
+\index{event@{event}!Jeu@{Jeu}}
+\doxysubsubsection{\texorpdfstring{event()}{event()}}
+{\footnotesize\ttfamily void Jeu\+::event (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Gère les événements du jeu. \mbox{\Hypertarget{classJeu_ab27e706b5cf376c16f156a2bdcfdfb06}\label{classJeu_ab27e706b5cf376c16f156a2bdcfdfb06}} 
+\index{Jeu@{Jeu}!render@{render}}
+\index{render@{render}!Jeu@{Jeu}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily void Jeu\+::render (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Affiche les éléments du jeu. \mbox{\Hypertarget{classJeu_a5bc56be835d0e0080ade744d0ed34325}\label{classJeu_a5bc56be835d0e0080ade744d0ed34325}} 
+\index{Jeu@{Jeu}!run@{run}}
+\index{run@{run}!Jeu@{Jeu}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void Jeu\+::run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Fonction principale pour exécuter le jeu. \mbox{\Hypertarget{classJeu_a6b6b7d4683d04ebab6dd03e82b41a1c3}\label{classJeu_a6b6b7d4683d04ebab6dd03e82b41a1c3}} 
+\index{Jeu@{Jeu}!update@{update}}
+\index{update@{update}!Jeu@{Jeu}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void Jeu\+::update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Met à jour l\textquotesingle{}état du jeu. \mbox{\Hypertarget{classJeu_a0e25adbc39e3a562103b6a79d368369c}\label{classJeu_a0e25adbc39e3a562103b6a79d368369c}} 
+\index{Jeu@{Jeu}!updateCam@{updateCam}}
+\index{updateCam@{updateCam}!Jeu@{Jeu}}
+\doxysubsubsection{\texorpdfstring{updateCam()}{updateCam()}}
+{\footnotesize\ttfamily void Jeu\+::update\+Cam (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Met à jour la caméra. \mbox{\Hypertarget{classJeu_adf985f765d74df662617e506932110f5}\label{classJeu_adf985f765d74df662617e506932110f5}} 
+\index{Jeu@{Jeu}!updateCollide@{updateCollide}}
+\index{updateCollide@{updateCollide}!Jeu@{Jeu}}
+\doxysubsubsection{\texorpdfstring{updateCollide()}{updateCollide()}}
+{\footnotesize\ttfamily void Jeu\+::update\+Collide (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Met à jour les collisions. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{jeu_8hpp}{jeu.\+hpp}}\end{DoxyCompactItemize}

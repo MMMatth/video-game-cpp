@@ -1,0 +1,251 @@
+\hypertarget{classBlock}{}\doxysection{Block Class Reference}
+\label{classBlock}\index{Block@{Block}}
+
+
+Classe représentant un bloc du jeu.  
+
+
+
+
+{\ttfamily \#include $<$block.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classBlock_a37658a946bf5067ad01d68d9ff086adc}{Block}} ()
+\item 
+\mbox{\hyperlink{classBlock_ac812660f2691b8c8d4b5581d6c87a599}{Block}} (int sprite\+SheetX, int sprite\+SheetY, int number, std\+::string name, int blockX, int blockY, bool \mbox{\hyperlink{classBlock_a3eeb5a0e7153957d2b06e8af8f1bf8d0}{is\+Solid}})
+\item 
+bool \mbox{\hyperlink{classBlock_a860cd9dc4d34b2623844c91f6912440d}{est\+Dans\+Cam}} (int pos\+CamX, int pos\+CamY, int largeur, int hauteur)
+\item 
+void \mbox{\hyperlink{classBlock_a01a7c980e91e60a271600474368f8b0e}{collide}} (\mbox{\hyperlink{classPersonnage}{Personnage}} $\ast$perso)
+\item 
+\mbox{\hyperlink{classPoint}{Point}} \mbox{\hyperlink{classBlock_add4c610cddad53e154d0d064e88e3878}{get\+Sprite\+Sheet}} () const
+\item 
+int \mbox{\hyperlink{classBlock_a7b6e15329a5d1b3cf005c97c7a41dd9f}{get\+Number}} () const
+\item 
+std\+::string \mbox{\hyperlink{classBlock_a7215634e82424565fe4896e8a8275fdf}{get\+Name}} () const
+\item 
+int \mbox{\hyperlink{classBlock_aba52dc972c77aeb2c711264fce0e09fb}{getX}} () const
+\item 
+int \mbox{\hyperlink{classBlock_a3b37f02969de84d84f1b410cc864d1cd}{getY}} () const
+\item 
+bool \mbox{\hyperlink{classBlock_a3eeb5a0e7153957d2b06e8af8f1bf8d0}{is\+Solid}} () const
+\item 
+void \mbox{\hyperlink{classBlock_add754f10394a0d03da0f4f917a361b54}{set\+Sprite\+SheetX}} (int sprite\+SheetX)
+\item 
+void \mbox{\hyperlink{classBlock_aedd39ec8e57de1c7dcf4fbcc67368177}{set\+Sprite\+SheetY}} (int sprite\+SheetY)
+\item 
+void \mbox{\hyperlink{classBlock_a52a50ac2770cbabd01e435256dca121b}{set\+Number}} (int number)
+\item 
+void \mbox{\hyperlink{classBlock_ab4fcc5dc92fdd7f17ce3ce6ef417cf29}{set\+Name}} (std\+::string name)
+\item 
+void \mbox{\hyperlink{classBlock_a717d0706b1a69809f650f7dfa6d9fbbc}{set\+Position}} (\mbox{\hyperlink{classPoint}{Point}} position)
+\item 
+void \mbox{\hyperlink{classBlock_ae5432c205d3b73ea90a9a292fd466a42}{set\+Solid}} (bool \mbox{\hyperlink{classBlock_a3eeb5a0e7153957d2b06e8af8f1bf8d0}{is\+Solid}})
+\item 
+std\+::string \mbox{\hyperlink{classBlock_a7aea1c1fba87d6afa85e50867b820e48}{to\+String}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Classe représentant un bloc du jeu. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classBlock_a37658a946bf5067ad01d68d9ff086adc}\label{classBlock_a37658a946bf5067ad01d68d9ff086adc}} 
+\index{Block@{Block}!Block@{Block}}
+\index{Block@{Block}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{Block()}{Block()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Block\+::\+Block (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructeur par défaut de la classe \mbox{\hyperlink{classBlock}{Block}}. \mbox{\Hypertarget{classBlock_ac812660f2691b8c8d4b5581d6c87a599}\label{classBlock_ac812660f2691b8c8d4b5581d6c87a599}} 
+\index{Block@{Block}!Block@{Block}}
+\index{Block@{Block}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{Block()}{Block()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Block\+::\+Block (\begin{DoxyParamCaption}\item[{int}]{sprite\+SheetX,  }\item[{int}]{sprite\+SheetY,  }\item[{int}]{number,  }\item[{std\+::string}]{name,  }\item[{int}]{blockX,  }\item[{int}]{blockY,  }\item[{bool}]{is\+Solid }\end{DoxyParamCaption})}
+
+Constructeur avec initialisation des attributs. 
+\begin{DoxyParams}{Parameters}
+{\em sprite\+SheetX} & La position X de la sprite. \\
+\hline
+{\em sprite\+SheetY} & La position Y de la sprite. \\
+\hline
+{\em number} & Le numéro du block. \\
+\hline
+{\em name} & Le nom du block. \\
+\hline
+{\em blockX} & La position X du block. \\
+\hline
+{\em blockY} & La position Y du block. \\
+\hline
+{\em is\+Solid} & Un booléen indiquant si le block est solide. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classBlock_a01a7c980e91e60a271600474368f8b0e}\label{classBlock_a01a7c980e91e60a271600474368f8b0e}} 
+\index{Block@{Block}!collide@{collide}}
+\index{collide@{collide}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{collide()}{collide()}}
+{\footnotesize\ttfamily void Block\+::collide (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classPersonnage}{Personnage}} $\ast$}]{perso }\end{DoxyParamCaption})}
+
+Une fonction qui vérifie si le personnage est en collision avec un block. 
+\begin{DoxyParams}{Parameters}
+{\em perso} & Un pointeur vers l\textquotesingle{}objet \mbox{\hyperlink{classPersonnage}{Personnage}} avec lequel vérifier la collision. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classBlock_a860cd9dc4d34b2623844c91f6912440d}\label{classBlock_a860cd9dc4d34b2623844c91f6912440d}} 
+\index{Block@{Block}!estDansCam@{estDansCam}}
+\index{estDansCam@{estDansCam}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{estDansCam()}{estDansCam()}}
+{\footnotesize\ttfamily bool Block\+::est\+Dans\+Cam (\begin{DoxyParamCaption}\item[{int}]{pos\+CamX,  }\item[{int}]{pos\+CamY,  }\item[{int}]{largeur,  }\item[{int}]{hauteur }\end{DoxyParamCaption})}
+
+Une fonction qui vérifie si un objet est actuellement visible dans la caméra du jeu. 
+\begin{DoxyParams}{Parameters}
+{\em pos\+CamX} & La position horizontale de la caméra. \\
+\hline
+{\em pos\+CamY} & La position verticale de la caméra. \\
+\hline
+{\em largeur} & La largeur de la zone visible à l\textquotesingle{}écran. \\
+\hline
+{\em hauteur} & La hauteur de la zone visible à l\textquotesingle{}écran. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True si l\textquotesingle{}objet est actuellement visible dans la caméra, sinon False. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBlock_a7215634e82424565fe4896e8a8275fdf}\label{classBlock_a7215634e82424565fe4896e8a8275fdf}} 
+\index{Block@{Block}!getName@{getName}}
+\index{getName@{getName}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{getName()}{getName()}}
+{\footnotesize\ttfamily std\+::string Block\+::get\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Une fonction qui retourne le nom du block. \begin{DoxyReturn}{Returns}
+String Le nom du block. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBlock_a7b6e15329a5d1b3cf005c97c7a41dd9f}\label{classBlock_a7b6e15329a5d1b3cf005c97c7a41dd9f}} 
+\index{Block@{Block}!getNumber@{getNumber}}
+\index{getNumber@{getNumber}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{getNumber()}{getNumber()}}
+{\footnotesize\ttfamily int Block\+::get\+Number (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Une fonction qui retourne le numéro du block. \begin{DoxyReturn}{Returns}
+int Le numéro du block. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBlock_add4c610cddad53e154d0d064e88e3878}\label{classBlock_add4c610cddad53e154d0d064e88e3878}} 
+\index{Block@{Block}!getSpriteSheet@{getSpriteSheet}}
+\index{getSpriteSheet@{getSpriteSheet}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{getSpriteSheet()}{getSpriteSheet()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classPoint}{Point}} Block\+::get\+Sprite\+Sheet (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Une fonction qui retourne les coordonnées de la sprite. \begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classPoint}{Point}} Un objet représentant les coordonnées de la sprite. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBlock_aba52dc972c77aeb2c711264fce0e09fb}\label{classBlock_aba52dc972c77aeb2c711264fce0e09fb}} 
+\index{Block@{Block}!getX@{getX}}
+\index{getX@{getX}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{getX()}{getX()}}
+{\footnotesize\ttfamily int Block\+::getX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Une fonction qui retourne l\textquotesingle{}abscisse du block. \begin{DoxyReturn}{Returns}
+int L\textquotesingle{}abscisse du block. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBlock_a3b37f02969de84d84f1b410cc864d1cd}\label{classBlock_a3b37f02969de84d84f1b410cc864d1cd}} 
+\index{Block@{Block}!getY@{getY}}
+\index{getY@{getY}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{getY()}{getY()}}
+{\footnotesize\ttfamily int Block\+::getY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Une fonction qui retourne l\textquotesingle{}ordonnée du block. \begin{DoxyReturn}{Returns}
+int L\textquotesingle{}ordonnée du block. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBlock_a3eeb5a0e7153957d2b06e8af8f1bf8d0}\label{classBlock_a3eeb5a0e7153957d2b06e8af8f1bf8d0}} 
+\index{Block@{Block}!isSolid@{isSolid}}
+\index{isSolid@{isSolid}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{isSolid()}{isSolid()}}
+{\footnotesize\ttfamily bool Block\+::is\+Solid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Une fonction qui vérifie si le block est solide ou pas. \begin{DoxyReturn}{Returns}
+Un booléen indiquant si le block est solide. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBlock_ab4fcc5dc92fdd7f17ce3ce6ef417cf29}\label{classBlock_ab4fcc5dc92fdd7f17ce3ce6ef417cf29}} 
+\index{Block@{Block}!setName@{setName}}
+\index{setName@{setName}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{setName()}{setName()}}
+{\footnotesize\ttfamily void Block\+::set\+Name (\begin{DoxyParamCaption}\item[{std\+::string}]{name }\end{DoxyParamCaption})}
+
+Une fonction qui définit le nom du bloc. 
+\begin{DoxyParams}{Parameters}
+{\em name} & Le nouveau nom du bloc en tant que chaîne de caractères. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classBlock_a52a50ac2770cbabd01e435256dca121b}\label{classBlock_a52a50ac2770cbabd01e435256dca121b}} 
+\index{Block@{Block}!setNumber@{setNumber}}
+\index{setNumber@{setNumber}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{setNumber()}{setNumber()}}
+{\footnotesize\ttfamily void Block\+::set\+Number (\begin{DoxyParamCaption}\item[{int}]{number }\end{DoxyParamCaption})}
+
+Une fonction qui définit le numéro du bloc. 
+\begin{DoxyParams}{Parameters}
+{\em number} & Le nouveau numéro du bloc. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classBlock_a717d0706b1a69809f650f7dfa6d9fbbc}\label{classBlock_a717d0706b1a69809f650f7dfa6d9fbbc}} 
+\index{Block@{Block}!setPosition@{setPosition}}
+\index{setPosition@{setPosition}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{setPosition()}{setPosition()}}
+{\footnotesize\ttfamily void Block\+::set\+Position (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classPoint}{Point}}}]{position }\end{DoxyParamCaption})}
+
+Une fonction qui définit la position du bloc. 
+\begin{DoxyParams}{Parameters}
+{\em position} & Un objet \mbox{\hyperlink{classPoint}{Point}} représentant la nouvelle position du bloc. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classBlock_ae5432c205d3b73ea90a9a292fd466a42}\label{classBlock_ae5432c205d3b73ea90a9a292fd466a42}} 
+\index{Block@{Block}!setSolid@{setSolid}}
+\index{setSolid@{setSolid}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{setSolid()}{setSolid()}}
+{\footnotesize\ttfamily void Block\+::set\+Solid (\begin{DoxyParamCaption}\item[{bool}]{is\+Solid }\end{DoxyParamCaption})}
+
+Une fonction qui définit si le bloc est solide ou non. 
+\begin{DoxyParams}{Parameters}
+{\em is\+Solid} & Un booléen indiquant si le bloc est solide (true) ou non (false). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classBlock_add754f10394a0d03da0f4f917a361b54}\label{classBlock_add754f10394a0d03da0f4f917a361b54}} 
+\index{Block@{Block}!setSpriteSheetX@{setSpriteSheetX}}
+\index{setSpriteSheetX@{setSpriteSheetX}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{setSpriteSheetX()}{setSpriteSheetX()}}
+{\footnotesize\ttfamily void Block\+::set\+Sprite\+SheetX (\begin{DoxyParamCaption}\item[{int}]{sprite\+SheetX }\end{DoxyParamCaption})}
+
+Une fonction qui définit la position X de la sprite dans la feuille de sprite. 
+\begin{DoxyParams}{Parameters}
+{\em sprite\+SheetX} & La nouvelle position X de la sprite. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classBlock_aedd39ec8e57de1c7dcf4fbcc67368177}\label{classBlock_aedd39ec8e57de1c7dcf4fbcc67368177}} 
+\index{Block@{Block}!setSpriteSheetY@{setSpriteSheetY}}
+\index{setSpriteSheetY@{setSpriteSheetY}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{setSpriteSheetY()}{setSpriteSheetY()}}
+{\footnotesize\ttfamily void Block\+::set\+Sprite\+SheetY (\begin{DoxyParamCaption}\item[{int}]{sprite\+SheetY }\end{DoxyParamCaption})}
+
+Une fonction qui définit la position Y de la sprite dans la feuille de sprite. 
+\begin{DoxyParams}{Parameters}
+{\em sprite\+SheetY} & La nouvelle position Y de la sprite. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classBlock_a7aea1c1fba87d6afa85e50867b820e48}\label{classBlock_a7aea1c1fba87d6afa85e50867b820e48}} 
+\index{Block@{Block}!toString@{toString}}
+\index{toString@{toString}!Block@{Block}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string Block\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Une fonction qui renvoie une représentation sous forme de chaîne de caractères de l\textquotesingle{}objet \mbox{\hyperlink{classBlock}{Block}}. \begin{DoxyReturn}{Returns}
+std\+::string Une chaîne de caractères représentant l\textquotesingle{}objet \mbox{\hyperlink{classBlock}{Block}}. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{block_8hpp}{block.\+hpp}}\end{DoxyCompactItemize}
