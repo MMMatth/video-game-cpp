@@ -12,12 +12,21 @@
 /*!
  * \file jeu.hpp
  * \brief Définition de la classe Jeu.
- * \author  Mathieu Gaudel and Papa El Hadji G Cissé
+ * \author Mathieu Gaudel and Papa El Hadji G Cissé
  * \version 2023
  */
 
-using namespace std;
+/*!
+ * \namespace sf
+ * \brief Espace de noms pour la bibliothèque SFML (Simple and Fast Multimedia Library).
+ */
 using namespace sf;
+
+/*!
+ * \namespace std
+ * \brief Espace de noms pour les éléments standard de la bibliothèque C++.
+ */
+using namespace std;
 
 /*!
  * \class Jeu
@@ -33,12 +42,11 @@ private:
   bool collideSide; /*!< Indique s'il y a une collision sur les côtés. */
   Point posCam; /*!< Position de la caméra. */
   unordered_map<string, Sprite> sprites; /*!< Dictionnaire de sprites. */
-  unordered_map<string, Sprite> man; /*! Dictionnaire de personnage*/
-  
 
 public:
   /*!
    * Constructeur par défaut de la classe Jeu.
+   * \param texture La texture à utiliser pour le personnage.
    */
   Jeu(Texture& texture);
 

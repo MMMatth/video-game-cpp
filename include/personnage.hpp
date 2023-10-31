@@ -4,12 +4,9 @@
 #include "point.hpp"
 #include <map>
 #include <string>
-#include <SFML/Graphics.hpp> 
+#include <SFML/Graphics.hpp>
 #include <unordered_map>
 #include <vector>
-
-using namespace sf;
- 
 
 /*!
  * \file personnage.hpp
@@ -18,6 +15,16 @@ using namespace sf;
  * \version 2023
  */
 
+/*!
+ * \namespace sf
+ * \brief Espace de noms pour la bibliothèque SFML (Simple and Fast Multimedia Library).
+ */
+using namespace sf;
+
+/*!
+ * \namespace std
+ * \brief Espace de noms pour les éléments standard de la bibliothèque C++.
+ */
 using namespace std;
 
 /*!
@@ -33,15 +40,21 @@ public:
    * \param taille La taille du personnage.
    */
   Personnage(int x, int y, int taille);
-  Personnage(float x, float y, int taille, Texture& texture);
-
-    // Initialisation du dictionnaire de sprites
-    void initSprites(Texture& spritesheet);
 
   /*!
-   * Constructeur par défaut de la classe Personnage.
+   * Constructeur de la classe Personnage avec texture.
+   * \param x La position horizontale initiale.
+   * \param y La position verticale initiale.
+   * \param taille La taille du personnage.
+   * \param texture La texture à utiliser pour le personnage.
    */
-  Personnage();
+  Personnage(float x, float y, int taille, Texture &texture);
+
+  /*!
+   * Initialise les sprites du personnage à partir d'une texture.
+   * \param spritesheet La texture contenant les sprites du personnage.
+   */
+  void initSprites(Texture &spritesheet);
 
   /*!
    * Met à jour l'état du personnage.
@@ -193,6 +206,10 @@ public:
    */
   void clean();
   
+  /*!
+   * Dessine le personnage sur la fenêtre spécifiée.
+   * \param window La fenêtre sur laquelle dessiner le personnage.
+   */
   void draw(RenderWindow& window);
 
 private:
@@ -206,10 +223,7 @@ private:
   int tempSaut; /*!< Temps du saut actuel. */
   int vitesse; /*!< Vitesse du personnage. */
 
-  unordered_map<string, Sprite> sprites;
-  int currentFrame; // Frame d'animation actuelle
-  float frameDuration; // Durée de chaque frame en secondes
-  float frameTimer; // Compteur pour gérer le changement d'images
+  unordered_map<string, Sprite> sprites; /*! Dictionnaire de sprites du personnage */
 };
 
 #endif /* PERSONNAGE_HPP */
