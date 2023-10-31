@@ -8,6 +8,8 @@
 #define TAILLE_FENETRE_X 800
 #define TAILLE_FENETRE_Y 600
 #define DEPLACEMENT 5
+#define ANIMATION_SPEED 100
+#define NUM_FRAMES 9
 #define COULEUR_CIEL Color(135, 206, 250)
 #define TITRE_FENETRE "jeu"
 

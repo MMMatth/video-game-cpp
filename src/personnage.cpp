@@ -1,4 +1,5 @@
 #include "../include/personnage.hpp"
+#include "../include/const.hpp"
 #include <iostream>
 
 using namespace std;
@@ -23,14 +24,45 @@ Personnage::Personnage(int x, int y, int taille) : coord(x, y) {
 
 void Personnage::initSprites(Texture& spritesheet) {
     
-    sprites["stop"].setTexture(spritesheet);
-    sprites["stop"].setTextureRect(IntRect(0, 128, 64, 64));
-    sprites["stop"].setPosition(coord.getX(), coord.getY());
+    vector<string> spriteNames = {"stop", "jump", "fall"};
+    for (string& name : spriteNames) {
+      sprites[name].setTexture(spritesheet);
+      if(name == "stop"){
+        sprites[name].setTextureRect(IntRect(0, 128, 64, 64));
+      }else if (name == "jump"){
+        sprites[name].setTextureRect(IntRect(256, 128, 64, 64));
+      }else if (name == "fall"){
+        sprites[name].setTextureRect(IntRect(320, 128, 64, 64));
+      }
+      sprites[name].setPosition(coord.getX(), coord.getY());
+    }
+
+    vector<string> moveNames = {"moveLeft", "moveRight"};
+    for (string& moveName : moveNames) {
+       int x = 0;
+        if(moveName == "moveLeft"){
+          for (int i = 1; i <= 9; i++) {
+            string spriteName = moveName + to_string(i);
+            sprites[spriteName].setTexture(spritesheet);
+            sprites[spriteName].setTextureRect(IntRect(x, 576, 64, 64));
+            sprites[spriteName].setPosition(coord.getX(), coord.getY());
+            x += 64;
+          }
+        }else{
+          for (int i = 1; i <= 9; i++) {
+            string spriteName = moveName + to_string(i);
+            sprites[spriteName].setTexture(spritesheet);
+            sprites[spriteName].setTextureRect(IntRect(x, 704, 64, 64));
+            sprites[spriteName].setPosition(coord.getX(), coord.getY());
+            x += 64;
+          }
+        }
+    }
+
 }
 
 Personnage::Personnage(float x, float y, int taille, Texture& texture)
-    : coord(x, y), currentFrame(0),
-      frameDuration(0.2), frameTimer(0.0) {
+    : coord(x, y){
     this->taille = taille;
     this->direction = {
         {"isJumping", false},
@@ -52,15 +84,54 @@ Personnage::Personnage(float x, float y, int taille, Texture& texture)
 }
 
 void Personnage::draw(RenderWindow& window) {
+  if (direction["isGoingLeft"]) {
+
+    int frame = (clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % NUM_FRAMES;
+        window.draw(sprites["moveLeft" + to_string(frame + 1)]);
+
+  }else if(direction["isGoingRight"]) {
+
+    int frame = (clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % NUM_FRAMES;
+        window.draw(sprites["moveRight" + to_string(frame + 1)]);
+
+  }else if (direction["isJumping"] && !collision["right"]) {
+
+    window.draw(sprites["jump"]); 
     
-  window.draw(sprites["stop"]);
+  }else if(direction["isFalling"] && !collision["down"]) {
+     window.draw(sprites["fall"]);
+  }
+  else {
+    window.draw(sprites["stop"]);
+  }
    
 }
 
 
-void Personnage::update() {
-
-  sprites["stop"].setPosition(coord.getX(), coord.getY()); // update position of the sprite
+void Personnage::update() {   
+  // update position of the sprite
+  vector<string> spriteNames = {"stop", "jump", "fall"};
+  for (string& name : spriteNames) {
+    sprites[name].setPosition(coord.getX(), coord.getY());
+  }
+  
+  vector<string> moveNames = {"moveLeft", "moveRight"};
+  for (string& moveName : moveNames) {
+    int x = 0;
+    if(moveName == "moveLeft"){
+      for (int i = 1; i <= 9; i++) {
+        string spriteName = moveName + to_string(i);
+        sprites[spriteName].setPosition(coord.getX(), coord.getY());
+        x += 64;
+      }
+    }else{
+      for (int i = 1; i <= 9; i++) {
+        string spriteName = moveName + to_string(i);
+        sprites[spriteName].setPosition(coord.getX(), coord.getY());
+        x += 64;
+      }
+    }
+  }
 
   if (direction["isJumping"] && collision["down"]) {
     this->direction["isGoingUp"] = true;

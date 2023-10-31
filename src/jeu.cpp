@@ -5,7 +5,7 @@ using namespace sf;
 
 Jeu::Jeu(sf::Texture& texture)
     : window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
-      perso(0, 0, TAILLE_PERSONNAGE, texture),
+      perso(0, 0, TAILLE_PERSONNAGE, texture), // Passer la texture (spritesheet)
       posCam(0, 0) {
     this->carte = Carte();
 }

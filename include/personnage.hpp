@@ -224,6 +224,7 @@ private:
   int vitesse; /*!< Vitesse du personnage. */
 
   unordered_map<string, Sprite> sprites; /*! Dictionnaire de sprites du personnage */
+  Clock clock; /*! La durée */
 };
 
 #endif /* PERSONNAGE_HPP */
