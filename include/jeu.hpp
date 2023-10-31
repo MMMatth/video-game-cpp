@@ -33,12 +33,14 @@ private:
   bool collideSide; /*!< Indique s'il y a une collision sur les côtés. */
   Point posCam; /*!< Position de la caméra. */
   unordered_map<string, Sprite> sprites; /*!< Dictionnaire de sprites. */
+  unordered_map<string, Sprite> man; /*! Dictionnaire de personnage*/
+  
 
 public:
   /*!
    * Constructeur par défaut de la classe Jeu.
    */
-  Jeu();
+  Jeu(Texture& texture);
 
   /*!
    * Fonction principale pour exécuter le jeu.

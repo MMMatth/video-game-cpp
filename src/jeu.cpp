@@ -3,11 +3,13 @@
 using namespace std;
 using namespace sf;
 
-Jeu::Jeu()
+Jeu::Jeu(sf::Texture& texture)
     : window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
-      perso(0, 0, TAILLE_PERSONNAGE), posCam(0, 0) {
-  this->carte = Carte();
+      perso(0, 0, TAILLE_PERSONNAGE, texture),
+      posCam(0, 0) {
+    this->carte = Carte();
 }
+
 
 void Jeu::run() {
   miniWindow.setViewport(
@@ -103,9 +105,9 @@ void Jeu::event() {
 
 void Jeu::render() {
   window.clear(COULEUR_CIEL);
+  
+  perso.draw(window);
 
-  drawRectangle(perso.getX(), perso.getY(), Color::Blue, &window,
-                perso.getLargeur(), perso.getHauteur());
 
   Texture spritesheet;
   spritesheet.loadFromFile("../assets/img/spritesheet.png");
@@ -115,6 +117,7 @@ void Jeu::render() {
       make_pair("dirt", Sprite(spritesheet, IntRect(16, 0, 16, 16))));
   sprites.emplace(
       make_pair("stone", Sprite(spritesheet, IntRect(32, 0, 16, 16))));
+
 
   for (int i = 0; i < carte.getSize(); i++) {
     int x, y;
@@ -133,7 +136,13 @@ void Jeu::render() {
 }
 
 int main(int arg, char **argv) {
-  Jeu jeu;
+
+  Texture spritesheet;
+  if (!spritesheet.loadFromFile("../assets/img/personnage.png")) {
+    cout << "Erreur de chargement de la spritesheet." << endl;
+  }
+
+  Jeu jeu(spritesheet);
   jeu.run();
   return 0;
 }

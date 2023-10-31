@@ -62,15 +62,10 @@ void Block::collide(Personnage *perso) {
     printf("collision left\n");
     perso->setCollision("left", true);
   }
-  if (m_isSolid && blockX + TAILLE_CASE > persoX - persoVitesse &&
-      blockX < persoX + persoLargeur && blockY + TAILLE_CASE > persoY &&
-      blockY < persoY + persoHauteur) {
-    printf("collision left\n");
-    perso->setCollision("left", true);
-  }
+  
   if (m_isSolid && blockX + TAILLE_CASE > persoX &&
       blockX < persoX + persoLargeur &&
-      blockY + TAILLE_CASE > persoY - persoVitesse &&
+      blockY + TAILLE_CASE > persoY  - persoVitesse &&
       blockY < persoY + persoHauteur) {
     printf("collision up\n");
     perso->setCollision("up", true);

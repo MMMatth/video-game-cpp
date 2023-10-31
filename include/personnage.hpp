@@ -4,6 +4,12 @@
 #include "point.hpp"
 #include <map>
 #include <string>
+#include <SFML/Graphics.hpp> 
+#include <unordered_map>
+#include <vector>
+
+using namespace sf;
+ 
 
 /*!
  * \file personnage.hpp
@@ -27,6 +33,10 @@ public:
    * \param taille La taille du personnage.
    */
   Personnage(int x, int y, int taille);
+  Personnage(float x, float y, int taille, Texture& texture);
+
+    // Initialisation du dictionnaire de sprites
+    void initSprites(Texture& spritesheet);
 
   /*!
    * Constructeur par défaut de la classe Personnage.
@@ -182,6 +192,8 @@ public:
    * Nettoie les ressources du personnage.
    */
   void clean();
+  
+  void draw(RenderWindow& window);
 
 private:
   Point coord; /*!< Coordonnées du personnage. */
@@ -193,6 +205,11 @@ private:
   int taille; /*!< Taille du personnage. */
   int tempSaut; /*!< Temps du saut actuel. */
   int vitesse; /*!< Vitesse du personnage. */
+
+  unordered_map<string, Sprite> sprites;
+  int currentFrame; // Frame d'animation actuelle
+  float frameDuration; // Durée de chaque frame en secondes
+  float frameTimer; // Compteur pour gérer le changement d'images
 };
 
 #endif /* PERSONNAGE_HPP */

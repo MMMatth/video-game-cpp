@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 Personnage::Personnage(int x, int y, int taille) : coord(x, y) {
   this->taille = taille;
 
@@ -20,22 +21,48 @@ Personnage::Personnage(int x, int y, int taille) : coord(x, y) {
   this->vitesse = 3;
 }
 
-Personnage::Personnage() : coord(0, 0) {
-  this->taille = 0;
-  this->direction["isFalling"] = true;
-  this->direction = {{"isJumping", false},
-                     {"isGoingUp", false},
-                     {"isFalling", false},
-                     {"isGoingRight", false},
-                     {"isGoingLeft", false}};
-
-  this->collision = {
-      {"up", false}, {"down", false}, {"left", false}, {"right", false}};
-  this->jumpHeight = 0;
+void Personnage::initSprites(Texture& spritesheet) {
+    
+    sprites["stop"].setTexture(spritesheet);
+    sprites["stop"].setTextureRect(IntRect(0, 128, 64, 64));
+    sprites["stop"].setPosition(coord.getX(), coord.getY());
 }
 
+Personnage::Personnage(float x, float y, int taille, Texture& texture)
+    : coord(x, y), currentFrame(0),
+      frameDuration(0.2), frameTimer(0.0) {
+    this->taille = taille;
+    this->direction = {
+        {"isJumping", false},
+        {"isGoingUp", false},
+        {"isFalling", true},
+        {"isGoingRight", false},
+        {"isGoingLeft", false}
+    };
+
+    this->collision = {
+        {"up", false}, {"down", false}, {"left", false}, {"right", false}
+    };
+
+    this->jumpHeight = 15;
+    this->timeJump = 0;
+    this->vitesse = 3;
+    
+    initSprites(texture);
+}
+
+void Personnage::draw(RenderWindow& window) {
+    
+  window.draw(sprites["stop"]);
+   
+}
+
+
 void Personnage::update() {
-  if (direction["isJumping"] && collision["down"] && !direction["isGoingUp"]) {
+
+  sprites["stop"].setPosition(coord.getX(), coord.getY()); // update position of the sprite
+
+  if (direction["isJumping"] && collision["down"]) {
     this->direction["isGoingUp"] = true;
     this->timeJump = 0;
     this->collision["down"] = false;
@@ -43,8 +70,9 @@ void Personnage::update() {
   if (!direction["isJumping"]) {
     this->direction["isGoingUp"] = false;
     this->direction["isFalling"] = true;
+    cout << "isFalling"  << endl;
   }
-  if (direction["isGoingUp"] && !collision["up"] && !direction["isGoingdown"]) {
+  if (direction["isGoingUp"] && !collision["up"] ) {
     this->timeJump++;
     if (timeJump < jumpHeight) {
       this->deplacerY(-vitesse);
@@ -57,18 +85,32 @@ void Personnage::update() {
     this->setCollisionFalseExcept("down");
     this->deplacerY(vitesse);
   }
-  if (direction["isGoingRight"] && !collision["right"]) {
+
+  if (direction["isGoingRight"] && !collision["right"] ) {
+    
     this->setCollisionFalseExcept("right");
     this->deplacerX(vitesse);
   }
+  
   if (direction["isGoingLeft"] && !collision["left"]) {
     this->setCollisionFalseExcept("left");
+    
     this->deplacerX(-vitesse);
   }
-  if (direction["isGoingUp"] && !collision["up"] && !direction["isGoingDown"]) {
+  
+  if (direction["isGoingUp"] && !collision["up"] ) {
     this->setCollisionFalseExcept("up");
+    
     this->deplacerY(-vitesse);
   }
+  if(  collision["up"]  && !collision["down"] && collision["right"] && collision["left"]) {
+    
+    this->setCollisionFalseExcept("down");
+    
+    this->deplacerY(vitesse);
+  }
+  
+  
 }
 
 // getters

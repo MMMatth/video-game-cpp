@@ -22,6 +22,13 @@ void drawSprites(int x, int y, Sprite sprite, RenderWindow *window) {
   window->draw(sprite);
 }
 
+void drawMan(int x, int y, Sprite sprite, RenderWindow *window) {
+  sprite.setPosition(x, y);
+  sprite.setScale(TAILLE_CASE / sprite.getLocalBounds().width,
+                  TAILLE_CASE / sprite.getLocalBounds().height);
+  window->draw(sprite);
+}
+
 void drawMap(int x, int y, Color color, RenderWindow *window, int largeur,
              int hauteur) {
   RectangleShape rectangle(Vector2f(largeur, hauteur));
