@@ -118,12 +118,13 @@ void Jeu::render() {
 
   for (int i = 0; i < carte.getSize(); i++) {
     int x, y;
-    x = carte.getBlock(i).getX();
-    y = carte.getBlock(i).getY();
+    x = carte.getTile(i).getX();
+    y = carte.getTile(i).getY();
 
-    if (carte.getBlock(i).estDansCam(posCam.getX(), posCam.getY(),
-                                     TAILLE_FENETRE_X, TAILLE_FENETRE_Y)) {
-      drawSprites(x, y, sprites[carte.getBlock(i).getName()], &window);
+    if (carte.getTile(i).estDansCam(posCam.getX(), posCam.getY(),
+                                    TAILLE_FENETRE_X, TAILLE_FENETRE_Y)) {
+      drawSprites(x, y, sprites[carte.getTile(i).getBlock().getName()],
+                  &window);
     }
   }
 

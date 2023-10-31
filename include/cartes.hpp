@@ -4,6 +4,7 @@
 #include "block.hpp"
 #include "const.hpp"
 #include "personnage.hpp"
+#include "tile.hpp"
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <iostream>
@@ -20,18 +21,18 @@ public:
   void initCarte(const char *nomFichier);
 
   // getters
-  vector<Block> getCarte();
+  vector<Tile> getCarte();
   int getSize();
-  Block getBlock(int i);
+  Tile getTile(int i);
   void collide(Personnage *perso);
-  Block chooseBlock(char c, int x, int y);
+  Tile chooseTile(char c, int x, int y);
 
   void clean();
 
   string toString();
 
 private:
-  vector<Block> carte;
+  vector<Tile> carte;
 };
 
 #endif // CARTE_HPP

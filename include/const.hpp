@@ -11,4 +11,7 @@
 #define COULEUR_CIEL Color(135, 206, 250)
 #define TITRE_FENETRE "jeu"
 
+#define INVENTORY_HEIGHT 4
+#define INVENTORY_WIDTH 4
+
 #endif
