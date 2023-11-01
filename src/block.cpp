@@ -2,18 +2,18 @@
 
 // Constructeur par défaut
 Block::Block()
-    : m_spriteSheet(Point(0, 0)), m_number(0), m_name(""), m_isSolid(false) {}
+    : m_spriteSheet(Point(0, 0)), m_id(0), m_name(""), m_isSolid(false) {}
 
 // Constructeur avec initialisation des attributs
-Block::Block(int spriteSheetX, int spriteSheetY, int number, std::string name,
-             int blockX, int blockY, bool isSolid)
-    : m_spriteSheet(Point(spriteSheetX, spriteSheetY)), m_number(number),
-      m_name(name), m_isSolid(isSolid) {}
+Block::Block(int spriteSheetX, int spriteSheetY, int id, std::string name,
+             bool isSolid)
+    : m_spriteSheet(Point(spriteSheetX, spriteSheetY)), m_id(id), m_name(name),
+      m_isSolid(isSolid) {}
 
 // Getters
 Point Block::getSpriteSheet() const { return m_spriteSheet; }
 
-int Block::getNumber() const { return m_number; }
+int Block::getId() const { return m_id; }
 
 std::string Block::getName() const { return m_name; }
 
@@ -28,7 +28,7 @@ void Block::setSpriteSheetY(int spriteSheetY) {
   m_spriteSheet.setY(spriteSheetY);
 }
 
-void Block::setNumber(int number) { m_number = number; }
+void Block::setNumber(int number) { m_id = number; }
 
 void Block::setName(std::string name) { m_name = name; }
 
@@ -39,7 +39,7 @@ std::string Block::toString() const {
   s += "id: " + std::to_string(m_id) + ",";
   s += "spriteSheet: (" + std::to_string(m_spriteSheet.getX()) + ", " +
        std::to_string(m_spriteSheet.getY()) + "), ";
-  s += "number: " + std::to_string(m_number) + ", ";
+  s += "number: " + std::to_string(m_id) + ", ";
   s += "name: " + m_name + ", ";
   s += "isSolid: " + std::to_string(m_isSolid) + "}";
   return s;
