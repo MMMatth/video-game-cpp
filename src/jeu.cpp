@@ -90,6 +90,33 @@ void Jeu::event() {
       case Keyboard::R:
         inv.swapItem(0, 0, 0, 1);
         break;
+      case Keyboard::Num1:
+        inv.setItemSelected(0);
+        break;
+      case Keyboard::Num2:
+        inv.setItemSelected(1);
+        break;
+      case Keyboard::Num3:
+        inv.setItemSelected(2);
+        break;
+      case Keyboard::Num4:
+        inv.setItemSelected(3);
+        break;
+      case Keyboard::Num5:
+        inv.setItemSelected(4);
+        break;
+      case Keyboard::Num6:
+        inv.setItemSelected(5);
+        break;
+      case Keyboard::Num7:
+        inv.setItemSelected(6);
+        break;
+      case Keyboard::Num8:
+        inv.setItemSelected(7);
+        break;
+      case Keyboard::Num9:
+        inv.setItemSelected(8);
+        break;
       default:
         break;
       }
@@ -117,16 +144,23 @@ void Jeu::render() {
 
   perso.draw(window);
 
-  Texture spritesheet;
-  if (!spritesheet.loadFromFile("../assets/img/spritesheet.png")) {
-    cout << "Erreur de chargement de la spritesheet." << endl;
+  Texture spritesheet, invTile;
+  assert(spritesheet.loadFromFile("../assets/img/spritesheet.png") &&
+         "Erreur de chargement de la spritesheet.");
+  assert(invTile.loadFromFile("../assets/img/inventoryTile.png") &&
+         "Erreur de chargement de la invTile.");
+  for (auto it = blockMap.begin(); it != blockMap.end(); it++) {
+    if (it->second.getName() != "air")
+      sprites.emplace(make_pair(
+          it->second.getName(),
+          Sprite(spritesheet,
+                 IntRect(it->second.getSpriteSheet().getX(),
+                         it->second.getSpriteSheet().getY(), 16, 16))));
   }
   sprites.emplace(
-      make_pair("grass", Sprite(spritesheet, IntRect(0, 0, 16, 16))));
+      make_pair("invTileSelected", Sprite(invTile, IntRect(0, 0, 22, 22))));
   sprites.emplace(
-      make_pair("dirt", Sprite(spritesheet, IntRect(16, 0, 16, 16))));
-  sprites.emplace(
-      make_pair("stone", Sprite(spritesheet, IntRect(32, 0, 16, 16))));
+      make_pair("invTile", Sprite(invTile, IntRect(23, 0, 22, 22))));
 
   for (int i = 0; i < carte.getSize(); i++) {
     int x, y;
@@ -139,7 +173,7 @@ void Jeu::render() {
                   &window);
     }
   }
-
+  inv.render(window, sprites, posCam.getX(), posCam.getY());
   // drawMiniMap();
 
   window.display();

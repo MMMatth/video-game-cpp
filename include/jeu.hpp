@@ -13,6 +13,7 @@
 #include "personnage.hpp"
 #include "point.hpp"
 #include <SFML/Graphics.hpp>
+#include <cassert>
 #include <unordered_map>
 
 /*!
@@ -50,6 +51,8 @@ public:
    * \param texture La texture à utiliser pour le personnage.
    */
   Jeu(Texture &texture);
+
+  void initSprites();
 
   /*!
    * Fonction principale pour exécuter le jeu.

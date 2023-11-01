@@ -108,8 +108,8 @@ enum BlockType {
 static std::map<BlockType, Block> blockMap = {
     {AIR, Block(0, 0, 0, "air", false)},
     {GRASS, Block(0, 0, 1, "grass", true)},
-    {DIRT, Block(32, 0, 2, "dirt", true)},
-    {STONE, Block(64, 0, 3, "stone", true)}
+    {DIRT, Block(16, 0, 2, "dirt", true)},
+    {STONE, Block(32, 0, 3, "stone", true)}
     // ... et ainsi de suite pour les autres types de blocs
 };
 #endif

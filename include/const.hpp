@@ -14,6 +14,6 @@
 #define TITRE_FENETRE "jeu"
 
 #define INVENTORY_HEIGHT 4
-#define INVENTORY_WIDTH 4
+#define INVENTORY_WIDTH 9
 
 #endif
