@@ -9,6 +9,7 @@
 #define BLOCK_HPP
 
 #include "const.hpp"
+#include "item.hpp"
 #include "personnage.hpp"
 #include "point.hpp"
 #include <SFML/Graphics.hpp>
@@ -25,7 +26,7 @@ using namespace std;
  * \class Block
  * \brief Classe représentant un bloc du jeu.
  */
-class Block {
+class Block : public Item {
 public:
   /*!
    * Constructeur par défaut de la classe Block.
@@ -46,8 +47,8 @@ public:
   // Getters
 
   Point getSpriteSheet() const;
-  int getId() const;
-  std::string getName() const;
+  // int getId() const;
+  // std::string getName() const;
   bool isSolid() const;
 
   // Setters
@@ -64,17 +65,17 @@ public:
    */
   void setSpriteSheetY(int spriteSheetY);
 
-  /*!
-   * Une fonction qui définit le numéro du bloc.
-   * \param number Le nouveau numéro du bloc.
-   */
-  void setNumber(int number);
+  // /*!
+  //  * Une fonction qui définit le numéro du bloc.
+  //  * \param id Le nouveau numéro du bloc.
+  //  */
+  // void setId(int number);
 
-  /*!
-   * Une fonction qui définit le nom du bloc.
-   * \param name Le nouveau nom du bloc en tant que chaîne de caractères.
-   */
-  void setName(std::string name);
+  // /*!
+  //  * Une fonction qui définit le nom du bloc.
+  //  * \param name Le nouveau nom du bloc en tant que chaîne de caractères.
+  //  */
+  // void setName(std::string name);
 
   /*!
    * Une fonction qui définit si le bloc est solide ou non.
@@ -96,7 +97,6 @@ private:
   Point m_spriteSheet;
   int m_id;
   std::string m_name;
-  Point m_position;
   bool m_isSolid;
 };
 

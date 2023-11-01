@@ -7,15 +7,15 @@ Block::Block()
 // Constructeur avec initialisation des attributs
 Block::Block(int spriteSheetX, int spriteSheetY, int id, std::string name,
              bool isSolid)
-    : m_spriteSheet(Point(spriteSheetX, spriteSheetY)), m_id(id), m_name(name),
-      m_isSolid(isSolid) {}
+    : m_spriteSheet(Point(spriteSheetX, spriteSheetY)), m_isSolid(isSolid),
+      Item(name, id) {}
 
 // Getters
 Point Block::getSpriteSheet() const { return m_spriteSheet; }
 
-int Block::getId() const { return m_id; }
+// int Block::getId() const { return m_id; }
 
-std::string Block::getName() const { return m_name; }
+// std::string Block::getName() const { return m_name; }
 
 bool Block::isSolid() const { return m_isSolid; }
 
@@ -28,9 +28,9 @@ void Block::setSpriteSheetY(int spriteSheetY) {
   m_spriteSheet.setY(spriteSheetY);
 }
 
-void Block::setNumber(int number) { m_id = number; }
+// void Block::setId(int number) { m_id = number; }
 
-void Block::setName(std::string name) { m_name = name; }
+// void Block::setName(std::string name) { m_name = name; }
 
 void Block::setSolid(bool isSolid) { m_isSolid = isSolid; }
 
