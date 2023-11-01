@@ -47,7 +47,8 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "fstream": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "sstream": "cpp"
     },
     "editor.formatOnSave": true,
     "[cpp]": {

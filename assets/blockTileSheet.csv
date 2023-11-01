@@ -1,0 +1,5 @@
+id;name;xSpritesheet;ySpritesheet;isSolid
+0;air;-1;-1;0
+1;grass;0;0;1
+2;dirt;32;0;1
+3;stone;64;0;1

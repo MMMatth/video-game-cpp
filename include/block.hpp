@@ -1,12 +1,12 @@
-#ifndef BLOCK_HPP
-#define BLOCK_HPP
-
 /*!
  * \file block.hpp
  * \brief Définition de la classe Block.
- * \author Mathieu Gaudel and Papa El Hadji G Cissé
+ * \author Matthieu Gaudel and Papa El Hadji G Cissé
  * \version 2023
  */
+
+#ifndef BLOCK_HPP
+#define BLOCK_HPP
 
 #include "const.hpp"
 #include "personnage.hpp"
@@ -43,20 +43,11 @@ public:
   Block(int spriteSheetX, int spriteSheetY, int id, std::string name,
         bool isSolid);
 
-  /*!
-   * Une fonction qui vérifie si le personnage est en collision avec un block.
-   * \param perso Un pointeur vers l'objet Personnage avec lequel vérifier la
-   * collision.
-   */
-  void collide(Personnage *perso);
-
   // Getters
 
   Point getSpriteSheet() const;
   int getId() const;
   std::string getName() const;
-  int getX() const;
-  int getY() const;
   bool isSolid() const;
 
   // Setters
@@ -86,12 +77,6 @@ public:
   void setName(std::string name);
 
   /*!
-   * Une fonction qui définit la position du bloc.
-   * \param position Un objet Point représentant la nouvelle position du bloc.
-   */
-  void setPosition(Point position);
-
-  /*!
    * Une fonction qui définit si le bloc est solide ou non.
    * \param isSolid Un booléen indiquant si le bloc est solide (true) ou non
    * (false).
@@ -108,9 +93,6 @@ public:
   std::string toString() const;
 
 private:
-  /*!
-   * Coordonnées de la sprite dans la feuille de sprite.
-   */
   Point m_spriteSheet;
   int m_id;
   std::string m_name;
