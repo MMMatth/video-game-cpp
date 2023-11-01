@@ -153,7 +153,7 @@ void Personnage::update() {
     }
   }
   if (direction["isFalling"] && !collision["down"] && !direction["isGoingUp"]) {
-    this->setCollisionFalseExcept("down");
+    // this->setCollisionFalseExcept("down");
     this->deplacerY(vitesse);
   }
 

@@ -32,32 +32,34 @@ public:
    */
   Block();
 
+  // Constructeur avec initialisation des attributs
+  Block(int spriteSheetX, int spriteSheetY, int id, std::string name,
+        bool isSolid);
   /*!
    * Constructeur avec initialisation des attributs.
    * \param spriteSheetX La position X de la sprite.
    * \param spriteSheetY La position Y de la sprite.
    * \param number Le numéro du block.
-   * \param name Le nom du block.
-   * \param blockX La position X du block.
-   * \param blockY La position Y du block.
+   * \param name Le nom du block.a position Y du block.
    * \param isSolid Un booléen indiquant si le block est solide.
    */
   Block(int spriteSheetX, int spriteSheetY, int number, std::string name,
         int blockX, int blockY, bool isSolid);
 
   /*!
-   * Une fonction qui vérifie si un objet est actuellement visible dans la caméra du jeu.
-   * \param posCamX La position horizontale de la caméra.
-   * \param posCamY La position verticale de la caméra.
-   * \param largeur La largeur de la zone visible à l'écran.
-   * \param hauteur La hauteur de la zone visible à l'écran.
-   * \return True si l'objet est actuellement visible dans la caméra, sinon False.
+   * Une fonction qui vérifie si un objet est actuellement visible dans la
+   * caméra du jeu. \param posCamX La position horizontale de la caméra. \param
+   * posCamY La position verticale de la caméra. \param largeur La largeur de la
+   * zone visible à l'écran. \param hauteur La hauteur de la zone visible à
+   * l'écran. \return True si l'objet est actuellement visible dans la caméra,
+   * sinon False.
    */
   bool estDansCam(int posCamX, int posCamY, int largeur, int hauteur);
 
   /*!
    * Une fonction qui vérifie si le personnage est en collision avec un block.
-   * \param perso Un pointeur vers l'objet Personnage avec lequel vérifier la collision.
+   * \param perso Un pointeur vers l'objet Personnage avec lequel vérifier la
+   * collision.
    */
   void collide(Personnage *perso);
 
@@ -68,48 +70,23 @@ public:
    * \return Point Un objet représentant les coordonnées de la sprite.
    */
   Point getSpriteSheet() const;
-
-  /*!
-   * Une fonction qui retourne le numéro du block.
-   * \return int Le numéro du block.
-   */
-  int getNumber() const;
-
-  /*!
-   * Une fonction qui retourne le nom du block.
-   * \return String Le nom du block.
-   */
+  int getId() const;
   std::string getName() const;
-
-  /*!
-   * Une fonction qui retourne l'abscisse du block.
-   * \return int L'abscisse du block.
-   */
   int getX() const;
-
-  /*!
-   * Une fonction qui retourne l'ordonnée du block.
-   * \return int L'ordonnée du block.
-   */
   int getY() const;
-
-  /*!
-   * Une fonction qui vérifie si le block est solide ou pas.
-   * \return Un booléen indiquant si le block est solide.
-   */
   bool isSolid() const;
 
   // Setters
 
   /*!
-   * Une fonction qui définit la position X de la sprite dans la feuille de sprite.
-   * \param spriteSheetX La nouvelle position X de la sprite.
+   * Une fonction qui définit la position X de la sprite dans la feuille de
+   * sprite. \param spriteSheetX La nouvelle position X de la sprite.
    */
   void setSpriteSheetX(int spriteSheetX);
 
   /*!
-   * Une fonction qui définit la position Y de la sprite dans la feuille de sprite.
-   * \param spriteSheetY La nouvelle position Y de la sprite.
+   * Une fonction qui définit la position Y de la sprite dans la feuille de
+   * sprite. \param spriteSheetY La nouvelle position Y de la sprite.
    */
   void setSpriteSheetY(int spriteSheetY);
 
@@ -133,15 +110,17 @@ public:
 
   /*!
    * Une fonction qui définit si le bloc est solide ou non.
-   * \param isSolid Un booléen indiquant si le bloc est solide (true) ou non (false).
+   * \param isSolid Un booléen indiquant si le bloc est solide (true) ou non
+   * (false).
    */
   void setSolid(bool isSolid);
 
   // To string
 
   /*!
-   * Une fonction qui renvoie une représentation sous forme de chaîne de caractères de l'objet Block.
-   * \return std::string Une chaîne de caractères représentant l'objet Block.
+   * Une fonction qui renvoie une représentation sous forme de chaîne de
+   * caractères de l'objet Block. \return std::string Une chaîne de caractères
+   * représentant l'objet Block.
    */
   std::string toString() const;
 
@@ -150,26 +129,36 @@ private:
    * Coordonnées de la sprite dans la feuille de sprite.
    */
   Point m_spriteSheet;
-
-  /*!
-   * Numéro du bloc.
-   */
-  int m_number;
-
-  /*!
-   * Nom du bloc.
-   */
+  int m_id;
   std::string m_name;
-
-  /*!
-   * Position du bloc.
-   */
   Point m_position;
-
-  /*!
-   * Indique si le bloc est solide (true) ou non (false).
-   */
   bool m_isSolid;
 };
 
-#endif /* BLOCK_HPP */
+enum BlockType {
+  AIR,
+  GRASS,
+  DIRT,
+  STONE
+  // WOOD,
+  // PLANK,
+  // COAL,
+  // COBBLESTONE,
+  // BRICK,
+  // DOOR,
+  // LIBRARY,
+  // BED,
+  // RED_FLOWER,
+  // YELLOW_FLOWER,
+  // TORCH,
+  // TOTAL_BLOCKS
+};
+
+static std::map<BlockType, Block> blockMap = {
+    {AIR, Block(0, 0, 0, "air", false)},
+    {GRASS, Block(0, 0, 1, "grass", true)},
+    {DIRT, Block(32, 0, 2, "dirt", true)},
+    {STONE, Block(64, 0, 3, "stone", true)}
+    // ... et ainsi de suite pour les autres types de blocs
+};
+#endif

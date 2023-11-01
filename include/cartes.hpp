@@ -11,6 +11,7 @@
 #include "block.hpp"
 #include "const.hpp"
 #include "personnage.hpp"
+#include "tile.hpp"
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <iostream>
@@ -41,7 +42,7 @@ public:
    * Récupère la carte sous forme d'un vecteur de blocks.
    * @return vector<Block> Un vecteur contenant les blocks de la carte.
    */
-  vector<Block> getCarte();
+  vector<Tile> getCarte();
 
   /*!
    * Récupère le nombre de blocks dans la carte.
@@ -54,22 +55,24 @@ public:
    * @param i L'indice du block dans la carte.
    * @return Block Le bloc à l'indice spécifié.
    */
-  Block getBlock(int i);
+  Tile getTile(int i);
 
   /*!
    * Gère les collisions entre un personnage et les blocks de la carte.
-   * @param perso Un pointeur vers l'objet Personnage avec lequel vérifier les collisions.
+   * @param perso Un pointeur vers l'objet Personnage avec lequel vérifier les
+   * collisions.
    */
   void collide(Personnage *perso);
 
   /*!
-   * Sélectionne un block en fonction d'un caractère du fichier de définition de la carte.
+   * Sélectionne un block en fonction d'un caractère du fichier de définition de
+   * la carte.
    * @param c Le caractère spécifiant le type de block.
    * @param x La position horizontale du block.
    * @param y La position verticale du block.
    * @return Block Le block correspondant au caractère spécifié.
    */
-  Block chooseBlock(char c, int x, int y);
+  Tile chooseTile(char c, int x, int y);
 
   /*!
    * Nettoie la carte en libérant la mémoire allouée.
@@ -83,10 +86,7 @@ public:
   string toString();
 
 private:
-  /*!
-   * Vecteur de blocks représentant la carte.
-   */
-  vector<Block> carte;
+  vector<Tile> carte;
 };
 
 #endif /* CARTE_HPP */

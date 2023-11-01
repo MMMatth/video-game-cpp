@@ -4,21 +4,23 @@ using namespace std;
 
 Carte::Carte() { initCarte("../assets/carte.txt"); }
 
-Block Carte::chooseBlock(char c, int x, int y) {
+Tile Carte::chooseTile(char c, int x, int y) {
+  Block block;
   switch (c) {
   case '1':
-    return Block(0, 0, 1, "grass", x * TAILLE_CASE, y * TAILLE_CASE, true);
+    block = blockMap[GRASS];
     break;
   case '2':
-    return Block(16, 0, 2, "dirt", x * TAILLE_CASE, y * TAILLE_CASE, true);
+    block = blockMap[DIRT];
     break;
   case '3':
-    return Block(32, 0, 3, "stone", x * TAILLE_CASE, y * TAILLE_CASE, true);
+    block = blockMap[STONE];
     break;
   default:
-    return Block(0, 0, 0, "air", x * TAILLE_CASE, y * TAILLE_CASE, false);
+    block = blockMap[AIR];
     break;
   }
+  return Tile(block, x, y);
 }
 
 void Carte::collide(Personnage *perso) {
@@ -34,7 +36,7 @@ void Carte::initCarte(const char *nomFichier) {
     int y = 0;
     while (getline(fichier, ligne)) {
       for (int x = 0; x < ligne.size(); x++) {
-        carte.push_back(Block(chooseBlock(ligne[x], x, y)));
+        carte.push_back(chooseTile(ligne[x], x, y));
       }
       y++;
     }
@@ -43,11 +45,11 @@ void Carte::initCarte(const char *nomFichier) {
   }
 }
 
-vector<Block> Carte::getCarte() { return carte; }
+vector<Tile> Carte::getCarte() { return carte; }
 
 int Carte::getSize() { return carte.size(); }
 
-Block Carte::getBlock(int i) { return carte[i]; }
+Tile Carte::getTile(int i) { return carte[i]; }
 
 void Carte::clean() { carte.clear(); }
 
