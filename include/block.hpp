@@ -42,13 +42,11 @@ public:
    * \param isSolid Un booléen indiquant si le block est solide.
    */
   Block(int spriteSheetX, int spriteSheetY, int id, std::string name,
-        bool isSolid);
+        bool isSolid, bool is_stackable = true);
 
   // Getters
 
   Point getSpriteSheet() const;
-  // int getId() const;
-  // std::string getName() const;
   bool isSolid() const;
 
   // Setters
@@ -64,18 +62,6 @@ public:
    * sprite. \param spriteSheetY La nouvelle position Y de la sprite.
    */
   void setSpriteSheetY(int spriteSheetY);
-
-  // /*!
-  //  * Une fonction qui définit le numéro du bloc.
-  //  * \param id Le nouveau numéro du bloc.
-  //  */
-  // void setId(int number);
-
-  // /*!
-  //  * Une fonction qui définit le nom du bloc.
-  //  * \param name Le nouveau nom du bloc en tant que chaîne de caractères.
-  //  */
-  // void setName(std::string name);
 
   /*!
    * Une fonction qui définit si le bloc est solide ou non.

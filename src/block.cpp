@@ -6,16 +6,12 @@ Block::Block()
 
 // Constructeur avec initialisation des attributs
 Block::Block(int spriteSheetX, int spriteSheetY, int id, std::string name,
-             bool isSolid)
+             bool isSolid, bool is_stackable)
     : m_spriteSheet(Point(spriteSheetX, spriteSheetY)), m_isSolid(isSolid),
-      Item(name, id) {}
+      Item(name, id, is_stackable) {}
 
 // Getters
 Point Block::getSpriteSheet() const { return m_spriteSheet; }
-
-// int Block::getId() const { return m_id; }
-
-// std::string Block::getName() const { return m_name; }
 
 bool Block::isSolid() const { return m_isSolid; }
 

@@ -7,7 +7,7 @@ Jeu::Jeu(sf::Texture &texture)
     : window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
       perso(0, 0,
             texture), // Passer la texture (spritesheet)
-      posCam(0, 0) {
+      posCam(0, 0), inv() {
   this->carte = Carte();
 }
 
@@ -80,6 +80,15 @@ void Jeu::event() {
         break;
       case Keyboard::Escape:
         window.close();
+        break;
+      case Keyboard::A:
+        cout << "Inventaire : " << inv.toString() << endl;
+        break;
+      case Keyboard::E:
+        inv.addItem(blockMap[GRASS]);
+        break;
+      case Keyboard::R:
+        inv.swapItem(0, 0, 0, 1);
         break;
       default:
         break;

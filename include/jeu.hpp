@@ -9,6 +9,7 @@
 #include "cartes.hpp"
 #include "const.hpp"
 #include "draw.hpp"
+#include "inventory.hpp"
 #include "personnage.hpp"
 #include "point.hpp"
 #include <SFML/Graphics.hpp>
@@ -41,6 +42,7 @@ private:
   bool collideSide;    /*!< Indique s'il y a une collision sur les côtés. */
   Point posCam;        /*!< Position de la caméra. */
   unordered_map<string, Sprite> sprites; /*!< Dictionnaire de sprites. */
+  Inventory inv;
 
 public:
   /*!

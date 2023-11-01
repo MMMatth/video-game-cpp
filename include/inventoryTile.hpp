@@ -1,25 +1,26 @@
-#ifndef TILE_HPP
-#define TILE_HPP
+#ifndef INVENTORY_TILE_HPP
+#define INVENTORY_TILE_HPP
 
-class tile {
+#include "block.hpp"
+#include "item.hpp"
+#include <iostream>
+#include <string>
+
+class InventoryTile {
 private:
   bool m_is_empty;
-  int m_id;
-  bool m_is_stackable;
-  int m_stack_size;
+  Item m_item;
 
 public:
-  tile(/* args */);
-  ~tile();
+  InventoryTile(Block block);
+  InventoryTile();
+  ~InventoryTile();
+  Item getItem() { return m_item; }
+  void setItem(Item item) {
+    m_item = item;
+    m_is_empty = false;
+  }
+  bool isEmpty() { return m_is_empty; }
 };
-
-tile::tile(/* args */) {}
-
-tile::~tile() {
-  m_is_empty = true;
-  m_id = 0;
-  m_is_stackable = false;
-  m_stack_size = 0;
-}
 
 #endif /* TILE_HPP */
