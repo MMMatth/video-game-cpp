@@ -32,29 +32,16 @@ public:
    */
   Block();
 
-  // Constructeur avec initialisation des attributs
-  Block(int spriteSheetX, int spriteSheetY, int id, std::string name,
-        bool isSolid);
   /*!
    * Constructeur avec initialisation des attributs.
    * \param spriteSheetX La position X de la sprite.
    * \param spriteSheetY La position Y de la sprite.
-   * \param number Le numéro du block.
+   * \param id Le numéro du block.
    * \param name Le nom du block.a position Y du block.
    * \param isSolid Un booléen indiquant si le block est solide.
    */
-  Block(int spriteSheetX, int spriteSheetY, int number, std::string name,
-        int blockX, int blockY, bool isSolid);
-
-  /*!
-   * Une fonction qui vérifie si un objet est actuellement visible dans la
-   * caméra du jeu. \param posCamX La position horizontale de la caméra. \param
-   * posCamY La position verticale de la caméra. \param largeur La largeur de la
-   * zone visible à l'écran. \param hauteur La hauteur de la zone visible à
-   * l'écran. \return True si l'objet est actuellement visible dans la caméra,
-   * sinon False.
-   */
-  bool estDansCam(int posCamX, int posCamY, int largeur, int hauteur);
+  Block(int spriteSheetX, int spriteSheetY, int id, std::string name,
+        bool isSolid);
 
   /*!
    * Une fonction qui vérifie si le personnage est en collision avec un block.
@@ -65,10 +52,6 @@ public:
 
   // Getters
 
-  /*!
-   * Une fonction qui retourne les coordonnées de la sprite.
-   * \return Point Un objet représentant les coordonnées de la sprite.
-   */
   Point getSpriteSheet() const;
   int getId() const;
   std::string getName() const;

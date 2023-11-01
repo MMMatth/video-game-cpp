@@ -1,23 +1,25 @@
+/*!
+ * \file personnage.hpp
+ * \brief Définition de la classe Personnage.
+ * \author Matthieu Gaudel and Papa El Hadji G Cissé
+ * \version 2023
+ */
 #ifndef PERSONNAGE_HPP
 #define PERSONNAGE_HPP
 
+#include "const.hpp"
 #include "point.hpp"
+#include <SFML/Graphics.hpp>
+#include <iostream>
 #include <map>
 #include <string>
-#include <SFML/Graphics.hpp>
 #include <unordered_map>
 #include <vector>
 
 /*!
- * \file personnage.hpp
- * \brief Définition de la classe Personnage.
- * \author Mathieu Gaudel and Papa El Hadji G Cissé
- * \version 2023
- */
-
-/*!
  * \namespace sf
- * \brief Espace de noms pour la bibliothèque SFML (Simple and Fast Multimedia Library).
+ * \brief Espace de noms pour la bibliothèque SFML (Simple and Fast Multimedia
+ * Library).
  */
 using namespace sf;
 
@@ -48,7 +50,7 @@ public:
    * \param taille La taille du personnage.
    * \param texture La texture à utiliser pour le personnage.
    */
-  Personnage(float x, float y, int taille, Texture &texture);
+  Personnage(float x, float y, Texture &texture);
 
   /*!
    * Initialise les sprites du personnage à partir d'une texture.
@@ -61,12 +63,7 @@ public:
    */
   void update();
 
-  /*!
-   * Effectue un saut du personnage.
-   */
-  void jump();
-
-  // Getters
+  /* getters */
   /*!
    * Récupère la hauteur du personnage.
    * \return int La hauteur du personnage.
@@ -205,25 +202,27 @@ public:
    * Nettoie les ressources du personnage.
    */
   void clean();
-  
+
   /*!
    * Dessine le personnage sur la fenêtre spécifiée.
    * \param window La fenêtre sur laquelle dessiner le personnage.
    */
-  void draw(RenderWindow& window);
+  void draw(RenderWindow &window);
 
 private:
-  Point coord; /*!< Coordonnées du personnage. */
-  bool isFalling; /*!< Indique si le personnage est en chute. */
+  Point coord;                 /*!< Coordonnées du personnage. */
+  bool isFalling;              /*!< Indique si le personnage est en chute. */
   map<string, bool> direction; /*!< Direction du personnage. */
   map<string, bool> collision; /*!< Collisions du personnage. */
-  int timeJump; /*!< Temps du saut du personnage. */
-  int jumpHeight; /*!< Hauteur du saut du personnage. */
-  int taille; /*!< Taille du personnage. */
-  int tempSaut; /*!< Temps du saut actuel. */
-  int vitesse; /*!< Vitesse du personnage. */
+  int timeJump;                /*!< Temps du saut du personnage. */
+  int jumpHeight;              /*!< Hauteur du saut du personnage. */
+  int largeur;                 /*!< Largeur du personnage. */
+  int hauteur;                 /*!< Hauteur du personnage. */
+  int tempSaut;                /*!< Temps du saut actuel. */
+  int vitesse;                 /*!< Vitesse du personnage. */
 
-  unordered_map<string, Sprite> sprites; /*! Dictionnaire de sprites du personnage */
+  unordered_map<string, Sprite>
+      sprites; /*! Dictionnaire de sprites du personnage */
   Clock clock; /*! La durée */
 };
 

@@ -1,12 +1,10 @@
 #include "../include/personnage.hpp"
-#include "../include/const.hpp"
-#include <iostream>
 
 using namespace std;
 
-
 Personnage::Personnage(int x, int y, int taille) : coord(x, y) {
-  this->taille = taille;
+  this->largeur = taille;
+  this->hauteur = taille;
 
   this->direction = {{"isJumping", false},
                      {"isGoingUp", false},
@@ -22,109 +20,104 @@ Personnage::Personnage(int x, int y, int taille) : coord(x, y) {
   this->vitesse = 3;
 }
 
-void Personnage::initSprites(Texture& spritesheet) {
-    
-    vector<string> spriteNames = {"stop", "jump", "fall"};
-    for (string& name : spriteNames) {
-      sprites[name].setTexture(spritesheet);
-      if(name == "stop"){
-        sprites[name].setTextureRect(IntRect(0, 128, 64, 64));
-      }else if (name == "jump"){
-        sprites[name].setTextureRect(IntRect(256, 128, 64, 64));
-      }else if (name == "fall"){
-        sprites[name].setTextureRect(IntRect(320, 128, 64, 64));
-      }
-      sprites[name].setPosition(coord.getX(), coord.getY());
-    }
+void Personnage::initSprites(Texture &spritesheet) {
 
-    vector<string> moveNames = {"moveLeft", "moveRight"};
-    for (string& moveName : moveNames) {
-       int x = 0;
-        if(moveName == "moveLeft"){
-          for (int i = 1; i <= 9; i++) {
-            string spriteName = moveName + to_string(i);
-            sprites[spriteName].setTexture(spritesheet);
-            sprites[spriteName].setTextureRect(IntRect(x, 576, 64, 64));
-            sprites[spriteName].setPosition(coord.getX(), coord.getY());
-            x += 64;
-          }
-        }else{
-          for (int i = 1; i <= 9; i++) {
-            string spriteName = moveName + to_string(i);
-            sprites[spriteName].setTexture(spritesheet);
-            sprites[spriteName].setTextureRect(IntRect(x, 704, 64, 64));
-            sprites[spriteName].setPosition(coord.getX(), coord.getY());
-            x += 64;
-          }
-        }
-    }
-
-}
-
-Personnage::Personnage(float x, float y, int taille, Texture& texture)
-    : coord(x, y){
-    this->taille = taille;
-    this->direction = {
-        {"isJumping", false},
-        {"isGoingUp", false},
-        {"isFalling", true},
-        {"isGoingRight", false},
-        {"isGoingLeft", false}
-    };
-
-    this->collision = {
-        {"up", false}, {"down", false}, {"left", false}, {"right", false}
-    };
-
-    this->jumpHeight = 15;
-    this->timeJump = 0;
-    this->vitesse = 3;
-    
-    initSprites(texture);
-}
-
-void Personnage::draw(RenderWindow& window) {
-  if (direction["isGoingLeft"]) {
-
-    int frame = (clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % NUM_FRAMES;
-        window.draw(sprites["moveLeft" + to_string(frame + 1)]);
-
-  }else if(direction["isGoingRight"]) {
-
-    int frame = (clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % NUM_FRAMES;
-        window.draw(sprites["moveRight" + to_string(frame + 1)]);
-
-  }else if (direction["isJumping"] && !collision["right"]) {
-
-    window.draw(sprites["jump"]); 
-    
-  }else if(direction["isFalling"] && !collision["down"]) {
-     window.draw(sprites["fall"]);
-  }
-  else {
-    window.draw(sprites["stop"]);
-  }
-   
-}
-
-
-void Personnage::update() {   
-  // update position of the sprite
   vector<string> spriteNames = {"stop", "jump", "fall"};
-  for (string& name : spriteNames) {
+  for (string &name : spriteNames) {
+    sprites[name].setTexture(spritesheet);
+    if (name == "stop") {
+      sprites[name].setTextureRect(IntRect(0, 128, 64, 64));
+    } else if (name == "jump") {
+      sprites[name].setTextureRect(IntRect(256, 128, 64, 64));
+    } else if (name == "fall") {
+      sprites[name].setTextureRect(IntRect(320, 128, 64, 64));
+    }
     sprites[name].setPosition(coord.getX(), coord.getY());
   }
-  
+
   vector<string> moveNames = {"moveLeft", "moveRight"};
-  for (string& moveName : moveNames) {
+  for (string &moveName : moveNames) {
     int x = 0;
-    if(moveName == "moveLeft"){
+    if (moveName == "moveLeft") {
+      for (int i = 1; i <= 9; i++) {
+        string spriteName = moveName + to_string(i);
+        sprites[spriteName].setTexture(spritesheet);
+        sprites[spriteName].setTextureRect(IntRect(x, 576, 64, 64));
+        sprites[spriteName].setPosition(coord.getX(), coord.getY());
+        x += 64;
+      }
+    } else {
+      for (int i = 1; i <= 9; i++) {
+        string spriteName = moveName + to_string(i);
+        sprites[spriteName].setTexture(spritesheet);
+        sprites[spriteName].setTextureRect(IntRect(x, 704, 64, 64));
+        sprites[spriteName].setPosition(coord.getX(), coord.getY());
+        x += 64;
+      }
+    }
+  }
+}
+
+Personnage::Personnage(float x, float y, Texture &texture) : coord(x, y) {
+  this->largeur = 64;
+  this->hauteur = 64;
+  this->direction = {{"isJumping", false},
+                     {"isGoingUp", false},
+                     {"isFalling", true},
+                     {"isGoingRight", false},
+                     {"isGoingLeft", false}};
+
+  this->collision = {
+      {"up", false}, {"down", false}, {"left", false}, {"right", false}};
+
+  this->jumpHeight = 15;
+  this->timeJump = 0;
+  this->vitesse = 3;
+
+  initSprites(texture);
+}
+
+void Personnage::draw(RenderWindow &window) {
+  if (direction["isGoingLeft"]) {
+
+    int frame = (clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) %
+                NUM_FRAMES;
+    window.draw(sprites["moveLeft" + to_string(frame + 1)]);
+
+  } else if (direction["isGoingRight"]) {
+
+    int frame = (clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) %
+                NUM_FRAMES;
+    window.draw(sprites["moveRight" + to_string(frame + 1)]);
+
+  } else if (direction["isJumping"] && !collision["right"]) {
+
+    window.draw(sprites["jump"]);
+
+  } else if (direction["isFalling"] && !collision["down"]) {
+    window.draw(sprites["fall"]);
+  } else {
+    window.draw(sprites["stop"]);
+  }
+}
+
+void Personnage::update() {
+  // update position of the sprite
+  vector<string> spriteNames = {"stop", "jump", "fall"};
+  for (string &name : spriteNames) {
+    sprites[name].setPosition(coord.getX(), coord.getY());
+  }
+
+  vector<string> moveNames = {"moveLeft", "moveRight"};
+  for (string &moveName : moveNames) {
+    int x = 0;
+    if (moveName == "moveLeft") {
       for (int i = 1; i <= 9; i++) {
         string spriteName = moveName + to_string(i);
         sprites[spriteName].setPosition(coord.getX(), coord.getY());
         x += 64;
       }
-    }else{
+    } else {
       for (int i = 1; i <= 9; i++) {
         string spriteName = moveName + to_string(i);
         sprites[spriteName].setPosition(coord.getX(), coord.getY());
@@ -141,9 +134,8 @@ void Personnage::update() {
   if (!direction["isJumping"]) {
     this->direction["isGoingUp"] = false;
     this->direction["isFalling"] = true;
-    cout << "isFalling"  << endl;
   }
-  if (direction["isGoingUp"] && !collision["up"] ) {
+  if (direction["isGoingUp"] && !collision["up"]) {
     this->timeJump++;
     if (timeJump < jumpHeight) {
       this->deplacerY(-vitesse);
@@ -157,37 +149,36 @@ void Personnage::update() {
     this->deplacerY(vitesse);
   }
 
-  if (direction["isGoingRight"] && !collision["right"] ) {
-    
+  if (direction["isGoingRight"] && !collision["right"]) {
+
     this->setCollisionFalseExcept("right");
     this->deplacerX(vitesse);
   }
-  
+
   if (direction["isGoingLeft"] && !collision["left"]) {
     this->setCollisionFalseExcept("left");
-    
+
     this->deplacerX(-vitesse);
   }
-  
-  if (direction["isGoingUp"] && !collision["up"] ) {
+
+  if (direction["isGoingUp"] && !collision["up"]) {
     this->setCollisionFalseExcept("up");
-    
+
     this->deplacerY(-vitesse);
   }
-  if(  collision["up"]  && !collision["down"] && collision["right"] && collision["left"]) {
-    
+  if (collision["up"] && !collision["down"] && collision["right"] &&
+      collision["left"]) {
+
     this->setCollisionFalseExcept("down");
-    
+
     this->deplacerY(vitesse);
   }
-  
-  
 }
 
 // getters
-int Personnage::getHauteur() { return taille; }
+int Personnage::getHauteur() { return hauteur; }
 
-int Personnage::getLargeur() { return taille / 2; }
+int Personnage::getLargeur() { return largeur; }
 
 int Personnage::getX() { return coord.getX(); }
 

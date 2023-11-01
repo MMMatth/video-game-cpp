@@ -1,19 +1,19 @@
+/*!
+ * \file point.hpp
+ * \brief Définition de la classe Point.
+ * \author Matthieu Gaudel and Papa El Hadji G Cissé
+ */
+
 #ifndef POINT_HPP
 #define POINT_HPP
 
 /*!
- * \file point.hpp
- * \brief Définition de la classe Point.
- * \author Mathieu Gaudel and Papa El Hadji G Cissé
- * \version 2023
- */
-
-/*!
  * \class Point
- * \brief Classe représentant un point dans un espace 2D.
+ * \brief class représentant un point dans un espace 2D.
  */
 class Point {
 public:
+  Point() : m_x(0), m_y(0) {}
   Point(int x, int y) : m_x(x), m_y(y) {}
   int getX() const { return m_x; }
   int getY() const { return m_y; }

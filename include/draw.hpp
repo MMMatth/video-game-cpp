@@ -1,23 +1,19 @@
-#ifndef DRAW_HPP
-#define DRAW_HPP
-
 /*!
  * \file draw.hpp
  * \brief Fonctions de dessin.
  * \author  Mathieu Gaudel and Papa El Hadji G Cissé
- * \version 2023
  */
+#ifndef DRAW_HPP
+#define DRAW_HPP
 
 #include <SFML/Graphics.hpp>
-
-
 
 using namespace std;
 using namespace sf;
 
 /*!
  * \brief Dessine un sprite à une position donnée.
- * 
+ *
  * Cette fonction dessine un sprite à une position spécifiée dans une fenêtre.
  *
  * \param x La position horizontale du sprite.
@@ -29,7 +25,7 @@ void drawSprite(int x, int y, RenderWindow *window, string path);
 
 /*!
  * \brief Dessine un sprite à une position donnée.
- * 
+ *
  * Cette fonction dessine un sprite à une position spécifiée dans une fenêtre.
  *
  * \param x La position horizontale du sprite.
@@ -41,8 +37,9 @@ void drawSprites(int x, int y, Sprite sprite, RenderWindow *window);
 
 /*!
  * \brief Dessine une carte de couleur unie.
- * 
- * Cette fonction dessine une carte de couleur unie à une position donnée dans une fenêtre.
+ *
+ * Cette fonction dessine une carte de couleur unie à une position donnée dans
+ * une fenêtre.
  *
  * \param x La position horizontale de la carte.
  * \param y La position verticale de la carte.
@@ -51,12 +48,14 @@ void drawSprites(int x, int y, Sprite sprite, RenderWindow *window);
  * \param largeur La largeur de la carte.
  * \param hauteur La hauteur de la carte.
  */
-void drawMap(int x, int y, Color color, RenderWindow *window, int largeur, int hauteur);
+void drawMap(int x, int y, Color color, RenderWindow *window, int largeur,
+             int hauteur);
 
 /*!
  * \brief Dessine un rectangle de couleur unie.
- * 
- * Cette fonction dessine un rectangle de couleur unie à une position donnée dans une fenêtre.
+ *
+ * Cette fonction dessine un rectangle de couleur unie à une position donnée
+ * dans une fenêtre.
  *
  * \param x La position horizontale du rectangle.
  * \param y La position verticale du rectangle.
@@ -65,12 +64,14 @@ void drawMap(int x, int y, Color color, RenderWindow *window, int largeur, int h
  * \param largeur La largeur du rectangle.
  * \param hauteur La hauteur du rectangle.
  */
-void drawRectangle(int x, int y, Color color, RenderWindow *window, int largeur, int hauteur);
+void drawRectangle(int x, int y, Color color, RenderWindow *window, int largeur,
+                   int hauteur);
 
 /*!
  * \brief Dessine une mini-carte de couleur unie.
- * 
- * Cette fonction dessine une mini-carte de couleur unie à une position donnée dans une fenêtre.
+ *
+ * Cette fonction dessine une mini-carte de couleur unie à une position donnée
+ * dans une fenêtre.
  *
  * \param x La position horizontale de la mini-carte.
  * \param y La position verticale de la mini-carte.
@@ -79,6 +80,7 @@ void drawRectangle(int x, int y, Color color, RenderWindow *window, int largeur,
  * \param largeur La largeur de la mini-carte.
  * \param hauteur La hauteur de la mini-carte.
  */
-void drawMiniCarte(int x, int y, Color color, RenderWindow *window, int largeur, int hauteur);
+void drawMiniCarte(int x, int y, Color color, RenderWindow *window, int largeur,
+                   int hauteur);
 
 #endif /* DRAW_HPP*/

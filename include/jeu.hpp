@@ -1,3 +1,8 @@
+/*!
+ * \file jeu.hpp
+ * \brief Définition de la classe Jeu.
+ * \author Matthieu Gaudel and Papa El Hadji G Cissé
+ */
 #ifndef JEU_HPP
 #define JEU_HPP
 
@@ -10,15 +15,9 @@
 #include <unordered_map>
 
 /*!
- * \file jeu.hpp
- * \brief Définition de la classe Jeu.
- * \author Mathieu Gaudel and Papa El Hadji G Cissé
- * \version 2023
- */
-
-/*!
  * \namespace sf
- * \brief Espace de noms pour la bibliothèque SFML (Simple and Fast Multimedia Library).
+ * \brief Espace de noms pour la bibliothèque SFML (Simple and Fast Multimedia
+ * Library).
  */
 using namespace sf;
 
@@ -34,13 +33,13 @@ using namespace std;
  */
 class Jeu {
 private:
-  Carte carte; /*!< Objet représentant la carte du jeu. */
-  Personnage perso; /*!< Objet représentant le personnage du joueur. */
+  Carte carte;         /*!< Objet représentant la carte du jeu. */
+  Personnage perso;    /*!< Objet représentant le personnage du joueur. */
   RenderWindow window; /*!< Fenêtre de rendu du jeu. */
-  View miniWindow; /*!< Vue pour la mini-carte. */
-  bool collideDown; /*!< Indique s'il y a une collision vers le bas. */
-  bool collideSide; /*!< Indique s'il y a une collision sur les côtés. */
-  Point posCam; /*!< Position de la caméra. */
+  View miniWindow;     /*!< Vue pour la mini-carte. */
+  bool collideDown;    /*!< Indique s'il y a une collision vers le bas. */
+  bool collideSide;    /*!< Indique s'il y a une collision sur les côtés. */
+  Point posCam;        /*!< Position de la caméra. */
   unordered_map<string, Sprite> sprites; /*!< Dictionnaire de sprites. */
 
 public:
@@ -48,7 +47,7 @@ public:
    * Constructeur par défaut de la classe Jeu.
    * \param texture La texture à utiliser pour le personnage.
    */
-  Jeu(Texture& texture);
+  Jeu(Texture &texture);
 
   /*!
    * Fonction principale pour exécuter le jeu.
