@@ -1,26 +1,22 @@
-/*!
- * \file point.hpp
- * \brief Définition de la classe Point.
- * \author Matthieu Gaudel and Papa El Hadji G Cissé
- */
-
 #ifndef POINT_HPP
 #define POINT_HPP
 
 #include <string>
 
-/*!
- * \class Point
- * \brief class représentant un point dans un espace 2D.
- */
 class Point {
 public:
+  /* constructor */
   Point() : m_x(0), m_y(0) {}
   Point(int x, int y) : m_x(x), m_y(y) {}
+  /* destructor */
+  ~Point() {}
+  /* getters */
   int getX() const { return m_x; }
   int getY() const { return m_y; }
+  /* setters */
   void setX(int x) { m_x = x; }
   void setY(int y) { m_y = y; }
+  /* other */
   bool isEqual(Point other) {
     return (m_x == other.getX() && m_y == other.getY());
   }
@@ -29,8 +25,8 @@ public:
   };
 
 private:
-  int m_x; /*!< Coordonnée horizontale du point. */
-  int m_y; /*!< Coordonnée verticale du point. */
+  int m_x;
+  int m_y;
 };
 
 #endif

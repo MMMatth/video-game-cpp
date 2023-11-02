@@ -1,9 +1,3 @@
-/**
- * \file inventory.hpp
- * \author Matthieu Gaudel et Papa El Hadji G Cissé
- * \brief class Inventory
- *
- */
 
 #ifndef inventory_hpp
 #define inventory_hpp
@@ -19,10 +13,6 @@
 
 using namespace std;
 
-/**
- * \brief class Inventory
- * la premiere ligne de l'inventaire contient les objet dans la main du joueur
- */
 class Inventory {
 private:
   InventoryTile m_inventory[INVENTORY_HEIGHT][INVENTORY_WIDTH];
@@ -36,32 +26,13 @@ public:
   Inventory(string csvPath);
   /* Destruceur */
   ~Inventory();
-  /**
-   * \brief fonction qui echange les items de deux cases
-   *
-   * \param p1 : position de la premiere case
-   * \param p2 : position de la deuxieme case
-   */
+
   void swapItem(Point p1, Point p2);
 
-  /**
-   * \brief fonction qui echange les items de deux cases
-   *
-   * \param t1 : premiere case
-   * \param t2 : deuxieme case
-   */
   void swapItem(InventoryTile *t1, InventoryTile *t2);
-  /**
-   * \brief add item to the inventory
-   *
-   * \param item
-   */
+
   void addItem(Item item);
-  /**
-   * \brief remove item from the inventory
-   *
-   * \param pos : position of the item
-   */
+
   void removeItem(Point pos);
 
   /* render */

@@ -70,7 +70,6 @@ void Jeu::update() {
 
 void Jeu::clean() {
   this->window.clear();
-  this->perso.clean();
   this->carte.clean();
 }
 
@@ -167,12 +166,8 @@ void Jeu::render() {
 
   perso.draw(window);
 
-  Texture spritesheet, invTile, toolspritesheet;
+  Texture spritesheet;
   assert(spritesheet.loadFromFile("../assets/img/spritesheet.png") &&
-         "Erreur de chargement de la spritesheet.");
-  assert(invTile.loadFromFile("../assets/img/inventoryTile.png") &&
-         "Erreur de chargement de la invTile.");
-  assert(toolspritesheet.loadFromFile("../assets/img/toolspritesheet.png") &&
          "Erreur de chargement de la spritesheet.");
   for (auto it = blockMap.begin(); it != blockMap.end(); it++) {
     if (it->second.getName() != "air")
@@ -182,14 +177,14 @@ void Jeu::render() {
                  IntRect(it->second.getSpriteSheet().getX(),
                          it->second.getSpriteSheet().getY(), 16, 16))));
   }
+  sprites.emplace(make_pair("invTileSelected",
+                            Sprite(spritesheet, IntRect(0, 64, 22, 22))));
   sprites.emplace(
-      make_pair("invTileSelected", Sprite(invTile, IntRect(0, 0, 22, 22))));
-  sprites.emplace(
-      make_pair("invTile", Sprite(invTile, IntRect(23, 0, 22, 22))));
+      make_pair("invTile", Sprite(spritesheet, IntRect(23, 64, 22, 22))));
   for (auto it = toolMap.begin(); it != toolMap.end(); it++) {
     sprites.emplace(
         make_pair(it->second.getName(),
-                  Sprite(toolspritesheet,
+                  Sprite(spritesheet,
                          IntRect(it->second.getSpriteSheet().getX(),
                                  it->second.getSpriteSheet().getY(), 16, 16))));
   }

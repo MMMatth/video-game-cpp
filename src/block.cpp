@@ -1,35 +1,15 @@
 #include "../include/block.hpp"
 
-// Constructeur par défaut
+/* constructor */
 Block::Block()
     : m_spriteSheet(Point(0, 0)), m_id(0), m_name(""), m_isSolid(false) {}
 
-// Constructeur avec initialisation des attributs
 Block::Block(int spriteSheetX, int spriteSheetY, int id, std::string name,
              bool isSolid, bool is_stackable)
-    : m_spriteSheet(Point(spriteSheetX, spriteSheetY)), m_isSolid(isSolid),
-      Item(name, id, is_stackable) {}
+    : m_isSolid(isSolid),
+      Item(name, id, is_stackable, spriteSheetX, spriteSheetY) {}
 
-// Getters
-Point Block::getSpriteSheet() const { return m_spriteSheet; }
-
-bool Block::isSolid() const { return m_isSolid; }
-
-// Setters
-void Block::setSpriteSheetX(int spriteSheetX) {
-  m_spriteSheet.setX(spriteSheetX);
-}
-
-void Block::setSpriteSheetY(int spriteSheetY) {
-  m_spriteSheet.setY(spriteSheetY);
-}
-
-// void Block::setId(int number) { m_id = number; }
-
-// void Block::setName(std::string name) { m_name = name; }
-
-void Block::setSolid(bool isSolid) { m_isSolid = isSolid; }
-
+/* other */
 std::string Block::toString() const {
   std::string s = "Block {";
   s += "id: " + std::to_string(m_id) + ",";

@@ -10,29 +10,25 @@ using namespace std;
 
 class Tool : public Item {
 private:
-  Point m_spriteSheet;
-
 public:
-  // Provide default arguments only in the declaration
+  /* constructor */
   Tool(string name, int id, int spiritSheetX, int spiritSheetY,
        bool is_stackable = false, int amount = 1);
   Tool();
-  /* getters */
-  Point getSpriteSheet() { return m_spriteSheet; }
+  /* destructor */
+  ~Tool(){};
 };
 
-// Do not provide default arguments in the definition
 Tool::Tool(string name, int id, int spritSheetX, int spritSheetY,
            bool is_stackable, int amount)
-    : Item(name, id, is_stackable, amount),
-      m_spriteSheet(spritSheetX, spritSheetY) {}
+    : Item(name, id, is_stackable, spritSheetX, spritSheetY, amount) {}
 
-// Provide a default constructor for the Tool class
-Tool::Tool() : Item("", 0, false, 0) {}
+Tool::Tool() : Item() {}
 
+/* enum */
 enum toolType { IRON_PICKAXE, IRON_AXE };
 static map<toolType, Tool> toolMap = {
-    {IRON_PICKAXE, Tool("iron_pickaxe", 100, 0, 0)},
-    {IRON_AXE, Tool("iron_axe", 101, 0, 16)}};
+    {IRON_PICKAXE, Tool("iron_pickaxe", 100, 0, 86)},
+    {IRON_AXE, Tool("iron_axe", 101, 16, 86)}};
 
 #endif /* TOOLS_HPP */

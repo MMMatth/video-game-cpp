@@ -13,17 +13,17 @@ private:
   Point m_item_position;
 
 public:
+  /* constructor */
   InventoryTile(Block block);
   InventoryTile();
+  /* destructor */
   ~InventoryTile();
+  /* getters */
   Item getItem() { return m_item; }
-  void setAmount(int amount) { m_item.setAmount(amount); }
   Point getItemPos() { return m_item_position; }
-  void swapItem(InventoryTile &other) {
-    Item tmp = m_item;
-    m_item = other.getItem();
-    other.setItem(tmp);
-  }
+  bool isEmpty() { return m_is_empty; }
+  /* setters */
+  void setAmount(int amount) { m_item.setAmount(amount); }
   void setIsEmpty(bool is_empty) { m_is_empty = is_empty; }
   void setItem(Item item) {
     m_item = item;
@@ -33,7 +33,11 @@ public:
     m_item_position.setX(x);
     m_item_position.setY(y);
   }
-  bool isEmpty() { return m_is_empty; }
+  void swapItem(InventoryTile &other) {
+    Item tmp = m_item;
+    m_item = other.getItem();
+    other.setItem(tmp);
+  }
 };
 
 #endif /* TILE_HPP */
