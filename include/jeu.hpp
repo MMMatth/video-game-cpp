@@ -12,6 +12,7 @@
 #include "inventory.hpp"
 #include "personnage.hpp"
 #include "point.hpp"
+#include "tool.hpp"
 #include <SFML/Graphics.hpp>
 #include <cassert>
 #include <unordered_map>

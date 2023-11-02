@@ -98,7 +98,8 @@ void Jeu::event() {
         cout << "Inventaire : " << inv.toString() << endl;
         break;
       case Keyboard::E:
-        inv.addItem(blockMap[GRASS]);
+        // inv.addItem(blockMap[GRASS]);
+        inv.addItem(toolMap[IRON_PICKAXE]);
         break;
       case Keyboard::R:
         inv.swapItem(Point(0, 0), Point(0, 1));
@@ -166,11 +167,13 @@ void Jeu::render() {
 
   perso.draw(window);
 
-  Texture spritesheet, invTile;
+  Texture spritesheet, invTile, toolspritesheet;
   assert(spritesheet.loadFromFile("../assets/img/spritesheet.png") &&
          "Erreur de chargement de la spritesheet.");
   assert(invTile.loadFromFile("../assets/img/inventoryTile.png") &&
          "Erreur de chargement de la invTile.");
+  assert(toolspritesheet.loadFromFile("../assets/img/toolspritesheet.png") &&
+         "Erreur de chargement de la spritesheet.");
   for (auto it = blockMap.begin(); it != blockMap.end(); it++) {
     if (it->second.getName() != "air")
       sprites.emplace(make_pair(
@@ -183,6 +186,13 @@ void Jeu::render() {
       make_pair("invTileSelected", Sprite(invTile, IntRect(0, 0, 22, 22))));
   sprites.emplace(
       make_pair("invTile", Sprite(invTile, IntRect(23, 0, 22, 22))));
+  for (auto it = toolMap.begin(); it != toolMap.end(); it++) {
+    sprites.emplace(
+        make_pair(it->second.getName(),
+                  Sprite(toolspritesheet,
+                         IntRect(it->second.getSpriteSheet().getX(),
+                                 it->second.getSpriteSheet().getY(), 16, 16))));
+  }
 
   for (int i = 0; i < carte.getSize(); i++) {
     int x, y;
