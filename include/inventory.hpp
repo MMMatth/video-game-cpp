@@ -82,7 +82,16 @@ public:
   void handleClick(int mouseX, int mouseY, int persoX, int persoY);
 
   /* setters */
-  void setIsOpen(bool isOpen) { m_is_open = isOpen; }
+  void setIsOpen() {
+    if (m_is_open) {
+      m_is_open = false;
+      addItem(m_selected_tile.getItem());
+      m_selected_tile = InventoryTile();
+    } else {
+      m_is_open = true;
+    }
+  }
+
   void setPosHand(int indice) { m_pos_hand = indice; }
   int getPosHand() { return m_pos_hand; }
 

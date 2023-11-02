@@ -86,4 +86,7 @@ void drawRectangle(int x, int y, Color color, RenderWindow *window, int largeur,
 void drawMiniCarte(int x, int y, Color color, RenderWindow *window, int largeur,
                    int hauteur);
 
+void drawText(int x, int y, string text, RenderWindow *window, int size,
+              Color color, string fontPath);
+
 #endif /* DRAW_HPP*/

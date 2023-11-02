@@ -17,6 +17,7 @@ public:
   InventoryTile();
   ~InventoryTile();
   Item getItem() { return m_item; }
+  void setAmount(int amount) { m_item.setAmount(amount); }
   Point getItemPos() { return m_item_position; }
   void swapItem(InventoryTile &other) {
     Item tmp = m_item;

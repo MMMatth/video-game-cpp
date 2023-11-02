@@ -13,7 +13,7 @@ Jeu::Jeu(sf::Texture &texture)
 
 void Jeu::run() {
   Clock clock;
-  Time timePerFrame = seconds(1.f / 60.f);
+  Time timePerFrame = seconds(1.f / FPS_MAX);
   Time timeSinceLastUpdate = Time::Zero;
   while (window.isOpen()) {
     timeSinceLastUpdate += clock.restart();
@@ -104,11 +104,7 @@ void Jeu::event() {
         inv.swapItem(Point(0, 0), Point(0, 1));
         break;
       case Keyboard::I:
-        if (inv.isOpen()) {
-          inv.setIsOpen(false);
-        } else if (!inv.isOpen()) {
-          inv.setIsOpen(true);
-        }
+        inv.setIsOpen();
         break;
       case Keyboard::Num1:
         inv.setPosHand(0);

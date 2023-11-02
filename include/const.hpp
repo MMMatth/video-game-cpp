@@ -3,6 +3,7 @@
 
 #define TAILLE_CASE 32
 #define TAILLE_CASE_MINI_CARTE 8
+#define FPS_MAX 60
 #define TAILLE_PERSONNAGE 64
 #define TAILLE_PERSONNAGE_MINI_CARTE 30
 #define WINDOW_WIDTH 800
@@ -19,5 +20,9 @@
 #define INVENTORY_WIDTH 9
 #define INVENTORY_TILE_SIZE 50
 #define INVENTORY_OBJECT_SIZE 32
+#define MAX_STACK_SIZE 64
+
+#define FONT_PATH "assets/fonts/arial.ttf"
+#define FONT_COLOR Color(0, 0, 0)
 
 #endif

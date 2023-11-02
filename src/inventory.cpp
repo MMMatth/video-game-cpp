@@ -35,18 +35,25 @@ void Inventory::swapItem(InventoryTile *t1, InventoryTile *t2) {
 }
 /* add and remove item*/
 void Inventory::addItem(Item item) {
-  bool itemAdded = false;
-  int i = 0;
-  while (i < INVENTORY_HEIGHT && !itemAdded) {
-    int j = 0;
-    while (j < INVENTORY_WIDTH && !itemAdded) {
+  for (int i = 0; i < INVENTORY_HEIGHT; i++) {
+    for (int j = 0; j < INVENTORY_WIDTH; j++) {
+      if (m_inventory[i][j].getItem().getId() == item.getId() &&
+          m_inventory[i][j].getItem().isStackable()) {
+        int totalAmount =
+            m_inventory[i][j].getItem().getAmount() + item.getAmount();
+        if (totalAmount <= MAX_STACK_SIZE) {
+          m_inventory[i][j].setAmount(totalAmount);
+          return;
+        } else {
+          m_inventory[i][j].getItem().setAmount(MAX_STACK_SIZE);
+          item.setAmount(totalAmount - MAX_STACK_SIZE);
+        }
+      }
       if (m_inventory[i][j].isEmpty()) {
         m_inventory[i][j].setItem(item);
-        itemAdded = true;
+        return;
       }
-      j++;
     }
-    i++;
   }
 }
 void Inventory::removeItem(Point pos) {
@@ -65,12 +72,20 @@ void Inventory::drawItem(sf::RenderWindow &window,
                          int row, int column) {
   drawSprites(x + column * INVENTORY_TILE_SIZE, y, sprites["invTile"], &window,
               INVENTORY_TILE_SIZE, INVENTORY_TILE_SIZE);
-  if (!m_inventory[row][column].isEmpty())
+  if (!m_inventory[row][column].isEmpty()) {
     drawSprites(x + column * INVENTORY_TILE_SIZE +
                     (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
                 y + (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
                 sprites[m_inventory[row][column].getItem().getName()], &window,
                 INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
+    if (m_inventory[row][column].getItem().isStackable()) {
+      drawText(x + column * INVENTORY_TILE_SIZE +
+                   (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
+               y + (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
+               to_string(m_inventory[row][column].getItem().getAmount()),
+               &window, 10, FONT_COLOR, FONT_PATH);
+    }
+  }
   if (column == m_pos_hand && row == INVENTORY_HEIGHT - 1)
     drawSprites(x + column * INVENTORY_TILE_SIZE, y, sprites["invTileSelected"],
                 &window, INVENTORY_TILE_SIZE, INVENTORY_TILE_SIZE);
