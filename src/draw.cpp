@@ -15,13 +15,13 @@ void drawSprite(int x, int y, RenderWindow *window, string path) {
   window->draw(sprite);
 }
 
-void drawSprites(int x, int y, Sprite sprite, RenderWindow *window) {
+void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
+                 int height) {
   sprite.setPosition(x, y);
-  sprite.setScale(TAILLE_CASE / sprite.getLocalBounds().width,
-                  TAILLE_CASE / sprite.getLocalBounds().height);
+  sprite.setScale(width / sprite.getLocalBounds().width,
+                  height / sprite.getLocalBounds().height);
   window->draw(sprite);
 }
-
 
 void drawMap(int x, int y, Color color, RenderWindow *window, int largeur,
              int hauteur) {

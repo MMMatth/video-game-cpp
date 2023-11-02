@@ -32,8 +32,11 @@ void drawSprite(int x, int y, RenderWindow *window, string path);
  * \param y La position verticale du sprite.
  * \param sprite Le sprite à dessiner.
  * \param window Un pointeur vers la fenêtre de rendu.
+ * \param width La largeur du sprite.
+ * \param height La hauteur du sprite.
  */
-void drawSprites(int x, int y, Sprite sprite, RenderWindow *window);
+void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
+                 int height);
 
 /*!
  * \brief Dessine une carte de couleur unie.

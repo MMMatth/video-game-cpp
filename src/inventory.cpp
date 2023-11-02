@@ -2,8 +2,7 @@
 
 Inventory::Inventory(string csvPath) {}
 
-Inventory::Inventory() {
-  m_object_selected = 0;
+Inventory::Inventory() : m_is_open(false), m_object_selected(0) {
   for (int i = 0; i < INVENTORY_HEIGHT; i++) {
     for (int j = 0; j < INVENTORY_WIDTH; j++) {
       m_inventory[i][j] = InventoryTile();
@@ -44,19 +43,49 @@ void Inventory::removeItem(int x, int y) {
   m_inventory[x][y].setItem(Item());
 }
 
-void Inventory::render(sf::RenderWindow &window,
-                       unordered_map<string, Sprite> sprites, int posPersoX,
-                       int posePersoY) {
-  int x = posPersoX - (INVENTORY_WIDTH * 32) / 2;
-  for (int i = 0; i < INVENTORY_WIDTH; i++) {
-    drawSprites(x + i * 32, posePersoY + TAILLE_FENETRE_Y / 4,
-                sprites["invTile"], &window);
-    if (i == m_object_selected) {
-      drawSprites(x + i * 32, posePersoY + TAILLE_FENETRE_Y / 4,
-                  sprites["invTileSelected"], &window);
+void Inventory::drawInventoryItem(sf::RenderWindow &window,
+                                  unordered_map<string, Sprite> sprites, int x,
+                                  int y, int row, int column) {
+  drawSprites(x + column * INVENTORY_TILE_SIZE, y, sprites["invTile"], &window,
+              INVENTORY_TILE_SIZE, INVENTORY_TILE_SIZE);
+  drawSprites(x + column * INVENTORY_TILE_SIZE +
+                  (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
+              y + (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
+              sprites[m_inventory[row][column].getItem().getName()], &window,
+              INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
+  if (column == m_object_selected && row == 0)
+    drawSprites(x + column * INVENTORY_TILE_SIZE, y, sprites["invTileSelected"],
+                &window, INVENTORY_TILE_SIZE, INVENTORY_TILE_SIZE);
+}
+
+void Inventory::drawLowerBar(sf::RenderWindow &window,
+                             unordered_map<string, Sprite> sprites, int persoX,
+                             int persoY) {
+  int x = persoX - (INVENTORY_WIDTH * INVENTORY_TILE_SIZE) / 2;
+  int y = persoY - INVENTORY_TILE_SIZE + TAILLE_FENETRE_Y / 4;
+  for (int column = 0; column < INVENTORY_WIDTH; column++) {
+    drawInventoryItem(window, sprites, x, y, 0, column);
+  }
+}
+
+void Inventory::drawInv(sf::RenderWindow &window,
+                        unordered_map<string, Sprite> sprites, int persoX,
+                        int persoY) {
+  int x = persoX - (INVENTORY_WIDTH * INVENTORY_TILE_SIZE) / 2;
+  int y = persoY - ((INVENTORY_WIDTH - 1) * INVENTORY_TILE_SIZE) / 2;
+  for (int row = 1; row < INVENTORY_HEIGHT; row++) {
+    for (int column = 0; column < INVENTORY_WIDTH; column++) {
+      drawInventoryItem(window, sprites, x, y + row * INVENTORY_TILE_SIZE, row,
+                        column);
     }
-    drawSprites(x + i * 32, posePersoY + TAILLE_FENETRE_Y / 4,
-                sprites[m_inventory[0][i].getItem().getName()], &window);
+  }
+}
+void Inventory::render(sf::RenderWindow &window,
+                       unordered_map<string, Sprite> sprites, int persoX,
+                       int persoY) {
+  drawLowerBar(window, sprites, persoX, persoY);
+  if (m_is_open) {
+    drawInv(window, sprites, persoX, persoY);
   }
 }
 

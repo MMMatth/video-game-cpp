@@ -90,6 +90,13 @@ void Jeu::event() {
       case Keyboard::R:
         inv.swapItem(0, 0, 0, 1);
         break;
+      case Keyboard::I:
+        if (inv.isOpen()) {
+          inv.setIsOpen(false);
+        } else if (!inv.isOpen()) {
+          inv.setIsOpen(true);
+        }
+        break;
       case Keyboard::Num1:
         inv.setItemSelected(0);
         break;
@@ -169,8 +176,8 @@ void Jeu::render() {
 
     if (carte.getTile(i).estDansCam(posCam.getX(), posCam.getY(),
                                     TAILLE_FENETRE_X, TAILLE_FENETRE_Y)) {
-      drawSprites(x, y, sprites[carte.getTile(i).getBlock().getName()],
-                  &window);
+      drawSprites(x, y, sprites[carte.getTile(i).getBlock().getName()], &window,
+                  TAILLE_CASE, TAILLE_CASE);
     }
   }
   inv.render(window, sprites, posCam.getX(), posCam.getY());
