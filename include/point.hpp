@@ -7,6 +7,8 @@
 #ifndef POINT_HPP
 #define POINT_HPP
 
+#include <string>
+
 /*!
  * \class Point
  * \brief class représentant un point dans un espace 2D.
@@ -19,7 +21,12 @@ public:
   int getY() const { return m_y; }
   void setX(int x) { m_x = x; }
   void setY(int y) { m_y = y; }
-  // std::string toString();
+  bool isEqual(Point other) {
+    return (m_x == other.getX() && m_y == other.getY());
+  }
+  std::string toString() {
+    return "(" + std::to_string(m_x) + ", " + std::to_string(m_y) + ")";
+  };
 
 private:
   int m_x; /*!< Coordonnée horizontale du point. */

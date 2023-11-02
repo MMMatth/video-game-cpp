@@ -4,16 +4,14 @@ using namespace std;
 using namespace sf;
 
 Jeu::Jeu(sf::Texture &texture)
-    : window(VideoMode(TAILLE_FENETRE_X, TAILLE_FENETRE_Y), TITRE_FENETRE),
+    : window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
       perso(0, 0,
             texture), // Passer la texture (spritesheet)
-      posCam(0, 0), inv() {
+      posCam(0, 0), inv(), mousePosInCam(0, 0) {
   this->carte = Carte();
 }
 
 void Jeu::run() {
-  miniWindow.setViewport(
-      sf::FloatRect(0.9f, 0.1f, 0.2f, 0.25f)); // position du mini carte
   Clock clock;
   Time timePerFrame = seconds(1.f / 60.f);
   Time timeSinceLastUpdate = Time::Zero;
@@ -30,7 +28,7 @@ void Jeu::run() {
 }
 
 bool Jeu::collisionAvecCarte(int x, int y) {
-  if (x < 0 || x >= TAILLE_FENETRE_X || y < 0 || y >= TAILLE_FENETRE_Y) {
+  if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT) {
     return true;
   }
 
@@ -42,16 +40,31 @@ void Jeu::updateCam() {
               (perso.getX() + perso.getHauteur() / 4 - posCam.getX()) / 20);
   posCam.setY(posCam.getY() +
               (perso.getY() + perso.getHauteur() / 2 - posCam.getY()) / 20);
-  window.setView(
-      View(Vector2f(posCam.getX(), posCam.getY()),
-           Vector2f(TAILLE_FENETRE_X / 1.5, TAILLE_FENETRE_Y / 1.5)));
+  window.setView(View(Vector2f(posCam.getX(), posCam.getY()),
+                      Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
 
 void Jeu::updateCollide() { carte.collide(&perso); }
 
+void Jeu::updateMousePos() {
+  sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+  sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+
+  sf::Vector2f camPos = window.getView().getCenter();
+  sf::Vector2f viewSize = window.getView().getSize();
+
+  sf::Vector2f adjustedPos = worldPos - (camPos - viewSize / 2.f);
+  mousePosInCam.setX(adjustedPos.x);
+  mousePosInCam.setY(adjustedPos.y);
+
+  mousePosInWorld.setX(mousePosInCam.getX() + posCam.getX());
+  mousePosInWorld.setY(mousePosInCam.getY() + posCam.getY());
+}
+
 void Jeu::update() {
   updateCam();
   updateCollide();
+  updateMousePos();
   perso.update();
 }
 
@@ -88,7 +101,7 @@ void Jeu::event() {
         inv.addItem(blockMap[GRASS]);
         break;
       case Keyboard::R:
-        inv.swapItem(0, 0, 0, 1);
+        inv.swapItem(Point(0, 0), Point(0, 1));
         break;
       case Keyboard::I:
         if (inv.isOpen()) {
@@ -98,31 +111,31 @@ void Jeu::event() {
         }
         break;
       case Keyboard::Num1:
-        inv.setItemSelected(0);
+        inv.setPosHand(0);
         break;
       case Keyboard::Num2:
-        inv.setItemSelected(1);
+        inv.setPosHand(1);
         break;
       case Keyboard::Num3:
-        inv.setItemSelected(2);
+        inv.setPosHand(2);
         break;
       case Keyboard::Num4:
-        inv.setItemSelected(3);
+        inv.setPosHand(3);
         break;
       case Keyboard::Num5:
-        inv.setItemSelected(4);
+        inv.setPosHand(4);
         break;
       case Keyboard::Num6:
-        inv.setItemSelected(5);
+        inv.setPosHand(5);
         break;
       case Keyboard::Num7:
-        inv.setItemSelected(6);
+        inv.setPosHand(6);
         break;
       case Keyboard::Num8:
-        inv.setItemSelected(7);
+        inv.setPosHand(7);
         break;
       case Keyboard::Num9:
-        inv.setItemSelected(8);
+        inv.setPosHand(8);
         break;
       default:
         break;
@@ -141,6 +154,12 @@ void Jeu::event() {
         break;
       default:
         break;
+      }
+    }
+    if (event.type == Event::MouseButtonPressed) {
+      if (event.mouseButton.button == Mouse::Left) {
+        inv.handleClick(mousePosInCam.getX(), mousePosInCam.getY(),
+                        posCam.getX(), posCam.getY());
       }
     }
   }
@@ -174,13 +193,14 @@ void Jeu::render() {
     x = carte.getTile(i).getX();
     y = carte.getTile(i).getY();
 
-    if (carte.getTile(i).estDansCam(posCam.getX(), posCam.getY(),
-                                    TAILLE_FENETRE_X, TAILLE_FENETRE_Y)) {
+    if (carte.getTile(i).estDansCam(posCam.getX(), posCam.getY(), WINDOW_WIDTH,
+                                    WINDOW_HEIGHT)) {
       drawSprites(x, y, sprites[carte.getTile(i).getBlock().getName()], &window,
                   TAILLE_CASE, TAILLE_CASE);
     }
   }
-  inv.render(window, sprites, posCam.getX(), posCam.getY());
+  inv.render(window, sprites, posCam.getX(), posCam.getY(),
+             mousePosInWorld.getX(), mousePosInWorld.getY());
   // drawMiniMap();
 
   window.display();

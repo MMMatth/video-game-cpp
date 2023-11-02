@@ -44,6 +44,8 @@ private:
   Point posCam;        /*!< Position de la caméra. */
   unordered_map<string, Sprite> sprites; /*!< Dictionnaire de sprites. */
   Inventory inv;
+  Point mousePosInCam;
+  Point mousePosInWorld;
 
 public:
   /*!
@@ -74,6 +76,7 @@ public:
    */
   void updateCollide();
 
+  void updateMousePos();
   /*!
    * Affiche les éléments du jeu.
    */
