@@ -1,0 +1,4 @@
+item_type;name;x;y;amount
+block;GRASS;0;0;50
+tool;IRON_PICKAXE;0;1;
+block;DIRT;3;3;30

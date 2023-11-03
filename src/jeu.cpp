@@ -7,7 +7,7 @@ Jeu::Jeu(sf::Texture &texture)
     : window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
       perso(0, 0,
             texture), // Passer la texture (spritesheet)
-      posCam(0, 0), inv(), mousePosInCam(0, 0) {
+      posCam(0, 0), inv("../assets/csv/inventory.csv"), mousePosInCam(0, 0) {
   this->carte = Carte();
 }
 
@@ -98,7 +98,7 @@ void Jeu::event() {
         break;
       case Keyboard::E:
         // inv.addItem(blockMap[GRASS]);
-        inv.addItem(toolMap[IRON_PICKAXE]);
+        inv.addItem(toolMap["IRON_PICKAXE"]);
         break;
       case Keyboard::R:
         inv.swapItem(Point(0, 0), Point(0, 1));

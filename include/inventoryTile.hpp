@@ -3,6 +3,7 @@
 
 #include "block.hpp"
 #include "item.hpp"
+#include "tool.hpp"
 #include <iostream>
 #include <string>
 

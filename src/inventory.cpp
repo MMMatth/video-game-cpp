@@ -1,13 +1,52 @@
 #include "../include/inventory.hpp"
 
 /* constructeur */
-Inventory::Inventory(string csvPath) {}
+Inventory::Inventory(string csvPath)
+    : m_is_open(false), m_pos_hand(0), m_selected_tile(InventoryTile()) {
+  for (int row = 0; row < INVENTORY_HEIGHT; row++) {
+    for (int column = 0; column < INVENTORY_WIDTH; column++) {
+      m_inventory[row][column] = InventoryTile();
+    }
+  }
+  ifstream file(csvPath);
+  string line;
+  int row = 0;
+  int column = 0;
+  if (file.is_open()) {
+    while (getline(file, line)) {
+      stringstream ss(line);
+      string cell;
+      column = 0;
+      if (row != 0) {
+        string tab[5];
+        while (getline(ss, cell, ';')) {
+          tab[column] = cell;
+          column++;
+        }
+        int x = stoi(tab[2]);
+        int y = stoi(tab[3]);
+
+        if (tab[0] == "block") {
+          m_inventory[x][y].setItem(blockMap[tab[1]]);
+
+        } else if (tab[0] == "tool") {
+          m_inventory[x][y].setItem(toolMap[tab[1]]);
+        }
+        if (tab[4] != "") {
+          printf("amount : %s\n", tab[4].c_str());
+          m_inventory[x][y].setAmount(stoi(tab[4]));
+        }
+      }
+      row++;
+    }
+  }
+}
 Inventory::Inventory()
     : m_is_open(false), m_pos_hand(0), m_selected_tile(InventoryTile()) {
   for (int row = 0; row < INVENTORY_HEIGHT; row++) {
     for (int column = 0; column < INVENTORY_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();
-      m_inventory[row][column].setPos(row, column);
+      // m_inventory[row][column].setPos(row, column);
     }
   }
 }

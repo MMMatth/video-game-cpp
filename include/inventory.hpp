@@ -8,6 +8,8 @@
 #include "item.hpp"
 #include "point.hpp"
 #include <cassert>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 

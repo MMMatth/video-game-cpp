@@ -33,11 +33,9 @@ private:
   bool m_isSolid;
 };
 
-enum BlockType { AIR, GRASS, DIRT, STONE };
-
-static std::map<BlockType, Block> blockMap = {
-    {AIR, Block(0, "air", 0, 0, 0, 0, false, false, 0)},
-    {GRASS, Block(1, "grass", 0, 0, 16, 16, true)},
-    {DIRT, Block(2, "dirt", 16, 0, 16, 16, true)},
-    {STONE, Block(3, "stone", 32, 0, 16, 16, true)}};
+static std::map<string, Block> blockMap = {
+    {"AIR", Block(0, "air", 0, 0, 0, 0, false, false, 0)},
+    {"GRASS", Block(1, "grass", 0, 0, 16, 16, true)},
+    {"DIRT", Block(2, "dirt", 16, 0, 16, 16, true)},
+    {"STONE", Block(3, "stone", 32, 0, 16, 16, true)}};
 #endif
