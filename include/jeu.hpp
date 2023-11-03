@@ -22,7 +22,7 @@
 using namespace sf;
 
 /*!
- * \namespace std
+ * \namespace stdz
  * \brief Espace de noms pour les éléments standard de la bibliothèque C++.
  */
 using namespace std;
