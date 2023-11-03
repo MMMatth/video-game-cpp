@@ -17,8 +17,8 @@ class Block : public Item {
 public:
   Block();
 
-  Block(int spriteSheetX, int spriteSheetY, int id, string name, bool isSolid,
-        bool is_stackable = true);
+  Block(int id, string name, int spriteX, int spriteY, int spriteW, int spriteH,
+        bool isSolid, bool is_stackable = true, int amount = 1);
 
   /* getters */
   bool isSolid() const { return m_isSolid; }
@@ -30,17 +30,14 @@ public:
   std::string toString() const;
 
 private:
-  Point m_spriteSheet;
-  int m_id;
-  std::string m_name;
   bool m_isSolid;
 };
 
 enum BlockType { AIR, GRASS, DIRT, STONE };
 
 static std::map<BlockType, Block> blockMap = {
-    {AIR, Block(0, 0, 0, "air", false)},
-    {GRASS, Block(0, 0, 1, "grass", true)},
-    {DIRT, Block(16, 0, 2, "dirt", true)},
-    {STONE, Block(32, 0, 3, "stone", true)}};
+    {AIR, Block(0, "air", 0, 0, 0, 0, false, false, 0)},
+    {GRASS, Block(1, "grass", 0, 0, 16, 16, true)},
+    {DIRT, Block(2, "dirt", 16, 0, 16, 16, true)},
+    {STONE, Block(3, "stone", 32, 0, 16, 16, true)}};
 #endif
