@@ -17,7 +17,7 @@ class Block : public Item {
 public:
   Block();
 
-  Block(int id, string name, int spriteX, int spriteY, int spriteW, int spriteH,
+  Block(string id, int spriteX, int spriteY, int spriteW, int spriteH,
         bool isSolid, bool is_stackable = true, int amount = 1);
 
   /* getters */
@@ -34,8 +34,8 @@ private:
 };
 
 static std::map<string, Block> blockMap = {
-    {"AIR", Block(0, "air", 0, 0, 0, 0, false, false, 0)},
-    {"GRASS", Block(1, "grass", 0, 0, 16, 16, true)},
-    {"DIRT", Block(2, "dirt", 16, 0, 16, 16, true)},
-    {"STONE", Block(3, "stone", 32, 0, 16, 16, true)}};
+    {"AIR", Block("AIR", 0, 0, 0, 0, false, false)},
+    {"GRASS", Block("GRASS", 0, 0, 16, 16, true)},
+    {"DIRT", Block("DIRT", 16, 0, 16, 16, true)},
+    {"STONE", Block("STONE", 32, 0, 16, 16, true)}};
 #endif

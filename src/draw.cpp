@@ -63,5 +63,4 @@ void drawText(int x, int y, string text, RenderWindow *window, int size,
   textObj.setFillColor(color);
   textObj.setPosition(x, y);
   window->draw(textObj);
-  cout << "texte dessine" << endl;
 }

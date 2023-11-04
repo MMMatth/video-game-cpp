@@ -25,6 +25,9 @@ public:
   bool isEmpty() { return m_is_empty; }
   /* setters */
   void setAmount(int amount) { m_item.setAmount(amount); }
+  void setIsStackable(bool is_stackable) {
+    m_item.setIsStackable(is_stackable);
+  }
   void setIsEmpty(bool is_empty) { m_is_empty = is_empty; }
   void setItem(Item item) {
     m_item = item;

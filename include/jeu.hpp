@@ -67,6 +67,10 @@ public:
 
   void event();
 
+  void quit();
+
+  void save();
+
   bool collisionAvecCarte(int x, int y);
 };
 

@@ -24,7 +24,6 @@ void Jeu::run() {
     }
     render();
   }
-  clean();
 }
 
 bool Jeu::collisionAvecCarte(int x, int y) {
@@ -77,7 +76,7 @@ void Jeu::event() {
   Event event;
   while (window.pollEvent(event)) {
     if (event.type == Event::Closed) {
-      window.close();
+      quit();
     }
     if (event.type == Event::KeyPressed) {
       switch (event.key.code) {
@@ -91,7 +90,7 @@ void Jeu::event() {
         perso.setGoingRight(true);
         break;
       case Keyboard::Escape:
-        window.close();
+        quit();
         break;
       case Keyboard::A:
         cout << "Inventaire : " << inv.toString() << endl;
@@ -170,9 +169,9 @@ void Jeu::render() {
   assert(spritesheet.loadFromFile("../assets/img/spritesheet.png") &&
          "Erreur de chargement de la spritesheet.");
   for (auto it = blockMap.begin(); it != blockMap.end(); it++) {
-    if (it->second.getName() != "air")
+    if (it->second.getId() != "AIR")
       sprites.emplace(make_pair(
-          it->second.getName(),
+          it->second.getId(),
           Sprite(spritesheet,
                  IntRect(it->second.getSpriteSheet().getX(),
                          it->second.getSpriteSheet().getY(), 16, 16))));
@@ -183,7 +182,7 @@ void Jeu::render() {
       make_pair("invTile", Sprite(spritesheet, IntRect(23, 64, 22, 22))));
   for (auto it = toolMap.begin(); it != toolMap.end(); it++) {
     sprites.emplace(
-        make_pair(it->second.getName(),
+        make_pair(it->second.getId(),
                   Sprite(spritesheet,
                          IntRect(it->second.getSpriteSheet().getX(),
                                  it->second.getSpriteSheet().getY(), 16, 16))));
@@ -196,7 +195,7 @@ void Jeu::render() {
 
     if (carte.getTile(i).estDansCam(posCam.getX(), posCam.getY(), WINDOW_WIDTH,
                                     WINDOW_HEIGHT)) {
-      drawSprites(x, y, sprites[carte.getTile(i).getBlock().getName()], &window,
+      drawSprites(x, y, sprites[carte.getTile(i).getBlock().getId()], &window,
                   TAILLE_CASE, TAILLE_CASE);
     }
   }
@@ -206,6 +205,14 @@ void Jeu::render() {
 
   window.display();
 }
+
+void Jeu::quit() {
+  save();
+  window.close();
+  clean();
+}
+
+void Jeu::save() { inv.save("../assets/csv/inventory.csv"); }
 
 int main(int arg, char **argv) {
 

@@ -1,4 +1,10 @@
-item_type;name;x;y;amount
-block;GRASS;0;0;50
-tool;IRON_PICKAXE;0;1;
-block;DIRT;3;3;30
+id;x;y;amount
+GRASS;0;0;50
+IRON_PICKAXE;0;1;1
+IRON_PICKAXE;0;2;1
+IRON_PICKAXE;0;3;1
+IRON_PICKAXE;0;4;1
+;0;5;1
+;0;6;1
+;0;7;1
+DIRT;3;3;30

@@ -12,7 +12,7 @@ class Tool : public Item {
 private:
 public:
   /* constructor */
-  Tool(int id, string name, int spriteX, int spriteY, int spriteW, int spriteH,
+  Tool(string id, int spriteX, int spriteY, int spriteW, int spriteH,
        bool is_stackable = false, int amount = 1);
   Tool();
   /* destructor */
@@ -20,7 +20,7 @@ public:
 };
 
 static map<string, Tool> toolMap = {
-    {"IRON_PICKAXE", Tool(100, "iron_pickaxe", 0, 86, 16, 16)},
-    {"IRON_AXE", Tool(101, "iron_axe", 16, 86, 16, 16)}};
+    {"IRON_PICKAXE", Tool("IRON_PICKAXE", 0, 86, 16, 16)},
+    {"IRON_AXE", Tool("IRON_AXE", 16, 86, 16, 16)}};
 
 #endif /* TOOLS_HPP */

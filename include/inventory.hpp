@@ -76,6 +76,9 @@ public:
   }
   bool isOpen() { return m_is_open; }
 
+  /* other */
+  void save(string csvPath);
+
   string toString();
 };
 

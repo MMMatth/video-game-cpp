@@ -10,37 +10,67 @@ Inventory::Inventory(string csvPath)
   }
   ifstream file(csvPath);
   string line;
-  int row = 0;
-  int column = 0;
+  int row = 0, column = 0;
   if (file.is_open()) {
     while (getline(file, line)) {
-      stringstream ss(line);
-      string cell;
-      column = 0;
       if (row != 0) {
-        string tab[5];
+        std::istringstream ss(line);
+        std::string cell;
+        std::string id;
+        int x, y, amount;
+
         while (getline(ss, cell, ';')) {
-          tab[column] = cell;
+          switch (column) {
+          case 0:
+            id = cell;
+            break;
+          case 1:
+            x = stoi(cell);
+            break;
+          case 2:
+            y = stoi(cell);
+            break;
+          case 3:
+            amount = stoi(cell);
+            break;
+          default:
+            std ::cerr << "Invalid csv file : " << csvPath << "\n";
+            std ::exit(EXIT_FAILURE);
+            break;
+          }
           column++;
         }
-        int x = stoi(tab[2]);
-        int y = stoi(tab[3]);
+        column = 0;
 
-        if (tab[0] == "block") {
-          m_inventory[x][y].setItem(blockMap[tab[1]]);
-
-        } else if (tab[0] == "tool") {
-          m_inventory[x][y].setItem(toolMap[tab[1]]);
-        }
-        if (tab[4] != "") {
-          printf("amount : %s\n", tab[4].c_str());
-          m_inventory[x][y].setAmount(stoi(tab[4]));
+        /* we check the data */
+        if (x > INVENTORY_HEIGHT || y > INVENTORY_WIDTH) { // we check the pos
+          std::cerr << "Invalid position: (" << x << ", " << y
+                    << ") is greater than the inventory size.\n";
+        } else if (amount > MAX_STACK_SIZE ||
+                   amount < 0) { // we check the amount
+          std::cerr << "Invalid amount: " << amount
+                    << " is greater than MAX_STACK_SIZE.\n";
+          // on verifie que l'id est un clée de blockMap ou toolMap
+        } else if (blockMap.find(id) != blockMap.end() &&
+                   toolMap.find(id) != toolMap.end()) {
+          std::cerr << "Invalid id: " << id << " is not a valid id.\n";
+        } else { // if everything is ok, we add the item
+          if (blockMap.find(id) != blockMap.end()) {
+            m_inventory[x][y].setItem(blockMap[id]);
+          } else if (toolMap.find(id) != toolMap.end()) {
+            m_inventory[x][y].setItem(toolMap[id]);
+          }
+          m_inventory[x][y].setAmount(amount);
+          if (amount > 1) {
+            m_inventory[x][y].setIsStackable(true);
+          }
         }
       }
       row++;
     }
   }
 }
+
 Inventory::Inventory()
     : m_is_open(false), m_pos_hand(0), m_selected_tile(InventoryTile()) {
   for (int row = 0; row < INVENTORY_HEIGHT; row++) {
@@ -115,7 +145,7 @@ void Inventory::drawItem(sf::RenderWindow &window,
     drawSprites(x + column * INVENTORY_TILE_SIZE +
                     (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
                 y + (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
-                sprites[m_inventory[row][column].getItem().getName()], &window,
+                sprites[m_inventory[row][column].getItem().getId()], &window,
                 INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
     if (m_inventory[row][column].getItem().isStackable()) {
       drawText(x + column * INVENTORY_TILE_SIZE +
@@ -156,7 +186,7 @@ void Inventory::drawSelectedItem(sf::RenderWindow &window,
                                  unordered_map<string, Sprite> sprites,
                                  int camX, int camY, int mouseX, int mouseY) {
   drawSprites(mouseX - CAM_WIDTH / 2, mouseY - CAM_HEIGHT / 2,
-              sprites[m_selected_tile.getItem().getName()], &window, 32, 32);
+              sprites[m_selected_tile.getItem().getId()], &window, 32, 32);
 }
 
 void Inventory::render(sf::RenderWindow &window,
@@ -220,10 +250,26 @@ string Inventory::toString() {
   for (int i = 0; i < INVENTORY_HEIGHT; i++) {
     for (int j = 0; j < INVENTORY_WIDTH; j++) {
       str += "[";
-      str += m_inventory[i][j].getItem().getName();
+      str += m_inventory[i][j].getItem().getId();
       str += "] ";
     }
     str += "\n";
   }
   return str;
+}
+
+void Inventory::save(string csvPath) {
+  ofstream file(csvPath);
+  if (file.is_open()) {
+    file << "id;x;y;amount\n";
+    for (int i = 0; i < INVENTORY_HEIGHT; i++) {
+      for (int j = 0; j < INVENTORY_WIDTH; j++) {
+        if (!m_inventory[i][j].isEmpty()) {
+          file << m_inventory[i][j].getItem().getId() << ";" << i << ";" << j
+               << ";" << m_inventory[i][j].getItem().getAmount() << "\n";
+        }
+      }
+    }
+  }
+  file.close();
 }
