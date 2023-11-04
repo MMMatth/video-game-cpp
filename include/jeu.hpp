@@ -10,6 +10,7 @@
 #include "const.hpp"
 #include "draw.hpp"
 #include "inventory.hpp"
+#include "inventoryRender.hpp"
 #include "personnage.hpp"
 #include "point.hpp"
 #include "tool.hpp"
@@ -45,6 +46,7 @@ private:
   Point posCam;        /*!< Position de la caméra. */
   unordered_map<string, Sprite> sprites; /*!< Dictionnaire de sprites. */
   Inventory inv;
+  InventoryRenderer invRender;
   Point mousePosInCam;
   Point mousePosInWorld;
 

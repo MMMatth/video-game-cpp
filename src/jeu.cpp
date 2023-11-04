@@ -1,4 +1,6 @@
 #include "../include/jeu.hpp"
+#include "../include/const.hpp"
+#include "../include/json.hpp"
 
 using namespace std;
 using namespace sf;
@@ -7,7 +9,8 @@ Jeu::Jeu(sf::Texture &texture)
     : window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
       perso(0, 0,
             texture), // Passer la texture (spritesheet)
-      posCam(0, 0), inv("../assets/csv/inventory.csv"), mousePosInCam(0, 0) {
+      posCam(0, 0), inv("../assets/csv/inventory.csv"), mousePosInCam(0, 0),
+      invRender(inv) {
   this->carte = Carte();
 }
 
@@ -92,18 +95,12 @@ void Jeu::event() {
       case Keyboard::Escape:
         quit();
         break;
-      case Keyboard::A:
-        cout << "Inventaire : " << inv.toString() << endl;
-        break;
       case Keyboard::E:
         // inv.addItem(blockMap[GRASS]);
         inv.addItem(toolMap["IRON_PICKAXE"]);
         break;
-      case Keyboard::R:
-        inv.swapItem(Point(0, 0), Point(0, 1));
-        break;
       case Keyboard::I:
-        inv.setIsOpen();
+        inv.open();
         break;
       case Keyboard::Num1:
         inv.setPosHand(0);
@@ -165,28 +162,7 @@ void Jeu::render() {
 
   perso.draw(window);
 
-  Texture spritesheet;
-  assert(spritesheet.loadFromFile("../assets/img/spritesheet.png") &&
-         "Erreur de chargement de la spritesheet.");
-  for (auto it = blockMap.begin(); it != blockMap.end(); it++) {
-    if (it->second.getId() != "AIR")
-      sprites.emplace(make_pair(
-          it->second.getId(),
-          Sprite(spritesheet,
-                 IntRect(it->second.getSpriteSheet().getX(),
-                         it->second.getSpriteSheet().getY(), 16, 16))));
-  }
-  sprites.emplace(make_pair("invTileSelected",
-                            Sprite(spritesheet, IntRect(0, 64, 22, 22))));
-  sprites.emplace(
-      make_pair("invTile", Sprite(spritesheet, IntRect(23, 64, 22, 22))));
-  for (auto it = toolMap.begin(); it != toolMap.end(); it++) {
-    sprites.emplace(
-        make_pair(it->second.getId(),
-                  Sprite(spritesheet,
-                         IntRect(it->second.getSpriteSheet().getX(),
-                                 it->second.getSpriteSheet().getY(), 16, 16))));
-  }
+  sprites = getSpriteMap();
 
   for (int i = 0; i < carte.getSize(); i++) {
     int x, y;
@@ -199,8 +175,8 @@ void Jeu::render() {
                   TAILLE_CASE, TAILLE_CASE);
     }
   }
-  inv.render(window, sprites, posCam.getX(), posCam.getY(),
-             mousePosInWorld.getX(), mousePosInWorld.getY());
+  invRender.render(window, sprites, posCam.getX(), posCam.getY(),
+                   mousePosInCam.getX(), mousePosInCam.getY());
   // drawMiniMap();
 
   window.display();
