@@ -1,0 +1,98 @@
+{
+    "block": {
+        "AIR": {
+            "id": 0,
+            "name": "air",
+            "spritesheet": {
+                "x": -1,
+                "y": -1,
+                "width": 0,
+                "height": 0
+            },
+            "isSolid": false,
+            "isStackable": false
+        },
+        "GRASS": {
+            "id": 1,
+            "name": "grass",
+            "spritesheet": {
+                "x": 0,
+                "y": 0,
+                "width": 16,
+                "height": 16
+            },
+            "isSolid": true,
+            "isStackable": true
+        },
+        "DIRT": {
+            "id": 2,
+            "name": "dirt",
+            "spritesheet": {
+                "x": 16,
+                "y": 0,
+                "width": 16,
+                "height": 16
+            },
+            "isSolid": true,
+            "isStackable": true
+        },
+        "STONE": {
+            "id": 3,
+            "name": "stone",
+            "spritesheet": {
+                "x": 32,
+                "y": 0,
+                "width": 16,
+                "height": 16
+            },
+            "isSolid": true,
+            "isStackable": true
+        }
+    },
+    "tools": {
+        "IRON_PICKAXE": {
+            "id": 100,
+            "name": "iron_pickaxe",
+            "spritesheet": {
+                "x": 0,
+                "y": 86,
+                "width": 16,
+                "height": 16
+            },
+            "isStackable": false,
+            "durability": 250,
+            "miningSpeed": 1.5
+        },
+        "IRON_AXE": {
+            "id": 101,
+            "name": "iron_axe",
+            "spritesheet": {
+                "x": 16,
+                "y": 86,
+                "width": 16,
+                "height": 16
+            },
+            "isStackable": false,
+            "durability": 250,
+            "miningSpeed": 1.5
+        }
+    },
+    "case_inv": {
+        "TILE": {
+            "spritesheet": {
+                "x": 0,
+                "y": 32,
+                "width": 16,
+                "height": 16
+            }
+        },
+        "SELECTED_TILE": {
+            "spritesheet": {
+                "x": 16,
+                "y": 32,
+                "width": 16,
+                "height": 16
+            }
+        }
+    }
+}

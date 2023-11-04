@@ -8,16 +8,16 @@ Tile Carte::chooseTile(char c, int x, int y) {
   Block block;
   switch (c) {
   case '1':
-    block = blockMap[GRASS];
+    block = blockMap["GRASS"];
     break;
   case '2':
-    block = blockMap[DIRT];
+    block = blockMap["DIRT"];
     break;
   case '3':
-    block = blockMap[STONE];
+    block = blockMap["STONE"];
     break;
   default:
-    block = blockMap[AIR];
+    block = blockMap["AIR"];
     break;
   }
   return Tile(block, x, y);

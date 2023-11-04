@@ -175,31 +175,6 @@ void Personnage::update() {
   }
 }
 
-// getters
-int Personnage::getHauteur() { return hauteur; }
-
-int Personnage::getLargeur() { return largeur; }
-
-int Personnage::getX() { return coord.getX(); }
-
-int Personnage::getY() { return coord.getY(); }
-int Personnage::getTimeJump() { return timeJump; }
-
-int Personnage::getJumpHeight() { return jumpHeight; }
-
-int Personnage::getVitesse() { return vitesse; }
-
-// setters
-void Personnage::setX(int x) { coord.setX(x); }
-
-void Personnage::setY(int y) { coord.setY(y); }
-
-void Personnage::setCollision(string key, bool value) {
-  this->collision[key] = value;
-}
-
-void Personnage::setTimeJump(int time) { this->timeJump = time; }
-
 void Personnage::setCollisionFalseExcept(string key) {
   for (auto &x : this->collision) {
     if (x.first != key) {
@@ -208,30 +183,10 @@ void Personnage::setCollisionFalseExcept(string key) {
   }
 }
 
-void Personnage::setFalling(bool falling) {
-  this->direction["isFalling"] = falling;
-}
-void Personnage::setJumping(bool jumping) {
-  this->direction["isJumping"] = jumping;
-}
-void Personnage::setGoingUp(bool jumping) {
-  this->direction["isGoingUp"] = jumping;
-}
-void Personnage::setGoingRight(bool inRight) {
-  this->direction["isGoingRight"] = inRight;
-}
-void Personnage::setGoingLeft(bool inLeft) {
-  this->direction["isGoingLeft"] = inLeft;
-}
-
 // other methods
 void Personnage::deplacerX(int x) { this->coord.setX(this->coord.getX() + x); }
 
 void Personnage::deplacerY(int y) { this->coord.setY(this->coord.getY() + y); }
 
-bool Personnage::isInFall() { return direction["isFalling"]; }
-bool Personnage::isInJump() { return direction["isGoingUp"]; }
-
-void Personnage::clean() {
-  // pas de memoir aloué
-}
+// bool Personnage::isInFall() { return direction["isFalling"]; }
+// bool Personnage::isInJump() { return direction["isGoingUp"]; }

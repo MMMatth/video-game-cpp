@@ -1,13 +1,6 @@
 #ifndef CARTE_HPP
 #define CARTE_HPP
 
-/*!
- * \file Carte.hpp
- * \brief Définition de la classe Carte.
- * \author Mathieu Gaudel and Papa El Hadji G Cissé
- * \version 2023
- */
-
 #include "block.hpp"
 #include "const.hpp"
 #include "personnage.hpp"

@@ -9,9 +9,12 @@
 #include "cartes.hpp"
 #include "const.hpp"
 #include "draw.hpp"
+#include "inventory.hpp"
 #include "personnage.hpp"
 #include "point.hpp"
+#include "tool.hpp"
 #include <SFML/Graphics.hpp>
+#include <cassert>
 #include <unordered_map>
 
 /*!
@@ -41,55 +44,33 @@ private:
   bool collideSide;    /*!< Indique s'il y a une collision sur les côtés. */
   Point posCam;        /*!< Position de la caméra. */
   unordered_map<string, Sprite> sprites; /*!< Dictionnaire de sprites. */
+  Inventory inv;
+  Point mousePosInCam;
+  Point mousePosInWorld;
 
 public:
-  /*!
-   * Constructeur par défaut de la classe Jeu.
-   * \param texture La texture à utiliser pour le personnage.
-   */
   Jeu(Texture &texture);
 
-  /*!
-   * Fonction principale pour exécuter le jeu.
-   */
   void run();
 
-  /*!
-   * Met à jour l'état du jeu.
-   */
   void update();
 
-  /*!
-   * Met à jour la caméra.
-   */
   void updateCam();
 
-  /*!
-   * Met à jour les collisions.
-   */
   void updateCollide();
 
-  /*!
-   * Affiche les éléments du jeu.
-   */
+  void updateMousePos();
+
   void render();
 
-  /*!
-   * Nettoie les ressources du jeu.
-   */
   void clean();
 
-  /*!
-   * Gère les événements du jeu.
-   */
   void event();
 
-  /*!
-   * Vérifie s'il y a une collision avec la carte à une position donnée.
-   * \param x La position horizontale.
-   * \param y La position verticale.
-   * \return true s'il y a une collision, false sinon.
-   */
+  void quit();
+
+  void save();
+
   bool collisionAvecCarte(int x, int y);
 };
 

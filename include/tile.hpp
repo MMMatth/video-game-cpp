@@ -15,14 +15,20 @@ private:
   Point m_position;
 
 public:
+  /* constructor */
   Tile(Block block, int x, int y);
   Tile(int x, int y);
-  void setPosition(Point position) { m_position = position; }
+  /* destructor */
+  // ~Tile();
+  /* getters */
   int getX() const { return m_position.getX(); }
   int getY() const { return m_position.getY(); }
+  Block getBlock() const { return m_block; }
+  /* setters */
+  void setPosition(Point position) { m_position = position; }
+  /* other */
   bool estDansCam(int posCamX, int posCamY, int largeur, int hauteur);
   void collide(Personnage *perso);
-  Block getBlock() const { return m_block; }
   string toString() { return m_block.toString(); }
 };
 
