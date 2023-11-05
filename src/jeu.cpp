@@ -3,14 +3,20 @@
 using namespace std;
 using namespace sf;
 
-Jeu::Jeu(sf::Texture &texture)
+Jeu::Jeu()
     : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
-      m_char(0, 0,
-             texture), // Passer la texture (spritesheet)
-      m_posCam(0, 0), m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
-      m_invRender(m_inv) {
-  m_map = Map();
+      m_char(0, 0, texture),
+      m_posCam(0, 0),
+      m_inv("../assets/csv/inventory.csv"),
+      m_mousePosCam(0, 0),
+      m_invRender(m_inv)
+{
+    if (!texture.loadFromFile("../assets/img/personnage.png")) {
+        cout << "Erreur de chargement de la spritesheet." << endl;
+    }
+    m_map = Map();
 }
+
 
 void Jeu::run() {
   Clock clock;
@@ -191,12 +197,7 @@ void Jeu::save() { m_inv.save("../assets/csv/inventory.csv"); }
 
 int main(int arg, char **argv) {
 
-  Texture spritesheet;
-  if (!spritesheet.loadFromFile("../assets/img/personnage.png")) {
-    cout << "Erreur de chargement de la spritesheet." << endl;
-  }
-
-  Jeu jeu(spritesheet);
+  Jeu jeu;
   jeu.run();
   return 0;
 }
