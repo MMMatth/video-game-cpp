@@ -27,5 +27,8 @@ void drawMiniCarte(int x, int y, Color color, RenderWindow *window, int largeur,
 
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath);
+              
+void draw(RenderWindow &window);
+
 
 #endif /* DRAW_HPP*/
