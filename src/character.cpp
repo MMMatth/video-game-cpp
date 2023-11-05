@@ -1,4 +1,5 @@
 #include "../include/character.hpp"
+#include "../include/draw.hpp"
 
 using namespace std;
 
@@ -26,7 +27,7 @@ void Character::initSprites(Texture &spritesheet) {
   for (string &name : spriteNames) {
     sprites[name].setTexture(spritesheet);
     if (name == "stop") {
-      sprites[name].setTextureRect(IntRect(0, 128, 64, 64));
+      sprites[name].setTextureRect(IntRect(128, 1152, 64, 64));
     } else if (name == "jump") {
       sprites[name].setTextureRect(IntRect(256, 128, 64, 64));
     } else if (name == "fall") {
@@ -75,7 +76,7 @@ Character::Character(float x, float y, Texture &texture) : coord(x, y) {
   this->vitesse = 3;
 
   initSprites(texture);
-}
+}       
 
 void Character::draw(RenderWindow &window) {
   if (direction["isGoingLeft"]) {
