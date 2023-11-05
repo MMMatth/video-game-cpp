@@ -1,14 +1,8 @@
-/*!
- * \file personnage.hpp
- * \brief Définition de la classe Personnage.
- * \author Matthieu Gaudel and Papa El Hadji G Cissé
- * \version 2023
- */
 #ifndef PERSONNAGE_HPP
 #define PERSONNAGE_HPP
 
 #include "const.hpp"
-#include "point.hpp"
+#include "coord.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <map>
@@ -20,11 +14,11 @@ using namespace sf;
 
 using namespace std;
 
-class Personnage {
+class Character {
 public:
   /* constructor */
-  Personnage(int x, int y, int taille);
-  Personnage(float x, float y, Texture &texture);
+  Character(int x, int y, int taille);
+  Character(float x, float y, Texture &texture);
   /* destructor */
   // ~Personnage();
 
@@ -63,20 +57,19 @@ public:
   void draw(RenderWindow &window);
 
 private:
-  Point coord;                 /*!< Coordonnées du personnage. */
-  bool isFalling;              /*!< Indique si le personnage est en chute. */
-  map<string, bool> direction; /*!< Direction du personnage. */
-  map<string, bool> collision; /*!< Collisions du personnage. */
-  int timeJump;                /*!< Temps du saut du personnage. */
-  int jumpHeight;              /*!< Hauteur du saut du personnage. */
-  int largeur;                 /*!< Largeur du personnage. */
-  int hauteur;                 /*!< Hauteur du personnage. */
-  int tempSaut;                /*!< Temps du saut actuel. */
-  int vitesse;                 /*!< Vitesse du personnage. */
+  Coord coord;
+  bool isFalling;
+  map<string, bool> direction;
+  map<string, bool> collision;
+  int timeJump;
+  int jumpHeight;
+  int largeur;
+  int hauteur;
+  int tempSaut;
+  int vitesse;
 
-  unordered_map<string, Sprite>
-      sprites; /*! Dictionnaire de sprites du personnage */
-  Clock clock; /*! La durée */
+  unordered_map<string, Sprite> sprites;
+  Clock clock;
 };
 
 #endif /* PERSONNAGE_HPP */

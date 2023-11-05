@@ -2,8 +2,8 @@
 #define TOOLS_HPP
 
 #include "const.hpp"
+#include "coord.hpp"
 #include "item.hpp"
-#include "point.hpp"
 #include <map>
 
 using namespace std;

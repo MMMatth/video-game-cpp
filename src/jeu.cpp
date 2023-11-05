@@ -4,18 +4,19 @@ using namespace std;
 using namespace sf;
 
 Jeu::Jeu(sf::Texture &texture)
-    : window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
-      perso(0, 0,
-            texture), // Passer la texture (spritesheet)
-      posCam(0, 0), inv("../assets/csv/inventory.csv"), mousePosInCam(0, 0) {
-  this->carte = Carte();
+    : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
+      m_char(0, 0,
+             texture), // Passer la texture (spritesheet)
+      m_posCam(0, 0), m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
+      m_invRender(m_inv) {
+  m_map = Map();
 }
 
 void Jeu::run() {
   Clock clock;
   Time timePerFrame = seconds(1.f / FPS_MAX);
   Time timeSinceLastUpdate = Time::Zero;
-  while (window.isOpen()) {
+  while (m_window.isOpen()) {
     timeSinceLastUpdate += clock.restart();
     while (timeSinceLastUpdate > timePerFrame) {
       timeSinceLastUpdate -= timePerFrame;
@@ -35,102 +36,98 @@ bool Jeu::collisionAvecCarte(int x, int y) {
 }
 
 void Jeu::updateCam() {
-  posCam.setX(posCam.getX() +
-              (perso.getX() + perso.getHauteur() / 4 - posCam.getX()) / 20);
-  posCam.setY(posCam.getY() +
-              (perso.getY() + perso.getHauteur() / 2 - posCam.getY()) / 20);
-  window.setView(View(Vector2f(posCam.getX(), posCam.getY()),
-                      Vector2f(CAM_WIDTH, CAM_HEIGHT)));
+  m_posCam.setX(m_posCam.getX() +
+                (m_char.getX() + m_char.getHauteur() / 4 - m_posCam.getX()) /
+                    20);
+  m_posCam.setY(m_posCam.getY() +
+                (m_char.getY() + m_char.getHauteur() / 2 - m_posCam.getY()) /
+                    20);
+  m_window.setView(View(Vector2f(m_posCam.getX(), m_posCam.getY()),
+                        Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
 
-void Jeu::updateCollide() { carte.collide(&perso); }
+void Jeu::updateCollide() { m_map.collide(&m_char); }
 
 void Jeu::updateMousePos() {
-  sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-  sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+  Vector2i pixelPos = sf::Mouse::getPosition(m_window);
+  Vector2f worldPos = m_window.mapPixelToCoords(pixelPos);
 
-  sf::Vector2f camPos = window.getView().getCenter();
-  sf::Vector2f viewSize = window.getView().getSize();
+  Vector2f camPos = m_window.getView().getCenter();
+  Vector2f viewSize = m_window.getView().getSize();
 
   sf::Vector2f adjustedPos = worldPos - (camPos - viewSize / 2.f);
-  mousePosInCam.setX(adjustedPos.x);
-  mousePosInCam.setY(adjustedPos.y);
+  m_mousePosCam.setX(adjustedPos.x);
+  m_mousePosCam.setY(adjustedPos.y);
 
-  mousePosInWorld.setX(mousePosInCam.getX() + posCam.getX());
-  mousePosInWorld.setY(mousePosInCam.getY() + posCam.getY());
+  m_mousePosWorld.setX(m_mousePosCam.getX() + m_posCam.getX());
+  m_mousePosWorld.setY(m_mousePosCam.getY() + m_posCam.getY());
 }
 
 void Jeu::update() {
   updateCam();
   updateCollide();
   updateMousePos();
-  perso.update();
+  m_char.update();
 }
 
 void Jeu::clean() {
-  this->window.clear();
-  this->carte.clean();
+  this->m_window.clear();
+  this->m_map.clean();
 }
 
 void Jeu::event() {
   Event event;
-  while (window.pollEvent(event)) {
+  while (m_window.pollEvent(event)) {
     if (event.type == Event::Closed) {
       quit();
     }
     if (event.type == Event::KeyPressed) {
       switch (event.key.code) {
       case Keyboard::Up:
-        perso.setJumping(true);
+        m_char.setJumping(true);
         break;
       case Keyboard::Left:
-        perso.setGoingLeft(true);
+        m_char.setGoingLeft(true);
         break;
       case Keyboard::Right:
-        perso.setGoingRight(true);
+        m_char.setGoingRight(true);
         break;
       case Keyboard::Escape:
         quit();
         break;
-      case Keyboard::A:
-        cout << "Inventaire : " << inv.toString() << endl;
-        break;
       case Keyboard::E:
         // inv.addItem(blockMap[GRASS]);
-        inv.addItem(toolMap["IRON_PICKAXE"]);
-        break;
-      case Keyboard::R:
-        inv.swapItem(Point(0, 0), Point(0, 1));
+        m_inv.addItem(toolMap["IRON_PICKAXE"]);
         break;
       case Keyboard::I:
-        inv.setIsOpen();
+        m_inv.open();
         break;
       case Keyboard::Num1:
-        inv.setPosHand(0);
+        m_inv.setPosHand(0);
         break;
       case Keyboard::Num2:
-        inv.setPosHand(1);
+        m_inv.setPosHand(1);
         break;
       case Keyboard::Num3:
-        inv.setPosHand(2);
+        m_inv.setPosHand(2);
         break;
       case Keyboard::Num4:
-        inv.setPosHand(3);
+        m_inv.setPosHand(3);
         break;
       case Keyboard::Num5:
-        inv.setPosHand(4);
+        m_inv.setPosHand(4);
         break;
       case Keyboard::Num6:
-        inv.setPosHand(5);
+        m_inv.setPosHand(5);
         break;
       case Keyboard::Num7:
-        inv.setPosHand(6);
+        m_inv.setPosHand(6);
         break;
       case Keyboard::Num8:
-        inv.setPosHand(7);
+        m_inv.setPosHand(7);
         break;
       case Keyboard::Num9:
-        inv.setPosHand(8);
+        m_inv.setPosHand(8);
         break;
       default:
         break;
@@ -139,13 +136,13 @@ void Jeu::event() {
     if (event.type == Event::KeyReleased) {
       switch (event.key.code) {
       case Keyboard::Up:
-        perso.setJumping(false);
+        m_char.setJumping(false);
         break;
       case Keyboard::Left:
-        perso.setGoingLeft(false);
+        m_char.setGoingLeft(false);
         break;
       case Keyboard::Right:
-        perso.setGoingRight(false);
+        m_char.setGoingRight(false);
         break;
       default:
         break;
@@ -153,66 +150,44 @@ void Jeu::event() {
     }
     if (event.type == Event::MouseButtonPressed) {
       if (event.mouseButton.button == Mouse::Left) {
-        inv.handleClick(mousePosInCam.getX(), mousePosInCam.getY(),
-                        posCam.getX(), posCam.getY());
+        m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
+                          m_posCam.getX(), m_posCam.getY());
       }
     }
   }
 }
 
 void Jeu::render() {
-  window.clear(COULEUR_CIEL);
+  m_window.clear(COULEUR_CIEL);
 
-  perso.draw(window);
+  m_char.draw(m_window);
 
-  Texture spritesheet;
-  assert(spritesheet.loadFromFile("../assets/img/spritesheet.png") &&
-         "Erreur de chargement de la spritesheet.");
-  for (auto it = blockMap.begin(); it != blockMap.end(); it++) {
-    if (it->second.getId() != "AIR")
-      sprites.emplace(make_pair(
-          it->second.getId(),
-          Sprite(spritesheet,
-                 IntRect(it->second.getSpriteSheet().getX(),
-                         it->second.getSpriteSheet().getY(), 16, 16))));
-  }
-  sprites.emplace(make_pair("invTileSelected",
-                            Sprite(spritesheet, IntRect(0, 64, 22, 22))));
-  sprites.emplace(
-      make_pair("invTile", Sprite(spritesheet, IntRect(23, 64, 22, 22))));
-  for (auto it = toolMap.begin(); it != toolMap.end(); it++) {
-    sprites.emplace(
-        make_pair(it->second.getId(),
-                  Sprite(spritesheet,
-                         IntRect(it->second.getSpriteSheet().getX(),
-                                 it->second.getSpriteSheet().getY(), 16, 16))));
-  }
+  m_sprites = getSpriteMap();
 
-  for (int i = 0; i < carte.getSize(); i++) {
+  for (int i = 0; i < m_map.getSize(); i++) {
     int x, y;
-    x = carte.getTile(i).getX();
-    y = carte.getTile(i).getY();
+    x = m_map.getTile(i).getX();
+    y = m_map.getTile(i).getY();
 
-    if (carte.getTile(i).estDansCam(posCam.getX(), posCam.getY(), WINDOW_WIDTH,
-                                    WINDOW_HEIGHT)) {
-      drawSprites(x, y, sprites[carte.getTile(i).getBlock().getId()], &window,
-                  TAILLE_CASE, TAILLE_CASE);
+    if (m_map.getTile(i).estDansCam(m_posCam.getX(), m_posCam.getY(),
+                                    WINDOW_WIDTH, WINDOW_HEIGHT)) {
+      drawSprites(x, y, m_sprites[m_map.getTile(i).getBlock().getId()],
+                  &m_window, TAILLE_CASE, TAILLE_CASE);
     }
   }
-  inv.render(window, sprites, posCam.getX(), posCam.getY(),
-             mousePosInWorld.getX(), mousePosInWorld.getY());
-  // drawMiniMap();
+  m_invRender.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY(),
+                     m_mousePosWorld.getX(), m_mousePosWorld.getY());
 
-  window.display();
+  m_window.display();
 }
 
 void Jeu::quit() {
   save();
-  window.close();
+  m_window.close();
   clean();
 }
 
-void Jeu::save() { inv.save("../assets/csv/inventory.csv"); }
+void Jeu::save() { m_inv.save("../assets/csv/inventory.csv"); }
 
 int main(int arg, char **argv) {
 

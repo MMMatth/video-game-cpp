@@ -2,9 +2,9 @@
 #define TILE_HPP
 
 #include "block.hpp"
+#include "character.hpp"
 #include "const.hpp"
-#include "personnage.hpp"
-#include "point.hpp"
+#include "coord.hpp"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -12,7 +12,7 @@ using namespace std;
 class Tile {
 private:
   Block m_block;
-  Point m_position;
+  Coord m_position;
 
 public:
   /* constructor */
@@ -25,10 +25,10 @@ public:
   int getY() const { return m_position.getY(); }
   Block getBlock() const { return m_block; }
   /* setters */
-  void setPosition(Point position) { m_position = position; }
+  void setPosition(Coord position) { m_position = position; }
   /* other */
   bool estDansCam(int posCamX, int posCamY, int largeur, int hauteur);
-  void collide(Personnage *perso);
+  void collide(Character *perso);
   string toString() { return m_block.toString(); }
 };
 
