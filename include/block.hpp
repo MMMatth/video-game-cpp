@@ -17,8 +17,7 @@ class Block : public Item {
 public:
   Block();
 
-  Block(string id, int spriteX, int spriteY, int spriteW, int spriteH,
-        bool isSolid, bool is_stackable = true, int amount = 1);
+  Block(string id, bool isSolid, bool is_stackable = true, int amount = 1);
 
   /* getters */
   bool isSolid() const { return m_isSolid; }
@@ -33,9 +32,8 @@ private:
   bool m_isSolid;
 };
 
-static std::map<string, Block> blockMap = {
-    {"AIR", Block("AIR", 0, 0, 0, 0, false, false)},
-    {"GRASS", Block("GRASS", 0, 0, 16, 16, true)},
-    {"DIRT", Block("DIRT", 16, 0, 16, 16, true)},
-    {"STONE", Block("STONE", 32, 0, 16, 16, true)}};
+static std::map<string, Block> blockMap = {{"AIR", Block("AIR", false, false)},
+                                           {"GRASS", Block("GRASS", true)},
+                                           {"DIRT", Block("DIRT", true)},
+                                           {"STONE", Block("STONE", true)}};
 #endif

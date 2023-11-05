@@ -1,9 +1,11 @@
 #ifndef JSON_HPP
 #define JSON_HPP
 
+#include "item.hpp"
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <nlohmann/json.hpp>
 #include <unordered_map>
 
