@@ -1,8 +1,8 @@
-#include "../include/personnage.hpp"
+#include "../include/character.hpp"
 
 using namespace std;
 
-Personnage::Personnage(int x, int y, int taille) : coord(x, y) {
+Character::Character(int x, int y, int taille) : coord(x, y) {
   this->largeur = taille;
   this->hauteur = taille;
 
@@ -20,7 +20,7 @@ Personnage::Personnage(int x, int y, int taille) : coord(x, y) {
   this->vitesse = 3;
 }
 
-void Personnage::initSprites(Texture &spritesheet) {
+void Character::initSprites(Texture &spritesheet) {
 
   vector<string> spriteNames = {"stop", "jump", "fall"};
   for (string &name : spriteNames) {
@@ -58,7 +58,7 @@ void Personnage::initSprites(Texture &spritesheet) {
   }
 }
 
-Personnage::Personnage(float x, float y, Texture &texture) : coord(x, y) {
+Character::Character(float x, float y, Texture &texture) : coord(x, y) {
   this->largeur = 64;
   this->hauteur = 64;
   this->direction = {{"isJumping", false},
@@ -77,7 +77,7 @@ Personnage::Personnage(float x, float y, Texture &texture) : coord(x, y) {
   initSprites(texture);
 }
 
-void Personnage::draw(RenderWindow &window) {
+void Character::draw(RenderWindow &window) {
   if (direction["isGoingLeft"]) {
 
     int frame = (clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) %
@@ -101,7 +101,7 @@ void Personnage::draw(RenderWindow &window) {
   }
 }
 
-void Personnage::update() {
+void Character::update() {
   // update position of the sprite
   vector<string> spriteNames = {"stop", "jump", "fall"};
   for (string &name : spriteNames) {
@@ -175,7 +175,7 @@ void Personnage::update() {
   }
 }
 
-void Personnage::setCollisionFalseExcept(string key) {
+void Character::setCollisionFalseExcept(string key) {
   for (auto &x : this->collision) {
     if (x.first != key) {
       x.second = false;
@@ -184,9 +184,6 @@ void Personnage::setCollisionFalseExcept(string key) {
 }
 
 // other methods
-void Personnage::deplacerX(int x) { this->coord.setX(this->coord.getX() + x); }
+void Character::deplacerX(int x) { this->coord.setX(this->coord.getX() + x); }
 
-void Personnage::deplacerY(int y) { this->coord.setY(this->coord.getY() + y); }
-
-// bool Personnage::isInFall() { return direction["isFalling"]; }
-// bool Personnage::isInJump() { return direction["isGoingUp"]; }
+void Character::deplacerY(int y) { this->coord.setY(this->coord.getY() + y); }

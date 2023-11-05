@@ -3,10 +3,10 @@
 #define inventory_hpp
 
 #include "const.hpp"
+#include "coord.hpp"
 #include "draw.hpp"
 #include "inventoryTile.hpp"
 #include "item.hpp"
-#include "point.hpp"
 #include <cassert>
 #include <fstream>
 #include <sstream>
@@ -29,13 +29,13 @@ public:
   /* Destruceur */
   ~Inventory();
 
-  void swapItem(Point p1, Point p2);
+  void swapItem(Coord p1, Coord p2);
 
   void swapItem(InventoryTile *t1, InventoryTile *t2);
 
   void addItem(Item item);
 
-  void removeItem(Point pos);
+  void removeItem(Coord pos);
 
   /* handle */
   void handleClick(int mouseX, int mouseY, int persoX, int persoY);
@@ -55,12 +55,12 @@ public:
 
   /* getters */
   InventoryTile getSelectedTile() { return m_selected_tile; }
-  Point getInventoryPosition(int mouseX, int mouseY, int persoX, int persoY);
-  InventoryTile getTile(Point pos) {
+  Coord getInventoryPosition(int mouseX, int mouseY, int persoX, int persoY);
+  InventoryTile getTile(Coord pos) {
     return m_inventory[pos.getX()][pos.getY()];
   }
   int getPosHand() { return m_pos_hand; }
-  Item getItemAt(Point pos) {
+  Item getItemAt(Coord pos) {
     return m_inventory[pos.getX()][pos.getY()].getItem();
   }
   bool isOpen() { return m_is_open; }

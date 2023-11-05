@@ -1,7 +1,7 @@
 #ifndef ITEM_HPP
 #define ITEM_HPP
 
-#include "point.hpp"
+#include "coord.hpp"
 #include "sprites.hpp"
 #include <string>
 #include <vector>

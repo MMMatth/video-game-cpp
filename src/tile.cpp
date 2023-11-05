@@ -1,10 +1,10 @@
 #include "../include/tile.hpp"
 
 Tile::Tile(Block block, int x, int y)
-    : m_position(Point(x * TAILLE_CASE, y * TAILLE_CASE)), m_block(block) {}
+    : m_position(Coord(x * TAILLE_CASE, y * TAILLE_CASE)), m_block(block) {}
 
 Tile::Tile(int x, int y)
-    : m_position(Point(x * TAILLE_CASE, y * TAILLE_CASE)), m_block(Block()) {}
+    : m_position(Coord(x * TAILLE_CASE, y * TAILLE_CASE)), m_block(Block()) {}
 
 bool Tile::estDansCam(int posCamX, int posCamY, int largeur, int hauteur) {
   if (m_position.getX() >= posCamX - largeur &&
@@ -16,7 +16,7 @@ bool Tile::estDansCam(int posCamX, int posCamY, int largeur, int hauteur) {
   return false;
 }
 
-void Tile::collide(Personnage *perso) {
+void Tile::collide(Character *perso) {
   int persoX = perso->getX();
   int persoY = perso->getY();
   int persoLargeur = perso->getLargeur();

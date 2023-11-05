@@ -11,7 +11,7 @@ class InventoryTile {
 private:
   bool m_is_empty;
   Item m_item;
-  Point m_item_position;
+  Coord m_item_position;
 
 public:
   /* constructor */
@@ -21,7 +21,7 @@ public:
   ~InventoryTile();
   /* getters */
   Item getItem() { return m_item; }
-  Point getItemPos() { return m_item_position; }
+  Coord getItemPos() { return m_item_position; }
   bool isEmpty() { return m_is_empty; }
   /* setters */
   void setAmount(int amount) { m_item.setAmount(amount); }

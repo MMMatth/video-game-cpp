@@ -3,10 +3,10 @@
 #ifndef BLOCK_HPP
 #define BLOCK_HPP
 
+#include "character.hpp"
 #include "const.hpp"
+#include "coord.hpp"
 #include "item.hpp"
-#include "personnage.hpp"
-#include "point.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>

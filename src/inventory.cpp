@@ -83,7 +83,7 @@ Inventory::Inventory()
 /* destructeur */
 Inventory::~Inventory() {}
 /* swap */
-void Inventory::swapItem(Point p1, Point p2) {
+void Inventory::swapItem(Coord p1, Coord p2) {
   assert((p1.getX() >= 0 && p1.getX() < INVENTORY_HEIGHT && p1.getY() >= 0 &&
           p1.getY() < INVENTORY_WIDTH) &&
          "swapItem : valeur depasse la taille de l'inventaire");
@@ -125,7 +125,7 @@ void Inventory::addItem(Item item) {
     }
   }
 }
-void Inventory::removeItem(Point pos) {
+void Inventory::removeItem(Coord pos) {
   assert((pos.getX() >= 0 && pos.getX() < INVENTORY_HEIGHT && pos.getY() >= 0 &&
           pos.getY() < INVENTORY_WIDTH) &&
          "removeItem : valeur depasse la taille de l'inventaire");
@@ -141,8 +141,8 @@ bool isWithinTile(int mx, int my, int x, int y) {
 void Inventory::handleClick(int mouseX, int mouseY, int camX, int camY) {
   if (m_is_open) {
     if (!getInventoryPosition(mouseX, mouseY, camX, camY)
-             .isEqual(Point(-1, -1))) {
-      Point pos = getInventoryPosition(mouseX, mouseY, camX, camY);
+             .isEqual(Coord(-1, -1))) {
+      Coord pos = getInventoryPosition(mouseX, mouseY, camX, camY);
       int tileToMoveX = pos.getX();
       int tileToMoveY = pos.getY();
       swapItem(&m_inventory[tileToMoveX][tileToMoveY], &m_selected_tile);
@@ -152,14 +152,14 @@ void Inventory::handleClick(int mouseX, int mouseY, int camX, int camY) {
   }
 }
 /* getters */
-Point Inventory::getInventoryPosition(int mouseX, int mouseY, int camX,
+Coord Inventory::getInventoryPosition(int mouseX, int mouseY, int camX,
                                       int camY) {
   int mx = camX - CAM_WIDTH / 2 + mouseX;
   int my = camY - CAM_HEIGHT / 2 + mouseY;
 
   if (!m_is_open) {
     cout << "getInventoryPosition : l'inventaire n'est pas ouvert" << endl;
-    return Point(-1, -1);
+    return Coord(-1, -1);
   }
 
   int x = camX - (INVENTORY_WIDTH * INVENTORY_TILE_SIZE) / 2;
@@ -169,17 +169,17 @@ Point Inventory::getInventoryPosition(int mouseX, int mouseY, int camX,
     for (int column = 0; column < INVENTORY_WIDTH; column++) {
       if (isWithinTile(mx, my, x + column * INVENTORY_TILE_SIZE,
                        y + row * INVENTORY_TILE_SIZE)) {
-        return Point(row, column);
+        return Coord(row, column);
       }
     }
   }
   y = camY - INVENTORY_TILE_SIZE + WINDOW_HEIGHT / 4;
   for (int column = 0; column < INVENTORY_WIDTH; column++) {
     if (isWithinTile(mx, my, x + column * INVENTORY_TILE_SIZE, y)) {
-      return Point(INVENTORY_HEIGHT - 1, column);
+      return Coord(INVENTORY_HEIGHT - 1, column);
     }
   }
-  return Point(-1, -1);
+  return Coord(-1, -1);
 }
 
 string Inventory::toString() {

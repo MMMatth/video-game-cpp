@@ -3,13 +3,13 @@
 
 #include <string>
 
-class Point {
+class Coord {
 public:
   /* constructor */
-  Point() : m_x(0), m_y(0) {}
-  Point(int x, int y) : m_x(x), m_y(y) {}
+  Coord() : m_x(0), m_y(0) {}
+  Coord(int x, int y) : m_x(x), m_y(y) {}
   /* destructor */
-  ~Point() {}
+  ~Coord() {}
   /* getters */
   int getX() const { return m_x; }
   int getY() const { return m_y; }
@@ -17,7 +17,7 @@ public:
   void setX(int x) { m_x = x; }
   void setY(int y) { m_y = y; }
   /* other */
-  bool isEqual(Point other) {
+  bool isEqual(Coord other) {
     return (m_x == other.getX() && m_y == other.getY());
   }
   std::string toString() {

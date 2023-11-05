@@ -5,17 +5,17 @@ void InventoryRenderer::drawItem(sf::RenderWindow &window,
                                  int y, int row, int column) {
   drawSprites(x + column * INVENTORY_TILE_SIZE, y, sprites["TILE"], &window,
               INVENTORY_TILE_SIZE, INVENTORY_TILE_SIZE);
-  if (!m_inventory.getTile(Point(row, column)).isEmpty()) {
+  if (!m_inventory.getTile(Coord(row, column)).isEmpty()) {
     drawSprites(x + column * INVENTORY_TILE_SIZE +
                     (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
                 y + (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
-                sprites[m_inventory.getItemAt(Point(row, column)).getId()],
+                sprites[m_inventory.getItemAt(Coord(row, column)).getId()],
                 &window, INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
-    if (m_inventory.getItemAt(Point(row, column)).isStackable()) {
+    if (m_inventory.getItemAt(Coord(row, column)).isStackable()) {
       drawText(x + column * INVENTORY_TILE_SIZE +
                    (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
                y + (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
-               to_string(m_inventory.getItemAt(Point(row, column)).getAmount()),
+               to_string(m_inventory.getItemAt(Coord(row, column)).getAmount()),
                &window, 10, FONT_COLOR, FONT_PATH);
     }
   }
@@ -52,7 +52,7 @@ void InventoryRenderer::drawSelectedItem(sf::RenderWindow &window,
                                          int mouseY) {
   drawSprites(mouseX - CAM_WIDTH / 2, mouseY - CAM_HEIGHT / 2,
               sprites[m_inventory.getSelectedTile().getItem().getId()], &window,
-              32, 32);
+              INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
 }
 
 void InventoryRenderer::render(sf::RenderWindow &window,
