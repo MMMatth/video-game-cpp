@@ -33,9 +33,10 @@ private:
   InventoryRenderer m_invRender;
   Coord m_mousePosCam;
   Coord m_mousePosWorld;
+  Texture texture;
 
 public:
-  Jeu(Texture &texture);
+  Jeu();
 
   void run();
 
