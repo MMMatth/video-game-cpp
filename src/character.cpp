@@ -78,30 +78,6 @@ Character::Character(float x, float y, Texture &texture) : coord(x, y) {
   initSprites(texture);
 }       
 
-void Character::draw(RenderWindow &window) {
-  if (direction["isGoingLeft"]) {
-
-    int frame = (clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) %
-                NUM_FRAMES;
-    window.draw(sprites["moveLeft" + to_string(frame + 1)]);
-
-  } else if (direction["isGoingRight"]) {
-
-    int frame = (clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) %
-                NUM_FRAMES;
-    window.draw(sprites["moveRight" + to_string(frame + 1)]);
-
-  } else if (direction["isJumping"] && !collision["right"]) {
-
-    window.draw(sprites["jump"]);
-
-  } else if (direction["isFalling"] && !collision["down"]) {
-    window.draw(sprites["fall"]);
-  } else {
-    window.draw(sprites["stop"]);
-  }
-}
-
 void Character::update() {
   // update position of the sprite
   vector<string> spriteNames = {"stop", "jump", "fall"};

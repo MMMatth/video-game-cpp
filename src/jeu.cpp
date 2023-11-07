@@ -5,15 +5,17 @@ using namespace sf;
 
 Jeu::Jeu()
     : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
-      m_char(0, 0,
-             texture), // Passer la texture (spritesheet)
+      m_char(0, 0, m_texture), 
       m_posCam(0, 0), m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
-      m_invRender(m_inv) {
+      m_invRender(m_inv),
+      m_charRenderer(m_char) { 
   m_map = Map();
-  if (!texture.loadFromFile("../assets/img/personnage.png")) {
+  if (!m_texture.loadFromFile("../assets/img/personnage.png")) {
     cout << "Erreur de chargement de la texture du personnage" << endl;
   }
+ 
 }
+
 
 void Jeu::run() {
   Clock clock;
@@ -163,8 +165,8 @@ void Jeu::event() {
 void Jeu::render() {
   m_window.clear(COULEUR_CIEL);
 
-  m_char.draw(m_window);
-
+  m_charRenderer.draw(m_window);
+ 
   m_sprites = getSpriteMap();
 
   for (int i = 0; i < m_map.getSize(); i++) {
