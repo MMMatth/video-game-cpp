@@ -58,25 +58,7 @@ void Character::initSprites(Texture &spritesheet) {
     }
   }
 }
-
-Character::Character(float x, float y, Texture &texture) : coord(x, y) {
-  this->largeur = 64;
-  this->hauteur = 64;
-  this->direction = {{"isJumping", false},
-                     {"isGoingUp", false},
-                     {"isFalling", true},
-                     {"isGoingRight", false},
-                     {"isGoingLeft", false}};
-
-  this->collision = {
-      {"up", false}, {"down", false}, {"left", false}, {"right", false}};
-
-  this->jumpHeight = 15;
-  this->timeJump = 0;
-  this->vitesse = 3;
-
-  initSprites(texture);
-}       
+      
 
 void Character::update() {
   // update position of the sprite

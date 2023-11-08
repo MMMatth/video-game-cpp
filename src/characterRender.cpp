@@ -1,14 +1,19 @@
 #include "../include/characterRender.hpp"
 #include "../include/character.hpp"
 
-CharacterRender::CharacterRender(Character& character) 
-    : character(character) {
+CharacterRender::CharacterRender(Character& character, Texture& texture) : m_character(character), m_texture(texture){
 
+  if (!m_texture.loadFromFile("../assets/img/personnage.png")) {
+    cout << "Erreur de chargement de la texture du personnage" << endl;
+  }
+  
+  m_character.initSprites(m_texture);
 }
+
 void CharacterRender::draw(RenderWindow &window) {
-  map<string, bool> direction = character.getDirection();
-  map<string, bool> collision = character.getCollision();
-  unordered_map<string, Sprite> sprites = character.getSprites();
+  map<string, bool> direction = m_character.getDirection();
+  map<string, bool> collision = m_character.getCollision();
+  unordered_map<string, Sprite> sprites = m_character.getSprites();
 
   if (direction["isGoingLeft"]) {
     int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % NUM_FRAMES;

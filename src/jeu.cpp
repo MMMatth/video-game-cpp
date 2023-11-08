@@ -1,19 +1,17 @@
 #include "../include/jeu.hpp"
+#include "../include/characterRender.hpp"
 
 using namespace std;
 using namespace sf;
 
 Jeu::Jeu()
     : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
-      m_char(0, 0, m_texture), 
+      m_char(0, 0, TAILLE_PERSONNAGE), 
       m_posCam(0, 0), m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
       m_invRender(m_inv),
-      m_charRenderer(m_char) { 
+      m_charRenderer(m_char, m_texture) { 
   m_map = Map();
-  if (!m_texture.loadFromFile("../assets/img/personnage.png")) {
-    cout << "Erreur de chargement de la texture du personnage" << endl;
-  }
- 
+  
 }
 
 

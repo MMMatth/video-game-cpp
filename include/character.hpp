@@ -18,7 +18,6 @@ class Character {
 public:
   /* constructor */
   Character(int x, int y, int taille);
-  Character(float x, float y, Texture &texture);
   /* destructor */
   // ~Personnage();
 

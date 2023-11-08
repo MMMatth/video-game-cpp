@@ -16,12 +16,14 @@ using namespace std;
 
 class CharacterRender {
 public:
-    CharacterRender(Character& character);
+    CharacterRender(Character& character, Texture& texture);
+    
     void draw(RenderWindow &window);
 
 private:
     Clock m_clock;
-    Character& character;
+    Texture& m_texture;
+    Character& m_character;
 };
 
 
