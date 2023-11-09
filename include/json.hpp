@@ -26,20 +26,19 @@ unordered_map<string, Sprite> getSpriteMap() {
     exit(EXIT_FAILURE);
   }
 
-  texture.loadFromFile(
-      "../assets/img/spritesheet.png"); // Utilisez la texture globale ici
+  texture.loadFromFile("../assets/img/spritesheet.png");
 
   for (auto &[mainKey, mainValue] : j.items()) {
-    for (auto &[key, value] : mainValue.items()) {
-      if (value.contains("spritesheet") && value["spritesheet"]["x"] != -1 &&
-          value["spritesheet"]["y"] != -1) {
-        Sprite sprite;
-        sprite.setTexture(texture);
-        sprite.setTextureRect(IntRect(
-            value["spritesheet"]["x"], value["spritesheet"]["y"],
-            value["spritesheet"]["width"], value["spritesheet"]["height"]));
-        sprites[key] = sprite;
-      }
+    if (mainValue.contains("spritesheet") &&
+        mainValue["spritesheet"]["x"] != -1 &&
+        mainValue["spritesheet"]["y"] != -1) {
+      Sprite sprite;
+      sprite.setTexture(texture);
+      sprite.setTextureRect(IntRect(mainValue["spritesheet"]["x"],
+                                    mainValue["spritesheet"]["y"],
+                                    mainValue["spritesheet"]["width"],
+                                    mainValue["spritesheet"]["height"]));
+      sprites[mainKey] = sprite;
     }
   }
 

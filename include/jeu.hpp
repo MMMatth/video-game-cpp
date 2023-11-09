@@ -6,7 +6,8 @@
 #ifndef JEU_HPP
 #define JEU_HPP
 
-#include "character.hpp"
+
+#include "characterRender.hpp"
 #include "const.hpp"
 #include "coord.hpp"
 #include "draw.hpp"
@@ -33,9 +34,11 @@ private:
   InventoryRenderer m_invRender;
   Coord m_mousePosCam;
   Coord m_mousePosWorld;
+  Texture m_texture;
+  CharacterRender m_charRenderer;
 
 public:
-  Jeu(Texture &texture);
+  Jeu();
 
   void run();
 

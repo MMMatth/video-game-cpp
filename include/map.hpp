@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -27,7 +28,7 @@ public:
 
   void collide(Character *perso);
 
-  Tile chooseTile(char c, int x, int y);
+  Tile chooseTile(string c, int x, int y);
 
   void clean();
 

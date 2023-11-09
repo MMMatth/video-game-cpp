@@ -12,7 +12,7 @@ class Tool : public Item {
 private:
 public:
   /* constructor */
-  Tool(string id, bool is_stackable = false, int amount = 1);
+  Tool(string name, bool is_stackable = false, int amount = 1);
   Tool();
   /* destructor */
   // ~Tool(){};

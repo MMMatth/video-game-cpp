@@ -1,27 +1,19 @@
 #include "../include/map.hpp"
 
+Block getBlock(string id) {
+  for (auto it = blockMap.begin(); it != blockMap.end(); ++it) {
+    if (it->second.getId() == id) {
+      return it->second;
+    }
+  }
+  return blockMap["AIR"];
+}
+
 using namespace std;
 
 Map::Map() { initMap("../assets/map.txt"); }
 
-Tile Map::chooseTile(char c, int x, int y) {
-  Block block;
-  switch (c) {
-  case '1':
-    block = blockMap["GRASS"];
-    break;
-  case '2':
-    block = blockMap["DIRT"];
-    break;
-  case '3':
-    block = blockMap["STONE"];
-    break;
-  default:
-    block = blockMap["AIR"];
-    break;
-  }
-  return Tile(block, x, y);
-}
+Tile Map::chooseTile(string c, int x, int y) { return Tile(getBlock(c), x, y); }
 
 void Map::collide(Character *perso) {
   for (int i = 0; i < m_map.size(); i++) {
@@ -35,8 +27,12 @@ void Map::initMap(const char *nomFichier) {
     string ligne;
     int y = 0;
     while (getline(fichier, ligne)) {
-      for (int x = 0; x < ligne.size(); x++) {
-        m_map.push_back(chooseTile(ligne[x], x, y));
+      stringstream ss(ligne);
+      string c;
+      int x = 0;
+      while (getline(ss, c, ';')) {
+        m_map.push_back(chooseTile(c, x, y));
+        x++;
       }
       y++;
     }

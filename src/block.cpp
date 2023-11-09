@@ -3,8 +3,9 @@
 /* constructor */
 Block::Block() : m_isSolid(false), Item() {}
 
-Block::Block(string id, bool isSolid, bool is_stackable, int amount)
-    : m_isSolid(isSolid), Item(id, is_stackable, amount) {}
+Block::Block(string id, string name, bool isSolid, bool is_stackable,
+             int amount)
+    : m_isSolid(isSolid), Item(name, is_stackable, amount), m_id(id) {}
 
 /* other */
 std::string Block::toString() const {

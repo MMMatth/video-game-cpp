@@ -3,13 +3,15 @@
 using namespace std;
 using namespace sf;
 
-Jeu::Jeu(sf::Texture &texture)
+Jeu::Jeu()
     : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
-      m_char(0, 0,
-             texture), // Passer la texture (spritesheet)
-      m_posCam(0, 0), m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
-      m_invRender(m_inv) {
+      m_char(0, 0, m_texture), m_posCam(0, 0),
+      m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
+      m_invRender(m_inv), m_charRenderer(m_char) {
   m_map = Map();
+  if (!m_texture.loadFromFile("../assets/img/personnage.png")) {
+    cout << "Erreur de chargement de la texture du personnage" << endl;
+  }
 }
 
 void Jeu::run() {
@@ -160,7 +162,7 @@ void Jeu::event() {
 void Jeu::render() {
   m_window.clear(COULEUR_CIEL);
 
-  m_char.draw(m_window);
+  m_charRenderer.draw(m_window);
 
   m_sprites = getSpriteMap();
 
@@ -171,7 +173,7 @@ void Jeu::render() {
 
     if (m_map.getTile(i).estDansCam(m_posCam.getX(), m_posCam.getY(),
                                     WINDOW_WIDTH, WINDOW_HEIGHT)) {
-      drawSprites(x, y, m_sprites[m_map.getTile(i).getBlock().getId()],
+      drawSprites(x, y, m_sprites[m_map.getTile(i).getBlock().getName()],
                   &m_window, TAILLE_CASE, TAILLE_CASE);
     }
   }
@@ -191,12 +193,7 @@ void Jeu::save() { m_inv.save("../assets/csv/inventory.csv"); }
 
 int main(int arg, char **argv) {
 
-  Texture spritesheet;
-  if (!spritesheet.loadFromFile("../assets/img/personnage.png")) {
-    cout << "Erreur de chargement de la spritesheet." << endl;
-  }
-
-  Jeu jeu(spritesheet);
+  Jeu jeu;
   jeu.run();
   return 0;
 }

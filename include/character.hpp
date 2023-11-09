@@ -26,6 +26,9 @@ public:
 
   void update();
   /* getters */
+  unordered_map<string, Sprite> getSprites() { return sprites; }
+  map<string, bool> getDirection() { return direction; }
+  map<string, bool> getCollision() { return collision; }
   int getHauteur() { return hauteur; }
   int getLargeur() { return largeur; }
   int getX() { return coord.getX(); }
@@ -54,7 +57,7 @@ public:
 
   string toString();
 
-  void draw(RenderWindow &window);
+
 
 private:
   Coord coord;
@@ -69,7 +72,7 @@ private:
   int vitesse;
 
   unordered_map<string, Sprite> sprites;
-  Clock clock;
+  Texture texture;
 };
 
 #endif /* PERSONNAGE_HPP */
