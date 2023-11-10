@@ -78,13 +78,13 @@ void Jeu::event() {
     }
     if (event.type == Event::KeyPressed) {
       switch (event.key.code) {
-      case Keyboard::Up:
+      case Keyboard::Space:
         m_char.setJumping(true);
         break;
-      case Keyboard::Left:
+      case Keyboard::Q:
         m_char.setGoingLeft(true);
         break;
-      case Keyboard::Right:
+      case Keyboard::D:
         m_char.setGoingRight(true);
         break;
       case Keyboard::Escape:
@@ -129,13 +129,13 @@ void Jeu::event() {
     }
     if (event.type == Event::KeyReleased) {
       switch (event.key.code) {
-      case Keyboard::Up:
+      case Keyboard::Space:
         m_char.setJumping(false);
         break;
-      case Keyboard::Left:
+      case Keyboard::Q:
         m_char.setGoingLeft(false);
         break;
-      case Keyboard::Right:
+      case Keyboard::D:
         m_char.setGoingRight(false);
         break;
       default:
@@ -147,6 +147,12 @@ void Jeu::event() {
         if (m_inv.isOpen())
           m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
                             m_posCam.getX(), m_posCam.getY());
+        else {
+          if (m_inv.getItemPosHand().getType() == "TOOL") {
+            m_map.suprTile(m_mousePosWorld.getX() - CAM_WIDTH / 2,
+                           m_mousePosWorld.getY() - CAM_HEIGHT / 2);
+          }
+        }
       }
       if (event.mouseButton.button == Mouse::Right) {
         if (!m_inv.isOpen()) {

@@ -53,10 +53,11 @@ void Map::addTile(Block block, int mouseX, int mouseY) {
   }
 }
 
-void Map::suprTile(int x, int y) {
+void Map::suprTile(int mouseX, int mouseY) {
   for (auto it = m_map.begin(); it != m_map.end(); ++it) {
-    if (it->getX() == x && it->getY() == y) {
-      m_map.erase(it);
+    if (mouseX > it->getX() && mouseX < it->getX() + TILE_SIZE &&
+        mouseY > it->getY() && mouseY < it->getY() + TILE_SIZE) {
+      it->setBlock(blockMap["AIR"]);
       break;
     }
   }
