@@ -19,8 +19,8 @@ bool Tile::estDansCam(int posCamX, int posCamY, int largeur, int hauteur) {
 void Tile::collide(Character *perso) {
   int persoX = perso->getX();
   int persoY = perso->getY();
-  int persoLargeur = perso->getLargeur();
-  int persoHauteur = perso->getHauteur();
+  int persoLargeur = perso->getWidth();
+  int persoHauteur = perso->getWidth();
   int persoVitesse = perso->getVitesse();
 
   int blockX = m_position.getX();

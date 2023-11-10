@@ -41,6 +41,22 @@ void Map::initMap(string nomFichier) {
   }
 }
 
+void Map::save() {
+  ofstream fichier(MAP_PATH);
+  if (fichier) {
+    for (int i = 0; i < m_map.size(); i++) {
+      fichier << m_map[i].getBlock().getId();
+      if (i % MAP_WIDTH == MAP_WIDTH - 1) {
+        fichier << endl;
+      } else {
+        fichier << ";";
+      }
+    }
+  } else {
+    cout << "Erreur lors de l'ouverture du fichier" << endl;
+  }
+}
+
 void Map::addTile(Block block, int mouseX, int mouseY) {
   cout << mouseX << " " << mouseY << endl;
   cout << m_map[0].getX() << " " << m_map[0].getY() << endl;

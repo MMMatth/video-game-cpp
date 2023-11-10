@@ -32,11 +32,9 @@ void Jeu::run() {
 
 void Jeu::updateCam() {
   m_posCam.setX(m_posCam.getX() +
-                (m_char.getX() + m_char.getHauteur() / 4 - m_posCam.getX()) /
-                    20);
+                (m_char.getX() + m_char.getWidth() / 4 - m_posCam.getX()) / 20);
   m_posCam.setY(m_posCam.getY() +
-                (m_char.getY() + m_char.getHauteur() / 2 - m_posCam.getY()) /
-                    20);
+                (m_char.getY() + m_char.getWidth() / 2 - m_posCam.getY()) / 20);
   m_window.setView(View(Vector2f(m_posCam.getX(), m_posCam.getY()),
                         Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
@@ -193,7 +191,10 @@ void Jeu::quit() {
   clean();
 }
 
-void Jeu::save() { m_inv.save("../assets/csv/inventory.csv"); }
+void Jeu::save() {
+  m_inv.save("../assets/csv/inventory.csv");
+  m_map.save();
+}
 
 int main(int arg, char **argv) {
 

@@ -26,6 +26,7 @@ public:
   /* setters */
 
   /* other*/
+  void save();
   void collide(Character *perso);
   Tile chooseTile(string c, int x, int y);
   void clean();

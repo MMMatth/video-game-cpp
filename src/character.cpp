@@ -3,22 +3,22 @@
 
 using namespace std;
 
-Character::Character(int x, int y, int taille) : coord(x, y) {
-  this->largeur = taille;
-  this->hauteur = taille;
+Character::Character(int x, int y, int taille) : m_coord(x, y) {
+  this->m_width = taille;
+  this->m_height = taille;
 
-  this->direction = {{"isJumping", false},
-                     {"isGoingUp", false},
-                     {"isFalling", true},
-                     {"isGoingRight", false},
-                     {"isGoingLeft", false}};
+  this->m_direction = {{"isJumping", false},
+                       {"isGoingUp", false},
+                       {"isFalling", true},
+                       {"isGoingRight", false},
+                       {"isGoingLeft", false}};
 
-  this->collision = {
+  this->m_collision = {
       {"up", false}, {"down", false}, {"left", false}, {"right", false}};
 
-  this->jumpHeight = 15;
-  this->timeJump = 0;
-  this->vitesse = 3;
+  this->m_jumpHeight = 15;
+  this->m_timeJump = 0;
+  this->m_speed = 3;
 }
 
 void Character::initSprites(Texture &spritesheet) {
@@ -33,7 +33,7 @@ void Character::initSprites(Texture &spritesheet) {
     } else if (name == "fall") {
       sprites[name].setTextureRect(IntRect(320, 128, 64, 64));
     }
-    sprites[name].setPosition(coord.getX(), coord.getY());
+    sprites[name].setPosition(m_coord.getX(), m_coord.getY());
   }
 
   vector<string> moveNames = {"moveLeft", "moveRight"};
@@ -44,7 +44,7 @@ void Character::initSprites(Texture &spritesheet) {
         string spriteName = moveName + to_string(i);
         sprites[spriteName].setTexture(spritesheet);
         sprites[spriteName].setTextureRect(IntRect(x, 576, 64, 64));
-        sprites[spriteName].setPosition(coord.getX(), coord.getY());
+        sprites[spriteName].setPosition(m_coord.getX(), m_coord.getY());
         x += 64;
       }
     } else {
@@ -52,37 +52,37 @@ void Character::initSprites(Texture &spritesheet) {
         string spriteName = moveName + to_string(i);
         sprites[spriteName].setTexture(spritesheet);
         sprites[spriteName].setTextureRect(IntRect(x, 704, 64, 64));
-        sprites[spriteName].setPosition(coord.getX(), coord.getY());
+        sprites[spriteName].setPosition(m_coord.getX(), m_coord.getY());
         x += 64;
       }
     }
   }
 }
 
-Character::Character(float x, float y, Texture &texture) : coord(x, y) {
-  this->largeur = 64;
-  this->hauteur = 64;
-  this->direction = {{"isJumping", false},
-                     {"isGoingUp", false},
-                     {"isFalling", true},
-                     {"isGoingRight", false},
-                     {"isGoingLeft", false}};
+Character::Character(float x, float y, Texture &texture) : m_coord(x, y) {
+  this->m_width = 64;
+  this->m_height = 64;
+  this->m_direction = {{"isJumping", false},
+                       {"isGoingUp", false},
+                       {"isFalling", true},
+                       {"isGoingRight", false},
+                       {"isGoingLeft", false}};
 
-  this->collision = {
+  this->m_collision = {
       {"up", false}, {"down", false}, {"left", false}, {"right", false}};
 
-  this->jumpHeight = 15;
-  this->timeJump = 0;
-  this->vitesse = 3;
+  this->m_jumpHeight = 15;
+  this->m_timeJump = 0;
+  this->m_speed = 3;
 
   initSprites(texture);
-}       
+}
 
 void Character::update() {
   // update position of the sprite
   vector<string> spriteNames = {"stop", "jump", "fall"};
   for (string &name : spriteNames) {
-    sprites[name].setPosition(coord.getX(), coord.getY());
+    sprites[name].setPosition(m_coord.getX(), m_coord.getY());
   }
 
   vector<string> moveNames = {"moveLeft", "moveRight"};
@@ -91,69 +91,70 @@ void Character::update() {
     if (moveName == "moveLeft") {
       for (int i = 1; i <= 9; i++) {
         string spriteName = moveName + to_string(i);
-        sprites[spriteName].setPosition(coord.getX(), coord.getY());
+        sprites[spriteName].setPosition(m_coord.getX(), m_coord.getY());
         x += 64;
       }
     } else {
       for (int i = 1; i <= 9; i++) {
         string spriteName = moveName + to_string(i);
-        sprites[spriteName].setPosition(coord.getX(), coord.getY());
+        sprites[spriteName].setPosition(m_coord.getX(), m_coord.getY());
         x += 64;
       }
     }
   }
 
-  if (direction["isJumping"] && collision["down"]) {
-    this->direction["isGoingUp"] = true;
-    this->timeJump = 0;
-    this->collision["down"] = false;
+  if (m_direction["isJumping"] && m_collision["down"]) {
+    this->m_direction["isGoingUp"] = true;
+    this->m_timeJump = 0;
+    this->m_collision["down"] = false;
   }
-  if (!direction["isJumping"]) {
-    this->direction["isGoingUp"] = false;
-    this->direction["isFalling"] = true;
+  if (!m_direction["isJumping"]) {
+    this->m_direction["isGoingUp"] = false;
+    this->m_direction["isFalling"] = true;
   }
-  if (direction["isGoingUp"] && !collision["up"]) {
-    this->timeJump++;
-    if (timeJump < jumpHeight) {
-      this->deplacerY(-vitesse);
+  if (m_direction["isGoingUp"] && !m_collision["up"]) {
+    this->m_timeJump++;
+    if (m_timeJump < m_jumpHeight) {
+      this->deplacerY(-m_speed);
     } else {
-      this->direction["isGoingUp"] = false;
-      this->direction["isFalling"] = true;
+      this->m_direction["isGoingUp"] = false;
+      this->m_direction["isFalling"] = true;
     }
   }
-  if (direction["isFalling"] && !collision["down"] && !direction["isGoingUp"]) {
+  if (m_direction["isFalling"] && !m_collision["down"] &&
+      !m_direction["isGoingUp"]) {
     // this->setCollisionFalseExcept("down");
-    this->deplacerY(vitesse);
+    this->deplacerY(m_speed);
   }
 
-  if (direction["isGoingRight"] && !collision["right"]) {
+  if (m_direction["isGoingRight"] && !m_collision["right"]) {
 
     this->setCollisionFalseExcept("right");
-    this->deplacerX(vitesse);
+    this->deplacerX(m_speed);
   }
 
-  if (direction["isGoingLeft"] && !collision["left"]) {
+  if (m_direction["isGoingLeft"] && !m_collision["left"]) {
     this->setCollisionFalseExcept("left");
 
-    this->deplacerX(-vitesse);
+    this->deplacerX(-m_speed);
   }
 
-  if (direction["isGoingUp"] && !collision["up"]) {
+  if (m_direction["isGoingUp"] && !m_collision["up"]) {
     this->setCollisionFalseExcept("up");
 
-    this->deplacerY(-vitesse);
+    this->deplacerY(-m_speed);
   }
-  if (collision["up"] && !collision["down"] && collision["right"] &&
-      collision["left"]) {
+  if (m_collision["up"] && !m_collision["down"] && m_collision["right"] &&
+      m_collision["left"]) {
 
     this->setCollisionFalseExcept("down");
 
-    this->deplacerY(vitesse);
+    this->deplacerY(m_speed);
   }
 }
 
 void Character::setCollisionFalseExcept(string key) {
-  for (auto &x : this->collision) {
+  for (auto &x : this->m_collision) {
     if (x.first != key) {
       x.second = false;
     }
@@ -161,6 +162,10 @@ void Character::setCollisionFalseExcept(string key) {
 }
 
 // other methods
-void Character::deplacerX(int x) { this->coord.setX(this->coord.getX() + x); }
+void Character::deplacerX(int x) {
+  this->m_coord.setX(this->m_coord.getX() + x);
+}
 
-void Character::deplacerY(int y) { this->coord.setY(this->coord.getY() + y); }
+void Character::deplacerY(int y) {
+  this->m_coord.setY(this->m_coord.getY() + y);
+}
