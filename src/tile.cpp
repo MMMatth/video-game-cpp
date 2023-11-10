@@ -26,30 +26,30 @@ void Tile::collide(Character *perso) {
   int blockX = m_position.getX();
   int blockY = m_position.getY();
 
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX &&
-      blockX < persoX + persoLargeur && blockY + TAILLE_CASE > persoY &&
+  if (m_block.isSolid() && blockX + TAILLE_CASE / 2 > persoX &&
+      blockX < persoX + persoLargeur / 1.3 && blockY + TAILLE_CASE / 2> persoY &&
       blockY < persoY + persoHauteur + persoVitesse) {
     perso->setCollision("down", true);
   }
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX && // left
-      blockX < persoX + persoLargeur + persoVitesse &&
-      blockY + TAILLE_CASE > persoY && blockY < persoY + persoHauteur // down
+  if (m_block.isSolid() && blockX + TAILLE_CASE / 2 > persoX && // left
+      blockX < persoX + persoLargeur / 1.3 + persoVitesse &&
+      blockY + TAILLE_CASE / 2> persoY && blockY < persoY + persoHauteur  // down
   ) {
     perso->setCollision("right", true);
   }
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX - persoVitesse &&
-      blockX < persoX + persoLargeur && blockY + TAILLE_CASE > persoY &&
+  if (m_block.isSolid() && blockX + TAILLE_CASE / 2 > persoX - persoVitesse &&
+      blockX < persoX + persoLargeur / 1.3  && blockY + TAILLE_CASE / 2 > persoY &&
       blockY < persoY + persoHauteur) {
     perso->setCollision("left", true);
   }
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX - persoVitesse &&
-      blockX < persoX + persoLargeur && blockY + TAILLE_CASE > persoY &&
-      blockY < persoY + persoHauteur) {
-    perso->setCollision("left", true);
-  }
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX &&
-      blockX < persoX + persoLargeur &&
-      blockY + TAILLE_CASE > persoY - persoVitesse &&
+  // if (m_block.isSolid() && blockX + TAILLE_CASE > persoX - persoVitesse &&
+  //     blockX < persoX + persoLargeur / 1.3 && blockY + TAILLE_CASE > persoY &&
+  //     blockY < persoY + persoHauteur) {
+  //   perso->setCollision("left", true);
+  // }
+  if (m_block.isSolid() && blockX + TAILLE_CASE / 2 > persoX &&
+      blockX < persoX + persoLargeur / 1.3 &&
+      blockY + TAILLE_CASE / 2 > persoY - persoVitesse &&
       blockY < persoY + persoHauteur) {
     perso->setCollision("up", true);
   }

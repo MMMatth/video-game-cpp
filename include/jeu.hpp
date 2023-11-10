@@ -36,6 +36,8 @@ private:
   Coord m_mousePosWorld;
   Texture m_texture;
   CharacterRender m_charRenderer;
+  bool m_jeu;
+  bool m_menu;
 
 public:
   Jeu();
@@ -58,6 +60,8 @@ public:
 
   void quit();
 
+  void menu();
+  
   void save();
 
   bool collisionAvecCarte(int x, int y);

@@ -11,24 +11,96 @@ Jeu::Jeu()
       m_invRender(m_inv),
       m_charRenderer(m_char, m_texture) { 
   m_map = Map();
+  m_menu = true;
+  m_jeu = false;
   
 }
-
 
 void Jeu::run() {
   Clock clock;
   Time timePerFrame = seconds(1.f / FPS_MAX);
   Time timeSinceLastUpdate = Time::Zero;
-  while (m_window.isOpen()) {
-    timeSinceLastUpdate += clock.restart();
-    while (timeSinceLastUpdate > timePerFrame) {
-      timeSinceLastUpdate -= timePerFrame;
-      event();
-      update();
-    }
-    render();
+
+  Texture menuTexture;
+  if (menuTexture.loadFromFile("../assets/img/menu.jpeg")) {
+    //Error handling if image loading fails.
   }
+  Sprite menuSprite(menuTexture);
+  menuSprite.setPosition(0, 0);
+
+  while (m_window.isOpen()) {
+    Event m_event;
+    while (m_window.pollEvent(m_event)) {
+      if (m_event.type == Event::Closed) {
+        quit();
+      }
+
+      if (m_event.type == Event::KeyPressed) {
+        switch (m_event.key.code) {
+          case Keyboard::Space:
+            if (m_menu) {
+              m_menu = false;
+              m_jeu = true;
+              m_char.setX(0);
+              m_char.setY(0);
+
+            }
+            break;
+          case Keyboard::Escape:
+            quit();
+            break;
+          default:
+            break;
+        }
+      }
+      // if (m_event.type == Event::MouseMoved && m_menu) {
+      //   int mouseX = m_event.mouseMove.x;
+      //   int mouseY = m_event.mouseMove.y;
+      //   cout << "Position de la souris dans le menu : X=" << mouseX << ", Y=" << mouseY << endl;
+      // }
+
+      if (m_event.type == Event::MouseButtonPressed && m_menu) {
+        if (m_event.mouseButton.button == Mouse::Left) {
+          int mouseX = m_event.mouseButton.x;
+          int mouseY = m_event.mouseButton.y;
+          if (mouseX >= 604 && mouseX <= 784 && mouseY >= 236 && mouseY <= 324) {
+            quit();
+          }
+          if (mouseX >= 13 && mouseX <= 239 && mouseY >= 233 && mouseY <= 328) {
+            m_menu = false;
+            m_jeu = true;
+          }
+        }
+      }
+
+      if (m_menu) {
+        m_window.clear();
+        m_window.draw(menuSprite);
+        m_window.display();
+      }
+
+      while (m_jeu) {
+        timeSinceLastUpdate += clock.restart();
+        while (timeSinceLastUpdate > timePerFrame) {
+          timeSinceLastUpdate -= timePerFrame;
+          event();
+          update();
+        }
+        render();
+      }
+      if (!m_menu && !m_jeu) {
+        quit();
+      }
+    }
+  }
+
+  cout << "Au revoir!" << endl;
 }
+
+
+
+
+
 
 bool Jeu::collisionAvecCarte(int x, int y) {
   if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT) {
@@ -80,8 +152,10 @@ void Jeu::clean() {
 
 void Jeu::event() {
   Event event;
+ 
   while (m_window.pollEvent(event)) {
     if (event.type == Event::Closed) {
+      m_jeu = false;
       quit();
     }
     if (event.type == Event::KeyPressed) {
@@ -96,6 +170,7 @@ void Jeu::event() {
         m_char.setGoingRight(true);
         break;
       case Keyboard::Escape:
+        m_jeu = false;
         quit();
         break;
       case Keyboard::E:
@@ -190,11 +265,25 @@ void Jeu::quit() {
   clean();
 }
 
+// void Jeu::menu(){
+//   RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE);
+//   while (window.isOpen()){
+    
+//     sf::Event event;
+//     while (window.pollEvent(event)){
+//       if (event.type == sf::Event::Closed) 
+//         window.close();
+//       }
+   
+//   }
+// }
+
 void Jeu::save() { m_inv.save("../assets/csv/inventory.csv"); }
 
 int main(int arg, char **argv) {
-
   Jeu jeu;
+  
   jeu.run();
+  
   return 0;
 }
