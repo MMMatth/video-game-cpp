@@ -1,5 +1,7 @@
 #include "../include/map.hpp"
 
+using namespace std;
+
 Block getBlock(string id) {
   for (auto it = blockMap.begin(); it != blockMap.end(); ++it) {
     if (it->second.getId() == id) {
@@ -8,8 +10,6 @@ Block getBlock(string id) {
   }
   return blockMap["AIR"];
 }
-
-using namespace std;
 
 Map::Map(string filePath) { initMap(filePath); }
 
@@ -38,6 +38,27 @@ void Map::initMap(string nomFichier) {
     }
   } else {
     cout << "Erreur lors de l'ouverture du fichier" << endl;
+  }
+}
+
+void Map::addTile(Block block, int mouseX, int mouseY) {
+  cout << mouseX << " " << mouseY << endl;
+  cout << m_map[0].getX() << " " << m_map[0].getY() << endl;
+  for (int i = 0; i < m_map.size(); i++) {
+    if (mouseX > m_map[i].getX() && mouseX < m_map[i].getX() + TILE_SIZE &&
+        mouseY > m_map[i].getY() && mouseY < m_map[i].getY() + TILE_SIZE) {
+      m_map[i].setBlock(block);
+      return;
+    }
+  }
+}
+
+void Map::suprTile(int x, int y) {
+  for (auto it = m_map.begin(); it != m_map.end(); ++it) {
+    if (it->getX() == x && it->getY() == y) {
+      m_map.erase(it);
+      break;
+    }
   }
 }
 

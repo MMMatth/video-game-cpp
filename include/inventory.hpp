@@ -30,11 +30,8 @@ public:
   ~Inventory();
 
   void swapItem(Coord p1, Coord p2);
-
   void swapItem(InventoryTile *t1, InventoryTile *t2);
-
   void addItem(Item item);
-
   void removeItem(Coord pos);
 
   /* handle */
@@ -64,6 +61,9 @@ public:
     return m_inventory[pos.getX()][pos.getY()].getItem();
   }
   bool isOpen() { return m_is_open; }
+  Item getItemPosHand() {
+    return m_inventory[INVENTORY_HEIGHT - 1][m_pos_hand].getItem();
+  }
 
   /* other */
   void save(string csvPath);

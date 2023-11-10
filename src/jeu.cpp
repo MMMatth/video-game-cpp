@@ -4,8 +4,9 @@ using namespace std;
 using namespace sf;
 
 Jeu::Jeu()
-    : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
-      m_char(0, 0, m_texture), m_posCam(0, 0),
+    : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE),
+      m_char(MAP_WIDTH * TILE_SIZE / 2, 0, m_texture),
+      m_posCam(m_char.getX(), m_char.getY()),
       m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
       m_invRender(m_inv), m_charRenderer(m_char) {
   m_map = Map();
@@ -27,14 +28,6 @@ void Jeu::run() {
     }
     render();
   }
-}
-
-bool Jeu::collisionAvecCarte(int x, int y) {
-  if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT) {
-    return true;
-  }
-
-  return false;
 }
 
 void Jeu::updateCam() {
@@ -98,7 +91,6 @@ void Jeu::event() {
         quit();
         break;
       case Keyboard::E:
-        // inv.addItem(blockMap[GRASS]);
         m_inv.addItem(toolMap["IRON_PICKAXE"]);
         break;
       case Keyboard::I:
@@ -152,34 +144,40 @@ void Jeu::event() {
     }
     if (event.type == Event::MouseButtonPressed) {
       if (event.mouseButton.button == Mouse::Left) {
-        m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
-                          m_posCam.getX(), m_posCam.getY());
+        if (m_inv.isOpen())
+          m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
+                            m_posCam.getX(), m_posCam.getY());
+      }
+      if (event.mouseButton.button == Mouse::Right) {
+        if (!m_inv.isOpen()) {
+          if (m_inv.getItemPosHand().getType() == "BLOCK") {
+            m_map.addTile(blockMap[m_inv.getItemPosHand().getName()],
+                          m_mousePosWorld.getX() - CAM_WIDTH / 2,
+                          m_mousePosWorld.getY() - CAM_HEIGHT / 2);
+          }
+        }
       }
     }
   }
 }
 
 void Jeu::render() {
-  m_window.clear(COULEUR_CIEL);
-
+  m_window.clear(SKY_COLOR);
   m_charRenderer.draw(m_window);
-
   m_sprites = getSpriteMap();
 
   for (int i = 0; i < m_map.getSize(); i++) {
     int x, y;
     x = m_map.getTile(i).getX();
     y = m_map.getTile(i).getY();
-
     if (m_map.getTile(i).estDansCam(m_posCam.getX(), m_posCam.getY(),
                                     WINDOW_WIDTH, WINDOW_HEIGHT)) {
       drawSprites(x, y, m_sprites[m_map.getTile(i).getBlock().getName()],
-                  &m_window, TAILLE_CASE, TAILLE_CASE);
+                  &m_window, TILE_SIZE, TILE_SIZE);
     }
   }
   m_invRender.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY(),
                      m_mousePosWorld.getX(), m_mousePosWorld.getY());
-
   m_window.display();
 }
 

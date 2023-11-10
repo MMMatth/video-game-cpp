@@ -22,6 +22,7 @@ public:
   /* getters */
   Item getItem() { return m_item; }
   Coord getItemPos() { return m_item_position; }
+  string getItemType() { return m_item.getType(); }
   bool isEmpty() { return m_is_empty; }
   /* setters */
   void setAmount(int amount) { m_item.setAmount(amount); }

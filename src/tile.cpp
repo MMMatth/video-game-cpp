@@ -1,10 +1,10 @@
 #include "../include/tile.hpp"
 
 Tile::Tile(Block block, int x, int y)
-    : m_position(Coord(x * TAILLE_CASE, y * TAILLE_CASE)), m_block(block) {}
+    : m_position(Coord(x * TILE_SIZE, y * TILE_SIZE)), m_block(block) {}
 
 Tile::Tile(int x, int y)
-    : m_position(Coord(x * TAILLE_CASE, y * TAILLE_CASE)), m_block(Block()) {}
+    : m_position(Coord(x * TILE_SIZE, y * TILE_SIZE)), m_block(Block()) {}
 
 bool Tile::estDansCam(int posCamX, int posCamY, int largeur, int hauteur) {
   if (m_position.getX() >= posCamX - largeur &&
@@ -26,30 +26,30 @@ void Tile::collide(Character *perso) {
   int blockX = m_position.getX();
   int blockY = m_position.getY();
 
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX &&
-      blockX < persoX + persoLargeur && blockY + TAILLE_CASE > persoY &&
+  if (m_block.isSolid() && blockX + TILE_SIZE > persoX &&
+      blockX < persoX + persoLargeur && blockY + TILE_SIZE > persoY &&
       blockY < persoY + persoHauteur + persoVitesse) {
     perso->setCollision("down", true);
   }
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX && // left
+  if (m_block.isSolid() && blockX + TILE_SIZE > persoX && // left
       blockX < persoX + persoLargeur + persoVitesse &&
-      blockY + TAILLE_CASE > persoY && blockY < persoY + persoHauteur // down
+      blockY + TILE_SIZE > persoY && blockY < persoY + persoHauteur // down
   ) {
     perso->setCollision("right", true);
   }
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX - persoVitesse &&
-      blockX < persoX + persoLargeur && blockY + TAILLE_CASE > persoY &&
+  if (m_block.isSolid() && blockX + TILE_SIZE > persoX - persoVitesse &&
+      blockX < persoX + persoLargeur && blockY + TILE_SIZE > persoY &&
       blockY < persoY + persoHauteur) {
     perso->setCollision("left", true);
   }
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX - persoVitesse &&
-      blockX < persoX + persoLargeur && blockY + TAILLE_CASE > persoY &&
+  if (m_block.isSolid() && blockX + TILE_SIZE > persoX - persoVitesse &&
+      blockX < persoX + persoLargeur && blockY + TILE_SIZE > persoY &&
       blockY < persoY + persoHauteur) {
     perso->setCollision("left", true);
   }
-  if (m_block.isSolid() && blockX + TAILLE_CASE > persoX &&
+  if (m_block.isSolid() && blockX + TILE_SIZE > persoX &&
       blockX < persoX + persoLargeur &&
-      blockY + TAILLE_CASE > persoY - persoVitesse &&
+      blockY + TILE_SIZE > persoY - persoVitesse &&
       blockY < persoY + persoHauteur) {
     perso->setCollision("up", true);
   }

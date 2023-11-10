@@ -16,6 +16,7 @@ public:
   Tool();
   /* destructor */
   // ~Tool(){};
+  /* getters */
 };
 
 static map<string, Tool> toolMap = {{"IRON_PICKAXE", Tool("IRON_PICKAXE")},

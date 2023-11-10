@@ -26,6 +26,7 @@ public:
   Block getBlock() const { return m_block; }
   /* setters */
   void setPosition(Coord position) { m_position = position; }
+  void setBlock(Block block) { m_block = block; }
   /* other */
   bool estDansCam(int posCamX, int posCamY, int largeur, int hauteur);
   void collide(Character *perso);

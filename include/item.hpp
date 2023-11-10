@@ -12,13 +12,15 @@ private:
   string m_name;
   bool m_is_stackable;
   int m_amout; // -1 if not stackable
+  string m_type;
 
 public:
   /* constructeur */
-  Item(string name, bool is_stackable, int amout = 1)
-      : m_amout(amout), m_name(name), m_is_stackable(is_stackable) {}
+  Item(string name, bool is_stackable, string type, int amout = 1)
+      : m_amout(amout), m_name(name), m_is_stackable(is_stackable),
+        m_type(type) {}
 
-  Item() : m_amout(1), m_name(""), m_is_stackable(false){};
+  Item() : m_amout(1), m_name(""), m_is_stackable(false), m_type("UNDEFINED"){};
 
   /* destructeur */
   // ~Item(){};
@@ -30,6 +32,7 @@ public:
 
   /* getters */
   string getName() { return m_name; }
+  string getType() { return m_type; }
   int getAmount() { return m_amout; }
   bool isStackable() { return m_is_stackable; }
   /*others*/

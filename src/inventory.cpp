@@ -33,6 +33,8 @@ Inventory::Inventory(string csvPath)
           case 3:
             amount = stoi(cell);
             break;
+          case 4:
+
           default:
             std ::cerr << "Invalid csv file : " << csvPath << "\n";
             std ::exit(EXIT_FAILURE);

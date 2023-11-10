@@ -29,6 +29,8 @@ public:
   void collide(Character *perso);
   Tile chooseTile(string c, int x, int y);
   void clean();
+  void addTile(Block block, int mouseX, int mouseY);
+  void suprTile(int x, int y);
   string toString();
 
 private:

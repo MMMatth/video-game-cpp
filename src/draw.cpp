@@ -12,8 +12,8 @@ void drawSprite(int x, int y, RenderWindow *window, string path) {
   texture.loadFromFile(path);
   sprite.setTexture(texture);
   sprite.setPosition(x, y);
-  sprite.setScale(TAILLE_CASE / sprite.getLocalBounds().width,
-                  TAILLE_CASE / sprite.getLocalBounds().height);
+  sprite.setScale(TILE_SIZE / sprite.getLocalBounds().width,
+                  TILE_SIZE / sprite.getLocalBounds().height);
   window->draw(sprite);
 }
 
