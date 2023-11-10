@@ -1,5 +1,5 @@
-#ifndef POINT_HPP
-#define POINT_HPP
+#ifndef COORD_HPP
+#define COORD_HPP
 
 #include <string>
 

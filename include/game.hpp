@@ -3,8 +3,8 @@
  * \brief Définition de la classe Jeu.
  * \author Matthieu Gaudel and Papa El Hadji G Cissé
  */
-#ifndef JEU_HPP
-#define JEU_HPP
+#ifndef GAME_HPP
+#define GAME_HPP
 
 
 #include "characterRender.hpp"
@@ -23,7 +23,7 @@
 using namespace sf;
 using namespace std;
 
-class Jeu {
+class Game {
 private:
   Map m_map;
   Character m_char;
@@ -36,11 +36,11 @@ private:
   Coord m_mousePosWorld;
   Texture m_texture;
   CharacterRender m_charRenderer;
-  bool m_jeu;
+  bool m_game;
   bool m_menu;
 
 public:
-  Jeu();
+  Game();
 
   void run();
 
@@ -67,4 +67,4 @@ public:
   bool collisionAvecCarte(int x, int y);
 };
 
-#endif /* JEU_HPP */
+#endif /* GAME_HPP */

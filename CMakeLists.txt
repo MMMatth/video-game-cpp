@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7.0)
-project(jeu)
+project(game)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -40,8 +40,8 @@ endif()
 
 # Ajout des commandes pour effacer le build et lancer le programme
 add_custom_target(run
-    COMMAND ./jeu
-    DEPENDS jeu
+    COMMAND ./game
+    DEPENDS game
     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
 )
 

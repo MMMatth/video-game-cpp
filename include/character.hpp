@@ -1,5 +1,5 @@
-#ifndef PERSONNAGE_HPP
-#define PERSONNAGE_HPP
+#ifndef CHARACTER_HPP
+#define CHARACTER_HPP
 
 #include "const.hpp"
 #include "coord.hpp"
@@ -74,4 +74,4 @@ private:
   Texture texture;
 };
 
-#endif /* PERSONNAGE_HPP */
+#endif /* CHARACTER_HPP */

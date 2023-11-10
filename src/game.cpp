@@ -1,10 +1,10 @@
-#include "../include/jeu.hpp"
+#include "../include/game.hpp"
 #include "../include/characterRender.hpp"
 
 using namespace std;
 using namespace sf;
 
-Jeu::Jeu()
+Game::Game()
     : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
       m_char(0, 0, TAILLE_PERSONNAGE), 
       m_posCam(0, 0), m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
@@ -12,18 +12,18 @@ Jeu::Jeu()
       m_charRenderer(m_char, m_texture) { 
   m_map = Map();
   m_menu = true;
-  m_jeu = false;
+  m_game = false;
   
 }
 
-void Jeu::run() {
+void Game::run() {
   Clock clock;
   Time timePerFrame = seconds(1.f / FPS_MAX);
   Time timeSinceLastUpdate = Time::Zero;
 
   Texture menuTexture;
-  if (menuTexture.loadFromFile("../assets/img/menu.JPEG")) {
-    //Error handling if image loading fails.
+  if (!menuTexture.loadFromFile("../assets/img/menu.JPEG")) {
+    cout << "Erreur de chargement de la texture du menu." << endl;
   }
   Sprite menuSprite(menuTexture);
   menuSprite.setPosition(0, 0);
@@ -40,7 +40,7 @@ void Jeu::run() {
           case Keyboard::Space:
             if (m_menu) {
               m_menu = false;
-              m_jeu = true;
+              m_game = true;
               m_char.setX(0);
               m_char.setY(0);
 
@@ -68,7 +68,7 @@ void Jeu::run() {
           }
           if (mouseX >= 32 && mouseX <= 230 && mouseY >= 214 && mouseY <= 297) {
             m_menu = false;
-            m_jeu = true;
+            m_game = true;
           }
           if (mouseX >= 318 && mouseX <= 508 && mouseY >= 131 && mouseY <= 210) {
             cout << "Nothing at the moment " << endl;
@@ -83,7 +83,7 @@ void Jeu::run() {
         m_window.display();
       }
 
-      while (m_jeu) {
+      while (m_game) {
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > timePerFrame) {
           timeSinceLastUpdate -= timePerFrame;
@@ -92,7 +92,7 @@ void Jeu::run() {
         }
         render();
       }
-      if (!m_menu && !m_jeu) {
+      if (!m_menu && !m_game) {
         quit();
       }
     }
@@ -106,7 +106,7 @@ void Jeu::run() {
 
 
 
-bool Jeu::collisionAvecCarte(int x, int y) {
+bool Game::collisionAvecCarte(int x, int y) {
   if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT) {
     return true;
   }
@@ -114,7 +114,7 @@ bool Jeu::collisionAvecCarte(int x, int y) {
   return false;
 }
 
-void Jeu::updateCam() {
+void Game::updateCam() {
   m_posCam.setX(m_posCam.getX() +
                 (m_char.getX() + m_char.getHauteur() / 4 - m_posCam.getX()) /
                     20);
@@ -125,9 +125,9 @@ void Jeu::updateCam() {
                         Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
 
-void Jeu::updateCollide() { m_map.collide(&m_char); }
+void Game::updateCollide() { m_map.collide(&m_char); }
 
-void Jeu::updateMousePos() {
+void Game::updateMousePos() {
   Vector2i pixelPos = sf::Mouse::getPosition(m_window);
   Vector2f worldPos = m_window.mapPixelToCoords(pixelPos);
 
@@ -142,24 +142,24 @@ void Jeu::updateMousePos() {
   m_mousePosWorld.setY(m_mousePosCam.getY() + m_posCam.getY());
 }
 
-void Jeu::update() {
+void Game::update() {
   updateCam();
   updateCollide();
   updateMousePos();
   m_char.update();
 }
 
-void Jeu::clean() {
+void Game::clean() {
   this->m_window.clear();
   this->m_map.clean();
 }
 
-void Jeu::event() {
+void Game::event() {
   Event event;
  
   while (m_window.pollEvent(event)) {
     if (event.type == Event::Closed) {
-      m_jeu = false;
+      m_game = false;
       quit();
     }
     if (event.type == Event::KeyPressed) {
@@ -174,7 +174,7 @@ void Jeu::event() {
         m_char.setGoingRight(true);
         break;
       case Keyboard::Escape:
-        m_jeu = false;
+        m_game = false;
         quit();
         break;
       case Keyboard::E:
@@ -239,7 +239,7 @@ void Jeu::event() {
   }
 }
 
-void Jeu::render() {
+void Game::render() {
   m_window.clear(COULEUR_CIEL);
 
   m_charRenderer.draw(m_window);
@@ -263,13 +263,13 @@ void Jeu::render() {
   m_window.display();
 }
 
-void Jeu::quit() {
+void Game::quit() {
   save();
   m_window.close();
   clean();
 }
 
-// void Jeu::menu(){
+// void Game::menu(){
 //   RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE);
 //   while (window.isOpen()){
     
@@ -282,12 +282,12 @@ void Jeu::quit() {
 //   }
 // }
 
-void Jeu::save() { m_inv.save("../assets/csv/inventory.csv"); }
+void Game::save() { m_inv.save("../assets/csv/inventory.csv"); }
 
 int main(int arg, char **argv) {
-  Jeu jeu;
+  Game game;
   
-  jeu.run();
+  game.run();
   
   return 0;
 }
