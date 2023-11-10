@@ -11,7 +11,7 @@ Block getBlock(string id) {
 
 using namespace std;
 
-Map::Map() { initMap("../assets/map.txt"); }
+Map::Map(string filePath) { initMap(filePath); }
 
 Tile Map::chooseTile(string c, int x, int y) { return Tile(getBlock(c), x, y); }
 
@@ -21,7 +21,7 @@ void Map::collide(Character *perso) {
   }
 }
 
-void Map::initMap(const char *nomFichier) {
+void Map::initMap(string nomFichier) {
   ifstream fichier(nomFichier);
   if (fichier) {
     string ligne;
@@ -40,12 +40,6 @@ void Map::initMap(const char *nomFichier) {
     cout << "Erreur lors de l'ouverture du fichier" << endl;
   }
 }
-
-vector<Tile> Map::getMap() { return m_map; }
-
-int Map::getSize() { return m_map.size(); }
-
-Tile Map::getTile(int i) { return m_map[i]; }
 
 void Map::clean() { m_map.clear(); }
 

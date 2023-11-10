@@ -16,22 +16,19 @@ using namespace std;
 
 class Map {
 public:
-  Map();
+  Map(string filePath = "../assets/map.csv");
+  void initMap(string nomFichier);
 
-  void initMap(const char *nomFichier);
+  /* getters */
+  vector<Tile> getMap() { return m_map; }
+  int getSize() { return m_map.size(); }
+  Tile getTile(int i) { return m_map[i]; }
+  /* setters */
 
-  vector<Tile> getMap();
-
-  int getSize();
-
-  Tile getTile(int i);
-
+  /* other*/
   void collide(Character *perso);
-
   Tile chooseTile(string c, int x, int y);
-
   void clean();
-
   string toString();
 
 private:
