@@ -22,7 +22,7 @@ void Jeu::run() {
   Time timeSinceLastUpdate = Time::Zero;
 
   Texture menuTexture;
-  if (menuTexture.loadFromFile("../assets/img/menu.jpeg")) {
+  if (menuTexture.loadFromFile("../assets/img/menu.JPEG")) {
     //Error handling if image loading fails.
   }
   Sprite menuSprite(menuTexture);
@@ -63,13 +63,17 @@ void Jeu::run() {
         if (m_event.mouseButton.button == Mouse::Left) {
           int mouseX = m_event.mouseButton.x;
           int mouseY = m_event.mouseButton.y;
-          if (mouseX >= 604 && mouseX <= 784 && mouseY >= 236 && mouseY <= 324) {
+          if (mouseX >= 630 && mouseX <= 787 && mouseY >= 216 && mouseY <= 295) {
             quit();
           }
-          if (mouseX >= 13 && mouseX <= 239 && mouseY >= 233 && mouseY <= 328) {
+          if (mouseX >= 32 && mouseX <= 230 && mouseY >= 214 && mouseY <= 297) {
             m_menu = false;
             m_jeu = true;
           }
+          if (mouseX >= 318 && mouseX <= 508 && mouseY >= 131 && mouseY <= 210) {
+            cout << "Nothing at the moment " << endl;
+          }
+
         }
       }
 
