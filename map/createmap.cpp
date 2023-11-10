@@ -15,11 +15,14 @@ using namespace std;
 #define LEAF_HEIGHT 3
 /* flower */
 #define FLOWER_ECART 10
+/* other */
+#define WIDTH 500
+#define PATH "../assets/map.txt"
 
 struct altitude {
-  int max;
-  int min;
-  int size;
+  int max;  // position de la plus haute montagne
+  int min;  // position la plus basse
+  int size; // altitude max - altitude min + 1
 };
 
 class Createmap {
@@ -29,13 +32,14 @@ private:
   vector<int> m_curve_altitude;
   vector<vector<int>> m_map;
   altitude m_altitude;
+  int m_underground_size;
 
 public:
   Createmap(int width) : m_width(width) {
     srand(time(NULL));
-    // m_seed = rand();
-    m_seed = 1;
+    m_seed = rand();
     m_map = vector<vector<int>>();
+    m_underground_size = m_altitude.size * UNDERGROUND_COEF;
   }
   int abs(int a) { return a < 0 ? -a : a; }
 
@@ -60,19 +64,18 @@ public:
     }
     m_altitude.size = m_altitude.max - m_altitude.min + 1;
   }
-  void setStone() {
-    int underground_size = m_altitude.size * UNDERGROUND_COEF;
-    for (int y = 0; y < underground_size; y++) {
+  void addStone() {
+    for (int y = 0; y < m_underground_size; y++) {
       m_map.push_back(vector<int>());
       for (int x = 0; x < m_width; x++) {
         m_map[y].push_back(3);
       }
     }
-    for (int y = underground_size; y < m_altitude.size + underground_size;
+    for (int y = m_underground_size; y < m_altitude.size + m_underground_size;
          y = y + 1) {
       m_map.insert(m_map.begin(), vector<int>());
       for (int x = 0; x < m_width; x++) {
-        if (y < m_curve_altitude[x] + underground_size) {
+        if (y < m_curve_altitude[x] + m_underground_size) {
           m_map[0].push_back(3);
         } else {
           m_map[0].push_back(0);
@@ -81,7 +84,7 @@ public:
     }
   }
 
-  void setCave() {
+  void addCave() {
     FastNoiseLite cave_noise;
     cave_noise.SetSeed(m_seed);
     cave_noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2S);
@@ -97,7 +100,7 @@ public:
     }
   }
 
-  void setGrass() {
+  void addGrass() {
     int underground_size = m_altitude.size * UNDERGROUND_COEF;
     for (int x = 0; x < m_width; x++) {
       for (int y = 0; y < m_altitude.size + underground_size; y++) {
@@ -109,7 +112,7 @@ public:
     }
   }
 
-  void setDirt() {
+  void addDirt() {
     int underground_size = m_altitude.size * UNDERGROUND_COEF;
     for (int x = 0; x < m_width; x++) {
       for (int y = 0; y < m_altitude.size + underground_size; y++) {
@@ -203,10 +206,10 @@ public:
   }
 
   void setMap() {
-    setStone();
-    setCave();
-    setGrass();
-    setDirt();
+    addStone();
+    addCave();
+    addGrass();
+    addDirt();
     addSky();
     addTree();
     addLeaf();
@@ -224,19 +227,12 @@ public:
     }
     file.close();
   }
-
-  void printCurveAltitude() {
-    for (int i = 0; i < m_curve_altitude.size(); i++) {
-      cout << m_curve_altitude[i];
-    }
-    cout << endl;
-  }
 };
 
 int main(int argc, char const *argv[]) {
-  Createmap map = Createmap(50);
+  Createmap map = Createmap(WIDTH);
   map.setCurveAltitude();
   map.setMap();
-  map.saveinfile("../assets/map.txt");
+  map.saveinfile(PATH);
   return 0;
 }

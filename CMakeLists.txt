@@ -7,11 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-set(MAP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/map")
-set(MAP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/map/include")
-file(GLOB MAP_SOURCES
-    "${MAP_DIR}/*.cpp"
-)
+set(MAP_DIR "map")
+set(MAP_SOURCE "${MAP_DIR}/createmap.cpp")
+add_executable(MAP ${MAP_SOURCE})
 
 file(GLOB SOURCES
     "${SRC_DIR}/*.cpp"
@@ -58,8 +56,7 @@ add_custom_target(clear
 )
 
 add_custom_target(map
-    COMMAND ./map
-    DEPENDS map
+    COMMAND MAP
+    DEPENDS MAP
     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
-    )
-
+)
