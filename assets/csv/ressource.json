@@ -167,9 +167,9 @@
             "height": 48
         }
     },
-    "CHAR_BACK": {
+    "CHAR_FALL": {
         "spritesheet": {
-            "x": 50,
+            "x": 75,
             "y": 105,
             "width": 50,
             "height": 48

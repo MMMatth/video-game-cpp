@@ -20,7 +20,7 @@ void Tile::collide(Character *perso) {
   int persoX = perso->getX();
   int persoY = perso->getY();
   int persoLargeur = perso->getWidth();
-  int persoHauteur = perso->getWidth();
+  int persoHauteur = perso->getHeight();
   int persoVitesse = perso->getVitesse();
 
   int blockX = m_position.getX();

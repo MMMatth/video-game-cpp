@@ -5,7 +5,7 @@ using namespace sf;
 
 Jeu::Jeu()
     : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE),
-      m_char(MAP_WIDTH * TILE_SIZE / 2, 0, m_texture),
+      m_char(MAP_WIDTH * TILE_SIZE / 2, 0),
       m_posCam(m_char.getX(), m_char.getY()),
       m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
       m_invRender(m_inv), m_charRenderer(m_char) {
@@ -167,8 +167,9 @@ void Jeu::event() {
 
 void Jeu::render() {
   m_window.clear(SKY_COLOR);
-  m_charRenderer.draw(m_window);
+  // m_charRenderer.draw(m_window);
   m_sprites = getSpriteMap();
+  m_charRenderer.draw(m_window, m_sprites);
 
   for (int i = 0; i < m_map.getSize(); i++) {
     int x, y;

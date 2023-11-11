@@ -1,9 +1,9 @@
 #ifndef CHARACTERRENDER_HPP
 #define CHARACTERRENDER_HPP
 
+#include "character.hpp"
 #include "const.hpp"
 #include "coord.hpp"
-#include "character.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <map>
@@ -16,14 +16,12 @@ using namespace std;
 
 class CharacterRender {
 public:
-    CharacterRender(Character& character);
-    void draw(RenderWindow &window);
+  CharacterRender(Character &character);
+  void draw(RenderWindow &window, unordered_map<string, Sprite> sprites);
 
 private:
-    Clock m_clock;
-    Character& character;
+  Clock m_clock;
+  Character &character;
 };
-
-
 
 #endif /* CHARACTERRENDER_HPP */
