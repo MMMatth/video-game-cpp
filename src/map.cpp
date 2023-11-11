@@ -37,7 +37,7 @@ void Map::initMap(string nomFichier) {
       y++;
     }
   } else {
-    cout << "Erreur lors de l'ouverture du fichier" << endl;
+    cout << "We cant open the map file" << endl;
   }
 }
 
@@ -53,7 +53,7 @@ void Map::save() {
       }
     }
   } else {
-    cout << "Erreur lors de l'ouverture du fichier" << endl;
+    cout << "We cant open the map file" << endl;
   }
 }
 

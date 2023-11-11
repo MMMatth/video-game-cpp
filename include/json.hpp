@@ -6,40 +6,72 @@
 #include <fstream>
 #include <iostream>
 #include <map>
-#include <nlohmann/json.hpp>
+#include <sstream>
 #include <unordered_map>
 
 using namespace std;
 using namespace sf;
 
-Texture texture; // Déplacez la texture ici
+Texture texture;
 
 unordered_map<string, Sprite> getSpriteMap() {
   unordered_map<string, Sprite> sprites;
-  nlohmann::json j;
-  ifstream file("../assets/csv/ressource.json");
+  if (!texture.loadFromFile(SPRITESHEET_IMG_PATH))
+    cerr << "Unable to load spritesheet image " << SPRITESHEET_IMG_PATH << "\n";
+
+  ifstream file(SPRITESHEET_CSV_PATH);
 
   if (file.is_open()) {
-    file >> j;
-  } else {
-    cerr << "Unable to open file ../assets/csv/ressource.json\n";
-    exit(EXIT_FAILURE);
-  }
+    string line;
+    int row = 0;
+    int column = 0;
+    while (getline(file, line)) {
+      if (row != 0) {
+        stringstream ss(line);
+        string cell, type;
+        int x, y, width, height;
+        while (getline(ss, cell, ';')) {
+          switch (column) {
+          case 0:
+            type = cell;
+            break;
+          case 1:
+            x = stoi(cell);
+            break;
+          case 2:
+            y = stoi(cell);
+            break;
+          case 3:
+            width = stoi(cell);
+            break;
+          case 4:
+            height = stoi(cell);
+            break;
+          default:
+            cerr << "Invalid csv file : " << SPRITESHEET_CSV_PATH << "\n";
+            exit(EXIT_FAILURE);
+            break;
+          }
+          column++;
+        }
+        column = 0;
 
-  texture.loadFromFile("../assets/img/spritesheet.png");
-
-  for (auto &[mainKey, mainValue] : j.items()) {
-    if (mainValue.contains("spritesheet") &&
-        mainValue["spritesheet"]["x"] != -1 &&
-        mainValue["spritesheet"]["y"] != -1) {
-      Sprite sprite;
-      sprite.setTexture(texture);
-      sprite.setTextureRect(IntRect(mainValue["spritesheet"]["x"],
-                                    mainValue["spritesheet"]["y"],
-                                    mainValue["spritesheet"]["width"],
-                                    mainValue["spritesheet"]["height"]));
-      sprites[mainKey] = sprite;
+        /* we check the data */
+        if (x < 0 || y < 0) {
+          std::cerr << "Spritesheet invalid position : " << x << " " << y;
+        }
+        if (width < 0 || height < 0) {
+          std::cerr << "Spritesheet invalid size : " << width << " " << height;
+        }
+        cout << type << " " << x << " " << y << " " << width << " " << height
+             << "\n";
+        sprites[type] = Sprite(texture, IntRect(x, y, width, height));
+      }
+      row++;
     }
+  } else {
+    cerr << "Unable to open file " << SPRITESHEET_CSV_PATH << "\n";
+    exit(EXIT_FAILURE);
   }
 
   return sprites;

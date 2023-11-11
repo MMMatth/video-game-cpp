@@ -4,6 +4,17 @@
 
 CharacterRender::CharacterRender(Character &character) : character(character) {}
 
+void CharacterRender::drawSprite(RenderWindow &window,
+                                 unordered_map<string, Sprite> &sprites,
+                                 const string &spriteKey, int frame) {
+  Sprite sprite = sprites[spriteKey];
+  sprite.setTextureRect(
+      IntRect(sprites[spriteKey].getTextureRect().left + frame * 25,
+              sprites[spriteKey].getTextureRect().top, 25, 48));
+  drawSprites(character.getX(), character.getY(), sprite, &window,
+              character.getWidth(), character.getHeight());
+}
+
 void CharacterRender::draw(RenderWindow &window,
                            unordered_map<string, Sprite> sprites) {
   map<string, bool> direction = character.getDirection();
@@ -12,21 +23,9 @@ void CharacterRender::draw(RenderWindow &window,
               NUM_FRAMES;
 
   if (direction["isGoingLeft"]) {
-    Sprite sprite = sprites["CHAR_LEFT"]; // we use a variable to modify the
-                                          // x position of the sprite
-    sprite.setTextureRect(
-        IntRect(sprites["CHAR_LEFT"].getTextureRect().left +
-                    frame * 25, // we add the width of the sprite for each frame
-                sprites["CHAR_LEFT"].getTextureRect().top, 25, 48));
-    drawSprites(character.getX(), character.getY(), sprite, &window,
-                character.getWidth(), character.getHeight());
+    drawSprite(window, sprites, "CHAR_LEFT", frame);
   } else if (direction["isGoingRight"]) {
-    Sprite sprite = sprites["CHAR_RIGHT"];
-    sprite.setTextureRect(
-        IntRect(sprites["CHAR_RIGHT"].getTextureRect().left + frame * 25,
-                sprites["CHAR_RIGHT"].getTextureRect().top, 25, 48));
-    drawSprites(character.getX(), character.getY(), sprite, &window,
-                character.getWidth(), character.getHeight());
+    drawSprite(window, sprites, "CHAR_RIGHT", frame);
   } else if (direction["isJumping"] && !collision["right"]) {
     drawSprites(character.getX(), character.getY(), sprites["CHAR_JUMP"],
                 &window, character.getWidth() * 2, character.getHeight());

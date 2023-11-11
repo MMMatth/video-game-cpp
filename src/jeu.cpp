@@ -10,9 +10,6 @@ Jeu::Jeu()
       m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
       m_invRender(m_inv), m_charRenderer(m_char) {
   m_map = Map();
-  if (!m_texture.loadFromFile("../assets/img/personnage.png")) {
-    cout << "Erreur de chargement de la texture du personnage" << endl;
-  }
 }
 
 void Jeu::run() {
@@ -167,8 +164,9 @@ void Jeu::event() {
 
 void Jeu::render() {
   m_window.clear(SKY_COLOR);
-  // m_charRenderer.draw(m_window);
+
   m_sprites = getSpriteMap();
+
   m_charRenderer.draw(m_window, m_sprites);
 
   for (int i = 0; i < m_map.getSize(); i++) {

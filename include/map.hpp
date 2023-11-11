@@ -16,7 +16,7 @@ using namespace std;
 
 class Map {
 public:
-  Map(string filePath = "../assets/map.csv");
+  Map(string filePath = MAP_PATH);
   void initMap(string nomFichier);
 
   /* getters */

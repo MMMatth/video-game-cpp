@@ -20,12 +20,15 @@
 #define INVENTORY_TILE_SIZE 50
 #define INVENTORY_OBJECT_SIZE 32
 #define MAX_STACK_SIZE 64
+/* spritesheet */
+#define SPRITESHEET_CSV_PATH "../assets/csv/spritesheet_data.csv"
+#define SPRITESHEET_IMG_PATH "../assets/img/spritesheet.png"
 /* font */
 #define FONT_PATH "assets/fonts/arial.ttf"
 #define FONT_COLOR Color(0, 0, 0)
 /* map */
 #define MAP_WIDTH 500
-#define MAP_PATH "../assets/map.csv"
+#define MAP_PATH "../assets/csv/map.csv"
 /* other */
 #define SKY_COLOR Color(135, 206, 250)
 #define TILE_SIZE 32
