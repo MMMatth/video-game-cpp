@@ -18,7 +18,7 @@ class CharacterRender {
 public:
   CharacterRender(Character &character);
   void drawSprite(RenderWindow &window, unordered_map<string, Sprite> &sprites,
-                  const string &spriteKey, int frame);
+                  const string &spriteKey, int frame, int x, int y);
   void draw(RenderWindow &window, unordered_map<string, Sprite> sprites);
 
 private:

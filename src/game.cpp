@@ -1,9 +1,9 @@
-#include "../include/jeu.hpp"
+#include "../include/game.hpp"
 
 using namespace std;
 using namespace sf;
 
-Jeu::Jeu()
+Game::Game()
     : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE),
       m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_mousePosCam(0, 0),
@@ -11,7 +11,7 @@ Jeu::Jeu()
   m_sprites = getSpriteMap();
 }
 
-void Jeu::run() {
+void Game::run() {
   Clock clock;
   Time timePerFrame = seconds(1.f / FPS_MAX);
   Time timeSinceLastUpdate = Time::Zero;
@@ -26,7 +26,7 @@ void Jeu::run() {
   }
 }
 
-void Jeu::updateCam() {
+void Game::updateCam() {
   m_posCam.setX(m_posCam.getX() +
                 (m_char.getX() + m_char.getWidth() / 4 - m_posCam.getX()) / 20);
   m_posCam.setY(m_posCam.getY() +
@@ -35,9 +35,9 @@ void Jeu::updateCam() {
                         Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
 
-void Jeu::updateCollide() { m_map.collide(&m_char); }
+void Game::updateCollide() { m_map.collide(&m_char); }
 
-void Jeu::updateMousePos() {
+void Game::updateMousePos() {
   Vector2i pixelPos = sf::Mouse::getPosition(m_window);
   Vector2f worldPos = m_window.mapPixelToCoords(pixelPos);
 
@@ -52,19 +52,19 @@ void Jeu::updateMousePos() {
   m_mousePosWorld.setY(m_mousePosCam.getY() + m_posCam.getY());
 }
 
-void Jeu::update() {
+void Game::update() {
   updateCam();
   updateCollide();
   updateMousePos();
   m_char.update();
 }
 
-void Jeu::clean() {
+void Game::clean() {
   this->m_window.clear();
   this->m_map.clean();
 }
 
-void Jeu::event() {
+void Game::event() {
   Event event;
   while (m_window.pollEvent(event)) {
     if (event.type == Event::Closed) {
@@ -161,7 +161,7 @@ void Jeu::event() {
   }
 }
 
-void Jeu::render() {
+void Game::render() {
   m_window.clear(SKY_COLOR);
 
   m_charRenderer.draw(m_window, m_sprites);
@@ -181,13 +181,13 @@ void Jeu::render() {
   m_window.display();
 }
 
-void Jeu::quit() {
+void Game::quit() {
   save();
   m_window.close();
   clean();
 }
 
-void Jeu::save() {
+void Game::save() {
   m_inv.save(INVENTORY_SAVE_PATH);
   m_map.save(MAP_PATH);
   m_char.save(CHARACTER_SAVE_PATH);
@@ -195,7 +195,7 @@ void Jeu::save() {
 
 int main(int arg, char **argv) {
 
-  Jeu jeu;
+  Game jeu;
   jeu.run();
   return 0;
 }

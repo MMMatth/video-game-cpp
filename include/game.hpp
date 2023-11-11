@@ -7,7 +7,6 @@
 #include "draw.hpp"
 #include "inventory.hpp"
 #include "inventoryRender.hpp"
-// #include "json.hpp"
 #include "map.hpp"
 #include "tool.hpp"
 #include <SFML/Graphics.hpp>
@@ -17,11 +16,12 @@
 using namespace sf;
 using namespace std;
 
-class Jeu {
+class Game {
 private:
+  RenderWindow m_window;
   Map m_map;
   Character m_char;
-  RenderWindow m_window;
+  CharacterRender m_charRenderer;
   Coord m_posCam;
   unordered_map<string, Sprite> m_sprites;
   Inventory m_inv;
@@ -29,10 +29,9 @@ private:
   Coord m_mousePosCam;
   Coord m_mousePosWorld;
   Texture m_texture;
-  CharacterRender m_charRenderer;
 
 public:
-  Jeu();
+  Game();
 
   void run();
 

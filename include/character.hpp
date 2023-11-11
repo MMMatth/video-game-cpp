@@ -25,12 +25,10 @@ public:
   void init();
   /* destructor */
   // ~Personnage();
-
-  void initSprites(Texture &spritesheet);
-
+  /* update */
   void update();
+
   /* getters */
-  unordered_map<string, Sprite> getSprites() { return sprites; }
   map<string, bool> getDirection() { return m_direction; }
   map<string, bool> getCollision() { return m_collision; }
   int getHeight() { return m_height; }
@@ -40,28 +38,26 @@ public:
   int getTimeJump() { return m_timeJump; }
   int getJumpHeight() { return m_jumpHeight; }
   int getVitesse() { return m_speed; }
-  bool isInFall() { return m_direction["isFalling"]; }
-  bool isInJump() { return m_direction["isGoingUp"]; }
   /* setters */
-  void setX(int x) { m_coord.setX(x); }
-  void setY(int y) { m_coord.setY(y); }
-  void setFalling(bool falling) { this->m_direction["isFalling"] = falling; }
-  void setJumping(bool jumping) { this->m_direction["isJumping"] = jumping; }
-  void setGoingUp(bool inUp) { this->m_direction["isGoingUp"] = inUp; }
-  void setTimeJump(int time) { this->m_timeJump = time; }
-  void setGoingRight(bool inRight) {
-    this->m_direction["isGoingRight"] = inRight;
-  }
-  void setGoingLeft(bool inLeft) { this->m_direction["isGoingLeft"] = inLeft; }
+  /* m_direction */
+  void setFalling(bool falling) { m_direction["fall"] = falling; }
+  void setJumping(bool jumping) { m_direction["jump"] = jumping; }
+  void setGoingUp(bool inUp) { m_direction["up"] = inUp; }
+  void setGoingRight(bool inRight) { m_direction["right"] = inRight; }
+  void setGoingLeft(bool inLeft) { m_direction["left"] = inLeft; }
+  /* m_collision */
   void setCollision(string key, bool value) { this->m_collision[key] = value; }
   void setCollisionFalseExcept(string key);
+  /* other setters */
+  void setX(int x) { m_coord.setX(x); }
+  void setY(int y) { m_coord.setY(y); }
+  void setTimeJump(int time) { m_timeJump = time; }
   void setWidth(int width) { this->m_width = width; }
   void setHeight(int height) { this->m_height = height; }
   /* other */
   void deplacerX(int x);
   void deplacerY(int y);
   void save(string path);
-  string toString();
 
 private:
   Coord m_coord;
@@ -73,9 +69,6 @@ private:
   int m_width;
   int m_height;
   int m_speed;
-
-  unordered_map<string, Sprite> sprites;
-  Texture texture;
 };
 
 #endif /* PERSONNAGE_HPP */

@@ -12,7 +12,7 @@ using namespace std;
 class Tile {
 private:
   Block m_block;
-  Coord m_position;
+  Coord m_coord;
 
 public:
   /* constructor */
@@ -21,11 +21,11 @@ public:
   /* destructor */
   // ~Tile();
   /* getters */
-  int getX() const { return m_position.getX(); }
-  int getY() const { return m_position.getY(); }
+  int getX() const { return m_coord.getX(); }
+  int getY() const { return m_coord.getY(); }
   Block getBlock() const { return m_block; }
   /* setters */
-  void setPosition(Coord position) { m_position = position; }
+  void setPosition(Coord position) { m_coord = position; }
   void setBlock(Block block) { m_block = block; }
   /* other */
   bool estDansCam(int posCamX, int posCamY, int largeur, int hauteur);
