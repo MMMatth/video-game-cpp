@@ -1,11 +1,5 @@
-/*!
- * \file jeu.hpp
- * \brief Définition de la classe Jeu.
- * \author Matthieu Gaudel and Papa El Hadji G Cissé
- */
 #ifndef JEU_HPP
 #define JEU_HPP
-
 
 #include "characterRender.hpp"
 #include "const.hpp"
@@ -13,7 +7,7 @@
 #include "draw.hpp"
 #include "inventory.hpp"
 #include "inventoryRender.hpp"
-#include "json.hpp"
+// #include "json.hpp"
 #include "map.hpp"
 #include "tool.hpp"
 #include <SFML/Graphics.hpp>
@@ -59,8 +53,6 @@ public:
   void quit();
 
   void save();
-
-  bool collisionAvecCarte(int x, int y);
 };
 
 #endif /* JEU_HPP */

@@ -11,7 +11,7 @@ Block getBlock(string id) {
   return blockMap["AIR"];
 }
 
-Map::Map(string filePath) { initMap(filePath); }
+Map::Map(string path) { initMap(path); }
 
 Tile Map::chooseTile(string c, int x, int y) { return Tile(getBlock(c), x, y); }
 
@@ -41,8 +41,8 @@ void Map::initMap(string nomFichier) {
   }
 }
 
-void Map::save() {
-  ofstream fichier(MAP_PATH);
+void Map::save(string path) {
+  ofstream fichier(path);
   if (fichier) {
     for (int i = 0; i < m_map.size(); i++) {
       fichier << m_map[i].getBlock().getId();

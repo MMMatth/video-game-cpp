@@ -3,9 +3,12 @@
 
 #include "const.hpp"
 #include "coord.hpp"
+#include "draw.hpp"
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include <iostream>
 #include <map>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -17,7 +20,9 @@ using namespace std;
 class Character {
 public:
   /* constructor */
+  Character(string path);
   Character(int x, int y);
+  void init();
   /* destructor */
   // ~Personnage();
 
@@ -55,7 +60,7 @@ public:
   /* other */
   void deplacerX(int x);
   void deplacerY(int y);
-
+  void save(string path);
   string toString();
 
 private:

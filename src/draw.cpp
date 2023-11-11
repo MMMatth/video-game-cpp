@@ -1,20 +1,75 @@
 #include "../include/draw.hpp"
-#include "../include/const.hpp"
-#include <SFML/Graphics.hpp>
-#include <iostream>
 
 using namespace std;
 using namespace sf;
 
-void drawSprite(int x, int y, RenderWindow *window, string path) {
-  Sprite sprite;
-  Texture texture;
-  texture.loadFromFile(path);
-  sprite.setTexture(texture);
-  sprite.setPosition(x, y);
-  sprite.setScale(TILE_SIZE / sprite.getLocalBounds().width,
-                  TILE_SIZE / sprite.getLocalBounds().height);
-  window->draw(sprite);
+Texture texture;
+
+void handleFileError(const string &filePath) {
+  cerr << "Unable to open file " << filePath << "\n";
+  exit(EXIT_FAILURE);
+}
+
+void parseLine(const string &line, string &type, int &x, int &y, int &width,
+               int &height) {
+  stringstream ss(line);
+  string cell;
+  int column = 0;
+  while (getline(ss, cell, ';')) {
+    switch (column) {
+    case 0:
+      type = cell;
+      break;
+    case 1:
+      x = stoi(cell);
+      break;
+    case 2:
+      y = stoi(cell);
+      break;
+    case 3:
+      width = stoi(cell);
+      break;
+    case 4:
+      height = stoi(cell);
+      break;
+    default:
+      cerr << "Invalid csv file : " << SPRITESHEET_CSV_PATH << "\n";
+      exit(EXIT_FAILURE);
+    }
+    column++;
+  }
+}
+
+void checkData(int x, int y, int width, int height) {
+  if (x < 0 || y < 0)
+    cerr << "Spritesheet invalid position : " << x << " " << y;
+  if (width < 0 || height < 0)
+    cerr << "Spritesheet invalid size : " << width << " " << height;
+}
+
+unordered_map<string, Sprite> getSpriteMap() {
+  unordered_map<string, Sprite> sprites;
+  if (!texture.loadFromFile(SPRITESHEET_IMG_PATH))
+    cerr << "Unable to load spritesheet image " << SPRITESHEET_IMG_PATH << "\n";
+
+  ifstream file(SPRITESHEET_CSV_PATH);
+  if (!file.is_open())
+    handleFileError(SPRITESHEET_CSV_PATH);
+
+  string line;
+  int row = 0;
+  while (getline(file, line)) {
+    if (row != 0) {
+      string type;
+      int x, y, width, height;
+      parseLine(line, type, x, y, width, height);
+      checkData(x, y, width, height);
+      sprites[type] = Sprite(texture, IntRect(x, y, width, height));
+    }
+    row++;
+  }
+
+  return sprites;
 }
 
 void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
@@ -25,37 +80,11 @@ void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
   window->draw(sprite);
 }
 
-void drawMap(int x, int y, Color color, RenderWindow *window, int largeur,
-             int hauteur) {
-  RectangleShape rectangle(Vector2f(largeur, hauteur));
-  rectangle.setFillColor(color);
-  rectangle.setPosition(x * largeur, y * hauteur);
-  window->draw(rectangle);
-}
-
-void drawRectangle(int x, int y, Color color, RenderWindow *window, int largeur,
-                   int hauteur) {
-  RectangleShape rectangle(Vector2f(largeur, hauteur));
-  rectangle.setFillColor(color);
-  rectangle.setPosition(x, y);
-  window->draw(rectangle);
-}
-
-void drawMiniCarte(int x, int y, Color color, RenderWindow *window, int largeur,
-                   int hauteur) {
-  RectangleShape miniCarteRect;
-  miniCarteRect.setSize(sf::Vector2f(largeur, hauteur));
-  miniCarteRect.setFillColor(color);
-  miniCarteRect.setPosition(x, y);
-  window->draw(miniCarteRect);
-}
-
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath) {
   Font font;
-  if (!font.loadFromFile("../" + fontPath)) {
-    cout << "Erreur lors du chargement de la police" << endl;
-  }
+  if (!font.loadFromFile("../" + fontPath))
+    cout << "Error : font load fail" << endl;
   Text textObj;
   textObj.setFont(font);
   textObj.setString(text);

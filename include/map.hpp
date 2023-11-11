@@ -16,7 +16,7 @@ using namespace std;
 
 class Map {
 public:
-  Map(string filePath = MAP_PATH);
+  Map(string path);
   void initMap(string nomFichier);
 
   /* getters */
@@ -26,7 +26,7 @@ public:
   /* setters */
 
   /* other*/
-  void save();
+  void save(string path);
   void collide(Character *perso);
   Tile chooseTile(string c, int x, int y);
   void clean();

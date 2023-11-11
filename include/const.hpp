@@ -14,12 +14,14 @@
 #define DEPLACEMENT 5
 #define ANIMATION_SPEED 100
 #define NUM_FRAMES 9
+#define CHARACTER_SAVE_PATH "../assets/csv/character.csv"
 /* inventory */
 #define INVENTORY_HEIGHT 4
 #define INVENTORY_WIDTH 9
 #define INVENTORY_TILE_SIZE 50
 #define INVENTORY_OBJECT_SIZE 32
 #define MAX_STACK_SIZE 64
+#define INVENTORY_SAVE_PATH "../assets/csv/inventory.csv"
 /* spritesheet */
 #define SPRITESHEET_CSV_PATH "../assets/csv/spritesheet_data.csv"
 #define SPRITESHEET_IMG_PATH "../assets/img/spritesheet.png"

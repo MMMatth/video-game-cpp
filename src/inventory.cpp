@@ -78,7 +78,6 @@ Inventory::Inventory()
   for (int row = 0; row < INVENTORY_HEIGHT; row++) {
     for (int column = 0; column < INVENTORY_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();
-      // m_inventory[row][column].setPos(row, column);
     }
   }
 }

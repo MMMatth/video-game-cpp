@@ -1,9 +1,35 @@
 #include "../include/character.hpp"
-#include "../include/draw.hpp"
 
 using namespace std;
 
-Character::Character(int x, int y) : m_coord(x, y) {
+Character::Character(string path) {
+  ifstream file(path);
+  if (file.is_open()) {
+    string line;
+    getline(file, line); // skip the header
+    getline(file, line); // read the position
+    stringstream ss(line);
+    string x_str, y_str;
+    getline(ss, x_str, ';');
+    getline(ss, y_str, ';');
+    m_coord = Coord(stoi(x_str), stoi(y_str));
+  } else {
+    // we create the file
+    ofstream file(path);
+    if (file.is_open()) {
+      file << "x;y\n";
+      file << MAP_WIDTH * TILE_SIZE / 2 << ";" << 0 << "\n";
+      m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 0);
+    } else {
+      cerr << "Character unable to open file " << path << "\n";
+    }
+  }
+  init();
+}
+
+Character::Character(int x, int y) : m_coord(x, y) { init(); }
+
+void Character::init() {
   this->m_width = 28;
   this->m_height = 58;
 
@@ -87,4 +113,16 @@ void Character::deplacerX(int x) {
 
 void Character::deplacerY(int y) {
   this->m_coord.setY(this->m_coord.getY() + y);
+}
+
+void Character::save(string path) {
+  ofstream file;
+  file.open(path);
+  if (file.is_open()) {
+    file << "x;y\n";                                     // write the header
+    file << this->getX() << ";" << this->getY() << "\n"; // write the position
+  } else {
+    cerr << "Save Character unable to open file " << path << "\n";
+  }
+  file.close();
 }

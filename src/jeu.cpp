@@ -5,11 +5,10 @@ using namespace sf;
 
 Jeu::Jeu()
     : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE),
-      m_char(MAP_WIDTH * TILE_SIZE / 2, 0),
-      m_posCam(m_char.getX(), m_char.getY()),
-      m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
-      m_invRender(m_inv), m_charRenderer(m_char) {
-  m_map = Map();
+      m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
+      m_posCam(m_char.getX(), m_char.getY()), m_mousePosCam(0, 0),
+      m_inv(INVENTORY_SAVE_PATH), m_invRender(m_inv), m_map(MAP_PATH) {
+  m_sprites = getSpriteMap();
 }
 
 void Jeu::run() {
@@ -165,8 +164,6 @@ void Jeu::event() {
 void Jeu::render() {
   m_window.clear(SKY_COLOR);
 
-  m_sprites = getSpriteMap();
-
   m_charRenderer.draw(m_window, m_sprites);
 
   for (int i = 0; i < m_map.getSize(); i++) {
@@ -191,8 +188,9 @@ void Jeu::quit() {
 }
 
 void Jeu::save() {
-  m_inv.save("../assets/csv/inventory.csv");
-  m_map.save();
+  m_inv.save(INVENTORY_SAVE_PATH);
+  m_map.save(MAP_PATH);
+  m_char.save(CHARACTER_SAVE_PATH);
 }
 
 int main(int arg, char **argv) {
