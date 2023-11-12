@@ -1,7 +1,6 @@
 #ifndef JEU_HPP
 #define JEU_HPP
 
-
 #include "characterRender.hpp"
 #include "const.hpp"
 #include "coord.hpp"
@@ -9,11 +8,12 @@
 #include "inventory.hpp"
 #include "inventoryRender.hpp"
 #include "map.hpp"
+#include "menu.hpp"
 #include "tool.hpp"
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <cassert>
 #include <unordered_map>
-#include <SFML/Audio.hpp>
 
 using namespace sf;
 using namespace std;
@@ -32,10 +32,9 @@ private:
   Coord m_mousePosWorld;
   Texture m_texture;
   bool m_game;
-  bool m_menu;
+  Menu m_menu;
   SoundBuffer buffer;
   Sound sound;
-  
 
 public:
   Game();
