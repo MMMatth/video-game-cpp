@@ -12,8 +12,8 @@ void Error(const std::string &message) {
 }
 
 bool isInside(int mouseX, int mouseY, int x, int y, int width, int height) {
-  return mouseX >= x && mouseX <= x + width && mouseY >= y &&
-         mouseY <= y + height;
+  return mouseX >= x && mouseX <= width && mouseY >= y &&
+         mouseY <= height;
 }
 
 Menu::Menu(RenderWindow &window) : m_menu(true), m_window(window) {
@@ -27,20 +27,20 @@ void Menu::handleEvent(sf::Event &event) {
     int mouseX = event.mouseButton.x;
     int mouseY = event.mouseButton.y;
     /* quit button */
-    if (isInside(mouseX, mouseY, 32, 131, 230, 83)) {
+    if (isInside(mouseX, mouseY, 630, 216, 787, 295)) {
       m_menu = false;
       quit();
     }
     /* play button */
-    if (isInside(mouseX, mouseY, 32, 131, 230, 83)) {
+    if (isInside(mouseX, mouseY, 32, 214, 230, 297)) {
       Error(!buffer.loadFromFile(SOUND_PLAY), "Error loading sound");
       sound.setBuffer(buffer);
       sound.play();
       m_menu = false;
     }
     /* help button */
-    if (isInside(mouseX, mouseY, 32, 131, 230, 83)) {
-      Error("Not implemented yet");
+    if (isInside(mouseX, mouseY, 318, 131, 508, 210)) {
+      cout <<"Not implemented yet"<<endl;
     }
   }
 }
