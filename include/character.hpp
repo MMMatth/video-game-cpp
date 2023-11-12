@@ -55,8 +55,8 @@ public:
   void setWidth(int width) { this->m_width = width; }
   void setHeight(int height) { this->m_height = height; }
   /* other */
-  void deplacerX(int x);
-  void deplacerY(int y);
+  void mooveX(int x);
+  void mooveY(int y);
   void save(string path);
 
 private:

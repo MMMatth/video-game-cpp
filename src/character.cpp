@@ -48,48 +48,48 @@ void Character::init() {
 }
 
 void Character::update() {
-  if (m_direction["jump"] && m_collision["down"] && !m_collision["up"]) {
+  /* if the player can and want jump */
+  if (m_direction["jump"] && m_collision["down"]) {
     m_timeJump = 0;
     m_direction["up"] = true;
     m_collision["down"] = false;
+  } else if (m_collision["down"]) { // if the player touch the ground
+    m_direction["fall"] = false;
+  } else { // if the player is in the air
+    m_direction["fall"] = true;
   }
-  /* if the player dont press jump key or the player collide the roof*/
-  if (!m_direction["jump"] || m_collision["up"]) {
+
+  /* if the player stop jumping or the player touch the roof and is going up*/
+  if ((!m_direction["jump"] || m_collision["up"]) && m_direction["up"]) {
     m_direction["up"] = false;
     m_direction["fall"] = true;
   }
-  /* if the player is in the air */
-  if (m_direction["up"] && !m_collision["up"]) {
+
+  if (m_direction["up"] && !m_collision["up"] && m_timeJump < m_jumpHeight) {
     m_timeJump++;
-    /* While the time jump is not equal to or greater than jump height */
-    if (m_timeJump < m_jumpHeight) {
-      deplacerY(-m_speed);
-    } else { /* if the player reach the jump height */
-      /* is fall */
-      m_direction["up"] = false;
-      m_direction["fall"] = true;
-    }
+    mooveY(-m_speed);
+  } else if (m_direction["up"]) {
+    m_direction["up"] = false;
+    m_direction["fall"] = true;
   }
+  /* we moove the player */
   if (m_direction["fall"] && !m_collision["down"] && !m_direction["up"]) {
-    deplacerY(m_speed);
+    mooveY(m_speed);
   }
   if (m_direction["right"] && !m_collision["right"]) {
-    deplacerX(m_speed);
+    mooveX(m_speed);
   }
   if (m_direction["left"] && !m_collision["left"]) {
-    deplacerX(-m_speed);
+    mooveX(-m_speed);
   }
   if (m_direction["up"] && !m_collision["up"]) {
-    deplacerY(-m_speed);
+    mooveY(-m_speed);
   }
   if (m_collision["up"] && !m_collision["down"]) {
     m_direction["fall"] = true;
-    deplacerY(m_speed);
+    mooveY(m_speed);
   }
-  cout << m_collision["up"] << " " << m_collision["down"] << " "
-       << m_collision["left"] << " " << m_collision["right"] << "\n";
-  cout << m_direction["up"] << " " << m_direction["fall"] << " "
-       << m_direction["left"] << " " << m_direction["right"] << "\n";
+
   /* We reset collision because it's going to be refreshed */
   m_collision["up"] = false;
   m_collision["down"] = false;
@@ -106,9 +106,9 @@ void Character::setCollisionFalseExcept(string key) {
 }
 
 // other methods
-void Character::deplacerX(int x) { m_coord.setX(m_coord.getX() + x); }
+void Character::mooveX(int x) { m_coord.setX(m_coord.getX() + x); }
 
-void Character::deplacerY(int y) { m_coord.setY(m_coord.getY() + y); }
+void Character::mooveY(int y) { m_coord.setY(m_coord.getY() + y); }
 
 void Character::save(string path) {
   ofstream file;
