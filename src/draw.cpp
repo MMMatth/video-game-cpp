@@ -1,14 +1,10 @@
 #include "../include/draw.hpp"
+#include "../include/otherFunctions.hpp"
 
 using namespace std;
 using namespace sf;
 
 Texture texture;
-
-void handleFileError(const string &filePath) {
-  cerr << "Unable to open file " << filePath << "\n";
-  exit(EXIT_FAILURE);
-}
 
 void parseLine(const string &line, string &type, int &x, int &y, int &width,
                int &height) {
@@ -49,8 +45,7 @@ void checkData(int x, int y, int width, int height) {
 
 unordered_map<string, Sprite> getSpriteMap() {
   unordered_map<string, Sprite> sprites;
-  if (!texture.loadFromFile(SPRITESHEET_IMG_PATH))
-    cerr << "Unable to load spritesheet image " << SPRITESHEET_IMG_PATH << "\n";
+  Error(!texture.loadFromFile(SPRITESHEET_IMG_PATH), "Unable to load spritesheet image.");
 
   ifstream file(SPRITESHEET_CSV_PATH);
   if (!file.is_open())
@@ -83,8 +78,8 @@ void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath) {
   Font font;
-  if (!font.loadFromFile("../" + fontPath))
-    cout << "Error : font load fail" << endl;
+  Error(!font.loadFromFile("../" + fontPath), "Error : font load fail");
+  
   Text textObj;
   textObj.setFont(font);
   textObj.setString(text);

@@ -1,15 +1,5 @@
 #include "../include/menu.hpp"
-
-void Error(bool condition, const std::string &message) {
-  if (condition) {
-    std::cerr << message << std::endl;
-    exit(EXIT_FAILURE);
-  }
-}
-void Error(const std::string &message) {
-  std::cerr << message << std::endl;
-  exit(EXIT_FAILURE);
-}
+#include "../include/otherFunctions.hpp"
 
 bool isInside(int mouseX, int mouseY, int x, int y, int width, int height) {
   return mouseX >= x && mouseX <= width && mouseY >= y &&

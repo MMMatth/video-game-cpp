@@ -1,5 +1,6 @@
 #include "../include/game.hpp"
 #include <SFML/Audio.hpp>
+#include "../include/otherFunctions.hpp"
 
 using namespace std;
 using namespace sf;
@@ -62,9 +63,7 @@ void Game::handleEvent(Event &event) {
     switch (event.key.code) {
     case Keyboard::Space:
       if (jumpClock.getElapsedTime() >= minimalTime) {
-        if (!buffer.loadFromFile(SOUND_JUMP)) {
-          cerr << "Error loading sound" << endl;
-        }
+        Error(!buffer.loadFromFile(SOUND_JUMP), "Error loading sound");
         sound.setBuffer(buffer);
         sound.play();
 
@@ -146,9 +145,7 @@ void Game::handleEvent(Event &event) {
   }
   if (event.type == Event::MouseButtonPressed) {
     if (event.mouseButton.button == Mouse::Left) {
-      if (!buffer.loadFromFile(SOUND_BREAK_A_BLOCK)) {
-        cerr << "Error loading sound" << endl;
-      }
+     Error(!buffer.loadFromFile(SOUND_BREAK_A_BLOCK), "Error loading sound");
 
       if (m_inv.isOpen())
         m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
@@ -163,9 +160,7 @@ void Game::handleEvent(Event &event) {
       }
     }
     if (event.mouseButton.button == Mouse::Right) {
-      if (!buffer.loadFromFile(SOUND_PUT_A_BLOCK)) {
-        cerr << "Error loading sound" << endl;
-      }
+     Error(!buffer.loadFromFile(SOUND_PUT_A_BLOCK), "Error loading sound");
 
       if (!m_inv.isOpen()) {
         if (m_inv.getItemPosHand().getType() == "BLOCK") {
