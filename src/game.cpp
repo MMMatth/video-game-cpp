@@ -37,6 +37,11 @@ void Game::run() {
         switch (m_event.key.code) {
         case Keyboard::Space:
           if (m_menu) {
+            if(!buffer.loadFromFile(SOUND_PLAY)){
+              cerr << "Error loading sound" << endl;
+            }
+            sound.setBuffer(buffer);
+            sound.play();
             m_menu = false;
             m_game = true;
             m_char.setX(0);
@@ -62,6 +67,7 @@ void Game::run() {
         int mouseY = m_event.mouseButton.y;
         if (mouseX >= 630 && mouseX <= 787 && mouseY >= 216 &&
           mouseY <= 295) {
+
           quit();
         }
         if (mouseX >= 32 && mouseX <= 230 && mouseY >= 214 && mouseY <= 297) {

@@ -35,6 +35,7 @@ private:
   bool m_menu;
   SoundBuffer buffer;
   Sound sound;
+  
 
 public:
   Game();

@@ -21,6 +21,7 @@
 #define SOUND_BREAK_A_BLOCK "../assets/sound/break_a_block.wav"
 #define SOUND_MOVE "../assets/sound/move.wav"
 #define SOUND_PUT_A_BLOCK "../assets/sound/put_a_block.wav"
+#define SOUND_QUIT "../assets/sound/quit.wav"
 /* menu */
 #define IMG_MENU "../assets/img/menu.JPEG"
 /* inventory */
