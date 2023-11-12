@@ -83,13 +83,17 @@ void Game::event() {
       if (event.type == Event::KeyPressed) {
         switch (event.key.code) {
         case Keyboard::Space:
-          if (!buffer.loadFromFile(SOUND_JUMP)) {
-            cerr << "Error loading sound" << endl;
-          }
-          sound.setBuffer(buffer);
-          sound.play();
+          if (jumpClock.getElapsedTime() >= minimalTime) {
+            if (!buffer.loadFromFile(SOUND_JUMP)) {
+              cerr << "Error loading sound" << endl;
+            }
+            sound.setBuffer(buffer);
+            sound.play();
 
-          m_char.setJumping(true);
+            m_char.setJumping(true);
+
+            jumpClock.restart();
+          }
           break;
         case Keyboard::Q:
           // if(!buffer.loadFromFile(SOUND_MOVE)){

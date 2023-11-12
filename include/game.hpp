@@ -35,6 +35,8 @@ private:
   Menu m_menu;
   SoundBuffer buffer;
   Sound sound;
+  Clock jumpClock;
+  const Time minimalTime = seconds(1.0f); 
 
 public:
   Game();
