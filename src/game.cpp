@@ -5,9 +5,10 @@ using namespace sf;
 
 Game::Game()
     : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE),
-      m_char(0, 0, TAILLE_PERSONNAGE), m_posCam(0, 0),
-      m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
-      m_invRender(m_inv), m_charRenderer(m_char, m_texture), m_map(MAP_PATH) {
+      m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
+      m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
+      m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH) {
+  m_sprites = getSpriteMap();
   m_menu = true;
   m_game = false;
 }
@@ -28,7 +29,7 @@ void Game::run() {
     Event m_event;
     while (m_window.pollEvent(m_event)) {
       if (m_event.type == Event::Closed) {
-        quit();
+        m_window.close();
       }
 
       if (m_event.type == Event::KeyPressed) {
@@ -42,7 +43,7 @@ void Game::run() {
           }
           break;
         case Keyboard::Escape:
-          quit();
+          m_window.close();
           break;
         default:
           break;
@@ -90,7 +91,7 @@ void Game::run() {
         render();
       }
       if (!m_menu && !m_game) {
-        quit();
+        m_window.close();
       }
     }
   }

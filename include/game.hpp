@@ -29,7 +29,6 @@ private:
   Coord m_mousePosCam;
   Coord m_mousePosWorld;
   Texture m_texture;
-  CharacterRender m_charRenderer;
   bool m_game;
   bool m_menu;
 
