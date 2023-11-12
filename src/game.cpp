@@ -4,32 +4,16 @@
 using namespace std;
 using namespace sf;
 
-Game::Game()
-    : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE),
-      m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
+Game::Game(RenderWindow &window)
+    : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
-      m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH), m_menu() {
+      m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH) {
   m_sprites = getSpriteMap();
 }
 
 void Game::run() {
-  Clock clock;
-  Time timePerFrame = seconds(1.f / FPS_MAX);
-  Time timeSinceLastUpdate = Time::Zero;
-  while (m_window.isOpen()) {
-    timeSinceLastUpdate += clock.restart();
-    while (timeSinceLastUpdate > timePerFrame) {
-      timeSinceLastUpdate -= timePerFrame;
-      if (!m_menu.isActive()) {
-        update();
-      }
-      event();
-    }
-    if (!m_menu.isActive())
-      render();
-    else
-      m_menu.draw(m_window);
-  }
+  update();
+  render();
 }
 
 void Game::updateCam() {
@@ -70,135 +54,126 @@ void Game::clean() {
   this->m_map.clean();
 }
 
-void Game::event() {
-  Event event;
-  while (m_window.pollEvent(event)) {
-    if (m_menu.isActive()) {
-      m_menu.handleEvent(event);
-    } else {
-      if (event.type == Event::Closed) {
-        m_game = false;
-        quit();
+void Game::handleEvent(Event &event) {
+  if (event.type == Event::Closed) {
+    quit();
+  }
+  if (event.type == Event::KeyPressed) {
+    switch (event.key.code) {
+    case Keyboard::Space:
+      if (jumpClock.getElapsedTime() >= minimalTime) {
+        if (!buffer.loadFromFile(SOUND_JUMP)) {
+          cerr << "Error loading sound" << endl;
+        }
+        sound.setBuffer(buffer);
+        sound.play();
+
+        m_char.setJumping(true);
+
+        jumpClock.restart();
       }
-      if (event.type == Event::KeyPressed) {
-        switch (event.key.code) {
-        case Keyboard::Space:
-          if (jumpClock.getElapsedTime() >= minimalTime) {
-            if (!buffer.loadFromFile(SOUND_JUMP)) {
-              cerr << "Error loading sound" << endl;
-            }
-            sound.setBuffer(buffer);
-            sound.play();
+      break;
+    case Keyboard::Q:
+      // if(!buffer.loadFromFile(SOUND_MOVE)){
+      //   cerr << "Error loading sound" << endl;
+      // }
+      // sound.setBuffer(buffer);
+      // sound.play();
+      m_char.setGoingLeft(true);
+      break;
+    case Keyboard::D:
+      // if(!buffer.loadFromFile(SOUND_MOVE)){
+      //   cerr << "Error loading sound" << endl;
+      // }
+      // sound.setBuffer(buffer);
+      // sound.play();
+      m_char.setGoingRight(true);
+      break;
+    case Keyboard::Escape:
+      quit();
+      break;
+    case Keyboard::E:
+      m_inv.addItem(toolMap["IRON_PICKAXE"]);
+      break;
+    case Keyboard::I:
+      m_inv.open();
+      break;
+    case Keyboard::Num1:
+      m_inv.setPosHand(0);
+      break;
+    case Keyboard::Num2:
+      m_inv.setPosHand(1);
+      break;
+    case Keyboard::Num3:
+      m_inv.setPosHand(2);
+      break;
+    case Keyboard::Num4:
+      m_inv.setPosHand(3);
+      break;
+    case Keyboard::Num5:
+      m_inv.setPosHand(4);
+      break;
+    case Keyboard::Num6:
+      m_inv.setPosHand(5);
+      break;
+    case Keyboard::Num7:
+      m_inv.setPosHand(6);
+      break;
+    case Keyboard::Num8:
+      m_inv.setPosHand(7);
+      break;
+    case Keyboard::Num9:
+      m_inv.setPosHand(8);
+      break;
+    default:
+      break;
+    }
+  }
+  if (event.type == Event::KeyReleased) {
+    switch (event.key.code) {
+    case Keyboard::Space:
+      m_char.setJumping(false);
+      break;
+    case Keyboard::Q:
+      m_char.setGoingLeft(false);
+      break;
+    case Keyboard::D:
+      m_char.setGoingRight(false);
+      break;
+    default:
+      break;
+    }
+  }
+  if (event.type == Event::MouseButtonPressed) {
+    if (event.mouseButton.button == Mouse::Left) {
+      if (!buffer.loadFromFile(SOUND_BREAK_A_BLOCK)) {
+        cerr << "Error loading sound" << endl;
+      }
 
-            m_char.setJumping(true);
-
-            jumpClock.restart();
-          }
-          break;
-        case Keyboard::Q:
-          // if(!buffer.loadFromFile(SOUND_MOVE)){
-          //   cerr << "Error loading sound" << endl;
-          // }
-          // sound.setBuffer(buffer);
-          // sound.play();
-          m_char.setGoingLeft(true);
-          break;
-        case Keyboard::D:
-          // if(!buffer.loadFromFile(SOUND_MOVE)){
-          //   cerr << "Error loading sound" << endl;
-          // }
-          // sound.setBuffer(buffer);
-          // sound.play();
-          m_char.setGoingRight(true);
-          break;
-        case Keyboard::Escape:
-          m_game = false;
-          quit();
-          break;
-        case Keyboard::E:
-          m_inv.addItem(toolMap["IRON_PICKAXE"]);
-          break;
-        case Keyboard::I:
-          m_inv.open();
-          break;
-        case Keyboard::Num1:
-          m_inv.setPosHand(0);
-          break;
-        case Keyboard::Num2:
-          m_inv.setPosHand(1);
-          break;
-        case Keyboard::Num3:
-          m_inv.setPosHand(2);
-          break;
-        case Keyboard::Num4:
-          m_inv.setPosHand(3);
-          break;
-        case Keyboard::Num5:
-          m_inv.setPosHand(4);
-          break;
-        case Keyboard::Num6:
-          m_inv.setPosHand(5);
-          break;
-        case Keyboard::Num7:
-          m_inv.setPosHand(6);
-          break;
-        case Keyboard::Num8:
-          m_inv.setPosHand(7);
-          break;
-        case Keyboard::Num9:
-          m_inv.setPosHand(8);
-          break;
-        default:
-          break;
+      if (m_inv.isOpen())
+        m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
+                          m_posCam.getX(), m_posCam.getY());
+      else {
+        if (m_inv.getItemPosHand().getType() == "TOOL") {
+          sound.setBuffer(buffer);
+          sound.play();
+          m_map.suprTile(m_mousePosWorld.getX() - CAM_WIDTH / 2,
+                         m_mousePosWorld.getY() - CAM_HEIGHT / 2);
         }
       }
-      if (event.type == Event::KeyReleased) {
-        switch (event.key.code) {
-        case Keyboard::Space:
-          m_char.setJumping(false);
-          break;
-        case Keyboard::Q:
-          m_char.setGoingLeft(false);
-          break;
-        case Keyboard::D:
-          m_char.setGoingRight(false);
-          break;
-        default:
-          break;
-        }
+    }
+    if (event.mouseButton.button == Mouse::Right) {
+      if (!buffer.loadFromFile(SOUND_PUT_A_BLOCK)) {
+        cerr << "Error loading sound" << endl;
       }
-      if (event.type == Event::MouseButtonPressed) {
-        if (event.mouseButton.button == Mouse::Left) {
-          if (!buffer.loadFromFile(SOUND_BREAK_A_BLOCK)) {
-            cerr << "Error loading sound" << endl;
-          }
 
-          if (m_inv.isOpen())
-            m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
-                              m_posCam.getX(), m_posCam.getY());
-          else {
-            if (m_inv.getItemPosHand().getType() == "TOOL") {
-              sound.setBuffer(buffer);
-              sound.play();
-              m_map.suprTile(m_mousePosWorld.getX() - CAM_WIDTH / 2,
-                             m_mousePosWorld.getY() - CAM_HEIGHT / 2);
-            }
-          }
-        }
-        if (event.mouseButton.button == Mouse::Right) {
-          if (!buffer.loadFromFile(SOUND_PUT_A_BLOCK)) {
-            cerr << "Error loading sound" << endl;
-          }
-
-          if (!m_inv.isOpen()) {
-            if (m_inv.getItemPosHand().getType() == "BLOCK") {
-              sound.setBuffer(buffer);
-              sound.play();
-              m_map.addTile(blockMap[m_inv.getItemPosHand().getName()],
-                            m_mousePosWorld.getX() - CAM_WIDTH / 2,
-                            m_mousePosWorld.getY() - CAM_HEIGHT / 2);
-            }
-          }
+      if (!m_inv.isOpen()) {
+        if (m_inv.getItemPosHand().getType() == "BLOCK") {
+          sound.setBuffer(buffer);
+          sound.play();
+          m_map.addTile(blockMap[m_inv.getItemPosHand().getName()],
+                        m_mousePosWorld.getX() - CAM_WIDTH / 2,
+                        m_mousePosWorld.getY() - CAM_HEIGHT / 2);
         }
       }
     }
@@ -235,13 +210,4 @@ void Game::save() {
   m_inv.save(INVENTORY_SAVE_PATH);
   m_map.save(MAP_PATH);
   m_char.save(CHARACTER_SAVE_PATH);
-}
-
-int main(int arg, char **argv) {
-
-  Game game;
-
-  game.run();
-
-  return 0;
 }

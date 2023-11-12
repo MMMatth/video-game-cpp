@@ -20,26 +20,28 @@ using namespace std;
 
 class Game {
 private:
-  RenderWindow m_window;
-  Map m_map;
+  RenderWindow &m_window; /* window */
+  Map m_map;              /* map */
+  /* character */
   Character m_char;
   CharacterRender m_charRenderer;
-  Coord m_posCam;
-  unordered_map<string, Sprite> m_sprites;
+  Coord m_posCam;                          /* camera position */
+  unordered_map<string, Sprite> m_sprites; /* sprites */
+  /* inventory */
   Inventory m_inv;
   InventoryRenderer m_invRender;
+  /* mouse_pos */
   Coord m_mousePosCam;
   Coord m_mousePosWorld;
-  Texture m_texture;
-  bool m_game;
-  Menu m_menu;
+
+  /* sound*/
   SoundBuffer buffer;
   Sound sound;
   Clock jumpClock;
-  const Time minimalTime = seconds(1.0f); 
+  const Time minimalTime = seconds(1.0f);
 
 public:
-  Game();
+  Game(RenderWindow &window);
 
   void run();
 
@@ -55,7 +57,7 @@ public:
 
   void clean();
 
-  void event();
+  void handleEvent(Event &event);
 
   void quit();
 

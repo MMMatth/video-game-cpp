@@ -1,3 +1,6 @@
+#ifndef MENU_HPP
+#define MENU_HPP
+
 #include "const.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -12,11 +15,15 @@ private:
   SoundBuffer buffer;
   Sound sound;
   bool m_menu;
+  RenderWindow &m_window;
 
 public:
-  Menu();
+  Menu(RenderWindow &window);
   void handleEvent(sf::Event &event);
-  void draw(sf::RenderWindow &window);
+  void run();
+  void render();
+  void quit();
   bool isActive() const;
-  void setActive(bool active);
 };
+
+#endif

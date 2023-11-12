@@ -1,9 +1,23 @@
 #include "../include/menu.hpp"
 
-Menu::Menu() : m_menu(true) {
-  if (!menuTexture.loadFromFile(IMG_MENU)) {
-    std::cout << "Erreur de chargement de la texture du menu." << std::endl;
+void Error(bool condition, const std::string &message) {
+  if (condition) {
+    std::cerr << message << std::endl;
+    exit(EXIT_FAILURE);
   }
+}
+void Error(const std::string &message) {
+  std::cerr << message << std::endl;
+  exit(EXIT_FAILURE);
+}
+
+bool isInside(int mouseX, int mouseY, int x, int y, int width, int height) {
+  return mouseX >= x && mouseX <= x + width && mouseY >= y &&
+         mouseY <= y + height;
+}
+
+Menu::Menu(RenderWindow &window) : m_menu(true), m_window(window) {
+  Error(!menuTexture.loadFromFile(IMG_MENU), "Error loading menu texture");
   menuSprite.setTexture(menuTexture);
   menuSprite.setPosition(0, 0);
 }
@@ -12,31 +26,32 @@ void Menu::handleEvent(sf::Event &event) {
   if (event.type == sf::Event::MouseButtonPressed && m_menu) {
     int mouseX = event.mouseButton.x;
     int mouseY = event.mouseButton.y;
-    if (mouseX >= 630 && mouseX <= 787 && mouseY >= 216 && mouseY <= 295) {
+    /* quit button */
+    if (isInside(mouseX, mouseY, 32, 131, 230, 83)) {
       m_menu = false;
+      quit();
     }
-    if (mouseX >= 32 && mouseX <= 230 && mouseY >= 214 && mouseY <= 297) {
-      if (!buffer.loadFromFile(SOUND_PLAY)) {
-        std::cerr << "Error loading sound" << std::endl;
-      }
+    /* play button */
+    if (isInside(mouseX, mouseY, 32, 131, 230, 83)) {
+      Error(!buffer.loadFromFile(SOUND_PLAY), "Error loading sound");
       sound.setBuffer(buffer);
       sound.play();
       m_menu = false;
     }
-    if (mouseX >= 318 && mouseX <= 508 && mouseY >= 131 && mouseY <= 210) {
-      std::cout << "Nothing at the moment " << std::endl;
+    /* help button */
+    if (isInside(mouseX, mouseY, 32, 131, 230, 83)) {
+      Error("Not implemented yet");
     }
   }
 }
+void Menu::quit() { m_window.close(); }
 
-void Menu::draw(sf::RenderWindow &window) {
-  if (m_menu) {
-    window.clear();
-    window.draw(menuSprite);
-    window.display();
-  }
+void Menu::run() { render(); }
+
+void Menu::render() {
+  m_window.clear();
+  m_window.draw(menuSprite);
+  m_window.display();
 }
 
 bool Menu::isActive() const { return m_menu; }
-
-void Menu::setActive(bool active) { m_menu = active; }
