@@ -1,4 +1,5 @@
 #include "../include/game.hpp"
+#include <SFML/Audio.hpp>
 
 using namespace std;
 using namespace sf;
@@ -19,7 +20,7 @@ void Game::run() {
   Time timeSinceLastUpdate = Time::Zero;
 
   Texture menuTexture;
-  if (!menuTexture.loadFromFile("../assets/img/menu.JPEG")) {
+  if (!menuTexture.loadFromFile(IMG_MENU)) {
     cout << "Erreur de chargement de la texture du menu." << endl;
   }
   Sprite menuSprite(menuTexture);
@@ -57,22 +58,29 @@ void Game::run() {
       // }
 
       if (m_event.type == Event::MouseButtonPressed && m_menu) {
-        if (m_event.mouseButton.button == Mouse::Left) {
-          int mouseX = m_event.mouseButton.x;
-          int mouseY = m_event.mouseButton.y;
-          if (mouseX >= 630 && mouseX <= 787 && mouseY >= 216 &&
-              mouseY <= 295) {
-            quit();
-          }
-          if (mouseX >= 32 && mouseX <= 230 && mouseY >= 214 && mouseY <= 297) {
-            m_menu = false;
-            m_game = true;
-          }
-          if (mouseX >= 318 && mouseX <= 508 && mouseY >= 131 &&
-              mouseY <= 210) {
-            cout << "Nothing at the moment " << endl;
-          }
+        int mouseX = m_event.mouseButton.x;
+        int mouseY = m_event.mouseButton.y;
+        if (mouseX >= 630 && mouseX <= 787 && mouseY >= 216 &&
+          mouseY <= 295) {
+          quit();
         }
+        if (mouseX >= 32 && mouseX <= 230 && mouseY >= 214 && mouseY <= 297) {
+          if(!buffer.loadFromFile(SOUND_PLAY)){
+            cerr << "Error loading sound" << endl;
+          }
+          sound.setBuffer(buffer);
+          sound.play();
+
+          m_menu = false;
+          m_game = true;
+          m_char.setX(0);
+          m_char.setY(0);
+        }
+        if (mouseX >= 318 && mouseX <= 508 && mouseY >= 131 &&
+          mouseY <= 210) {
+          cout << "Nothing at the moment " << endl;
+        }
+      
       }
 
       if (m_menu) {
@@ -148,12 +156,28 @@ void Game::event() {
     if (event.type == Event::KeyPressed) {
       switch (event.key.code) {
       case Keyboard::Space:
+        if(!buffer.loadFromFile(SOUND_JUMP)){
+          cerr << "Error loading sound" << endl;
+        }
+        sound.setBuffer(buffer);
+        sound.play();
+            
         m_char.setJumping(true);
         break;
       case Keyboard::Q:
+        // if(!buffer.loadFromFile(SOUND_MOVE)){
+        //   cerr << "Error loading sound" << endl;
+        // }
+        // sound.setBuffer(buffer);
+        // sound.play();
         m_char.setGoingLeft(true);
         break;
       case Keyboard::D:
+        // if(!buffer.loadFromFile(SOUND_MOVE)){
+        //   cerr << "Error loading sound" << endl;
+        // }
+        // sound.setBuffer(buffer);
+        // sound.play();
         m_char.setGoingRight(true);
         break;
       case Keyboard::Escape:
@@ -214,19 +238,32 @@ void Game::event() {
     }
     if (event.type == Event::MouseButtonPressed) {
       if (event.mouseButton.button == Mouse::Left) {
+        if(!buffer.loadFromFile(SOUND_BREAK_A_BLOCK)){
+          cerr << "Error loading sound" << endl;
+        }
+       
+            
         if (m_inv.isOpen())
           m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
                             m_posCam.getX(), m_posCam.getY());
         else {
           if (m_inv.getItemPosHand().getType() == "TOOL") {
+            sound.setBuffer(buffer);
+            sound.play();
             m_map.suprTile(m_mousePosWorld.getX() - CAM_WIDTH / 2,
                            m_mousePosWorld.getY() - CAM_HEIGHT / 2);
           }
         }
       }
       if (event.mouseButton.button == Mouse::Right) {
+         if(!buffer.loadFromFile(SOUND_PUT_A_BLOCK)){
+          cerr << "Error loading sound" << endl;
+        }
+       
         if (!m_inv.isOpen()) {
           if (m_inv.getItemPosHand().getType() == "BLOCK") {
+            sound.setBuffer(buffer);
+            sound.play();
             m_map.addTile(blockMap[m_inv.getItemPosHand().getName()],
                           m_mousePosWorld.getX() - CAM_WIDTH / 2,
                           m_mousePosWorld.getY() - CAM_HEIGHT / 2);

@@ -17,6 +17,17 @@ file(GLOB SOURCES
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+find_package(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)  # <-- Ajout de 'audio'
+
+if(SFML_FOUND)
+    message(STATUS "Found SFML")
+    include_directories(${SFML_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system sfml-audio)  # <-- Ajout de 'sfml-audio'
+else()
+    message(STATUS "Could not locate SFML")
+endif()
+    
+
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 if(SFML_FOUND)

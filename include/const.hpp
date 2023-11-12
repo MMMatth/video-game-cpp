@@ -15,6 +15,14 @@
 #define ANIMATION_SPEED 100
 #define NUM_FRAMES 9
 #define CHARACTER_SAVE_PATH "../assets/csv/character.csv"
+/* sound */
+#define SOUND_PLAY "../assets/sound/click_play.wav"
+#define SOUND_JUMP "../assets/sound/jump.wav"
+#define SOUND_BREAK_A_BLOCK "../assets/sound/break_a_block.wav"
+#define SOUND_MOVE "../assets/sound/move.wav"
+#define SOUND_PUT_A_BLOCK "../assets/sound/put_a_block.wav"
+/* menu */
+#define IMG_MENU "../assets/img/menu.JPEG"
 /* inventory */
 #define INVENTORY_HEIGHT 4
 #define INVENTORY_WIDTH 9

@@ -1,6 +1,7 @@
 #ifndef JEU_HPP
 #define JEU_HPP
 
+
 #include "characterRender.hpp"
 #include "const.hpp"
 #include "coord.hpp"
@@ -12,6 +13,7 @@
 #include <SFML/Graphics.hpp>
 #include <cassert>
 #include <unordered_map>
+#include <SFML/Audio.hpp>
 
 using namespace sf;
 using namespace std;
@@ -31,6 +33,8 @@ private:
   Texture m_texture;
   bool m_game;
   bool m_menu;
+  SoundBuffer buffer;
+  Sound sound;
 
 public:
   Game();
