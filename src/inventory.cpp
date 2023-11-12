@@ -33,6 +33,8 @@ Inventory::Inventory(string csvPath)
           case 3:
             amount = stoi(cell);
             break;
+          case 4:
+
           default:
             std ::cerr << "Invalid csv file : " << csvPath << "\n";
             std ::exit(EXIT_FAILURE);
@@ -76,7 +78,6 @@ Inventory::Inventory()
   for (int row = 0; row < INVENTORY_HEIGHT; row++) {
     for (int column = 0; column < INVENTORY_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();
-      // m_inventory[row][column].setPos(row, column);
     }
   }
 }
@@ -106,7 +107,7 @@ void Inventory::swapItem(InventoryTile *t1, InventoryTile *t2) {
 void Inventory::addItem(Item item) {
   for (int i = 0; i < INVENTORY_HEIGHT; i++) {
     for (int j = 0; j < INVENTORY_WIDTH; j++) {
-      if (m_inventory[i][j].getItem().getId() == item.getId() &&
+      if (m_inventory[i][j].getItem().getName() == item.getName() &&
           m_inventory[i][j].getItem().isStackable()) {
         int totalAmount =
             m_inventory[i][j].getItem().getAmount() + item.getAmount();
@@ -187,7 +188,7 @@ string Inventory::toString() {
   for (int i = 0; i < INVENTORY_HEIGHT; i++) {
     for (int j = 0; j < INVENTORY_WIDTH; j++) {
       str += "[";
-      str += m_inventory[i][j].getItem().getId();
+      str += m_inventory[i][j].getItem().getName();
       str += "] ";
     }
     str += "\n";
@@ -202,7 +203,7 @@ void Inventory::save(string csvPath) {
     for (int i = 0; i < INVENTORY_HEIGHT; i++) {
       for (int j = 0; j < INVENTORY_WIDTH; j++) {
         if (!m_inventory[i][j].isEmpty()) {
-          file << m_inventory[i][j].getItem().getId() << ";" << i << ";" << j
+          file << m_inventory[i][j].getItem().getName() << ";" << i << ";" << j
                << ";" << m_inventory[i][j].getItem().getAmount() << "\n";
         }
       }

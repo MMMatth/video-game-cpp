@@ -17,25 +17,36 @@ class Block : public Item {
 public:
   Block();
 
-  Block(string id, int spriteX, int spriteY, int spriteW, int spriteH,
-        bool isSolid, bool is_stackable = true, int amount = 1);
+  Block(string id, string name, bool isSolid, bool is_stackable = true,
+        int amount = 1);
 
   /* getters */
   bool isSolid() const { return m_isSolid; }
+  string getId() { return m_id; }
 
   /* setters */
   void setSolid(bool isSolid) { m_isSolid = isSolid; }
 
   /* other */
-  std::string toString() const;
+  string toString() const;
 
 private:
   bool m_isSolid;
+  string m_id;
 };
+static map<string, Block> blockMap = {
+    {"AIR", Block("0", "AIR", false, false)},
+    {"GRASS", Block("1", "GRASS", true)},
+    {"DIRT", Block("2", "DIRT", true)},
+    {"STONE", Block("3", "STONE", true)},
+    {"LEAF", Block("4", "LEAF", false)},
+    {"WOOD", Block("5", "WOOD", false)},
+    {"WOOD_PLANK", Block("6", "WOOD_PLANK", true)},
+    {"COBBLESTONE", Block("7", "COBBLESTONE", true)},
+    {"BRICK", Block("8", "BRICK", true)},
+    {"LIBRARY", Block("9", "LIBRARY", true)},
+    {"RED_FLOWER", Block("10", "RED_FLOWER", false, true)},
+    {"YELLOW_FLOWER", Block("11", "YELLOW_FLOWER", false, true)},
+    {"TORCH", Block("12", "TORCH", false, true)}};
 
-static std::map<string, Block> blockMap = {
-    {"AIR", Block("AIR", 0, 0, 0, 0, false, false)},
-    {"GRASS", Block("GRASS", 0, 0, 16, 16, true)},
-    {"DIRT", Block("DIRT", 16, 0, 16, 16, true)},
-    {"STONE", Block("STONE", 32, 0, 16, 16, true)}};
 #endif

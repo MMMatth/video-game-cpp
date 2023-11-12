@@ -1,31 +1,41 @@
 #include "../include/characterRender.hpp"
 #include "../include/character.hpp"
+#include "../include/draw.hpp"
 
-CharacterRender::CharacterRender(Character& character, Texture& texture) : m_character(character), m_texture(texture){
+CharacterRender::CharacterRender(Character &character) : character(character) {}
 
-  if (!m_texture.loadFromFile("../assets/img/personnage.png")) {
-    cout << "Erreur de chargement de la texture du personnage" << endl;
-  }
-  
-  m_character.initSprites(m_texture);
+void CharacterRender::drawSprite(RenderWindow &window,
+                                 unordered_map<string, Sprite> &sprites,
+                                 const string &spriteKey, int frame, int x,
+                                 int y) {
+  Sprite sprite = sprites[spriteKey];
+  sprite.setTextureRect(
+      IntRect(sprites[spriteKey].getTextureRect().left + frame * 25,
+              sprites[spriteKey].getTextureRect().top, 25, 48));
+  drawSprites(x, y, sprite, &window, character.getWidth(),
+              character.getHeight());
 }
 
-void CharacterRender::draw(RenderWindow &window) {
-  map<string, bool> direction = m_character.getDirection();
-  map<string, bool> collision = m_character.getCollision();
-  unordered_map<string, Sprite> sprites = m_character.getSprites();
-
-  if (direction["isGoingLeft"]) {
-    int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % NUM_FRAMES;
-    window.draw(sprites["moveLeft" + to_string(frame + 1)]);
-  } else if (direction["isGoingRight"]) {
-    int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % NUM_FRAMES;
-    window.draw(sprites["moveRight" + to_string(frame + 1)]);
-  } else if (direction["isJumping"] && !collision["right"]) {
-    window.draw(sprites["jump"]);
-  } else if (direction["isFalling"] && !collision["down"]) {
-    window.draw(sprites["fall"]);
+void CharacterRender::draw(RenderWindow &window,
+                           unordered_map<string, Sprite> sprites) {
+  map<string, bool> direction = character.getDirection();
+  map<string, bool> collision = character.getCollision();
+  int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) %
+              NUM_FRAMES;
+  int x = character.getX() - (character.getWidth() / 2); // center the character
+  int y = character.getY();
+  if (direction["left"]) {
+    drawSprite(window, sprites, "CHAR_LEFT", frame, x, y);
+  } else if (direction["right"]) {
+    drawSprite(window, sprites, "CHAR_RIGHT", frame, x, y);
+  } else if (direction["jump"] && !collision["right"]) {
+    drawSprites(x, y, sprites["CHAR_JUMP"], &window, character.getWidth() * 2,
+                character.getHeight());
+  } else if (direction["fall"] && !collision["down"]) {
+    drawSprites(x, y, sprites["CHAR_FALL"], &window, character.getWidth() * 2,
+                character.getHeight());
   } else {
-    window.draw(sprites["stop"]);
+    drawSprites(x, y, sprites["CHAR_FRONT"], &window, character.getWidth(),
+                character.getHeight());
   }
 }

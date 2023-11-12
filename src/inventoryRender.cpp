@@ -9,7 +9,7 @@ void InventoryRenderer::drawItem(sf::RenderWindow &window,
     drawSprites(x + column * INVENTORY_TILE_SIZE +
                     (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
                 y + (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
-                sprites[m_inventory.getItemAt(Coord(row, column)).getId()],
+                sprites[m_inventory.getItemAt(Coord(row, column)).getName()],
                 &window, INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
     if (m_inventory.getItemAt(Coord(row, column)).isStackable()) {
       drawText(x + column * INVENTORY_TILE_SIZE +
@@ -51,8 +51,8 @@ void InventoryRenderer::drawSelectedItem(sf::RenderWindow &window,
                                          int camX, int camY, int mouseX,
                                          int mouseY) {
   drawSprites(mouseX - CAM_WIDTH / 2, mouseY - CAM_HEIGHT / 2,
-              sprites[m_inventory.getSelectedTile().getItem().getId()], &window,
-              INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
+              sprites[m_inventory.getSelectedTile().getItem().getName()],
+              &window, INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
 }
 
 void InventoryRenderer::render(sf::RenderWindow &window,

@@ -1,19 +1,15 @@
 #include "../include/game.hpp"
-#include "../include/characterRender.hpp"
 
 using namespace std;
 using namespace sf;
 
 Game::Game()
-    : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE),
-      m_char(0, 0, TAILLE_PERSONNAGE), 
-      m_posCam(0, 0), m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
-      m_invRender(m_inv),
-      m_charRenderer(m_char, m_texture) { 
-  m_map = Map();
+    : m_window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE),
+      m_char(0, 0, TAILLE_PERSONNAGE), m_posCam(0, 0),
+      m_inv("../assets/csv/inventory.csv"), m_mousePosCam(0, 0),
+      m_invRender(m_inv), m_charRenderer(m_char, m_texture), m_map(MAP_PATH) {
   m_menu = true;
   m_game = false;
-  
 }
 
 void Game::run() {
@@ -37,43 +33,44 @@ void Game::run() {
 
       if (m_event.type == Event::KeyPressed) {
         switch (m_event.key.code) {
-          case Keyboard::Space:
-            if (m_menu) {
-              m_menu = false;
-              m_game = true;
-              m_char.setX(0);
-              m_char.setY(0);
-
-            }
-            break;
-          case Keyboard::Escape:
-            quit();
-            break;
-          default:
-            break;
+        case Keyboard::Space:
+          if (m_menu) {
+            m_menu = false;
+            m_game = true;
+            m_char.setX(0);
+            m_char.setY(0);
+          }
+          break;
+        case Keyboard::Escape:
+          quit();
+          break;
+        default:
+          break;
         }
       }
       // if (m_event.type == Event::MouseMoved && m_menu) {
       //   int mouseX = m_event.mouseMove.x;
       //   int mouseY = m_event.mouseMove.y;
-      //   cout << "Position de la souris dans le menu : X=" << mouseX << ", Y=" << mouseY << endl;
+      //   cout << "Position de la souris dans le menu : X=" << mouseX << ", Y="
+      //   << mouseY << endl;
       // }
 
       if (m_event.type == Event::MouseButtonPressed && m_menu) {
         if (m_event.mouseButton.button == Mouse::Left) {
           int mouseX = m_event.mouseButton.x;
           int mouseY = m_event.mouseButton.y;
-          if (mouseX >= 630 && mouseX <= 787 && mouseY >= 216 && mouseY <= 295) {
+          if (mouseX >= 630 && mouseX <= 787 && mouseY >= 216 &&
+              mouseY <= 295) {
             quit();
           }
           if (mouseX >= 32 && mouseX <= 230 && mouseY >= 214 && mouseY <= 297) {
             m_menu = false;
             m_game = true;
           }
-          if (mouseX >= 318 && mouseX <= 508 && mouseY >= 131 && mouseY <= 210) {
+          if (mouseX >= 318 && mouseX <= 508 && mouseY >= 131 &&
+              mouseY <= 210) {
             cout << "Nothing at the moment " << endl;
           }
-
         }
       }
 
@@ -101,26 +98,11 @@ void Game::run() {
   cout << "Au revoir!" << endl;
 }
 
-
-
-
-
-
-bool Game::collisionAvecCarte(int x, int y) {
-  if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT) {
-    return true;
-  }
-
-  return false;
-}
-
 void Game::updateCam() {
   m_posCam.setX(m_posCam.getX() +
-                (m_char.getX() + m_char.getHauteur() / 4 - m_posCam.getX()) /
-                    20);
+                (m_char.getX() + m_char.getWidth() / 4 - m_posCam.getX()) / 20);
   m_posCam.setY(m_posCam.getY() +
-                (m_char.getY() + m_char.getHauteur() / 2 - m_posCam.getY()) /
-                    20);
+                (m_char.getY() + m_char.getWidth() / 2 - m_posCam.getY()) / 20);
   m_window.setView(View(Vector2f(m_posCam.getX(), m_posCam.getY()),
                         Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
@@ -156,7 +138,7 @@ void Game::clean() {
 
 void Game::event() {
   Event event;
- 
+
   while (m_window.pollEvent(event)) {
     if (event.type == Event::Closed) {
       m_game = false;
@@ -164,13 +146,13 @@ void Game::event() {
     }
     if (event.type == Event::KeyPressed) {
       switch (event.key.code) {
-      case Keyboard::Up:
+      case Keyboard::Space:
         m_char.setJumping(true);
         break;
-      case Keyboard::Left:
+      case Keyboard::Q:
         m_char.setGoingLeft(true);
         break;
-      case Keyboard::Right:
+      case Keyboard::D:
         m_char.setGoingRight(true);
         break;
       case Keyboard::Escape:
@@ -178,7 +160,6 @@ void Game::event() {
         quit();
         break;
       case Keyboard::E:
-        // inv.addItem(blockMap[GRASS]);
         m_inv.addItem(toolMap["IRON_PICKAXE"]);
         break;
       case Keyboard::I:
@@ -217,13 +198,13 @@ void Game::event() {
     }
     if (event.type == Event::KeyReleased) {
       switch (event.key.code) {
-      case Keyboard::Up:
+      case Keyboard::Space:
         m_char.setJumping(false);
         break;
-      case Keyboard::Left:
+      case Keyboard::Q:
         m_char.setGoingLeft(false);
         break;
-      case Keyboard::Right:
+      case Keyboard::D:
         m_char.setGoingRight(false);
         break;
       default:
@@ -232,34 +213,46 @@ void Game::event() {
     }
     if (event.type == Event::MouseButtonPressed) {
       if (event.mouseButton.button == Mouse::Left) {
-        m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
-                          m_posCam.getX(), m_posCam.getY());
+        if (m_inv.isOpen())
+          m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
+                            m_posCam.getX(), m_posCam.getY());
+        else {
+          if (m_inv.getItemPosHand().getType() == "TOOL") {
+            m_map.suprTile(m_mousePosWorld.getX() - CAM_WIDTH / 2,
+                           m_mousePosWorld.getY() - CAM_HEIGHT / 2);
+          }
+        }
+      }
+      if (event.mouseButton.button == Mouse::Right) {
+        if (!m_inv.isOpen()) {
+          if (m_inv.getItemPosHand().getType() == "BLOCK") {
+            m_map.addTile(blockMap[m_inv.getItemPosHand().getName()],
+                          m_mousePosWorld.getX() - CAM_WIDTH / 2,
+                          m_mousePosWorld.getY() - CAM_HEIGHT / 2);
+          }
+        }
       }
     }
   }
 }
 
 void Game::render() {
-  m_window.clear(COULEUR_CIEL);
+  m_window.clear(SKY_COLOR);
 
-  m_charRenderer.draw(m_window);
- 
-  m_sprites = getSpriteMap();
+  m_charRenderer.draw(m_window, m_sprites);
 
   for (int i = 0; i < m_map.getSize(); i++) {
     int x, y;
     x = m_map.getTile(i).getX();
     y = m_map.getTile(i).getY();
-
     if (m_map.getTile(i).estDansCam(m_posCam.getX(), m_posCam.getY(),
                                     WINDOW_WIDTH, WINDOW_HEIGHT)) {
-      drawSprites(x, y, m_sprites[m_map.getTile(i).getBlock().getId()],
-                  &m_window, TAILLE_CASE, TAILLE_CASE);
+      drawSprites(x, y, m_sprites[m_map.getTile(i).getBlock().getName()],
+                  &m_window, TILE_SIZE, TILE_SIZE);
     }
   }
   m_invRender.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY(),
                      m_mousePosWorld.getX(), m_mousePosWorld.getY());
-
   m_window.display();
 }
 
@@ -269,25 +262,17 @@ void Game::quit() {
   clean();
 }
 
-// void Game::menu(){
-//   RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITRE_FENETRE);
-//   while (window.isOpen()){
-    
-//     sf::Event event;
-//     while (window.pollEvent(event)){
-//       if (event.type == sf::Event::Closed) 
-//         window.close();
-//       }
-   
-//   }
-// }
-
-void Game::save() { m_inv.save("../assets/csv/inventory.csv"); }
+void Game::save() {
+  m_inv.save(INVENTORY_SAVE_PATH);
+  m_map.save(MAP_PATH);
+  m_char.save(CHARACTER_SAVE_PATH);
+}
 
 int main(int arg, char **argv) {
+
   Game game;
-  
+
   game.run();
-  
+
   return 0;
 }

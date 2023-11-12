@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -15,22 +16,22 @@ using namespace std;
 
 class Map {
 public:
-  Map();
+  Map(string path);
+  void initMap(string nomFichier);
 
-  void initMap(const char *nomFichier);
+  /* getters */
+  vector<Tile> getMap() { return m_map; }
+  int getSize() { return m_map.size(); }
+  Tile getTile(int i) { return m_map[i]; }
+  /* setters */
 
-  vector<Tile> getMap();
-
-  int getSize();
-
-  Tile getTile(int i);
-
+  /* other*/
+  void save(string path);
   void collide(Character *perso);
-
-  Tile chooseTile(char c, int x, int y);
-
+  Tile chooseTile(string c, int x, int y);
   void clean();
-
+  void addTile(Block block, int mouseX, int mouseY);
+  void suprTile(int x, int y);
   string toString();
 
 private:

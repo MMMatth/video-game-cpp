@@ -2,26 +2,18 @@
 
 using namespace std;
 
-Map::Map() { initMap("../assets/map.txt"); }
-
-Tile Map::chooseTile(char c, int x, int y) {
-  Block block;
-  switch (c) {
-  case '1':
-    block = blockMap["GRASS"];
-    break;
-  case '2':
-    block = blockMap["DIRT"];
-    break;
-  case '3':
-    block = blockMap["STONE"];
-    break;
-  default:
-    block = blockMap["AIR"];
-    break;
+Block getBlock(string id) {
+  for (auto it = blockMap.begin(); it != blockMap.end(); ++it) {
+    if (it->second.getId() == id) {
+      return it->second;
+    }
   }
-  return Tile(block, x, y);
+  return blockMap["AIR"];
 }
+
+Map::Map(string path) { initMap(path); }
+
+Tile Map::chooseTile(string c, int x, int y) { return Tile(getBlock(c), x, y); }
 
 void Map::collide(Character *perso) {
   for (int i = 0; i < m_map.size(); i++) {
@@ -29,27 +21,63 @@ void Map::collide(Character *perso) {
   }
 }
 
-void Map::initMap(const char *nomFichier) {
+void Map::initMap(string nomFichier) {
   ifstream fichier(nomFichier);
   if (fichier) {
     string ligne;
     int y = 0;
     while (getline(fichier, ligne)) {
-      for (int x = 0; x < ligne.size(); x++) {
-        m_map.push_back(chooseTile(ligne[x], x, y));
+      stringstream ss(ligne);
+      string c;
+      int x = 0;
+      while (getline(ss, c, ';')) {
+        m_map.push_back(chooseTile(c, x, y));
+        x++;
       }
       y++;
     }
   } else {
-    cout << "Erreur lors de l'ouverture du fichier" << endl;
+    cout << "We cant open the map file" << endl;
   }
 }
 
-vector<Tile> Map::getMap() { return m_map; }
+void Map::save(string path) {
+  ofstream fichier(path);
+  if (fichier) {
+    for (int i = 0; i < m_map.size(); i++) {
+      fichier << m_map[i].getBlock().getId();
+      if (i % MAP_WIDTH == MAP_WIDTH - 1) {
+        fichier << endl;
+      } else {
+        fichier << ";";
+      }
+    }
+  } else {
+    cout << "We cant open the map file" << endl;
+  }
+}
 
-int Map::getSize() { return m_map.size(); }
+void Map::addTile(Block block, int mouseX, int mouseY) {
+  cout << mouseX << " " << mouseY << endl;
+  cout << m_map[0].getX() << " " << m_map[0].getY() << endl;
+  for (int i = 0; i < m_map.size(); i++) {
+    if (mouseX > m_map[i].getX() && mouseX < m_map[i].getX() + TILE_SIZE &&
+        mouseY > m_map[i].getY() && mouseY < m_map[i].getY() + TILE_SIZE) {
+      m_map[i].setBlock(block);
+      return;
+    }
+  }
+}
 
-Tile Map::getTile(int i) { return m_map[i]; }
+void Map::suprTile(int mouseX, int mouseY) {
+  for (auto it = m_map.begin(); it != m_map.end(); ++it) {
+    if (mouseX > it->getX() && mouseX < it->getX() + TILE_SIZE &&
+        mouseY > it->getY() && mouseY < it->getY() + TILE_SIZE) {
+      it->setBlock(blockMap["AIR"]);
+      break;
+    }
+  }
+}
 
 void Map::clean() { m_map.clear(); }
 

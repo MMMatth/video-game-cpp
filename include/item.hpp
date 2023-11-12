@@ -9,48 +9,38 @@ using namespace std;
 
 class Item {
 private:
-  string m_id;
+  string m_name;
   bool m_is_stackable;
   int m_amout; // -1 if not stackable
-  Sprites m_spriteSheet;
+  string m_type;
 
 public:
   /* constructeur */
-  Item(string id, int spriteX, int spriteY, int spriteW, int spriteH,
-       bool is_stackable, int amout = 1)
-      : m_spriteSheet(spriteX, spriteY, spriteW, spriteH), m_amout(amout),
-        m_id(id), m_is_stackable(is_stackable) {}
+  Item(string name, bool is_stackable, string type, int amout = 1)
+      : m_amout(amout), m_name(name), m_is_stackable(is_stackable),
+        m_type(type) {}
 
-  Item() : m_spriteSheet(), m_amout(1), m_id(""), m_is_stackable(false){};
+  Item() : m_amout(1), m_name(""), m_is_stackable(false), m_type("UNDEFINED"){};
 
   /* destructeur */
   // ~Item(){};
 
   /* setters */
-  void setId(std::string name) { m_id = name; }
+  void setId(std::string name) { m_name = name; }
   void setIsStackable(bool is_stackable) { m_is_stackable = is_stackable; }
   void setAmount(int amount) { m_amout = amount; }
-  void setSpriteSheet(Sprites spriteSheet) { m_spriteSheet = spriteSheet; }
-  void setSpriteSheetHeight(int spriteSheetHeight) {
-    m_spriteSheet.setHeight(spriteSheetHeight);
-  }
-  void setSpriteSheetWidth(int spriteSheetWidth) {
-    m_spriteSheet.setWidth(spriteSheetWidth);
-  }
-  void setSpriteSheetX(int spriteSheetX) { m_spriteSheet.setX(spriteSheetX); }
-  void setSpriteSheetY(int spriteSheetY) { m_spriteSheet.setY(spriteSheetY); }
+
   /* getters */
-  string getId() { return m_id; }
+  string getName() { return m_name; }
+  string getType() { return m_type; }
   int getAmount() { return m_amout; }
   bool isStackable() { return m_is_stackable; }
-  Sprites getSpriteSheet() { return m_spriteSheet; }
   /*others*/
   string toString() {
     string s = "";
-    s += " id : " + m_id;
+    s += " id : " + m_name;
     s += " is_stackable : " + std::to_string(m_is_stackable);
     s += " amount : " + std::to_string(m_amout);
-    s += " spriteSheet : " + m_spriteSheet.toString();
     return s;
   }
 };

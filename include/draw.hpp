@@ -1,29 +1,20 @@
-/*!
- * \file draw.hpp
- * \brief Fonctions de dessin.
- * \author  Mathieu Gaudel and Papa El Hadji G Cissé
- */
 #ifndef DRAW_HPP
 #define DRAW_HPP
 
+#include "../include/const.hpp"
 #include <SFML/Graphics.hpp>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <unordered_map>
 
 using namespace std;
 using namespace sf;
 
-void drawSprite(int x, int y, RenderWindow *window, string path);
+unordered_map<string, Sprite> getSpriteMap();
 
 void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
                  int height);
-
-void drawMap(int x, int y, Color color, RenderWindow *window, int largeur,
-             int hauteur);
-
-void drawRectangle(int x, int y, Color color, RenderWindow *window, int largeur,
-                   int hauteur);
-
-void drawMiniCarte(int x, int y, Color color, RenderWindow *window, int largeur,
-                   int hauteur);
 
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath);
