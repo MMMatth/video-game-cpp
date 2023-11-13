@@ -1,6 +1,7 @@
 #ifndef JEU_HPP
 #define JEU_HPP
 
+#include "../include/otherFunctions.hpp"
 #include "characterRender.hpp"
 #include "const.hpp"
 #include "coord.hpp"
@@ -8,6 +9,7 @@
 #include "inventory.hpp"
 #include "inventoryRender.hpp"
 #include "map.hpp"
+#include "mapRender.hpp"
 #include "menu.hpp"
 #include "tool.hpp"
 #include <SFML/Audio.hpp>
@@ -20,51 +22,45 @@ using namespace std;
 
 class Game {
 private:
-  RenderWindow &m_window; /* window */
-  Map m_map;              /* map */
-  Map m_newMap;
+  /* graphics */
+  RenderWindow &m_window;
+  unordered_map<string, Sprite> m_sprites;
   /* character */
   Character m_char;
   CharacterRender m_charRenderer;
-  Coord m_posCam;                          /* camera position */
-  unordered_map<string, Sprite> m_sprites; /* sprites */
+  /* map */
+  Map m_map;
+  Map m_newMap;
+  MapRender m_mapRenderer;
+  Coord m_posCam; /* camera position */
+  Clock m_clock;  /* clock */
   /* inventory */
   Inventory m_inv;
   InventoryRenderer m_invRender;
   /* mouse_pos */
   Coord m_mousePosCam;
   Coord m_mousePosWorld;
-
   /* sound*/
-  SoundBuffer buffer;
-  Sound sound;
-  Clock jumpClock;
-  const Time minimalTime = seconds(1.0f);
+  unordered_map<string, SoundBuffer> m_buffers;
+  Sound m_sound;
 
 public:
+  /* constructor */
   Game(RenderWindow &window);
-
   void run();
-
+  /* update*/
   void update();
-
   void updateCam();
-
   void updateCollide();
-
   void updateMousePos();
-
   void render();
-
   void clean();
-
   void handleEvent(Event &event);
-
   void quit();
-
-  void menu();
-
   void save();
+  /* map interaction */
+  void putBlock();
+  void breakBlock();
 
   void reset();
 };

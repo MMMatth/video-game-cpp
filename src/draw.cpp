@@ -1,8 +1,9 @@
 #include "../include/draw.hpp"
-#include "../include/otherFunctions.hpp"
 
 using namespace std;
 using namespace sf;
+
+/* graphics */
 
 Texture texture;
 
@@ -43,9 +44,10 @@ void checkData(int x, int y, int width, int height) {
     cerr << "Spritesheet invalid size : " << width << " " << height;
 }
 
-unordered_map<string, Sprite> getSpriteMap() {
+unordered_map<string, Sprite> initSprites() {
   unordered_map<string, Sprite> sprites;
-  Error(!texture.loadFromFile(SPRITESHEET_IMG_PATH), "Unable to load spritesheet image.");
+  Error(!texture.loadFromFile(SPRITESHEET_IMG_PATH),
+        "Unable to load spritesheet image.");
 
   ifstream file(SPRITESHEET_CSV_PATH);
   if (!file.is_open())
@@ -79,7 +81,7 @@ void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath) {
   Font font;
   Error(!font.loadFromFile("../" + fontPath), "Error : font load fail");
-  
+
   Text textObj;
   textObj.setFont(font);
   textObj.setString(text);
@@ -87,4 +89,31 @@ void drawText(int x, int y, string text, RenderWindow *window, int size,
   textObj.setFillColor(color);
   textObj.setPosition(x, y);
   window->draw(textObj);
+}
+
+/* audio */
+unordered_map<string, SoundBuffer> initBuffers() {
+  unordered_map<string, SoundBuffer> soundBuffers;
+  SoundBuffer buffer;
+
+  Error(!buffer.loadFromFile(SOUND_BREAK_A_BLOCK),
+        "Error loading sound break a block");
+  soundBuffers["BREAK"] = buffer;
+
+  Error(!buffer.loadFromFile(SOUND_PUT_A_BLOCK),
+        "Error loading sound put a block");
+  soundBuffers["PUT_BLOCK"] = buffer;
+
+  Error(!buffer.loadFromFile(SOUND_PLAY), "Error loading sound play");
+  soundBuffers["PLAY"] = buffer;
+
+  Error(!buffer.loadFromFile(SOUND_JUMP), "Error loading sound jump");
+  soundBuffers["JUMP"] = buffer;
+
+  return soundBuffers;
+}
+
+void play_sound(SoundBuffer *buffer, Sound *sound) {
+  sound->setBuffer(*buffer);
+  sound->play();
 }
