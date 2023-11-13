@@ -2,6 +2,8 @@
 #define DRAW_HPP
 
 #include "../include/const.hpp"
+#include "../include/otherFunctions.hpp"
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <iostream>
@@ -11,12 +13,18 @@
 using namespace std;
 using namespace sf;
 
-unordered_map<string, Sprite> getSpriteMap();
+/* graphics */
+unordered_map<string, Sprite> initSprites();
 
 void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
                  int height);
 
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath);
+
+/* audio */
+unordered_map<string, SoundBuffer> initBuffers();
+
+void play_sound(SoundBuffer *buffer, Sound *sound);
 
 #endif /* DRAW_HPP*/

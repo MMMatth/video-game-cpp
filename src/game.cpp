@@ -1,6 +1,4 @@
 #include "../include/game.hpp"
-#include <SFML/Audio.hpp>
-#include "../include/otherFunctions.hpp"
 
 using namespace std;
 using namespace sf;
@@ -8,11 +6,15 @@ using namespace sf;
 Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
-      m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH) {
-  m_sprites = getSpriteMap();
+      m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
+      m_mapRenderer(m_map), m_sound(), m_clock() {
+  m_sprites = initSprites();
+  m_buffers = initBuffers();
+  m_sound.setVolume(VOLUME);
 }
 
 void Game::run() {
+  m_clock.restart();
   update();
   render();
 }
@@ -26,7 +28,9 @@ void Game::updateCam() {
                         Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
 
-void Game::updateCollide() { m_map.collide(&m_char); }
+void Game::updateCollide() {
+  m_map.collide(&m_char, m_posCam.getX(), m_posCam.getY());
+}
 
 void Game::updateMousePos() {
   Vector2i pixelPos = sf::Mouse::getPosition(m_window);
@@ -47,6 +51,7 @@ void Game::update() {
   updateCam();
   updateCollide();
   updateMousePos();
+  m_map.update(m_posCam.getX(), m_posCam.getY());
   m_char.update();
 }
 
@@ -62,30 +67,14 @@ void Game::handleEvent(Event &event) {
   if (event.type == Event::KeyPressed) {
     switch (event.key.code) {
     case Keyboard::Space:
-      if (jumpClock.getElapsedTime() >= minimalTime) {
-        Error(!buffer.loadFromFile(SOUND_JUMP), "Error loading sound");
-        sound.setBuffer(buffer);
-        sound.play();
-
-        m_char.setJumping(true);
-
-        jumpClock.restart();
-      }
+      if (!m_char.getDirection()["up"] && !m_char.getDirection()["fall"])
+        play_sound(&m_buffers["JUMP"], &m_sound);
+      m_char.setJumping(true);
       break;
     case Keyboard::Q:
-      // if(!buffer.loadFromFile(SOUND_MOVE)){
-      //   cerr << "Error loading sound" << endl;
-      // }
-      // sound.setBuffer(buffer);
-      // sound.play();
       m_char.setGoingLeft(true);
       break;
     case Keyboard::D:
-      // if(!buffer.loadFromFile(SOUND_MOVE)){
-      //   cerr << "Error loading sound" << endl;
-      // }
-      // sound.setBuffer(buffer);
-      // sound.play();
       m_char.setGoingRight(true);
       break;
     case Keyboard::Escape:
@@ -145,30 +134,24 @@ void Game::handleEvent(Event &event) {
   }
   if (event.type == Event::MouseButtonPressed) {
     if (event.mouseButton.button == Mouse::Left) {
-     Error(!buffer.loadFromFile(SOUND_BREAK_A_BLOCK), "Error loading sound");
-
       if (m_inv.isOpen())
         m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
                           m_posCam.getX(), m_posCam.getY());
       else {
         if (m_inv.getItemPosHand().getType() == "TOOL") {
-          sound.setBuffer(buffer);
-          sound.play();
-          m_map.suprTile(m_mousePosWorld.getX() - CAM_WIDTH / 2,
-                         m_mousePosWorld.getY() - CAM_HEIGHT / 2);
+          play_sound(&m_buffers["BREAK"], &m_sound);
+          m_map.supr_tile(m_mousePosWorld.getX() - CAM_WIDTH / 2,
+                          m_mousePosWorld.getY() - CAM_HEIGHT / 2);
         }
       }
     }
     if (event.mouseButton.button == Mouse::Right) {
-     Error(!buffer.loadFromFile(SOUND_PUT_A_BLOCK), "Error loading sound");
-
       if (!m_inv.isOpen()) {
         if (m_inv.getItemPosHand().getType() == "BLOCK") {
-          sound.setBuffer(buffer);
-          sound.play();
-          m_map.addTile(blockMap[m_inv.getItemPosHand().getName()],
-                        m_mousePosWorld.getX() - CAM_WIDTH / 2,
-                        m_mousePosWorld.getY() - CAM_HEIGHT / 2);
+          play_sound(&m_buffers["PUT_BLOCK"], &m_sound);
+          m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()],
+                         m_mousePosWorld.getX() - CAM_WIDTH / 2,
+                         m_mousePosWorld.getY() - CAM_HEIGHT / 2);
         }
       }
     }
@@ -180,18 +163,15 @@ void Game::render() {
 
   m_charRenderer.draw(m_window, m_sprites);
 
-  for (int i = 0; i < m_map.getSize(); i++) {
-    int x, y;
-    x = m_map.getTile(i).getX();
-    y = m_map.getTile(i).getY();
-    if (m_map.getTile(i).estDansCam(m_posCam.getX(), m_posCam.getY(),
-                                    WINDOW_WIDTH, WINDOW_HEIGHT)) {
-      drawSprites(x, y, m_sprites[m_map.getTile(i).getBlock().getName()],
-                  &m_window, TILE_SIZE, TILE_SIZE);
-    }
-  }
+  m_mapRenderer.render(m_window, m_sprites);
+
   m_invRender.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY(),
                      m_mousePosWorld.getX(), m_mousePosWorld.getY());
+  drawText(m_posCam.getX() - CAM_WIDTH / 2, m_posCam.getY() - CAM_HEIGHT / 2,
+           "FPS : " +
+               to_string((int)(1 / m_clock.getElapsedTime().asSeconds())),
+           &m_window, 20, Color::White, FONT_PATH);
+
   m_window.display();
 }
 

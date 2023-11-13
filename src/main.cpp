@@ -8,7 +8,7 @@ int main() {
   RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE);
   Game game(window);
   Menu menu(window);
-
+  window.setFramerateLimit(FPS_MAX);
   while (window.isOpen()) {
     Event event;
     while (window.pollEvent(event)) {

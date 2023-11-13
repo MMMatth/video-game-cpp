@@ -16,12 +16,13 @@
 #define NUM_FRAMES 9
 #define CHARACTER_SAVE_PATH "../assets/csv/character.csv"
 /* sound */
-#define SOUND_PLAY "../assets/sound/click_play.wav"
+#define SOUND_PLAY "../assets/sound/pop.ogg"
+#define SOUND_QUIT SOUND_PLAY
 #define SOUND_JUMP "../assets/sound/jump.wav"
-#define SOUND_BREAK_A_BLOCK "../assets/sound/break_a_block.wav"
+#define SOUND_BREAK_A_BLOCK "../assets/sound/dig.ogg"
 #define SOUND_MOVE "../assets/sound/move.wav"
-#define SOUND_PUT_A_BLOCK "../assets/sound/put_a_block.wav"
-#define SOUND_QUIT "../assets/sound/quit.wav"
+#define SOUND_PUT_A_BLOCK "../assets/sound/hit.ogg"
+#define VOLUME 5
 /* menu */
 #define IMG_MENU "../assets/img/menu.JPEG"
 /* inventory */
@@ -38,7 +39,7 @@
 #define FONT_PATH "assets/fonts/arial.ttf"
 #define FONT_COLOR Color(0, 0, 0)
 /* map */
-#define MAP_WIDTH 500
+#define MAP_WIDTH 5000
 #define MAP_PATH "../assets/csv/map.csv"
 /* other */
 #define SKY_COLOR Color(135, 206, 250)

@@ -1,15 +1,15 @@
 #include "../include/menu.hpp"
-#include "../include/otherFunctions.hpp"
 
 bool isInside(int mouseX, int mouseY, int x, int y, int width, int height) {
-  return mouseX >= x && mouseX <= width && mouseY >= y &&
-         mouseY <= height;
+  return mouseX >= x && mouseX <= width && mouseY >= y && mouseY <= height;
 }
 
-Menu::Menu(RenderWindow &window) : m_menu(true), m_window(window) {
+Menu::Menu(RenderWindow &window) : m_menu(true), m_window(window), m_sound() {
   Error(!menuTexture.loadFromFile(IMG_MENU), "Error loading menu texture");
   menuSprite.setTexture(menuTexture);
   menuSprite.setPosition(0, 0);
+  Error(!buffer.loadFromFile(SOUND_PLAY), "Error loading sound");
+  m_sound.setVolume(VOLUME);
 }
 
 void Menu::handleEvent(sf::Event &event) {
@@ -23,14 +23,12 @@ void Menu::handleEvent(sf::Event &event) {
     }
     /* play button */
     if (isInside(mouseX, mouseY, 32, 214, 230, 297)) {
-      Error(!buffer.loadFromFile(SOUND_PLAY), "Error loading sound");
-      sound.setBuffer(buffer);
-      sound.play();
+      play_sound(&buffer, &m_sound);
       m_menu = false;
     }
     /* help button */
     if (isInside(mouseX, mouseY, 318, 131, 508, 210)) {
-      cout <<"Not implemented yet"<<endl;
+      cout << "Not implemented yet" << endl;
     }
   }
 }

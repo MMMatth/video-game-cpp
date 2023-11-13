@@ -16,6 +16,10 @@ public:
   /* setters */
   void setX(int x) { m_x = x; }
   void setY(int y) { m_y = y; }
+  void setCoord(int x, int y) {
+    m_x = x;
+    m_y = y;
+  }
   /* other */
   bool isEqual(Coord other) {
     return (m_x == other.getX() && m_y == other.getY());

@@ -1,9 +1,12 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
+#include "../include/otherFunctions.hpp"
 #include "const.hpp"
+#include "draw.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+
 #include <iostream>
 
 using namespace sf;
@@ -14,7 +17,7 @@ private:
   Texture menuTexture;
   Sprite menuSprite;
   SoundBuffer buffer;
-  Sound sound;
+  Sound m_sound;
   bool m_menu;
   RenderWindow &m_window;
 
