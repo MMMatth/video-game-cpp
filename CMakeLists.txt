@@ -7,9 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-set(MAP_DIR "map")
-set(MAP_SOURCE "${MAP_DIR}/createmap.cpp")
-add_executable(MAP ${MAP_SOURCE})
 
 file(GLOB SOURCES
     "${SRC_DIR}/*.cpp"
@@ -55,9 +52,9 @@ endif()
 
 # Ajout des commandes pour effacer le build et lancer le programme
 add_custom_target(run
-    COMMAND MAP
+    # COMMAND MAP
     COMMAND ./game
-    DEPENDS MAP game 
+    DEPENDS  game 
     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
 )
 

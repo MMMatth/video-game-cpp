@@ -5,6 +5,7 @@
 #include "characterRender.hpp"
 #include "const.hpp"
 #include "coord.hpp"
+#include "createmap.hpp"
 #include "draw.hpp"
 #include "inventory.hpp"
 #include "inventoryRender.hpp"
@@ -30,7 +31,7 @@ private:
   CharacterRender m_charRenderer;
   /* map */
   Map m_map;
-  Map m_newMap;
+  // Map m_newMap;
   MapRender m_mapRenderer;
   Coord m_posCam; /* camera position */
   Clock m_clock;  /* clock */

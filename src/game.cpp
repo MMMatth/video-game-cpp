@@ -19,9 +19,13 @@ void Game::run() {
   render();
 }
 void Game::reset() {
-  m_char.setX(0);
-  m_char.setY(0);
-  m_map = Map(NEW_MAP);
+  m_char.setX(MAP_WIDTH * TILE_SIZE / 2);
+  m_char.setY(128);
+  m_posCam.setX(MAP_WIDTH * TILE_SIZE / 2);
+  m_posCam.setY(128);
+  Createmap map(MAP_WIDTH);
+  map.generate();
+  m_map = Map(MAP_PATH);
 }
 
 void Game::updateCam() {
