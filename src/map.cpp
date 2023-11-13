@@ -34,6 +34,17 @@ void Map::collide(Character *perso, int camX, int camY) {
   }
 }
 
+void Map::collide(Character *perso) {
+  if (perso->getX() < 0)
+    perso->setCollision("left", true);
+  if (perso->getX() + perso->getWidth() > get_width() * TILE_SIZE)
+    perso->setCollision("right", true);
+  if (perso->getY() < 0)
+    perso->setCollision("up", true);
+  if (perso->getY() + perso->getHeight() > get_height() * TILE_SIZE)
+    perso->setCollision("down", true);
+}
+
 void Map::update(int camX, int camY) {
   int newCamX = (camX - CAM_WIDTH) / TILE_SIZE;
   int newCamY = (camY - CAM_HEIGHT) / TILE_SIZE;
@@ -90,8 +101,8 @@ void Map::save(string path) {
 }
 
 void Map::add_tile(Block block, int mouseX, int mouseY) {
-  for (int y = 0; y < m_map.size(); y++) {
-    for (int x = 0; x < m_map[y].size(); x++) {
+  for (int y = m_cam.getY(); y < m_cam_height; y++) {
+    for (int x = m_cam.getX(); x < m_cam_width; x++) {
       if (mouseX > m_map[y][x].getX() &&
           mouseX < m_map[y][x].getX() + TILE_SIZE &&
           mouseY > m_map[y][x].getY() &&

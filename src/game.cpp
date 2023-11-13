@@ -20,16 +20,25 @@ void Game::run() {
 }
 
 void Game::updateCam() {
-  m_posCam.setX(m_posCam.getX() +
-                (m_char.getX() + m_char.getWidth() / 4 - m_posCam.getX()) / 20);
-  m_posCam.setY(m_posCam.getY() +
-                (m_char.getY() + m_char.getWidth() / 2 - m_posCam.getY()) / 20);
+  if (m_char.getX() - CAM_WIDTH / 2 > 0 &&
+      m_char.getX() + CAM_WIDTH / 2 < m_map.get_width() * TILE_SIZE) {
+    m_posCam.setX(m_posCam.getX() +
+                  (m_char.getX() + m_char.getWidth() / 4 - m_posCam.getX()) /
+                      20);
+  }
+  if (m_char.getY() + CAM_HEIGHT / 2 < m_map.get_height() * TILE_SIZE &&
+      m_char.getY() - CAM_HEIGHT / 2 > 0) {
+    m_posCam.setY(m_posCam.getY() +
+                  (m_char.getY() + m_char.getWidth() / 2 - m_posCam.getY()) /
+                      20);
+  }
   m_window.setView(View(Vector2f(m_posCam.getX(), m_posCam.getY()),
                         Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
 
 void Game::updateCollide() {
   m_map.collide(&m_char, m_posCam.getX(), m_posCam.getY());
+  m_map.collide(&m_char);
 }
 
 void Game::updateMousePos() {
@@ -139,19 +148,14 @@ void Game::handleEvent(Event &event) {
                           m_posCam.getX(), m_posCam.getY());
       else {
         if (m_inv.getItemPosHand().getType() == "TOOL") {
-          play_sound(&m_buffers["BREAK"], &m_sound);
-          m_map.supr_tile(m_mousePosWorld.getX() - CAM_WIDTH / 2,
-                          m_mousePosWorld.getY() - CAM_HEIGHT / 2);
+          breakBlock();
         }
       }
     }
     if (event.mouseButton.button == Mouse::Right) {
       if (!m_inv.isOpen()) {
         if (m_inv.getItemPosHand().getType() == "BLOCK") {
-          play_sound(&m_buffers["PUT_BLOCK"], &m_sound);
-          m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()],
-                         m_mousePosWorld.getX() - CAM_WIDTH / 2,
-                         m_mousePosWorld.getY() - CAM_HEIGHT / 2);
+          putBlock();
         }
       }
     }
@@ -185,4 +189,31 @@ void Game::save() {
   m_inv.save(INVENTORY_SAVE_PATH);
   m_map.save(MAP_PATH);
   m_char.save(CHARACTER_SAVE_PATH);
+}
+
+/* map iteraction */
+void Game::putBlock() {
+
+  int mouseX = m_mousePosWorld.getX() - CAM_WIDTH / 2;
+  int mouseY = m_mousePosWorld.getY() - CAM_HEIGHT / 2;
+  int charX = m_char.getX();
+  int charY = m_char.getY();
+  int charWidth = m_char.getWidth();
+  int charHeight = m_char.getHeight();
+
+  bool isMouseOutsideChar =
+      mouseX > charX - TILE_SIZE && mouseX < charX + charWidth &&
+      mouseY > charY - TILE_SIZE && mouseY < charY + charHeight + TILE_SIZE;
+
+  if (!isMouseOutsideChar) {
+    play_sound(&m_buffers["PUT_BLOCK"], &m_sound);
+    m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()], mouseX, mouseY);
+  }
+}
+
+void Game::breakBlock() {
+  play_sound(&m_buffers["BREAK"], &m_sound);
+  int mouseX = m_mousePosWorld.getX() - CAM_WIDTH / 2;
+  int mouseY = m_mousePosWorld.getY() - CAM_HEIGHT / 2;
+  m_map.supr_tile(mouseX, mouseY);
 }

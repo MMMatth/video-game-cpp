@@ -4,6 +4,7 @@
 #include "character.hpp"
 #include "const.hpp"
 #include "coord.hpp"
+#include "draw.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <map>

@@ -1,6 +1,4 @@
 #include "../include/characterRender.hpp"
-#include "../include/character.hpp"
-#include "../include/draw.hpp"
 
 CharacterRender::CharacterRender(Character &character) : character(character) {}
 
@@ -29,11 +27,11 @@ void CharacterRender::draw(RenderWindow &window,
   } else if (direction["right"]) {
     drawSprite(window, sprites, "CHAR_RIGHT", frame, x, y);
   } else if (direction["jump"] && !collision["right"]) {
-    drawSprites(x, y, sprites["CHAR_JUMP"], &window, character.getWidth() * 2,
-                character.getHeight());
+    drawSprites(x - character.getWidth() / 2, y, sprites["CHAR_JUMP"], &window,
+                character.getWidth() * 2, character.getHeight());
   } else if (direction["fall"] && !collision["down"]) {
-    drawSprites(x, y, sprites["CHAR_FALL"], &window, character.getWidth() * 2,
-                character.getHeight());
+    drawSprites(x - character.getWidth() / 2, y, sprites["CHAR_FALL"], &window,
+                character.getWidth() * 2, character.getHeight());
   } else {
     drawSprites(x, y, sprites["CHAR_FRONT"], &window, character.getWidth(),
                 character.getHeight());

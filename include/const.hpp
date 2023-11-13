@@ -39,7 +39,7 @@
 #define FONT_PATH "assets/fonts/arial.ttf"
 #define FONT_COLOR Color(0, 0, 0)
 /* map */
-#define MAP_WIDTH 5000
+#define MAP_WIDTH 100
 #define MAP_PATH "../assets/csv/map.csv"
 /* other */
 #define SKY_COLOR Color(135, 206, 250)

@@ -33,6 +33,7 @@ public:
   /* other*/
   void save(string path);
   void collide(Character *perso, int camX, int camY);
+  void collide(Character *perso);
   Tile chooseTile(string c, int x, int y);
   void clean();
   void add_tile(Block block, int mouseX, int mouseY);

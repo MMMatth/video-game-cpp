@@ -44,27 +44,22 @@ private:
   Sound m_sound;
 
 public:
+  /* constructor */
   Game(RenderWindow &window);
-
   void run();
-
+  /* update*/
   void update();
-
   void updateCam();
-
   void updateCollide();
-
   void updateMousePos();
-
   void render();
-
   void clean();
-
   void handleEvent(Event &event);
-
   void quit();
-
   void save();
+  /* map interaction */
+  void putBlock();
+  void breakBlock();
 };
 
 #endif /* GAME_HPP */
