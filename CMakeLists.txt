@@ -55,8 +55,9 @@ endif()
 
 # Ajout des commandes pour effacer le build et lancer le programme
 add_custom_target(run
+    COMMAND MAP
     COMMAND ./game
-    DEPENDS game
+    DEPENDS MAP game 
     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
 )
 
@@ -66,8 +67,3 @@ add_custom_target(clear
     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
 )
 
-add_custom_target(map
-    COMMAND MAP
-    DEPENDS MAP
-    WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
-)

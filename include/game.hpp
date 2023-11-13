@@ -22,6 +22,7 @@ class Game {
 private:
   RenderWindow &m_window; /* window */
   Map m_map;              /* map */
+  Map m_newMap;
   /* character */
   Character m_char;
   CharacterRender m_charRenderer;
@@ -64,6 +65,8 @@ public:
   void menu();
 
   void save();
+
+  void reset();
 };
 
 #endif /* GAME_HPP */

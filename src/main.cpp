@@ -19,9 +19,13 @@ int main() {
       menu.handleEvent(event);
     }
     // no window.clear() because it's done in game.clean() or menu.clean()
+  
     if (menu.isActive()) {
       menu.run();
-    } else {
+    } else if (menu.isNewGame()){
+      game.reset();
+      menu.setIsNewGame(false);
+    }else {
       game.run();
     }
     // no window.display() because it's done in game.run() or menu.run()

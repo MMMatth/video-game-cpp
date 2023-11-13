@@ -16,6 +16,7 @@ private:
   SoundBuffer buffer;
   Sound sound;
   bool m_menu;
+  bool m_newGame;
   RenderWindow &m_window;
 
 public:
@@ -25,6 +26,8 @@ public:
   void render();
   void quit();
   bool isActive() const;
+  bool isNewGame() const;
+  void setIsNewGame(bool newGame);
 };
 
 #endif

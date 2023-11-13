@@ -40,6 +40,7 @@
 /* map */
 #define MAP_WIDTH 500
 #define MAP_PATH "../assets/csv/map.csv"
+#define NEW_MAP "../assets/csv/newMap.csv"
 /* other */
 #define SKY_COLOR Color(135, 206, 250)
 #define TILE_SIZE 32

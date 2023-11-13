@@ -8,13 +8,19 @@ using namespace sf;
 Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
-      m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH) {
+      m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH), m_newMap(NEW_MAP) {
   m_sprites = getSpriteMap();
+  
 }
 
 void Game::run() {
   update();
   render();
+}
+void Game::reset() {
+  m_char.setX(0);  
+  m_char.setY(0);
+  m_map = Map(NEW_MAP);
 }
 
 void Game::updateCam() {

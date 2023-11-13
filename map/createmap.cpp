@@ -243,6 +243,6 @@ int main(int argc, char const *argv[]) {
   Createmap map = Createmap(MAP_WIDTH);
   map.setCurveAltitude();
   map.setMap();
-  map.saveinfile(MAP_PATH);
+  map.saveinfile(NEW_MAP);
   return 0;
 }
