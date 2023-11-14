@@ -174,7 +174,7 @@ Coord Inventory::getInventoryPosition(int mouseX, int mouseY, int camX,
       }
     }
   }
-  y = camY - INVENTORY_TILE_SIZE + WINDOW_HEIGHT / 4;
+  y = camY + CAM_HEIGHT / 2 - INVENTORY_TILE_SIZE * 2;
   for (int column = 0; column < INVENTORY_WIDTH; column++) {
     if (isWithinTile(mx, my, x + column * INVENTORY_TILE_SIZE, y)) {
       return Coord(INVENTORY_HEIGHT - 1, column);

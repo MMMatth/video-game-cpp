@@ -8,21 +8,6 @@
 #include <vector>
 
 using namespace std;
-/* plus le coeff est grand plus les montagnes sont grande*/
-#define MOUNTAIN_COEF 15
-/* nombre de fois qu'il y'a l'altitude en dessous du niveau zero */
-#define UNDERGROUND_COEF 10
-/* sky */
-#define SKY_HEIGHT_OVER_MOUTAIN 15
-/* dirt*/
-#define DIRT_HEIGHT 3
-/* arbre */
-#define TREE_SIZE 4
-#define ECART_TREE 10
-#define LEAF_WIDTH 5
-#define LEAF_HEIGHT 3
-/* flower */
-#define FLOWER_ECART 10
 
 struct altitude {
   int max;

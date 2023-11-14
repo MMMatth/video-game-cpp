@@ -16,7 +16,7 @@ void InventoryRenderer::drawItem(sf::RenderWindow &window,
                    (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
                y + (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2,
                to_string(m_inventory.getItemAt(Coord(row, column)).getAmount()),
-               &window, 10, FONT_COLOR, FONT_PATH);
+               &window, INVENTORY_TILE_SIZE / 6, FONT_COLOR, FONT_PATH);
     }
   }
   if (column == m_inventory.getPosHand() && row == INVENTORY_HEIGHT - 1)
@@ -28,7 +28,7 @@ void InventoryRenderer::drawLowerBar(sf::RenderWindow &window,
                                      unordered_map<string, Sprite> sprites,
                                      int camX, int camY) {
   int x = camX - (INVENTORY_WIDTH * INVENTORY_TILE_SIZE) / 2;
-  int y = camY - INVENTORY_TILE_SIZE + WINDOW_HEIGHT / 4;
+  int y = camY + CAM_HEIGHT / 2 - INVENTORY_TILE_SIZE * 2;
   for (int column = 0; column < INVENTORY_WIDTH; column++) {
     drawItem(window, sprites, x, y, INVENTORY_HEIGHT - 1, column);
   }

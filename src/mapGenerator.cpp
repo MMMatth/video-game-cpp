@@ -1,4 +1,4 @@
-#include "../include/createmap.hpp"
+#include "../include/mapGenerator.hpp"
 
 int abs(int x) {
   if (x < 0) {

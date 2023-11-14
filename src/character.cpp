@@ -115,8 +115,8 @@ void Character::save(string path) {
   ofstream file;
   file.open(path);
   if (file.is_open()) {
-    file << "x;y\n";                         // write the header
-    file << getX() << ";" << getY() << "\n"; // write the position
+    file << "x;y\n";                         /* header */
+    file << getX() << ";" << getY() << "\n"; /* position */
   } else {
     cerr << "Save Character unable to open file " << path << "\n";
   }
