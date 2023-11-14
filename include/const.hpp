@@ -39,7 +39,7 @@
 #define FONT_PATH "assets/fonts/arial.ttf"
 #define FONT_COLOR Color(0, 0, 0)
 /* map */
-#define MAP_WIDTH 1000
+#define MAP_WIDTH 100
 #define MAP_PATH "../assets/csv/map.csv"
 #define MOUNTAIN_COEF 15 //
 #define UNDERGROUND_COEF 10

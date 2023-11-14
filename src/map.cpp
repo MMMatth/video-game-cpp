@@ -115,8 +115,8 @@ void Map::add_tile(Block block, int mouseX, int mouseY) {
 }
 
 void Map::supr_tile(int mouseX, int mouseY) {
-  for (int y = 0; y < m_map.size(); y++) {
-    for (int x = 0; x < m_map[y].size(); x++) {
+  for (int y = m_cam.getY(); y < m_cam_height; y++) {
+    for (int x = m_cam.getX(); x < m_cam_width; x++) {
       if (mouseX > m_map[y][x].getX() &&
           mouseX < m_map[y][x].getX() + TILE_SIZE &&
           mouseY > m_map[y][x].getY() &&
