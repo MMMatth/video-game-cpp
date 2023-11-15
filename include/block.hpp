@@ -17,7 +17,7 @@ class Block : public Item {
 public:
   Block();
 
-  Block(string id, string name, bool isSolid, int millisecond_to_break = 10,
+  Block(string id, string name, bool isSolid, int millisecond_to_break = 2000,
         bool is_stackable = true, int amount = 1);
 
   /* getters */

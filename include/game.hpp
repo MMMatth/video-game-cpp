@@ -47,6 +47,8 @@ private:
   Sound m_sound;
   /* other */
   int m_mode; // 1 = creative, 2 = survival
+  bool m_isBreaking;
+  Clock m_breakClock;
 
 public:
   /* constructor */

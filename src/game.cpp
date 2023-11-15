@@ -7,7 +7,8 @@ Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
       m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
-      m_mapRenderer(m_map), m_sound(), m_clock(), m_mode(2), m_clock2() {
+      m_mapRenderer(m_map), m_sound(), m_clock(), m_mode(2),
+      m_isBreaking(false), m_breakClock() {
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(VOLUME);
@@ -66,6 +67,10 @@ void Game::updateMousePos() {
 }
 
 void Game::update() {
+  if (m_isBreaking && m_breakClock.getElapsedTime().asMilliseconds() > 1000) {
+    breakBlock();
+    m_isBreaking = false;
+  }
   updateCam();
   updateMousePos();
   m_map.update(m_posCam.getX(), m_posCam.getY());
@@ -151,18 +156,7 @@ void Game::handleEvent(Event &event) {
       break;
     }
   }
-  if (Mouse::isButtonPressed(Mouse::Left)) {
-    if (m_inv.isOpen())
-      m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
-                        m_posCam.getX(), m_posCam.getY());
-    else {
-      if (m_inv.getItemPosHand().getType() == "TOOL") {
-        if (is_breakable()) {
-          breakBlock();
-        }
-      }
-    }
-  }
+  /* right click ( you can stay )*/
   if (Mouse::isButtonPressed(Mouse::Right)) {
     if (!m_inv.isOpen()) {
       if (m_inv.getItemPosHand().getType() == "BLOCK") {
@@ -170,10 +164,38 @@ void Game::handleEvent(Event &event) {
       }
     }
   }
+  if (Mouse::isButtonPressed(Mouse::Left)) {
+    if (!m_inv.isOpen()) {
+      if (m_inv.getItemPosHand().getType() == "TOOL" && is_breakable() &&
+          m_mode == 1) {
+        breakBlock();
+      }
+    }
+  }
+
+  if (event.type == Event::MouseButtonPressed) {
+    if (event.mouseButton.button == Mouse::Left) {
+      if (m_inv.isOpen()) {
+        m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
+                          m_posCam.getX(), m_posCam.getY());
+      } else {
+        if (m_inv.getItemPosHand().getType() == "TOOL" && m_mode == 2) {
+          m_isBreaking = true;
+          m_breakClock.restart();
+        }
+      }
+    }
+  }
+  if (event.type == Event::MouseButtonReleased) {
+    if (event.mouseButton.button == Mouse::Left) {
+      if (m_inv.getItemPosHand().getType() == "TOOL" && m_mode == 2) {
+        m_isBreaking = false;
+      }
+    }
+  }
 }
 
 void Game::render() {
-
   m_window.clear(SKY_COLOR);
 
   m_charRenderer.draw(m_window, m_sprites);
@@ -230,11 +252,7 @@ bool Game::is_breakable() {
   }
   Tile *tile = m_map.find_tile(m_mousePosWorld.getX(), m_mousePosWorld.getY());
   if (tile) {
-    if (m_mode == 1) {
-      return true;
-    } else if (m_mode == 2) {
-      // todo : check if the block is breakable
-    }
+    return true;
   }
   return false;
 }
