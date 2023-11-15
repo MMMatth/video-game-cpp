@@ -16,8 +16,8 @@ Game::Game(RenderWindow &window)
 
 void Game::run() {
   m_clock.restart();
-  update();
   render();
+  update();
 }
 void Game::reset() {
   m_char.setX(MAP_WIDTH * TILE_SIZE / 2);
@@ -62,14 +62,20 @@ void Game::updateMousePos() {
   m_mousePosCam.setX(adjustedPos.x);
   m_mousePosCam.setY(adjustedPos.y);
 
-  m_mousePosWorld.setX(m_mousePosCam.getX() + m_posCam.getX());
-  m_mousePosWorld.setY(m_mousePosCam.getY() + m_posCam.getY());
+  m_mousePosWorld.setX(m_mousePosCam.getX() + m_posCam.getX() - CAM_WIDTH / 2);
+  m_mousePosWorld.setY(m_mousePosCam.getY() + m_posCam.getY() - CAM_HEIGHT / 2);
 }
 
 void Game::update() {
-  if (m_isBreaking && m_breakClock.getElapsedTime().asMilliseconds() > 1000) {
-    breakBlock();
-    m_isBreaking = false;
+  Tile *tile = m_map.find_tile(m_mousePosWorld.getX(), m_mousePosWorld.getY());
+  if (tile) {
+    if (tile->isBreaking() &&
+        tile->getBreakingClock().getElapsedTime().asMilliseconds() >
+            tile->getBlock()->getTimeToBreak()) {
+      breakBlock();
+      m_map.setIsBreaking(false, m_mousePosWorld.getX(),
+                          m_mousePosWorld.getY());
+    }
   }
   updateCam();
   updateMousePos();
@@ -79,8 +85,8 @@ void Game::update() {
 }
 
 void Game::clean() {
-  this->m_window.clear();
-  this->m_map.clean();
+  m_window.clear();
+  m_map.clear();
 }
 
 void Game::handleEvent(Event &event) {
@@ -119,7 +125,6 @@ void Game::handleEvent(Event &event) {
       m_inv.setPosHand(2);
       break;
     case Keyboard::Quote:
-      cout << "4" << endl;
       m_inv.setPosHand(3);
       break;
     case Keyboard::Num5:
@@ -180,8 +185,10 @@ void Game::handleEvent(Event &event) {
                           m_posCam.getX(), m_posCam.getY());
       } else {
         if (m_inv.getItemPosHand().getType() == "TOOL" && m_mode == 2) {
-          m_isBreaking = true;
-          m_breakClock.restart();
+          m_map.setIsBreaking(true, m_mousePosWorld.getX(),
+                              m_mousePosWorld.getY());
+          m_map.resetBreakingClock(m_mousePosWorld.getX(),
+                                   m_mousePosWorld.getY());
         }
       }
     }
@@ -189,8 +196,22 @@ void Game::handleEvent(Event &event) {
   if (event.type == Event::MouseButtonReleased) {
     if (event.mouseButton.button == Mouse::Left) {
       if (m_inv.getItemPosHand().getType() == "TOOL" && m_mode == 2) {
-        m_isBreaking = false;
+        m_map.setIsBreaking(false, m_mousePosWorld.getX(),
+                            m_mousePosWorld.getY());
       }
+    }
+  }
+  if (event.type == Event::MouseWheelScrolled) {
+    if (event.mouseWheelScroll.delta > 0) {
+      if (m_inv.getPosHand() > 0)
+        m_inv.setPosHand(m_inv.getPosHand() - 1);
+      else
+        m_inv.setPosHand(INVENTORY_WIDTH - 1);
+    } else {
+      if (m_inv.getPosHand() == INVENTORY_WIDTH - 1)
+        m_inv.setPosHand(0);
+      else
+        m_inv.setPosHand(m_inv.getPosHand() + 1);
     }
   }
 }
@@ -227,8 +248,8 @@ void Game::save() {
 /* map iteraction */
 void Game::putBlock() {
 
-  int mouseX = m_mousePosWorld.getX() - CAM_WIDTH / 2;
-  int mouseY = m_mousePosWorld.getY() - CAM_HEIGHT / 2;
+  int mouseX = m_mousePosWorld.getX();
+  int mouseY = m_mousePosWorld.getY();
   int charX = m_char.getX();
   int charY = m_char.getY();
   int charWidth = m_char.getWidth();
@@ -259,7 +280,7 @@ bool Game::is_breakable() {
 
 void Game::breakBlock() {
   play_sound(&m_buffers["BREAK"], &m_sound);
-  int mouseX = m_mousePosWorld.getX() - CAM_WIDTH / 2;
-  int mouseY = m_mousePosWorld.getY() - CAM_HEIGHT / 2;
+  int mouseX = m_mousePosWorld.getX();
+  int mouseY = m_mousePosWorld.getY();
   m_map.supr_tile(mouseX, mouseY);
 }

@@ -50,9 +50,14 @@ void InventoryRenderer::drawSelectedItem(sf::RenderWindow &window,
                                          unordered_map<string, Sprite> sprites,
                                          int camX, int camY, int mouseX,
                                          int mouseY) {
-  drawSprites(mouseX - CAM_WIDTH / 2, mouseY - CAM_HEIGHT / 2,
+  drawSprites(mouseX, mouseY,
               sprites[m_inventory.getSelectedTile().getItem().getName()],
               &window, INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
+  if (m_inventory.getSelectedTile().getItem().isStackable()) {
+    drawText(mouseX, mouseY,
+             to_string(m_inventory.getSelectedTile().getItem().getAmount()),
+             &window, INVENTORY_TILE_SIZE / 6, FONT_COLOR, FONT_PATH);
+  }
 }
 
 void InventoryRenderer::render(sf::RenderWindow &window,
