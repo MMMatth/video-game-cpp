@@ -17,15 +17,19 @@ class Block : public Item {
 public:
   Block();
 
-  Block(string id, string name, bool isSolid, bool is_stackable = true,
-        int amount = 1);
+  Block(string id, string name, bool isSolid, int millisecond_to_break = 10,
+        bool is_stackable = true, int amount = 1);
 
   /* getters */
   bool isSolid() const { return m_isSolid; }
   string getId() { return m_id; }
+  int getHardness() { return m_time_to_break; }
+  bool isBeingBroken() { return m_being_broken; }
 
   /* setters */
+  void setHardness(int hardness) { m_time_to_break = hardness; }
   void setSolid(bool isSolid) { m_isSolid = isSolid; }
+  void setBeingBroken(bool being_broken) { m_being_broken = being_broken; }
 
   /* other */
   string toString() const;
@@ -33,6 +37,8 @@ public:
 private:
   bool m_isSolid;
   string m_id;
+  bool m_being_broken;
+  int m_time_to_break;
 };
 static map<string, Block> blockMap = {
     {"AIR", Block("0", "AIR", false, false)},

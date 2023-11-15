@@ -7,7 +7,7 @@ Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
       m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
-      m_mapRenderer(m_map), m_sound(), m_clock() {
+      m_mapRenderer(m_map), m_sound(), m_clock(), m_mode(2), m_clock2() {
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(VOLUME);
@@ -67,10 +67,10 @@ void Game::updateMousePos() {
 
 void Game::update() {
   updateCam();
-  updateCollide();
   updateMousePos();
   m_map.update(m_posCam.getX(), m_posCam.getY());
   m_char.update();
+  updateCollide();
 }
 
 void Game::clean() {
@@ -157,7 +157,9 @@ void Game::handleEvent(Event &event) {
                         m_posCam.getX(), m_posCam.getY());
     else {
       if (m_inv.getItemPosHand().getType() == "TOOL") {
-        breakBlock();
+        if (is_breakable()) {
+          breakBlock();
+        }
       }
     }
   }
@@ -171,6 +173,7 @@ void Game::handleEvent(Event &event) {
 }
 
 void Game::render() {
+
   m_window.clear(SKY_COLOR);
 
   m_charRenderer.draw(m_window, m_sprites);
@@ -217,6 +220,23 @@ void Game::putBlock() {
     play_sound(&m_buffers["PUT_BLOCK"], &m_sound);
     m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()], mouseX, mouseY);
   }
+}
+
+bool Game::is_breakable() {
+  if (m_mousePosWorld.getX() < 0 || m_mousePosWorld.getY() < 0 ||
+      m_mousePosWorld.getX() > m_map.get_width() * TILE_SIZE ||
+      m_mousePosWorld.getY() > m_map.get_height() * TILE_SIZE) {
+    return false;
+  }
+  Tile *tile = m_map.find_tile(m_mousePosWorld.getX(), m_mousePosWorld.getY());
+  if (tile) {
+    if (m_mode == 1) {
+      return true;
+    } else if (m_mode == 2) {
+      // todo : check if the block is breakable
+    }
+  }
+  return false;
 }
 
 void Game::breakBlock() {

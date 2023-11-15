@@ -55,5 +55,6 @@
 /* other */
 #define SKY_COLOR Color(135, 206, 250)
 #define TILE_SIZE 32
+#define GAME_MODE 1
 
 #endif

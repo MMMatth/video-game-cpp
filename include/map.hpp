@@ -19,12 +19,14 @@ public:
   Map(string path);
   Map(int height, int width);
   void initMap(string nomFichier);
+  void initLength(string nomFichier);
 
   /* getters */
   vector<vector<Tile>> getMap() { return m_map; }
-  int get_height() { return m_map.size(); }
-  int get_width() { return m_map[0].size(); }
-  Tile get_tile(int x, int y) { return m_map[x][y]; }
+  int get_height() { return m_height; }
+  int get_width() { return m_width - 1; }
+  Tile get_tile(int x_tile, int y_tile) { return m_map[x_tile][y_tile]; }
+  Tile *find_tile(int x, int y);
   Coord get_cam() { return m_cam; }
   int get_cam_width() { return m_cam_width; }
   int get_cam_height() { return m_cam_height; }
@@ -46,6 +48,8 @@ private:
   Coord m_cam;      /* position x,y of the tile in top left */
   int m_cam_width;  /* amout of tile in the cam in x*/
   int m_cam_height; /* amout of tile in the cam in y*/
+  int m_width;
+  int m_height;
 };
 
 #endif /* CARTE_HPP */

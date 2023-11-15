@@ -35,6 +35,7 @@ private:
   MapRender m_mapRenderer;
   Coord m_posCam; /* camera position */
   Clock m_clock;  /* clock */
+  Clock m_clock2;
   /* inventory */
   Inventory m_inv;
   InventoryRenderer m_invRender;
@@ -44,6 +45,8 @@ private:
   /* sound*/
   unordered_map<string, SoundBuffer> m_buffers;
   Sound m_sound;
+  /* other */
+  int m_mode; // 1 = creative, 2 = survival
 
 public:
   /* constructor */
@@ -61,6 +64,7 @@ public:
   void save();
   /* map interaction */
   void putBlock();
+  bool is_breakable();
   void breakBlock();
 
   void reset();

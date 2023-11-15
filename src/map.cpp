@@ -11,7 +11,10 @@ Block getBlock(string id) {
   return blockMap["AIR"];
 }
 
-Map::Map(string path) { initMap(path); }
+Map::Map(string path) {
+  initLength(path);
+  initMap(path);
+}
 
 Map::Map(int height, int width) {
   for (int y = 0; y < height; y++) {
@@ -27,7 +30,7 @@ Tile Map::chooseTile(string c, int x, int y) { return Tile(getBlock(c), x, y); }
 void Map::collide(Character *perso, int camX, int camY) {
   for (int y = m_cam.getY(); y < m_cam_height; y++) {
     for (int x = m_cam.getX(); x < m_cam_width; x++) {
-      if (m_map[y][x].getBlock().isSolid()) {
+      if (m_map[y][x].getBlock()->isSolid()) {
         m_map[y][x].collide(perso);
       }
     }
@@ -64,6 +67,28 @@ void Map::update(int camX, int camY) {
   m_cam_height = newCamHeight;
 }
 
+void Map::initLength(string nomFichier) {
+  int width = 0;
+  m_width = 0;
+  m_height = 0;
+  ifstream fichier(nomFichier);
+  if (fichier) {
+    string ligne;
+    while (getline(fichier, ligne)) {
+      stringstream ss(ligne);
+      string c;
+      while (getline(ss, c, ';')) {
+        width++;
+      }
+      if (width > m_width) {
+        m_width = width;
+      }
+      width = 0;
+      m_height++;
+    }
+  }
+}
+
 void Map::initMap(string nomFichier) {
   ifstream fichier(nomFichier);
   if (fichier) {
@@ -78,53 +103,61 @@ void Map::initMap(string nomFichier) {
         m_map[y].push_back(chooseTile(c, x, y));
         x++;
       }
+      if (x < m_width) {
+        for (int i = x; i < m_width; i++) {
+          m_map[y].push_back(chooseTile("0", i, y));
+        }
+      }
       y++;
     }
   } else {
     cout << "We cant open the map file" << endl;
   }
+  // save(nomFichier);
 }
 
 void Map::save(string path) {
   ofstream fichier(path);
   if (fichier) {
-    for (int y = 0; y < m_map.size(); y++) {
-      for (int x = 0; x < m_map[y].size(); x++) {
-        fichier << m_map[y][x].getBlock().getId();
-        if (x != m_map[y].size() - 1) {
-          fichier << ";";
-        }
+    for (int y = 0; y < m_height; y++) {
+      for (int x = 0; x < m_width; x++) {
+        fichier << m_map[y][x].getBlock()->getId();
+        fichier << ";";
       }
       fichier << endl;
     }
   }
 }
 
-void Map::add_tile(Block block, int mouseX, int mouseY) {
+Tile *Map::find_tile(int mouseX, int mouseY) {
   for (int y = m_cam.getY(); y < m_cam_height; y++) {
     for (int x = m_cam.getX(); x < m_cam_width; x++) {
       if (mouseX > m_map[y][x].getX() &&
           mouseX < m_map[y][x].getX() + TILE_SIZE &&
           mouseY > m_map[y][x].getY() &&
           mouseY < m_map[y][x].getY() + TILE_SIZE) {
-        m_map[y][x].setBlock(block);
-        return;
+        return &m_map[y][x];
       }
     }
+  }
+  return nullptr;
+}
+
+void Map::add_tile(Block block, int mouseX, int mouseY) {
+  Tile *target = find_tile(mouseX, mouseY);
+  if (target) {
+    target->setBlock(block);
+  } else {
+    cerr << "add_tile : target is nullptr" << endl;
   }
 }
 
 void Map::supr_tile(int mouseX, int mouseY) {
-  for (int y = m_cam.getY(); y < m_cam_height; y++) {
-    for (int x = m_cam.getX(); x < m_cam_width; x++) {
-      if (mouseX > m_map[y][x].getX() &&
-          mouseX < m_map[y][x].getX() + TILE_SIZE &&
-          mouseY > m_map[y][x].getY() &&
-          mouseY < m_map[y][x].getY() + TILE_SIZE) {
-        m_map[y][x].setBlock(blockMap["AIR"]);
-        return;
-      }
-    }
+  Tile *target = find_tile(mouseX, mouseY);
+  if (target) {
+    target->setBlock(blockMap["AIR"]);
+  } else {
+    cerr << "supr_tile: target is nullptr" << endl;
   }
 }
 

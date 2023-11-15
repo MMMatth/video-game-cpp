@@ -18,7 +18,7 @@ public:
       for (int x = m_map.get_cam().getX(); x < m_map.get_cam_width(); x++) {
         Tile tile = m_map.get_tile(y, x);
         drawSprites(tile.getX(), tile.getY(),
-                    sprites[tile.getBlock().getName()], &window, TILE_SIZE,
+                    sprites[tile.getBlock()->getName()], &window, TILE_SIZE,
                     TILE_SIZE);
       }
     }
