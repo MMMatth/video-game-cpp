@@ -7,8 +7,8 @@
 #define WINDOW_HEIGHT 600
 #define WINDOW_TITLE "jeu"
 /* cam */
-#define CAM_WIDTH WINDOW_WIDTH
-#define CAM_HEIGHT WINDOW_HEIGHT
+#define CAM_WIDTH WINDOW_WIDTH / 2
+#define CAM_HEIGHT WINDOW_HEIGHT / 2
 /* character */
 #define TAILLE_PERSONNAGE 64
 #define DEPLACEMENT 5
