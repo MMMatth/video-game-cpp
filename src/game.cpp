@@ -113,13 +113,14 @@ void Game::handleEvent(Event &event) {
     case Keyboard::Num3:
       m_inv.setPosHand(2);
       break;
-    case Keyboard::Num4:
+    case Keyboard::Quote:
+      cout << "4" << endl;
       m_inv.setPosHand(3);
       break;
     case Keyboard::Num5:
       m_inv.setPosHand(4);
       break;
-    case Keyboard::Num6:
+    case Keyboard::Dash:
       m_inv.setPosHand(5);
       break;
     case Keyboard::Num7:
@@ -150,22 +151,20 @@ void Game::handleEvent(Event &event) {
       break;
     }
   }
-  if (event.type == Event::MouseButtonPressed) {
-    if (event.mouseButton.button == Mouse::Left) {
-      if (m_inv.isOpen())
-        m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
-                          m_posCam.getX(), m_posCam.getY());
-      else {
-        if (m_inv.getItemPosHand().getType() == "TOOL") {
-          breakBlock();
-        }
+  if (Mouse::isButtonPressed(Mouse::Left)) {
+    if (m_inv.isOpen())
+      m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
+                        m_posCam.getX(), m_posCam.getY());
+    else {
+      if (m_inv.getItemPosHand().getType() == "TOOL") {
+        breakBlock();
       }
     }
-    if (event.mouseButton.button == Mouse::Right) {
-      if (!m_inv.isOpen()) {
-        if (m_inv.getItemPosHand().getType() == "BLOCK") {
-          putBlock();
-        }
+  }
+  if (Mouse::isButtonPressed(Mouse::Right)) {
+    if (!m_inv.isOpen()) {
+      if (m_inv.getItemPosHand().getType() == "BLOCK") {
+        putBlock();
       }
     }
   }

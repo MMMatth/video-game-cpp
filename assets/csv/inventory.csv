@@ -1,8 +1,5 @@
 id;x;y;amount
-;0;0;1
-;0;1;1
 TORCH;0;2;1
-;0;3;1
 YELLOW_FLOWER;1;0;1
 LIBRARY;2;2;1
 RED_FLOWER;3;0;1

@@ -41,10 +41,10 @@
 /* map */
 #define MAP_WIDTH 100
 #define MAP_PATH "../assets/csv/map.csv"
-#define MOUNTAIN_COEF 15 //
+#define MOUNTAIN_COEF 20 //
 #define UNDERGROUND_COEF 10
 #define SKY_HEIGHT_OVER_MOUTAIN 15
-#define DIRT_HEIGHT 3
+#define DIRT_HEIGHT 50
 /* tree */
 #define TREE_SIZE 4
 #define ECART_TREE 10
