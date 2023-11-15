@@ -1,21 +1,23 @@
 #include "../include/menu.hpp"
 
+
 bool isInside(int mouseX, int mouseY, int x, int y, int width, int height) {
   return mouseX >= x && mouseX <= width && mouseY >= y && mouseY <= height;
 }
 
 Menu::Menu(RenderWindow &window)
-    : m_menu(true), m_window(window), m_sound(), m_newGame(false) {
-  Error(!menuTexture.loadFromFile(IMG_MENU), "Error loading menu texture");
+    : m_menu(true), m_window(window), m_sound(), m_newGame(false), m_soundSettings(5), m_clickOnOff(2) {
+  Error(!menuTexture.loadFromFile(IMG_MENU_ON), "Error loading menu texture");
   menuSprite.setTexture(menuTexture);
   menuSprite.setPosition(0, 0);
   Error(!buffer.loadFromFile(SOUND_PLAY), "Error loading sound");
-  m_sound.setVolume(VOLUME);
+  m_sound.setVolume(m_soundSettings.getVolume());
 }
 void Menu::handleEvent(sf::Event &event) {
   if (event.type == sf::Event::MouseButtonPressed && m_menu) {
     int mouseX = event.mouseButton.x;
     int mouseY = event.mouseButton.y;
+    cout <<"x :" << mouseX << " " <<"y :" << mouseY << endl;
     /* quit button */
     if (isInside(mouseX, mouseY, 629, 256, 737, 303)) {
       m_menu = false;
@@ -33,8 +35,23 @@ void Menu::handleEvent(sf::Event &event) {
       m_newGame = true;
     }
     /* help button */
-    if (mouseX, mouseY, 624, 166, 752, 218) {
+    if (isInside(mouseX, mouseY, 624, 166, 752, 218)) {
       cout << "Not implemented yet" << endl;
+    }
+    /*change sound volume*/
+    if(isInside(mouseX, mouseY, 37, 35, 65, 63)){
+     if(m_clickOnOff == 2){
+      Error(!menuTexture.loadFromFile(IMG_MENU_OFF), "Error loading menu texture");
+      m_soundSettings.setVolume(0);
+      m_sound.setVolume(m_soundSettings.getVolume());
+      m_clickOnOff--;
+     }else{
+      Error(!menuTexture.loadFromFile(IMG_MENU_ON), "Error loading menu texture");
+      m_soundSettings.setVolume(5);
+      m_sound.setVolume(m_soundSettings.getVolume());
+      m_clickOnOff++;
+     }
+      
     }
   }
 }
@@ -54,3 +71,12 @@ bool Menu::isActive() const { return m_menu; }
 bool Menu::isNewGame() const { return m_newGame; }
 
 void Menu::setIsNewGame(bool newGame) { m_newGame = newGame; }
+
+bool Menu::volumeOff() const{
+  return m_sound.getVolume() == 0;
+}
+
+void Menu::resetClickOnOff(){
+  m_clickOnOff = 2;
+}
+

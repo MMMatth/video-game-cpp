@@ -7,10 +7,10 @@ Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
       m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
-      m_mapRenderer(m_map), m_sound(), m_clock() {
+      m_mapRenderer(m_map), m_sound(), m_clock(), m_soundSettings(5) {
   m_sprites = initSprites();
   m_buffers = initBuffers();
-  m_sound.setVolume(VOLUME);
+  m_sound.setVolume(m_soundSettings.getVolume());
 }
 
 void Game::run() {
@@ -225,4 +225,8 @@ void Game::breakBlock() {
   int mouseX = m_mousePosWorld.getX() - CAM_WIDTH / 2;
   int mouseY = m_mousePosWorld.getY() - CAM_HEIGHT / 2;
   m_map.supr_tile(mouseX, mouseY);
+}
+
+void Game::setGameVolume(float volume){
+  m_sound.setVolume(volume);
 }

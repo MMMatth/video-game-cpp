@@ -26,6 +26,9 @@ int main() {
       game.reset();
       menu.setIsNewGame(false);
     }else {
+      if(menu.volumeOff()){
+        game.setGameVolume(0);
+      }
       game.run();
     }
     // no window.display() because it's done in game.run() or menu.run()

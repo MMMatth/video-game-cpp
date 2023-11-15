@@ -43,6 +43,7 @@ private:
   Coord m_mousePosWorld;
   /* sound*/
   unordered_map<string, SoundBuffer> m_buffers;
+  SoundSettings m_soundSettings;
   Sound m_sound;
 
 public:
@@ -62,6 +63,8 @@ public:
   /* map interaction */
   void putBlock();
   void breakBlock();
+
+  void setGameVolume(float volume);
 
   void reset();
 };

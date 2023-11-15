@@ -2,6 +2,7 @@
 #define MENU_HPP
 
 #include "../include/otherFunctions.hpp"
+#include "../include/soundSettings.hpp"
 #include "const.hpp"
 #include "draw.hpp"
 #include <SFML/Audio.hpp>
@@ -20,7 +21,10 @@ private:
   Sound m_sound;
   bool m_menu;
   bool m_newGame;
+  int m_clickOnOff;
   RenderWindow &m_window;
+  SoundSettings m_soundSettings;
+
 
 public:
   Menu(RenderWindow &window);
@@ -30,7 +34,9 @@ public:
   void quit();
   bool isActive() const;
   bool isNewGame() const;
+  bool volumeOff()const;
   void setIsNewGame(bool newGame);
+  void resetClickOnOff();
 };
 
 #endif

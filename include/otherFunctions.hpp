@@ -4,6 +4,7 @@
 #include "const.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "../include/soundSettings.hpp"
 #include <iostream>
 
 using namespace std;
