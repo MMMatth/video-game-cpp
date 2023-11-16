@@ -17,7 +17,6 @@ void Menu::handleEvent(sf::Event &event) {
   if (event.type == sf::Event::MouseButtonPressed && m_menu) {
     int mouseX = event.mouseButton.x;
     int mouseY = event.mouseButton.y;
-    cout <<"x :" << mouseX << " " <<"y :" << mouseY << endl;
     /* quit button */
     if (isInside(mouseX, mouseY, 629, 256, 737, 303)) {
       m_menu = false;

@@ -21,9 +21,9 @@ private:
   Sound m_sound;
   bool m_menu;
   bool m_newGame;
-  int m_clickOnOff;
   RenderWindow &m_window;
   SoundSettings m_soundSettings;
+  int m_clickOnOff;
 
 
 public:
@@ -32,11 +32,12 @@ public:
   void run();
   void render();
   void quit();
+  void setIsNewGame(bool newGame);
+  void resetClickOnOff();
   bool isActive() const;
   bool isNewGame() const;
   bool volumeOff()const;
-  void setIsNewGame(bool newGame);
-  void resetClickOnOff();
+  
 };
 
 #endif
