@@ -13,7 +13,8 @@ Block getBlock(string id) {
 }
 
 /* constructor */
-Map::Map(string path) : m_cam(0, 0), m_cam_width(0), m_cam_height(0) {
+Map::Map(string path)
+    : m_workingAreaCoord(0, 0), m_workingAreaWidth(0), m_workingAreaHeight(0) {
   initLength(path);
   initMap(path);
 }
@@ -36,11 +37,11 @@ void Map::clear() {
 
 /* init function */
 
-void Map::initLength(string nomFichier) {
+void Map::initLength(string pathFile) {
   int width = 0;
   m_width = 0;
   m_height = 0;
-  ifstream fichier(nomFichier);
+  ifstream fichier(pathFile);
   if (fichier) {
     string ligne;
     while (getline(fichier, ligne)) {
@@ -58,8 +59,8 @@ void Map::initLength(string nomFichier) {
   }
 }
 
-void Map::initMap(string nomFichier) {
-  ifstream fichier(nomFichier);
+void Map::initMap(string pathFile) {
+  ifstream fichier(pathFile);
   if (fichier) {
     string ligne;
     int y = 0;
@@ -80,7 +81,7 @@ void Map::initMap(string nomFichier) {
       y++;
     }
   } else {
-    cout << "We cant open the map file" << endl;
+    cerr << " InitMap : We cant open the map file : " << pathFile << endl;
   }
   // save(nomFichier);
 }
@@ -89,14 +90,13 @@ void Map::initMap(string nomFichier) {
 
 Tile Map::chooseTile(string c, int x, int y) { return Tile(getBlock(c), x, y); }
 
-Tile *Map::find_tile(int mouseX, int mouseY) {
-  for (int y = m_cam.getY(); y < m_cam_height; y++) {
-    for (int x = m_cam.getX(); x < m_cam_width; x++) {
-      if (mouseX > m_map[y][x].getX() &&
-          mouseX < m_map[y][x].getX() + TILE_SIZE &&
-          mouseY > m_map[y][x].getY() &&
-          mouseY < m_map[y][x].getY() + TILE_SIZE) {
-        cout << m_map[y][x].getBlock()->getName() << endl;
+Tile *Map::find_tile(int world_x, int world_y) {
+  for (int y = m_workingAreaCoord.getY(); y < m_workingAreaHeight; y++) {
+    for (int x = m_workingAreaCoord.getX(); x < m_workingAreaWidth; x++) {
+      if (world_x >= m_map[y][x].getX() &&
+          world_x <= m_map[y][x].getX() + TILE_SIZE &&
+          world_y >= m_map[y][x].getY() &&
+          world_y <= m_map[y][x].getY() + TILE_SIZE) {
         return &m_map[y][x];
       }
     }
@@ -106,12 +106,11 @@ Tile *Map::find_tile(int mouseX, int mouseY) {
 
 Clock Map::getBreakingClock(int mouseX, int mouseY) {
   Tile *target = find_tile(mouseX, mouseY);
-  if (target) {
-    return target->getBreakingClock();
-  } else {
+  if (!target) {
     cerr << "getBreakingClock : target is nullptr" << endl;
     return Clock();
   }
+  return target->getBreakingClock();
 }
 
 bool Map::isBreaking(int mouseX, int mouseY) {
@@ -159,8 +158,8 @@ void Map::save(string path) {
 }
 
 void Map::collide(Character *perso, int camX, int camY) {
-  for (int y = m_cam.getY(); y < m_cam_height; y++) {
-    for (int x = m_cam.getX(); x < m_cam_width; x++) {
+  for (int y = m_workingAreaCoord.getY(); y < m_workingAreaHeight; y++) {
+    for (int x = m_workingAreaCoord.getX(); x < m_workingAreaWidth; x++) {
       if (m_map[y][x].getBlock()->isSolid()) {
         m_map[y][x].collide(perso);
       }
@@ -211,9 +210,9 @@ void Map::update(int camX, int camY) {
   if (newCamHeight >= get_height())
     newCamHeight = get_height();
 
-  m_cam.setCoord(newCamX, newCamY);
-  m_cam_width = newCamWidth;
-  m_cam_height = newCamHeight;
+  m_workingAreaCoord.setCoord(newCamX, newCamY);
+  m_workingAreaWidth = newCamWidth;
+  m_workingAreaHeight = newCamHeight;
 }
 
 string Map::toString() {

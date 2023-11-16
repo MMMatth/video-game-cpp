@@ -107,15 +107,15 @@ void Inventory::swapItem(InventoryTile *t1, InventoryTile *t2) {
 void Inventory::addItem(Item item) {
   for (int i = 0; i < INVENTORY_HEIGHT; i++) {
     for (int j = 0; j < INVENTORY_WIDTH; j++) {
-      if (m_inventory[i][j].getItem().getName() == item.getName() &&
-          m_inventory[i][j].getItem().isStackable()) {
+      if (m_inventory[i][j].getItem()->getName() == item.getName() &&
+          m_inventory[i][j].getItem()->isStackable()) {
         int totalAmount =
-            m_inventory[i][j].getItem().getAmount() + item.getAmount();
+            m_inventory[i][j].getItem()->getAmount() + item.getAmount();
         if (totalAmount <= MAX_STACK_SIZE) {
           m_inventory[i][j].setAmount(totalAmount);
           return;
         } else {
-          m_inventory[i][j].getItem().setAmount(MAX_STACK_SIZE);
+          m_inventory[i][j].getItem()->setAmount(MAX_STACK_SIZE);
           item.setAmount(totalAmount - MAX_STACK_SIZE);
         }
       }
@@ -126,11 +126,21 @@ void Inventory::addItem(Item item) {
     }
   }
 }
-void Inventory::removeItem(Coord pos) {
+void Inventory::removeItem(Coord pos, int amount) {
   assert((pos.getX() >= 0 && pos.getX() < INVENTORY_HEIGHT && pos.getY() >= 0 &&
           pos.getY() < INVENTORY_WIDTH) &&
          "removeItem : valeur depasse la taille de l'inventaire");
-  m_inventory[pos.getX()][pos.getY()].setItem(Item());
+  if (m_inventory[pos.getX()][pos.getY()].getItem()->getAmount() > amount) {
+    m_inventory[pos.getX()][pos.getY()].getItem()->setAmount(
+        m_inventory[pos.getX()][pos.getY()].getItem()->getAmount() - amount);
+  } else if (m_inventory[pos.getX()][pos.getY()].getItem()->getAmount() ==
+             amount) {
+    m_inventory[pos.getX()][pos.getY()].setItem(Item());
+    m_inventory[pos.getX()][pos.getY()].setIsEmpty(true);
+  } else {
+    cerr << "removeItem : the amount is greater than the amount of the item"
+         << endl;
+  }
 }
 /* render */
 bool isWithinTile(int mx, int my, int x, int y) {
@@ -148,7 +158,7 @@ void Inventory::handleClick(int mouseX, int mouseY, int camX, int camY) {
       int tileToMoveY = pos.getY();
       swapItem(&m_inventory[tileToMoveX][tileToMoveY], &m_selected_tile);
     } else {
-      cout << "hors inventaire" << endl;
+      cerr << "Inventory::handleClick : out of inventory" << endl;
     }
   }
 }
@@ -159,7 +169,7 @@ Coord Inventory::getInventoryPosition(int mouseX, int mouseY, int camX,
   int my = camY - CAM_HEIGHT / 2 + mouseY;
 
   if (!m_is_open) {
-    cout << "getInventoryPosition : l'inventaire n'est pas ouvert" << endl;
+    cerr << "getInventoryPosition : l'inventaire n'est pas ouvert" << endl;
     return Coord(-1, -1);
   }
 
@@ -188,7 +198,7 @@ string Inventory::toString() {
   for (int i = 0; i < INVENTORY_HEIGHT; i++) {
     for (int j = 0; j < INVENTORY_WIDTH; j++) {
       str += "[";
-      str += m_inventory[i][j].getItem().getName();
+      str += m_inventory[i][j].getItem()->getName();
       str += "] ";
     }
     str += "\n";
@@ -203,8 +213,8 @@ void Inventory::save(string csvPath) {
     for (int i = 0; i < INVENTORY_HEIGHT; i++) {
       for (int j = 0; j < INVENTORY_WIDTH; j++) {
         if (!m_inventory[i][j].isEmpty()) {
-          file << m_inventory[i][j].getItem().getName() << ";" << i << ";" << j
-               << ";" << m_inventory[i][j].getItem().getAmount() << "\n";
+          file << m_inventory[i][j].getItem()->getName() << ";" << i << ";" << j
+               << ";" << m_inventory[i][j].getItem()->getAmount() << "\n";
         }
       }
     }

@@ -32,7 +32,7 @@ public:
   void swapItem(Coord p1, Coord p2);
   void swapItem(InventoryTile *t1, InventoryTile *t2);
   void addItem(Item item);
-  void removeItem(Coord pos);
+  void removeItem(Coord pos, int amount);
 
   /* handle */
   void handleClick(int mouseX, int mouseY, int persoX, int persoY);
@@ -41,7 +41,7 @@ public:
   void open() {
     if (m_is_open) {
       m_is_open = false;
-      addItem(m_selected_tile.getItem());
+      addItem(*m_selected_tile.getItem());
       m_selected_tile = InventoryTile();
     } else {
       m_is_open = true;
@@ -58,11 +58,11 @@ public:
   }
   int getPosHand() { return m_pos_hand; }
   Item getItemAt(Coord pos) {
-    return m_inventory[pos.getX()][pos.getY()].getItem();
+    return *m_inventory[pos.getX()][pos.getY()].getItem();
   }
   bool isOpen() { return m_is_open; }
   Item getItemPosHand() {
-    return m_inventory[INVENTORY_HEIGHT - 1][m_pos_hand].getItem();
+    return *m_inventory[INVENTORY_HEIGHT - 1][m_pos_hand].getItem();
   }
 
   /* other */

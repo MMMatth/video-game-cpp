@@ -260,8 +260,14 @@ void Game::putBlock() {
       mouseY > charY - TILE_SIZE && mouseY < charY + charHeight + TILE_SIZE;
 
   if (!isMouseOutsideChar) {
-    play_sound(&m_buffers["PUT_BLOCK"], &m_sound);
-    m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()], mouseX, mouseY);
+    if (m_map.find_tile(mouseX, mouseY)->getBlock()->getId() == '0') {
+      play_sound(&m_buffers["PUT_BLOCK"], &m_sound);
+      m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()], mouseX,
+                     mouseY);
+      if (m_mode == 2) {
+        m_inv.removeItem(Coord(INVENTORY_HEIGHT - 1, m_inv.getPosHand()), 1);
+      }
+    }
   }
 }
 
@@ -282,5 +288,8 @@ void Game::breakBlock() {
   play_sound(&m_buffers["BREAK"], &m_sound);
   int mouseX = m_mousePosWorld.getX();
   int mouseY = m_mousePosWorld.getY();
+  if (m_mode = 2) {
+    m_inv.addItem(*m_map.find_tile(mouseX, mouseY)->getBlock());
+  }
   m_map.supr_tile(mouseX, mouseY);
 }

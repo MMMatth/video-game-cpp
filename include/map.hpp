@@ -27,13 +27,13 @@ public:
 
   /* getters */
   vector<vector<Tile>> getMap() { return m_map; }
-  Coord get_cam() { return m_cam; }
+  Coord get_cam() { return m_workingAreaCoord; }
   int get_height() { return m_height; }
   int get_width() { return m_width - 1; }
   Tile get_tile(int y_tile, int x_tile) { return m_map[y_tile][x_tile]; }
   Tile *find_tile(int x, int y);
-  int get_cam_width() { return m_cam_width; }
-  int get_cam_height() { return m_cam_height; }
+  int get_cam_width() { return m_workingAreaWidth; }
+  int get_cam_height() { return m_workingAreaHeight; }
   bool isBreaking(int mouseX, int mouseY);
   Clock getBreakingClock(int mouseX, int mouseY);
   /* setters */
@@ -51,12 +51,12 @@ public:
   string toString();
 
 private:
-  vector<vector<Tile>> m_map;
-  Coord m_cam;      /* position x,y of the tile in top left */
-  int m_cam_width;  /* amout of tile in the cam in x*/
-  int m_cam_height; /* amout of tile in the cam in y*/
-  int m_width;
-  int m_height;
+  vector<vector<Tile>> m_map; /**  2D vector contain tile */
+  Coord m_workingAreaCoord;   /** coord x,y of the tile in top left */
+  int m_workingAreaWidth;     /** amout of tile in the cam in x*/
+  int m_workingAreaHeight;    /** amout of tile in the cam in y*/
+  int m_width;                /** map width in block */
+  int m_height;               /** map height in block */
 };
 
 #endif /* CARTE_HPP */
