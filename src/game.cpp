@@ -7,8 +7,7 @@ Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
       m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
-      m_mapRenderer(m_map), m_sound(), m_clock(), m_mode(2),
-      m_isBreaking(false), m_breakClock() {
+      m_mapRenderer(m_map), m_sound(), m_clock(), m_game_mode(2) {
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(VOLUME);
@@ -52,13 +51,10 @@ void Game::updateCollide() {
 }
 
 void Game::updateMousePos() {
-  Vector2i pixelPos = sf::Mouse::getPosition(m_window);
-  Vector2f worldPos = m_window.mapPixelToCoords(pixelPos);
+  Vector2f adjustedPos =
+      m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window)) -
+      (m_window.getView().getCenter() - m_window.getView().getSize() / 2.f);
 
-  Vector2f camPos = m_window.getView().getCenter();
-  Vector2f viewSize = m_window.getView().getSize();
-
-  sf::Vector2f adjustedPos = worldPos - (camPos - viewSize / 2.f);
   m_mousePosCam.setX(adjustedPos.x);
   m_mousePosCam.setY(adjustedPos.y);
 
@@ -92,129 +88,219 @@ void Game::clean() {
 void Game::handleEvent(Event &event) {
   if (event.type == Event::Closed) {
     quit();
+  } else if (event.type == Event::KeyPressed) {
+    handleKeyPress(event.key.code);
+  } else if (event.type == Event::KeyReleased) {
+    handleKeyRelease(event.key.code);
+  } else if (event.type == Event::MouseButtonPressed ||
+             event.type == Event::MouseButtonReleased) {
+    handleMouseButton(event.mouseButton);
+  } else if (event.type == Event::MouseWheelScrolled) {
+    handleMouseWheel(event.mouseWheelScroll.delta);
   }
-  if (event.type == Event::KeyPressed) {
-    switch (event.key.code) {
-    case Keyboard::Space:
-      if (!m_char.getDirection()["up"] && !m_char.getDirection()["fall"])
-        play_sound(&m_buffers["JUMP"], &m_sound);
-      m_char.setJumping(true);
-      break;
-    case Keyboard::Q:
-      m_char.setGoingLeft(true);
-      break;
-    case Keyboard::D:
-      m_char.setGoingRight(true);
-      break;
-    case Keyboard::Escape:
-      quit();
-      break;
-    case Keyboard::E:
-      m_inv.addItem(toolMap["IRON_PICKAXE"]);
-      break;
-    case Keyboard::I:
-      m_inv.open();
-      break;
-    case Keyboard::Num1:
-      m_inv.setPosHand(0);
-      break;
-    case Keyboard::Num2:
-      m_inv.setPosHand(1);
-      break;
-    case Keyboard::Num3:
-      m_inv.setPosHand(2);
-      break;
-    case Keyboard::Quote:
-      m_inv.setPosHand(3);
-      break;
-    case Keyboard::Num5:
-      m_inv.setPosHand(4);
-      break;
-    case Keyboard::Dash:
-      m_inv.setPosHand(5);
-      break;
-    case Keyboard::Num7:
-      m_inv.setPosHand(6);
-      break;
-    case Keyboard::Num8:
-      m_inv.setPosHand(7);
-      break;
-    case Keyboard::Num9:
-      m_inv.setPosHand(8);
-      break;
-    default:
-      break;
+}
+
+void Game::handleSpacePress() {
+  if (!m_char.getDirection()["up"] && !m_char.getDirection()["fall"]) {
+    play_sound(&m_buffers["JUMP"], &m_sound);
+    m_char.setJumping(true);
+  }
+}
+
+void Game::handleKeyPress(sf::Keyboard::Key key) {
+  static const map<Keyboard::Key, function<void()>> keyPressActions = {
+      {Keyboard::Space, [&]() { handleSpacePress(); }},
+      {Keyboard::Q, [&]() { m_char.setGoingLeft(true); }},
+      {Keyboard::D, [&]() { m_char.setGoingRight(true); }},
+      {Keyboard::Escape, [&]() { quit(); }},
+      {Keyboard::E, [&]() { m_inv.addItem(toolMap["IRON_PICKAXE"]); }},
+      {Keyboard::I, [&]() { m_inv.open(); }},
+      {Keyboard::Num1, [&]() { m_inv.setPosHand(0); }},
+      {Keyboard::Num2, [&]() { m_inv.setPosHand(1); }},
+      {Keyboard::Num3, [&]() { m_inv.setPosHand(2); }},
+      {Keyboard::Quote, [&]() { m_inv.setPosHand(3); }},
+      {Keyboard::Num5, [&]() { m_inv.setPosHand(4); }},
+      {Keyboard::Dash, [&]() { m_inv.setPosHand(5); }},
+      {Keyboard::Num7, [&]() { m_inv.setPosHand(6); }},
+      {Keyboard::Num8, [&]() { m_inv.setPosHand(7); }},
+      {Keyboard::Num9, [&]() { m_inv.setPosHand(8); }}};
+  auto action = keyPressActions.find(key);
+  if (action != keyPressActions.end()) {
+    action->second();
+  }
+}
+
+void Game::handleKeyRelease(sf::Keyboard::Key key) {
+  static const map<Keyboard::Key, function<void()>> keyReleaseActions = {
+      {Keyboard::Space, [&]() { m_char.setJumping(false); }},
+      {Keyboard::Q, [&]() { m_char.setGoingLeft(false); }},
+      {Keyboard::D, [&]() { m_char.setGoingRight(false); }}};
+  auto action = keyReleaseActions.find(key);
+  if (action != keyReleaseActions.end()) {
+    action->second();
+  }
+}
+
+void Game::handleMouseButton(sf::Event::MouseButtonEvent &event) {
+  if (event.button == Mouse::Left) {
+    if (m_inv.isOpen()) {
+      m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
+                        m_posCam.getX(), m_posCam.getY());
+    } else {
+      if (m_inv.getItemPosHand().getType() == "TOOL" && m_game_mode == 2) {
+        m_map.setIsBreaking(true, m_mousePosWorld.getX(),
+                            m_mousePosWorld.getY());
+        m_map.resetBreakingClock(m_mousePosWorld.getX(),
+                                 m_mousePosWorld.getY());
+      }
     }
-  }
-  if (event.type == Event::KeyReleased) {
-    switch (event.key.code) {
-    case Keyboard::Space:
-      m_char.setJumping(false);
-      break;
-    case Keyboard::Q:
-      m_char.setGoingLeft(false);
-      break;
-    case Keyboard::D:
-      m_char.setGoingRight(false);
-      break;
-    default:
-      break;
-    }
-  }
-  /* right click ( you can stay )*/
-  if (Mouse::isButtonPressed(Mouse::Right)) {
+  } else if (event.button == Mouse::Right) {
     if (!m_inv.isOpen()) {
       if (m_inv.getItemPosHand().getType() == "BLOCK") {
         putBlock();
       }
     }
   }
-  if (Mouse::isButtonPressed(Mouse::Left)) {
-    if (!m_inv.isOpen()) {
-      if (m_inv.getItemPosHand().getType() == "TOOL" && is_breakable() &&
-          m_mode == 1) {
-        breakBlock();
-      }
-    }
-  }
+}
 
-  if (event.type == Event::MouseButtonPressed) {
-    if (event.mouseButton.button == Mouse::Left) {
-      if (m_inv.isOpen()) {
-        m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
-                          m_posCam.getX(), m_posCam.getY());
-      } else {
-        if (m_inv.getItemPosHand().getType() == "TOOL" && m_mode == 2) {
-          m_map.setIsBreaking(true, m_mousePosWorld.getX(),
-                              m_mousePosWorld.getY());
-          m_map.resetBreakingClock(m_mousePosWorld.getX(),
-                                   m_mousePosWorld.getY());
-        }
-      }
-    }
-  }
-  if (event.type == Event::MouseButtonReleased) {
-    if (event.mouseButton.button == Mouse::Left) {
-      if (m_inv.getItemPosHand().getType() == "TOOL" && m_mode == 2) {
-        m_map.setIsBreaking(false, m_mousePosWorld.getX(),
-                            m_mousePosWorld.getY());
-      }
-    }
-  }
-  if (event.type == Event::MouseWheelScrolled) {
-    if (event.mouseWheelScroll.delta > 0) {
-      if (m_inv.getPosHand() > 0)
-        m_inv.setPosHand(m_inv.getPosHand() - 1);
-      else
-        m_inv.setPosHand(INVENTORY_WIDTH - 1);
-    } else {
-      if (m_inv.getPosHand() == INVENTORY_WIDTH - 1)
-        m_inv.setPosHand(0);
-      else
-        m_inv.setPosHand(m_inv.getPosHand() + 1);
-    }
+void Game::handleMouseWheel(float delta) {
+  if (delta > 0) {
+    if (m_inv.getPosHand() > 0)
+      m_inv.setPosHand(m_inv.getPosHand() - 1);
+    else
+      m_inv.setPosHand(INVENTORY_WIDTH - 1);
+  } else {
+    if (m_inv.getPosHand() == INVENTORY_WIDTH - 1)
+      m_inv.setPosHand(0);
+    else
+      m_inv.setPosHand(m_inv.getPosHand() + 1);
   }
 }
+
+// if (event.type == Event::Closed) {
+//   quit();
+// }
+// if (event.type == Event::KeyPressed) {
+//   switch (event.key.code) {
+//   case Keyboard::Space:
+//     if (!m_char.getDirection()["up"] && !m_char.getDirection()["fall"])
+//       play_sound(&m_buffers["JUMP"], &m_sound);
+//     m_char.setJumping(true);
+//     break;
+//   case Keyboard::Q:
+//     m_char.setGoingLeft(true);
+//     break;
+//   case Keyboard::D:
+//     m_char.setGoingRight(true);
+//     break;
+//   case Keyboard::Escape:
+//     quit();
+//     break;
+//   case Keyboard::E:
+//     m_inv.addItem(toolMap["IRON_PICKAXE"]);
+//     break;
+//   case Keyboard::I:
+//     m_inv.open();
+//     break;
+//   case Keyboard::Num1:
+//     m_inv.setPosHand(0);
+//     break;
+//   case Keyboard::Num2:
+//     m_inv.setPosHand(1);
+//     break;
+//   case Keyboard::Num3:
+//     m_inv.setPosHand(2);
+//     break;
+//   case Keyboard::Quote:
+//     m_inv.setPosHand(3);
+//     break;
+//   case Keyboard::Num5:
+//     m_inv.setPosHand(4);
+//     break;
+//   case Keyboard::Dash:
+//     m_inv.setPosHand(5);
+//     break;
+//   case Keyboard::Num7:
+//     m_inv.setPosHand(6);
+//     break;
+//   case Keyboard::Num8:
+//     m_inv.setPosHand(7);
+//     break;
+//   case Keyboard::Num9:
+//     m_inv.setPosHand(8);
+//     break;
+//   default:
+//     break;
+//   }
+// }
+// if (event.type == Event::KeyReleased) {
+//   switch (event.key.code) {
+//   case Keyboard::Space:
+//     m_char.setJumping(false);
+//     break;
+//   case Keyboard::Q:
+//     m_char.setGoingLeft(false);
+//     break;
+//   case Keyboard::D:
+//     m_char.setGoingRight(false);
+//     break;
+//   default:
+//     break;
+//   }
+// }
+// /* right click ( you can stay )*/
+// if (Mouse::isButtonPressed(Mouse::Right)) {
+//   if (!m_inv.isOpen()) {
+//     if (m_inv.getItemPosHand().getType() == "BLOCK") {
+//       putBlock();
+//     }
+//   }
+// }
+// if (Mouse::isButtonPressed(Mouse::Left)) {
+//   if (!m_inv.isOpen()) {
+//     if (m_inv.getItemPosHand().getType() == "TOOL" && is_breakable() &&
+//         m_game_mode == 1) {
+//       breakBlock();
+//     }
+//   }
+// }
+
+// if (event.type == Event::MouseButtonPressed) {
+//   if (event.mouseButton.button == Mouse::Left) {
+//     if (m_inv.isOpen()) {
+//       m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
+//                         m_posCam.getX(), m_posCam.getY());
+//     } else {
+//       if (m_inv.getItemPosHand().getType() == "TOOL" && m_game_mode == 2) {
+//         m_map.setIsBreaking(true, m_mousePosWorld.getX(),
+//                             m_mousePosWorld.getY());
+//         m_map.resetBreakingClock(m_mousePosWorld.getX(),
+//                                  m_mousePosWorld.getY());
+//       }
+//     }
+//   }
+// }
+// if (event.type == Event::MouseButtonReleased) {
+//   if (event.mouseButton.button == Mouse::Left) {
+//     if (m_inv.getItemPosHand().getType() == "TOOL" && m_game_mode == 2) {
+//       m_map.setIsBreaking(false, m_mousePosWorld.getX(),
+//                           m_mousePosWorld.getY());
+//     }
+//   }
+// }
+// if (event.type == Event::MouseWheelScrolled) {
+//   if (event.mouseWheelScroll.delta > 0) {
+//     if (m_inv.getPosHand() > 0)
+//       m_inv.setPosHand(m_inv.getPosHand() - 1);
+//     else
+//       m_inv.setPosHand(INVENTORY_WIDTH - 1);
+//   } else {
+//     if (m_inv.getPosHand() == INVENTORY_WIDTH - 1)
+//       m_inv.setPosHand(0);
+//     else
+//       m_inv.setPosHand(m_inv.getPosHand() + 1);
+//   }
+// }
 
 void Game::render() {
   m_window.clear(SKY_COLOR);
@@ -264,7 +350,7 @@ void Game::putBlock() {
       play_sound(&m_buffers["PUT_BLOCK"], &m_sound);
       m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()], mouseX,
                      mouseY);
-      if (m_mode == 2) {
+      if (m_game_mode == 2) {
         m_inv.removeItem(Coord(INVENTORY_HEIGHT - 1, m_inv.getPosHand()), 1);
       }
     }
@@ -288,7 +374,7 @@ void Game::breakBlock() {
   play_sound(&m_buffers["BREAK"], &m_sound);
   int mouseX = m_mousePosWorld.getX();
   int mouseY = m_mousePosWorld.getY();
-  if (m_mode = 2) {
+  if (m_game_mode = 2) {
     m_inv.addItem(*m_map.find_tile(mouseX, mouseY)->getBlock());
   }
   m_map.supr_tile(mouseX, mouseY);

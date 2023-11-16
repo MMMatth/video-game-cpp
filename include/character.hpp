@@ -60,15 +60,16 @@ public:
   void save(string path);
 
 private:
-  Coord m_coord;
-  bool m_isFalling;
-  map<string, bool> m_direction;
-  map<string, bool> m_collision;
-  int m_timeJump;
-  int m_jumpHeight;
-  int m_width;
-  int m_height;
-  int m_speed;
+  Coord m_coord;                 /** coord in x y of the character*/
+  map<string, bool> m_direction; /** Contains booleans for states: fall, jump,
+                                    up, right, left. */
+  map<string, bool>
+      m_collision; /** Contains booleans for collision : up, down, right, left*/
+  int m_timeJump;  /** the time elapsed during the jump  */
+  int m_jumpHeight; /** the limit of time jump */
+  int m_width;      /** width of the character */
+  int m_height;     /** height of the character */
+  int m_speed;      /** speed */
 };
 
 #endif /* PERSONNAGE_HPP */

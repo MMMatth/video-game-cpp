@@ -17,10 +17,13 @@ using namespace std;
 
 class Inventory {
 private:
-  InventoryTile m_inventory[INVENTORY_HEIGHT][INVENTORY_WIDTH];
-  InventoryTile m_selected_tile;
-  int m_pos_hand;
-  bool m_is_open;
+  InventoryTile
+      m_inventory[INVENTORY_HEIGHT]
+                 [INVENTORY_WIDTH]; /** 2D tab contain every inventory tile*/
+  InventoryTile m_selected_tile;    /**  inventory tile temporarily contains the
+                                       item which moves */
+  int m_pos_item_hand;              /** int number included between 0 and 8*/
+  bool m_is_open;                   /** bool true if the inventory is open */
 
 public:
   /* Constructeur */
@@ -48,7 +51,13 @@ public:
     }
   }
 
-  void setPosHand(int indice) { m_pos_hand = indice; }
+  void setPosHand(int indice) {
+    if (indice >= 0 && indice < INVENTORY_WIDTH) {
+      m_pos_item_hand = indice;
+    } else {
+      cerr << "setPosHand : the indice is not in the inventory" << endl;
+    }
+  }
 
   /* getters */
   InventoryTile getSelectedTile() { return m_selected_tile; }
@@ -56,13 +65,13 @@ public:
   InventoryTile getTile(Coord pos) {
     return m_inventory[pos.getX()][pos.getY()];
   }
-  int getPosHand() { return m_pos_hand; }
+  int getPosHand() { return m_pos_item_hand; }
   Item getItemAt(Coord pos) {
     return *m_inventory[pos.getX()][pos.getY()].getItem();
   }
   bool isOpen() { return m_is_open; }
   Item getItemPosHand() {
-    return *m_inventory[INVENTORY_HEIGHT - 1][m_pos_hand].getItem();
+    return *m_inventory[INVENTORY_HEIGHT - 1][m_pos_item_hand].getItem();
   }
 
   /* other */

@@ -2,7 +2,7 @@
 
 /* constructeur */
 Inventory::Inventory(string csvPath)
-    : m_is_open(false), m_pos_hand(0), m_selected_tile(InventoryTile()) {
+    : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()) {
   for (int row = 0; row < INVENTORY_HEIGHT; row++) {
     for (int column = 0; column < INVENTORY_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();
@@ -74,7 +74,7 @@ Inventory::Inventory(string csvPath)
 }
 
 Inventory::Inventory()
-    : m_is_open(false), m_pos_hand(0), m_selected_tile(InventoryTile()) {
+    : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()) {
   for (int row = 0; row < INVENTORY_HEIGHT; row++) {
     for (int column = 0; column < INVENTORY_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();
