@@ -114,6 +114,8 @@ void Game::handleKeyPress(sf::Keyboard::Key key) {
       {Keyboard::D, [&]() { m_char.setGoingRight(true); }},
       {Keyboard::Escape, [&]() { quit(); }},
       {Keyboard::E, [&]() { m_inv.addItem(toolMap["IRON_PICKAXE"]); }},
+      {Keyboard::R, [&]() { m_char.hit(1); }},
+      {Keyboard::F, [&]() { m_char.heal(1); }},
       {Keyboard::I, [&]() { m_inv.open(); }},
       {Keyboard::Num1, [&]() { m_inv.setPosHand(0); }},
       {Keyboard::Num2, [&]() { m_inv.setPosHand(1); }},
@@ -180,9 +182,9 @@ void Game::handleMouseWheel(float delta) {
 void Game::render() {
   m_window.clear(SKY_COLOR);
 
-  m_charRenderer.draw(m_window, m_sprites);
-
   m_mapRenderer.render(m_window, m_sprites);
+
+  m_charRenderer.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY());
 
   m_invRender.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY(),
                      m_mousePosWorld.getX(), m_mousePosWorld.getY());
@@ -246,12 +248,13 @@ bool Game::is_breakable() {
 }
 
 void Game::breakBlock() {
+  play_sound(&m_buffers["BREAK"], &m_sound);
   int mouseX = m_mousePosWorld.getX();
   int mouseY = m_mousePosWorld.getY();
-  Tile *tile = m_map.find_tile(mouseX, mouseY);
-  play_sound(&m_buffers["BREAK"], &m_sound);
-  if (m_game_mode = 2 && tile->getBlock()->getId() != '0') {
-    m_inv.addItem(*tile->getBlock());
+  if (m_game_mode = 2) {
+    if (m_map.find_tile(mouseX, mouseY)->getBlock()->getId() != '0') {
+      m_inv.addItem(*m_map.find_tile(mouseX, mouseY)->getBlock());
+    }
   }
   m_map.supr_tile(mouseX, mouseY);
 }

@@ -10,16 +10,18 @@ Character::Character(string path) {
     getline(file, line); // skip the header
     getline(file, line); // read the position
     stringstream ss(line);
-    string x_str, y_str;
+    string x_str, y_str, life_str;
     getline(ss, x_str, ';');
     getline(ss, y_str, ';');
+    getline(ss, life_str, ';');
     m_coord = Coord(stoi(x_str), stoi(y_str));
+    m_life = stoi(life_str);
   } else {
     // we create the file
     ofstream file(path);
     if (file.is_open()) {
-      file << "x;y\n";
-      file << MAP_WIDTH * TILE_SIZE / 2 << ";" << 0 << "\n";
+      file << "x;y;life\n";
+      file << MAP_WIDTH * TILE_SIZE / 2 << ";" << 0 << 20 << "\n";
       m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 0);
     } else {
       cerr << "Character unable to open file " << path << "\n";
@@ -28,12 +30,13 @@ Character::Character(string path) {
   init();
 }
 
-Character::Character(int x, int y) : m_coord(x, y) { init(); }
+Character::Character(int x, int y, int life) : m_coord(x, y), m_life(life) {
+  init();
+}
 
 void Character::init() {
   m_width = 28;
   m_height = 58;
-
   m_direction = {{"jump", false},
                  {"up", false},
                  {"fall", true},
@@ -115,8 +118,8 @@ void Character::save(string path) {
   ofstream file;
   file.open(path);
   if (file.is_open()) {
-    file << "x;y\n";                         /* header */
-    file << getX() << ";" << getY() << "\n"; /* position */
+    file << "x;y;life\n";                                        /* header */
+    file << getX() << ";" << getY() << ";" << getLife() << "\n"; /* position */
   } else {
     cerr << "Save Character unable to open file " << path << "\n";
   }
