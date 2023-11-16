@@ -246,11 +246,12 @@ bool Game::is_breakable() {
 }
 
 void Game::breakBlock() {
-  play_sound(&m_buffers["BREAK"], &m_sound);
   int mouseX = m_mousePosWorld.getX();
   int mouseY = m_mousePosWorld.getY();
-  if (m_game_mode = 2) {
-    m_inv.addItem(*m_map.find_tile(mouseX, mouseY)->getBlock());
+  Tile *tile = m_map.find_tile(mouseX, mouseY);
+  play_sound(&m_buffers["BREAK"], &m_sound);
+  if (m_game_mode = 2 && tile->getBlock()->getId() != '0') {
+    m_inv.addItem(*tile->getBlock());
   }
   m_map.supr_tile(mouseX, mouseY);
 }

@@ -29,8 +29,7 @@ public:
   /* Constructeur */
   Inventory();
   Inventory(string csvPath);
-  /* Destruceur */
-  ~Inventory();
+  void loadFromCSV(const std::string &csvPath);
 
   void swapItem(Coord p1, Coord p2);
   void swapItem(InventoryTile *t1, InventoryTile *t2);
