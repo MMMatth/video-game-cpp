@@ -22,6 +22,9 @@ void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath);
 
+void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
+                      Color color, Color edgeColor, string fontPath);
+
 /* audio */
 unordered_map<string, SoundBuffer> initBuffers();
 

@@ -7,8 +7,8 @@
 #define WINDOW_HEIGHT 600
 #define WINDOW_TITLE "jeu"
 /* cam */
-#define CAM_WIDTH WINDOW_WIDTH / 1.5
-#define CAM_HEIGHT WINDOW_HEIGHT / 1.5
+#define CAM_WIDTH WINDOW_WIDTH * 0.75
+#define CAM_HEIGHT WINDOW_HEIGHT * 0.75
 /* character */
 #define TAILLE_PERSONNAGE 64
 #define DEPLACEMENT 5
@@ -32,8 +32,8 @@
 /* inventory */
 #define INVENTORY_HEIGHT 4
 #define INVENTORY_WIDTH 9
-#define INVENTORY_TILE_SIZE 50
-#define INVENTORY_OBJECT_SIZE 32
+#define INVENTORY_TILE_SIZE (CAM_WIDTH / INVENTORY_WIDTH) * 0.8
+#define INVENTORY_OBJECT_SIZE INVENTORY_TILE_SIZE * 0.6
 #define MAX_STACK_SIZE 64
 #define INVENTORY_SAVE_PATH "../assets/csv/inventory.csv"
 /* spritesheet */
@@ -41,12 +41,26 @@
 #define SPRITESHEET_IMG_PATH "../assets/img/spritesheet.png"
 /* font */
 #define FONT_PATH "assets/fonts/arial.ttf"
-#define FONT_COLOR Color(0, 0, 0)
+#define FONT_COLOR Color(218, 225, 16)
+#define WITE_COLOR Color::White
+#define BLACK_COLOR Color::Black
 /* map */
 #define MAP_WIDTH 100
 #define MAP_PATH "../assets/csv/map.csv"
+#define MOUNTAIN_COEF 20 //
+#define UNDERGROUND_COEF 10
+#define SKY_HEIGHT_OVER_MOUTAIN 15
+#define DIRT_HEIGHT 3
+/* tree */
+#define TREE_SIZE 4
+#define ECART_TREE 10
+#define LEAF_WIDTH 5
+#define LEAF_HEIGHT 3
+/* flower */
+#define FLOWER_ECART 10
 /* other */
-#define SKY_COLOR Color(135, 206, 250)
+#define SKY_COLOR Color(119, 181, 254)
 #define TILE_SIZE 32
+#define GAME_MODE 1
 
 #endif

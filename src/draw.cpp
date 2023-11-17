@@ -91,6 +91,22 @@ void drawText(int x, int y, string text, RenderWindow *window, int size,
   window->draw(textObj);
 }
 
+void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
+                      Color color, Color edgeColor, string fontPath) {
+  Font font;
+  Error(!font.loadFromFile("../" + fontPath), "Error : font load fail");
+
+  Text textObj;
+  textObj.setFont(font);
+  textObj.setString(text);
+  textObj.setCharacterSize(size);
+  textObj.setFillColor(color);
+  textObj.setOutlineColor(edgeColor);
+  textObj.setOutlineThickness(1);
+  textObj.setPosition(x, y);
+  window->draw(textObj);
+}
+
 /* audio */
 unordered_map<string, SoundBuffer> initBuffers() {
   unordered_map<string, SoundBuffer> soundBuffers;

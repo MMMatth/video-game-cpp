@@ -21,7 +21,7 @@ class Character {
 public:
   /* constructor */
   Character(string path);
-  Character(int x, int y);
+  Character(int x, int y, int life);
   void init();
   /* destructor */
   // ~Personnage();
@@ -38,6 +38,7 @@ public:
   int getTimeJump() { return m_timeJump; }
   int getJumpHeight() { return m_jumpHeight; }
   int getVitesse() { return m_speed; }
+  int getLife() { return m_life; }
   /* setters */
   /* m_direction */
   void setFalling(bool falling) { m_direction["fall"] = falling; }
@@ -45,6 +46,7 @@ public:
   void setGoingUp(bool inUp) { m_direction["up"] = inUp; }
   void setGoingRight(bool inRight) { m_direction["right"] = inRight; }
   void setGoingLeft(bool inLeft) { m_direction["left"] = inLeft; }
+
   /* m_collision */
   void setCollision(string key, bool value) { this->m_collision[key] = value; }
   void setCollisionFalseExcept(string key);
@@ -54,21 +56,27 @@ public:
   void setTimeJump(int time) { m_timeJump = time; }
   void setWidth(int width) { this->m_width = width; }
   void setHeight(int height) { this->m_height = height; }
+  void setLife(int life) { this->m_life = life; }
+  void hit(int damage) { this->m_life -= damage; }
+  void heal(int heal) { this->m_life += heal; }
+
   /* other */
   void mooveX(int x);
   void mooveY(int y);
   void save(string path);
 
 private:
-  Coord m_coord;
-  bool m_isFalling;
-  map<string, bool> m_direction;
-  map<string, bool> m_collision;
-  int m_timeJump;
-  int m_jumpHeight;
-  int m_width;
-  int m_height;
-  int m_speed;
+  Coord m_coord;                 /** coord in x y of the character*/
+  map<string, bool> m_direction; /** Contains booleans for states: fall, jump,
+                                    up, right, left. */
+  map<string, bool>
+      m_collision; /** Contains booleans for collision : up, down, right, left*/
+  int m_timeJump;  /** the time elapsed during the jump  */
+  int m_jumpHeight; /** the limit of time jump */
+  int m_width;      /** width of the character */
+  int m_height;     /** height of the character */
+  int m_speed;      /** speed */
+  int m_life;       /** life of the character */
 };
 
 #endif /* PERSONNAGE_HPP */

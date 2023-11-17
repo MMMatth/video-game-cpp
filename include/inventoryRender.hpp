@@ -9,7 +9,7 @@ class InventoryRenderer {
 private:
   Inventory &m_inventory;
 
-  void drawItem(sf::RenderWindow &window, unordered_map<string, Sprite> sprites,
+  void drawTile(sf::RenderWindow &window, unordered_map<string, Sprite> sprites,
                 int x, int y, int row, int column);
   void drawLowerBar(sf::RenderWindow &window,
                     unordered_map<string, Sprite> sprites, int persoX,

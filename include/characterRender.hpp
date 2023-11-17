@@ -20,7 +20,12 @@ public:
   CharacterRender(Character &character);
   void drawSprite(RenderWindow &window, unordered_map<string, Sprite> &sprites,
                   const string &spriteKey, int frame, int x, int y);
-  void draw(RenderWindow &window, unordered_map<string, Sprite> sprites);
+  void renderCharacter(RenderWindow &window,
+                       unordered_map<string, Sprite> sprites);
+  void renderLife(RenderWindow &window, unordered_map<string, Sprite> sprites,
+                  int camX, int camY);
+  void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
+              int camX, int camY);
 
 private:
   Clock m_clock;

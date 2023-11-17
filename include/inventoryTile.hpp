@@ -11,17 +11,16 @@ class InventoryTile {
 private:
   bool m_is_empty;
   Item m_item;
-  Coord m_item_position;
 
 public:
   /* constructor */
   InventoryTile(Block block);
+  InventoryTile(int x, int y);
   InventoryTile();
   /* destructor */
   ~InventoryTile();
   /* getters */
-  Item getItem() { return m_item; }
-  Coord getItemPos() { return m_item_position; }
+  Item *getItem() { return &m_item; }
   string getItemType() { return m_item.getType(); }
   bool isEmpty() { return m_is_empty; }
   /* setters */
@@ -34,14 +33,11 @@ public:
     m_item = item;
     m_is_empty = false;
   }
-  void setPos(int x, int y) {
-    m_item_position.setX(x);
-    m_item_position.setY(y);
-  }
-  void swapItem(InventoryTile &other) {
-    Item tmp = m_item;
-    m_item = other.getItem();
-    other.setItem(tmp);
+
+  void swapWith(InventoryTile &other) {
+    // we use swap c++ function to swap the content of the two tiles
+    swap(m_is_empty, other.m_is_empty);
+    swap(m_item, other.m_item);
   }
 };
 

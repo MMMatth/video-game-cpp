@@ -14,8 +14,8 @@ void CharacterRender::drawSprite(RenderWindow &window,
               character.getHeight());
 }
 
-void CharacterRender::draw(RenderWindow &window,
-                           unordered_map<string, Sprite> sprites) {
+void CharacterRender::renderCharacter(RenderWindow &window,
+                                      unordered_map<string, Sprite> sprites) {
   map<string, bool> direction = character.getDirection();
   map<string, bool> collision = character.getCollision();
   int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) %
@@ -36,4 +36,31 @@ void CharacterRender::draw(RenderWindow &window,
     drawSprites(x, y, sprites["CHAR_FRONT"], &window, character.getWidth(),
                 character.getHeight());
   }
+}
+
+void CharacterRender::renderLife(RenderWindow &window,
+                                 unordered_map<string, Sprite> sprites,
+                                 int camX, int camY) {
+  int life = character.getLife();
+  int entire_heart = life / 2;
+  int half_heart = life % 2;
+  int x = camX - (INVENTORY_WIDTH * INVENTORY_TILE_SIZE) / 2;
+  int y = camY + CAM_HEIGHT / 2 - INVENTORY_TILE_SIZE * 2 - 20;
+
+  for (int i = 0; i < 10; i++) {
+    drawSprites(x + i * 15, y, sprites["BLACK_HEART"], &window, 15, 15);
+  }
+  for (int i = 0; i < entire_heart; i++) {
+    drawSprites(x + i * 15, y, sprites["HEART"], &window, 15, 15);
+  }
+  for (int i = half_heart; i < entire_heart + half_heart; i++) {
+    drawSprites(x + i * 15, y, sprites["HALF_HEART"], &window, 15, 15);
+  }
+}
+
+void CharacterRender::render(RenderWindow &window,
+                             unordered_map<string, Sprite> sprites, int camX,
+                             int camY) {
+  renderCharacter(window, sprites);
+  renderLife(window, sprites, camX, camY);
 }
