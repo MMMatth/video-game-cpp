@@ -8,11 +8,8 @@ Game::Game(RenderWindow &window)
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
       m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
       m_mapRenderer(m_map), m_sound(), m_clock(), m_soundSettings(5),
-      m_pause(false), m_clickOnOff(2), m_game_mode(2), m_day_night_cycle(240),
-      m_day_night_cycle_clock() {
-  Error(!pauseTexture.loadFromFile(IMG_PAUSE_ON),
-        "Error loading IMG_PAUSE_ON texture");
-  pauseSprite.setTexture(pauseTexture);
+      m_game_mode(2), m_day_night_cycle(240), m_day_night_cycle_clock(),
+      m_menuPause(m_soundSettings, m_sound) {
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(m_soundSettings.getVolume());
@@ -113,11 +110,6 @@ void Game::handleSpacePress() {
     m_char.setJumping(true);
   }
 }
-void Game::handlePause() {
-  m_pause = true;
-  m_soundSettings.setVolume(0);
-  m_sound.setVolume(m_soundSettings.getVolume());
-}
 
 void Game::handleKeyPress(sf::Keyboard::Key key) {
   static const map<Keyboard::Key, function<void()>> keyPressActions = {
@@ -129,7 +121,7 @@ void Game::handleKeyPress(sf::Keyboard::Key key) {
       {Keyboard::R, [&]() { m_char.hit(1); }},
       {Keyboard::F, [&]() { m_char.heal(1); }},
       {Keyboard::I, [&]() { m_inv.open(); }},
-      {Keyboard::P, [&]() { handlePause(); }},
+      {Keyboard::P, [&]() { m_menuPause.handlePause(); }},
       {Keyboard::Num1, [&]() { m_inv.setPosHand(0); }},
       {Keyboard::Num2, [&]() { m_inv.setPosHand(1); }},
       {Keyboard::Num3, [&]() { m_inv.setPosHand(2); }},
@@ -158,54 +150,24 @@ void Game::handleKeyRelease(sf::Keyboard::Key key) {
 
 void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
   if (event.button == Mouse::Left) {
-    if (m_inv.isOpen()) {
-      m_inv.handleClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
-                        m_char.getX(), m_char.getY());
-    } else {
-      if (m_inv.getItemPosHand().getType() == "TOOL") {
-        if (m_game_mode == 2) {
-          m_map.setIsBreaking(true, m_mousePosWorld.getX(),
-                              m_mousePosWorld.getY());
-          m_map.resetBreakingClock(m_mousePosWorld.getX(),
-                                   m_mousePosWorld.getY());
-        } else {
-          breakBlock();
+    if (!m_menuPause.isPause()) {
+      if (m_inv.isOpen()) {
+        m_inv.handleClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
+                          m_char.getX(), m_char.getY());
+      } else {
+        if (m_inv.getItemPosHand().getType() == "TOOL") {
+          if (m_game_mode == 2) {
+            m_map.setIsBreaking(true, m_mousePosWorld.getX(),
+                                m_mousePosWorld.getY());
+            m_map.resetBreakingClock(m_mousePosWorld.getX(),
+                                     m_mousePosWorld.getY());
+          } else {
+            breakBlock();
+          }
         }
       }
-    }
-    int mouseX = event.x;
-    int mouseY = event.y;
-    if (isInside(mouseX, mouseY, 75, 162, 314, 211)) {
-      m_pause = false;
-    }
-    /*quit*/
-    if (isInside(mouseX, mouseY, 610, 247, 712, 294)) {
-      quit();
-    }
-    /*new game*/
-    if (isInside(mouseX, mouseY, 71, 249, 341, 297)) {
-      m_pause = false;
-      reset();
-    }
-    /*sound*/
-    if (isInside(mouseX, mouseY, 37, 33, 62, 62)) {
-      if (m_clickOnOff == 2) {
-        Error(!pauseTexture.loadFromFile(IMG_PAUSE_OFF),
-              "Error loading IMG_PAUSE_OFF texture");
-        m_soundSettings.setVolume(0);
-        m_sound.setVolume(m_soundSettings.getVolume());
-        m_clickOnOff--;
-      } else {
-        Error(!pauseTexture.loadFromFile(IMG_PAUSE_ON),
-              "Error loading IMG_PAUSE_ON texture");
-        m_soundSettings.setVolume(5);
-        m_sound.setVolume(m_soundSettings.getVolume());
-        m_clickOnOff++;
-      }
-    }
-    /*help*/
-    if (isInside(mouseX, mouseY, 605, 160, 725, 211)) {
-      cout << "Not implemented yet" << endl;
+    } else {
+      m_menuPause.handleMouseButtonPressed(event);
     }
   } else if (event.button == Mouse::Right) {
     if (!m_inv.isOpen()) {
@@ -229,15 +191,9 @@ void Game::handleMouseButtonReleased(sf::Event::MouseButtonEvent &event) {
 
 void Game::handleMouseWheel(float delta) {
   if (delta > 0) {
-    if (m_inv.getPosHand() > 0)
-      m_inv.setPosHand(m_inv.getPosHand() - 1);
-    else
-      m_inv.setPosHand(INVENTORY_WIDTH - 1);
+    m_inv.nextPosHand();
   } else {
-    if (m_inv.getPosHand() == INVENTORY_WIDTH - 1)
-      m_inv.setPosHand(0);
-    else
-      m_inv.setPosHand(m_inv.getPosHand() + 1);
+    m_inv.prevPosHand();
   }
 }
 
@@ -256,12 +212,7 @@ void Game::render() {
                to_string((int)(1 / m_clock.getElapsedTime().asSeconds())),
            &m_window, 20, Color::White, FONT_PATH);
 
-  if (m_pause) {
-    m_window.clear();
-    drawSprites(m_posCam.getX() - CAM_WIDTH / 2,
-                m_posCam.getY() - CAM_HEIGHT / 2, pauseSprite, &m_window,
-                CAM_WIDTH, CAM_HEIGHT);
-  }
+  m_menuPause.render(m_window, m_posCam.getX(), m_posCam.getY());
 
   m_window.display();
 }
@@ -330,4 +281,4 @@ void Game::breakBlock() {
 }
 void Game::setGameVolume(float volume) { m_sound.setVolume(volume); }
 
-bool Game::isPause() const { return m_pause; }
+bool Game::isPause() const { return m_menuPause.isPause(); }

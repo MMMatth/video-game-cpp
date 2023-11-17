@@ -13,6 +13,7 @@
 #include "mapGenerator.hpp"
 #include "mapRender.hpp"
 #include "menu.hpp"
+#include "menuPause.hpp"
 #include "tool.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -53,10 +54,7 @@ private:
   int m_game_mode; /** 1 = creative, 2 = survival*/
   Clock m_clock;   /* clock */
   /*pause*/
-  bool m_pause;
-  Texture pauseTexture;
-  Sprite pauseSprite;
-  int m_clickOnOff;
+  MenuPause m_menuPause;
 
 public:
   /* constructor */
@@ -79,7 +77,6 @@ public:
   void handleMouseButtonReleased(sf::Event::MouseButtonEvent &event);
   void handleMouseWheel(float delta);
   void handleSpacePress();
-  void handlePause();
   void quit();
   /*save*/
   void save();
