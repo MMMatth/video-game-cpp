@@ -19,17 +19,17 @@ int main() {
       menu.handleEvent(event);
     }
     // no window.clear() because it's done in game.clean() or menu.clean()
-  
+
     if (menu.isActive()) {
       menu.run();
-    } else if (menu.isNewGame()){
+    } else if (menu.isNewGame()) {
       game.reset();
       menu.setIsNewGame(false);
-    }else if (game.isPause()){
+    } else if (game.isPause()) {
       game.render();
-      //cout << "press P" <<endl;
-    }else {
-      if(menu.volumeOff()){
+      // cout << "press P" <<endl;
+    } else {
+      if (menu.volumeOff()) {
         game.setGameVolume(0);
       }
       game.run();

@@ -79,6 +79,7 @@ public:
   void handleMouseButtonReleased(sf::Event::MouseButtonEvent &event);
   void handleMouseWheel(float delta);
   void handleSpacePress();
+  void handlePause();
   void quit();
   /*save*/
   void save();
