@@ -5,6 +5,7 @@
 #include "characterRender.hpp"
 #include "const.hpp"
 #include "coord.hpp"
+#include "dayNightCycle.hpp"
 #include "draw.hpp"
 #include "inventory.hpp"
 #include "inventoryRender.hpp"
@@ -44,6 +45,9 @@ private:
   /* sound*/
   unordered_map<string, SoundBuffer> m_buffers; /** all sound*/
   Sound m_sound;                                /** SFML sound*/
+  /* day_night_cycle */
+  DayNightCycle m_day_night_cycle;
+  Clock m_day_night_cycle_clock;
   /* other */
   int m_game_mode; /** 1 = creative, 2 = survival*/
   Clock m_clock;   /* clock */

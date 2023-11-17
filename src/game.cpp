@@ -7,7 +7,8 @@ Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
       m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
-      m_mapRenderer(m_map), m_sound(), m_clock(), m_game_mode(2) {
+      m_mapRenderer(m_map), m_sound(), m_clock(), m_game_mode(2),
+      m_day_night_cycle(360), m_day_night_cycle_clock() {
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(VOLUME);
@@ -18,6 +19,7 @@ void Game::run() {
   render();
   update();
 }
+
 void Game::reset() {
   m_char.setX(MAP_WIDTH * TILE_SIZE / 2);
   m_char.setY(128);
@@ -196,7 +198,8 @@ void Game::handleMouseWheel(float delta) {
 }
 
 void Game::render() {
-  m_window.clear(SKY_COLOR);
+  m_window.clear(m_day_night_cycle.getColor(
+      m_day_night_cycle_clock.getElapsedTime().asSeconds()));
 
   m_mapRenderer.render(m_window, m_sprites);
 
