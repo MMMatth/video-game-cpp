@@ -14,7 +14,12 @@ Character::Character(string path) {
     getline(ss, x_str, ';');
     getline(ss, y_str, ';');
     getline(ss, life_str, ';');
-    m_coord = Coord(stoi(x_str), stoi(y_str));
+    int x = stoi(x_str);
+    int y = stoi(y_str);
+    if (y % TILE_SIZE == 0)
+      m_coord = Coord(x, y);
+    else
+      m_coord = Coord(x, y - y % TILE_SIZE);
     m_life = stoi(life_str);
   } else {
     // we create the file
