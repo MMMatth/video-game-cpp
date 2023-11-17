@@ -65,7 +65,8 @@ public:
   void handleEvent(Event &event);
   void handleKeyPress(Keyboard::Key key);
   void handleKeyRelease(Keyboard::Key key);
-  void handleMouseButton(sf::Event::MouseButtonEvent &event);
+  void handleMouseButtonPressed(sf::Event::MouseButtonEvent &event);
+  void handleMouseButtonReleased(sf::Event::MouseButtonEvent &event);
   void handleMouseWheel(float delta);
   void handleSpacePress();
   void quit();

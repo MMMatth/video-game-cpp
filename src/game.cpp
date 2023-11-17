@@ -92,9 +92,10 @@ void Game::handleEvent(Event &event) {
     handleKeyPress(event.key.code);
   } else if (event.type == Event::KeyReleased) {
     handleKeyRelease(event.key.code);
-  } else if (event.type == Event::MouseButtonPressed ||
-             event.type == Event::MouseButtonReleased) {
-    handleMouseButton(event.mouseButton);
+  } else if (event.type == Event::MouseButtonPressed) {
+    handleMouseButtonPressed(event.mouseButton);
+  } else if (event.type == Event::MouseButtonReleased) {
+    handleMouseButtonReleased(event.mouseButton);
   } else if (event.type == Event::MouseWheelScrolled) {
     handleMouseWheel(event.mouseWheelScroll.delta);
   }
@@ -143,17 +144,21 @@ void Game::handleKeyRelease(sf::Keyboard::Key key) {
   }
 }
 
-void Game::handleMouseButton(sf::Event::MouseButtonEvent &event) {
+void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
   if (event.button == Mouse::Left) {
     if (m_inv.isOpen()) {
-      m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
-                        m_posCam.getX(), m_posCam.getY());
+      m_inv.handleClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
+                        m_char.getX(), m_char.getY());
     } else {
-      if (m_inv.getItemPosHand().getType() == "TOOL" && m_game_mode == 2) {
-        m_map.setIsBreaking(true, m_mousePosWorld.getX(),
-                            m_mousePosWorld.getY());
-        m_map.resetBreakingClock(m_mousePosWorld.getX(),
-                                 m_mousePosWorld.getY());
+      if (m_inv.getItemPosHand().getType() == "TOOL") {
+        if (m_game_mode == 2) {
+          m_map.setIsBreaking(true, m_mousePosWorld.getX(),
+                              m_mousePosWorld.getY());
+          m_map.resetBreakingClock(m_mousePosWorld.getX(),
+                                   m_mousePosWorld.getY());
+        } else {
+          breakBlock();
+        }
       }
     }
   } else if (event.button == Mouse::Right) {
@@ -162,6 +167,17 @@ void Game::handleMouseButton(sf::Event::MouseButtonEvent &event) {
         putBlock();
       }
     }
+  }
+}
+
+void Game::handleMouseButtonReleased(sf::Event::MouseButtonEvent &event) {
+  if (event.button == Mouse::Left) {
+    if (!m_inv.isOpen()) {
+      m_map.setIsBreaking(false, m_mousePosWorld.getX(),
+                          m_mousePosWorld.getY());
+    }
+  } else if (event.button == Mouse::Right) {
+    // nothing for this time
   }
 }
 

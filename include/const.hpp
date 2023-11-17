@@ -7,8 +7,8 @@
 #define WINDOW_HEIGHT 600
 #define WINDOW_TITLE "jeu"
 /* cam */
-#define CAM_WIDTH WINDOW_WIDTH / 2
-#define CAM_HEIGHT WINDOW_HEIGHT / 2
+#define CAM_WIDTH WINDOW_WIDTH * 0.75
+#define CAM_HEIGHT WINDOW_HEIGHT * 0.75
 /* character */
 #define TAILLE_PERSONNAGE 64
 #define DEPLACEMENT 5
@@ -37,14 +37,16 @@
 #define SPRITESHEET_IMG_PATH "../assets/img/spritesheet.png"
 /* font */
 #define FONT_PATH "assets/fonts/arial.ttf"
-#define FONT_COLOR Color(0, 0, 0)
+#define FONT_COLOR Color(218, 225, 16)
+#define WITE_COLOR Color::White
+#define BLACK_COLOR Color::Black
 /* map */
 #define MAP_WIDTH 100
 #define MAP_PATH "../assets/csv/map.csv"
 #define MOUNTAIN_COEF 20 //
 #define UNDERGROUND_COEF 10
 #define SKY_HEIGHT_OVER_MOUTAIN 15
-#define DIRT_HEIGHT 50
+#define DIRT_HEIGHT 3
 /* tree */
 #define TREE_SIZE 4
 #define ECART_TREE 10
@@ -53,7 +55,7 @@
 /* flower */
 #define FLOWER_ECART 10
 /* other */
-#define SKY_COLOR Color(135, 206, 250)
+#define SKY_COLOR Color(119, 181, 254)
 #define TILE_SIZE 32
 #define GAME_MODE 1
 
