@@ -45,6 +45,11 @@ private:
   unordered_map<string, SoundBuffer> m_buffers;
   SoundSettings m_soundSettings;
   Sound m_sound;
+  /*pause*/
+  bool m_pause;
+  Texture pauseTexture;
+  Sprite pauseSprite;
+  int m_clickOnOff;
 
 public:
   /* constructor */
@@ -66,7 +71,8 @@ public:
 
   void setGameVolume(float volume);
 
-  void reset();
+  void reset(); 
+  bool isPause() const;
 };
 
 #endif /* GAME_HPP */

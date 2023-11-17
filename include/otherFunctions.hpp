@@ -13,5 +13,6 @@ using namespace sf;
 void Error(bool condition, const string &message);
 void Error(const string &message);
 void handleFileError(const string &filePath);
+bool isInside(int mouseX, int mouseY, int x, int y, int width, int height);
 
 #endif /*OTHERFUNCTIONS_HPP*/

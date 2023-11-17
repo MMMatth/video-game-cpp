@@ -14,3 +14,7 @@ void handleFileError(const string &filePath) {
   cerr << "Unable to open file " << filePath << "\n";
   exit(EXIT_FAILURE);
 }
+
+bool isInside(int mouseX, int mouseY, int x, int y, int width, int height) {
+  return mouseX >= x && mouseX <= width && mouseY >= y && mouseY <= height;
+}

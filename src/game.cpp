@@ -7,7 +7,9 @@ Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
       m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
-      m_mapRenderer(m_map), m_sound(), m_clock(), m_soundSettings(5) {
+      m_mapRenderer(m_map), m_sound(), m_clock(), m_soundSettings(5), m_pause(false), m_clickOnOff(2) {
+  Error(!pauseTexture.loadFromFile(IMG_PAUSE_ON), "Error loading IMG_PAUSE_ON texture");
+  pauseSprite.setTexture(pauseTexture);
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(m_soundSettings.getVolume());
@@ -131,6 +133,11 @@ void Game::handleEvent(Event &event) {
     case Keyboard::Num9:
       m_inv.setPosHand(8);
       break;
+    case Keyboard::P:
+      m_pause = true;
+      m_soundSettings.setVolume(0);
+      m_sound.setVolume(m_soundSettings.getVolume());
+      break;
     default:
       break;
     }
@@ -151,6 +158,9 @@ void Game::handleEvent(Event &event) {
     }
   }
   if (event.type == Event::MouseButtonPressed) {
+    int mouseX = event.mouseButton.x;
+    int mouseY = event.mouseButton.y;
+
     if (event.mouseButton.button == Mouse::Left) {
       if (m_inv.isOpen())
         m_inv.handleClick(m_mousePosCam.getX(), m_mousePosCam.getY(),
@@ -168,6 +178,37 @@ void Game::handleEvent(Event &event) {
         }
       }
     }
+    /*continue*/
+    if(isInside(mouseX, mouseY, 75, 162, 314, 211)){
+      m_pause = false;
+    }
+    /*quit*/
+    if(isInside(mouseX, mouseY,610, 247, 712,294)){
+      quit();
+    }
+    /*new game*/
+    if(isInside(mouseX, mouseY, 71, 249, 341, 297)){
+      m_pause = false;
+      reset();
+    }
+    /*sound*/
+    if(isInside(mouseX, mouseY, 37, 33, 62, 62)){
+      if(m_clickOnOff == 2){
+      Error(!pauseTexture.loadFromFile(IMG_PAUSE_OFF), "Error loading IMG_PAUSE_OFF texture");
+      m_soundSettings.setVolume(0);
+      m_sound.setVolume(m_soundSettings.getVolume());
+      m_clickOnOff--;
+     }else{
+      Error(!pauseTexture.loadFromFile(IMG_PAUSE_ON), "Error loading IMG_PAUSE_ON texture");
+      m_soundSettings.setVolume(5);
+      m_sound.setVolume(m_soundSettings.getVolume());
+      m_clickOnOff++;
+     }
+    }
+    /*help*/
+    if(isInside(mouseX, mouseY, 605, 160, 725, 211)){
+      cout << "Not implemented yet" << endl;
+    }
   }
 }
 
@@ -184,6 +225,12 @@ void Game::render() {
            "FPS : " +
                to_string((int)(1 / m_clock.getElapsedTime().asSeconds())),
            &m_window, 20, Color::White, FONT_PATH);
+  
+  if(m_pause){
+    pauseSprite.setPosition(m_posCam.getX() - CAM_WIDTH / 2, m_posCam.getY() - CAM_HEIGHT / 2);
+    m_window.clear();
+    m_window.draw(pauseSprite);
+  }
 
   m_window.display();
 }
@@ -227,6 +274,6 @@ void Game::breakBlock() {
   m_map.supr_tile(mouseX, mouseY);
 }
 
-void Game::setGameVolume(float volume){
-  m_sound.setVolume(volume);
-}
+void Game::setGameVolume(float volume){ m_sound.setVolume(volume);}
+
+bool Game::isPause() const{ return m_pause; }

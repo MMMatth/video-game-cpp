@@ -25,6 +25,9 @@ int main() {
     } else if (menu.isNewGame()){
       game.reset();
       menu.setIsNewGame(false);
+    }else if (game.isPause()){
+      game.render();
+      //cout << "press P" <<endl;
     }else {
       if(menu.volumeOff()){
         game.setGameVolume(0);

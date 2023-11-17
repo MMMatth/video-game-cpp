@@ -26,6 +26,9 @@
 /* menu */
 #define IMG_MENU_ON "../assets/img/menuSoundOn.JPEG"
 #define IMG_MENU_OFF "../assets/img/menuSoundOff.JPEG"
+/*pause*/
+#define IMG_PAUSE_ON "../assets/img/menuSoundOnPause.jpeg"
+#define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"
 /* inventory */
 #define INVENTORY_HEIGHT 4
 #define INVENTORY_WIDTH 9

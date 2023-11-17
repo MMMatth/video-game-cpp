@@ -1,9 +1,6 @@
 #include "../include/menu.hpp"
 
 
-bool isInside(int mouseX, int mouseY, int x, int y, int width, int height) {
-  return mouseX >= x && mouseX <= width && mouseY >= y && mouseY <= height;
-}
 
 Menu::Menu(RenderWindow &window)
     : m_menu(true), m_window(window), m_sound(), m_newGame(false), m_soundSettings(5), m_clickOnOff(2) {
@@ -40,12 +37,12 @@ void Menu::handleEvent(sf::Event &event) {
     /*change sound volume*/
     if(isInside(mouseX, mouseY, 37, 35, 65, 63)){
      if(m_clickOnOff == 2){
-      Error(!menuTexture.loadFromFile(IMG_MENU_OFF), "Error loading menu texture");
+      Error(!menuTexture.loadFromFile(IMG_MENU_OFF), "Error loading menuOff texture");
       m_soundSettings.setVolume(0);
       m_sound.setVolume(m_soundSettings.getVolume());
       m_clickOnOff--;
      }else{
-      Error(!menuTexture.loadFromFile(IMG_MENU_ON), "Error loading menu texture");
+      Error(!menuTexture.loadFromFile(IMG_MENU_ON), "Error loading menuOn texture");
       m_soundSettings.setVolume(5);
       m_sound.setVolume(m_soundSettings.getVolume());
       m_clickOnOff++;
@@ -71,11 +68,11 @@ bool Menu::isNewGame() const { return m_newGame; }
 
 void Menu::setIsNewGame(bool newGame) { m_newGame = newGame; }
 
-bool Menu::volumeOff() const{
-  return m_sound.getVolume() == 0;
-}
+bool Menu::volumeOff() const{ return m_sound.getVolume() == 0; } 
 
-void Menu::resetClickOnOff(){
-  m_clickOnOff = 2;
-}
+void Menu::resetClickOnOff(){ m_clickOnOff = 2; }
+
+
+
+
 
