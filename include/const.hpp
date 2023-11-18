@@ -7,8 +7,8 @@
 #define WINDOW_HEIGHT 600
 #define WINDOW_TITLE "jeu"
 /* cam */
-#define CAM_WIDTH WINDOW_WIDTH * 1.25
-#define CAM_HEIGHT WINDOW_HEIGHT * 1.25
+#define CAM_WIDTH WINDOW_WIDTH * 0.75
+#define CAM_HEIGHT WINDOW_HEIGHT * 0.75
 #define CAM_SAVE_PATH "../assets/csv/cam.csv"
 /* character */
 #define CHAR_DEFAULT_COORD_X MAP_WIDTH *TILE_SIZE / 2

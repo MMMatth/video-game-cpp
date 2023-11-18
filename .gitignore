@@ -1,2 +1,4 @@
 build/
 doc/
+assets/csv/*
+!assets/csv/spritesheet_data.csv
