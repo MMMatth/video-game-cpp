@@ -58,8 +58,12 @@
 #define LEAF_HEIGHT 3
 /* flower */
 #define FLOWER_ECART 10
+/*day night cycle*/
+#define DAY_NIGHT_CYCLE_CSV_PATH "../assets/csv/day_night_cycle.csv"
+#define DAY_NIGHT_CYCLE_IMG_PATH "../assets/img/day_night_cycle.png"
+#define DEFAULT_SKY_COLOR Color(119, 181, 254)
+
 /* other */
-#define SKY_COLOR Color(119, 181, 254)
 #define TILE_SIZE 32
 #define GAME_MODE 1
 

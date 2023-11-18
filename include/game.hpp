@@ -49,7 +49,6 @@ private:
   Sound m_sound; /** SFML sound*/
   /* day_night_cycle */
   DayNightCycle m_day_night_cycle;
-  Clock m_day_night_cycle_clock;
   /* other */
   int m_game_mode; /** 1 = creative, 2 = survival*/
   Clock m_clock;   /* clock */

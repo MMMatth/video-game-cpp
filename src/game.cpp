@@ -8,7 +8,8 @@ Game::Game(RenderWindow &window)
       m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
       m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
       m_mapRenderer(m_map), m_sound(), m_clock(), m_soundSettings(5),
-      m_game_mode(2), m_day_night_cycle(240), m_day_night_cycle_clock(),
+      m_game_mode(2),
+      m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
       m_menuPause(m_soundSettings, m_sound) {
   m_sprites = initSprites();
   m_buffers = initBuffers();
@@ -76,6 +77,7 @@ void Game::update() {
                           m_mousePosWorld.getY());
     }
   }
+  m_day_night_cycle.update();
   updateCam();
   updateMousePos();
   m_map.update(m_posCam.getX(), m_posCam.getY());
@@ -86,6 +88,7 @@ void Game::update() {
 void Game::clean() {
   m_window.clear();
   m_map.clear();
+  m_day_night_cycle.clear();
 }
 
 void Game::handleEvent(Event &event) {
@@ -198,8 +201,7 @@ void Game::handleMouseWheel(float delta) {
 }
 
 void Game::render() {
-  m_window.clear(m_day_night_cycle.getColor(
-      m_day_night_cycle_clock.getElapsedTime().asSeconds()));
+  m_window.clear(m_day_night_cycle.getColor());
 
   m_mapRenderer.render(m_window, m_sprites);
 
@@ -220,12 +222,14 @@ void Game::render() {
 void Game::quit() {
   save();
   m_window.close();
+
   clean();
 }
 
 void Game::save() {
   m_inv.save(INVENTORY_SAVE_PATH);
   m_map.save(MAP_PATH);
+  m_day_night_cycle.save(DAY_NIGHT_CYCLE_CSV_PATH);
   m_char.save(CHARACTER_SAVE_PATH);
 }
 
