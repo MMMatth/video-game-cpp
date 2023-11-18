@@ -5,10 +5,9 @@ using namespace sf;
 
 Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
-      m_posCam(m_char.getX(), m_char.getY()), m_inv(INVENTORY_SAVE_PATH),
-      m_invRender(m_inv), m_mousePosCam(0, 0), m_map(MAP_PATH),
-      m_mapRenderer(m_map), m_sound(), m_clock(), m_soundSettings(5),
-      m_game_mode(2),
+      m_cam(CAM_SAVE_PATH), m_inv(INVENTORY_SAVE_PATH), m_invRender(m_inv),
+      m_mousePosCam(0, 0), m_map(MAP_PATH), m_mapRenderer(m_map), m_sound(),
+      m_clock(), m_soundSettings(5), m_game_mode(2),
       m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
       m_menuPause(m_soundSettings, m_sound) {
   m_sprites = initSprites();
@@ -23,10 +22,9 @@ void Game::run() {
 }
 
 void Game::reset() {
-  m_char.setX(MAP_WIDTH * TILE_SIZE / 2);
-  m_char.setY(128);
-  m_posCam.setX(MAP_WIDTH * TILE_SIZE / 2);
-  m_posCam.setY(128);
+  m_char.setX(CHAR_DEFAULT_COORD_X);
+  m_char.setY(CHAR_DEFAULT_COORD_Y);
+  m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
   Createmap map(MAP_WIDTH);
   map.generate();
   m_map = Map(MAP_PATH);
@@ -35,22 +33,20 @@ void Game::reset() {
 void Game::updateCam() {
   if (m_char.getX() - CAM_WIDTH / 2 > 0 &&
       m_char.getX() + CAM_WIDTH / 2 < m_map.get_width() * TILE_SIZE) {
-    m_posCam.setX(m_posCam.getX() +
-                  (m_char.getX() + m_char.getWidth() / 4 - m_posCam.getX()) /
-                      20);
+    m_cam.setX(m_cam.getX() +
+               (m_char.getX() + m_char.getWidth() / 4 - m_cam.getX()) / 20);
   }
   if (m_char.getY() + CAM_HEIGHT / 2 < m_map.get_height() * TILE_SIZE &&
       m_char.getY() - CAM_HEIGHT / 2 > 0) {
-    m_posCam.setY(m_posCam.getY() +
-                  (m_char.getY() + m_char.getWidth() / 2 - m_posCam.getY()) /
-                      20);
+    m_cam.setY(m_cam.getY() +
+               (m_char.getY() + m_char.getWidth() / 2 - m_cam.getY()) / 20);
   }
-  m_window.setView(View(Vector2f(m_posCam.getX(), m_posCam.getY()),
+  m_window.setView(View(Vector2f(m_cam.getX(), m_cam.getY()),
                         Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
 
 void Game::updateCollide() {
-  m_map.collide(&m_char, m_posCam.getX(), m_posCam.getY());
+  m_map.collide(&m_char, m_cam.getX(), m_cam.getY());
   m_map.collide(&m_char);
 }
 
@@ -62,8 +58,8 @@ void Game::updateMousePos() {
   m_mousePosCam.setX(adjustedPos.x);
   m_mousePosCam.setY(adjustedPos.y);
 
-  m_mousePosWorld.setX(m_mousePosCam.getX() + m_posCam.getX() - CAM_WIDTH / 2);
-  m_mousePosWorld.setY(m_mousePosCam.getY() + m_posCam.getY() - CAM_HEIGHT / 2);
+  m_mousePosWorld.setX(m_mousePosCam.getX() + m_cam.getX() - CAM_WIDTH / 2);
+  m_mousePosWorld.setY(m_mousePosCam.getY() + m_cam.getY() - CAM_HEIGHT / 2);
 }
 
 void Game::update() {
@@ -80,7 +76,7 @@ void Game::update() {
   m_day_night_cycle.update();
   updateCam();
   updateMousePos();
-  m_map.update(m_posCam.getX(), m_posCam.getY());
+  m_map.update(m_cam.getX(), m_cam.getY());
   m_char.update();
   updateCollide();
 }
@@ -205,16 +201,16 @@ void Game::render() {
 
   m_mapRenderer.render(m_window, m_sprites);
 
-  m_charRenderer.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY());
+  m_charRenderer.render(m_window, m_sprites, m_cam.getX(), m_cam.getY());
 
-  m_invRender.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY(),
+  m_invRender.render(m_window, m_sprites, m_cam.getX(), m_cam.getY(),
                      m_mousePosWorld.getX(), m_mousePosWorld.getY());
-  drawText(m_posCam.getX() - CAM_WIDTH / 2, m_posCam.getY() - CAM_HEIGHT / 2,
+  drawText(m_cam.getX() - CAM_WIDTH / 2, m_cam.getY() - CAM_HEIGHT / 2,
            "FPS : " +
                to_string((int)(1 / m_clock.getElapsedTime().asSeconds())),
            &m_window, 20, Color::White, FONT_PATH);
 
-  m_menuPause.render(m_window, m_posCam.getX(), m_posCam.getY());
+  m_menuPause.render(m_window, m_cam.getX(), m_cam.getY());
 
   m_window.display();
 }
@@ -229,6 +225,7 @@ void Game::quit() {
 void Game::save() {
   m_inv.save(INVENTORY_SAVE_PATH);
   m_map.save(MAP_PATH);
+  m_cam.save(CAM_SAVE_PATH);
   m_day_night_cycle.save(DAY_NIGHT_CYCLE_CSV_PATH);
   m_char.save(CHARACTER_SAVE_PATH);
 }

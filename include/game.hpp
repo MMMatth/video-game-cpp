@@ -2,6 +2,7 @@
 #define JEU_HPP
 
 #include "../include/otherFunctions.hpp"
+#include "cam.hpp"
 #include "characterRender.hpp"
 #include "const.hpp"
 #include "coord.hpp"
@@ -37,6 +38,7 @@ private:
   MapRender m_mapRenderer;
   /* cam */
   Coord m_posCam; /* camera position */
+  Cam m_cam;
   /* inventory */
   Inventory m_inv;               /** inventory */
   InventoryRenderer m_invRender; /** inventory render part*/
