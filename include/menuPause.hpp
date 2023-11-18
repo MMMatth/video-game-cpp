@@ -2,6 +2,7 @@
 #ifndef MENUPAUSE_HPP
 #define MENUPAUSE_HPP
 
+#include "cam.hpp"
 #include "draw.hpp"
 #include "otherFunctions.hpp"
 #include "soundSettings.hpp"
@@ -65,11 +66,12 @@ public:
     }
   }
 
-  void render(RenderWindow &m_window, float m_posCamX, float m_posCamY) {
+  void render(RenderWindow &m_window, Cam &cam) {
     if (m_pause) {
       m_window.clear();
-      drawSprites(m_posCamX - CAM_WIDTH / 2, m_posCamY - CAM_HEIGHT / 2,
-                  pauseSprite, &m_window, CAM_WIDTH, CAM_HEIGHT);
+      drawSprites(cam.getX() - cam.getWidth() / 2,
+                  cam.getY() - cam.getHeight() / 2, pauseSprite, &m_window,
+                  cam.getWidth(), cam.getHeight());
     }
   }
 

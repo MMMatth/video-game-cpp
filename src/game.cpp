@@ -7,7 +7,7 @@ Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_cam(CAM_SAVE_PATH), m_inv(INVENTORY_SAVE_PATH), m_invRender(m_inv),
       m_mousePosCam(0, 0), m_map(MAP_PATH), m_mapRenderer(m_map), m_sound(),
-      m_clock(), m_soundSettings(5), m_game_mode(2),
+      m_fpsCounter(10, 10), m_soundSettings(5), m_game_mode(2),
       m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
       m_menuPause(m_soundSettings, m_sound) {
   m_sprites = initSprites();
@@ -16,7 +16,6 @@ Game::Game(RenderWindow &window)
 }
 
 void Game::run() {
-  m_clock.restart();
   render();
   update();
 }
@@ -28,21 +27,6 @@ void Game::reset() {
   Createmap map(MAP_WIDTH);
   map.generate();
   m_map = Map(MAP_PATH);
-}
-
-void Game::updateCam() {
-  if (m_char.getX() - CAM_WIDTH / 2 > 0 &&
-      m_char.getX() + CAM_WIDTH / 2 < m_map.get_width() * TILE_SIZE) {
-    m_cam.setX(m_cam.getX() +
-               (m_char.getX() + m_char.getWidth() / 4 - m_cam.getX()) / 20);
-  }
-  if (m_char.getY() + CAM_HEIGHT / 2 < m_map.get_height() * TILE_SIZE &&
-      m_char.getY() - CAM_HEIGHT / 2 > 0) {
-    m_cam.setY(m_cam.getY() +
-               (m_char.getY() + m_char.getWidth() / 2 - m_cam.getY()) / 20);
-  }
-  m_window.setView(View(Vector2f(m_cam.getX(), m_cam.getY()),
-                        Vector2f(CAM_WIDTH, CAM_HEIGHT)));
 }
 
 void Game::updateCollide() {
@@ -74,10 +58,13 @@ void Game::update() {
     }
   }
   m_day_night_cycle.update();
-  updateCam();
+  m_cam.update(m_char.getX(), m_char.getY(), m_char.getWidth(),
+               m_char.getHeight(), m_map.get_width(), m_map.get_height(),
+               m_window);
   updateMousePos();
   m_map.update(m_cam.getX(), m_cam.getY());
   m_char.update();
+  m_fpsCounter.update();
   updateCollide();
 }
 
@@ -203,14 +190,12 @@ void Game::render() {
 
   m_charRenderer.render(m_window, m_sprites, m_cam.getX(), m_cam.getY());
 
-  m_invRender.render(m_window, m_sprites, m_cam.getX(), m_cam.getY(),
-                     m_mousePosWorld.getX(), m_mousePosWorld.getY());
-  drawText(m_cam.getX() - CAM_WIDTH / 2, m_cam.getY() - CAM_HEIGHT / 2,
-           "FPS : " +
-               to_string((int)(1 / m_clock.getElapsedTime().asSeconds())),
-           &m_window, 20, Color::White, FONT_PATH);
+  m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
+                     m_mousePosWorld.getY());
 
-  m_menuPause.render(m_window, m_cam.getX(), m_cam.getY());
+  m_fpsCounter.render(m_window, m_cam);
+
+  m_menuPause.render(m_window, m_cam);
 
   m_window.display();
 }
@@ -218,7 +203,6 @@ void Game::render() {
 void Game::quit() {
   save();
   m_window.close();
-
   clean();
 }
 

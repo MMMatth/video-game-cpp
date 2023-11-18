@@ -1,6 +1,7 @@
 #ifndef INVENTORYRENDERER_HPP
 #define INVENTORYRENDERER_HPP
 
+#include "cam.hpp"
 #include "inventory.hpp"
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
@@ -24,8 +25,8 @@ public:
   InventoryRenderer(Inventory &inv) : m_inventory(inv) {}
 
   void render(sf::RenderWindow &window,
-              std::unordered_map<std::string, sf::Sprite> sprites, int camX,
-              int camY, int mouseX, int mouseY);
+              std::unordered_map<std::string, sf::Sprite> sprites, Cam &cam,
+              int mouseX, int mouseY);
 };
 
 #endif /* INVENTORYRENDERER_HPP */

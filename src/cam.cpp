@@ -46,6 +46,22 @@ bool Cam::loadFromCSV(string csvPath) {
   return true;
 }
 
+void Cam::update(int charX, int charY, int charW, int charH, int mapWidth,
+                 int mapHeight, RenderWindow &window) {
+  int targetX = charX + charH / 2;
+  int targetY = charY + charW / 2;
+
+  if (targetX > m_width / 2 && targetX < mapWidth * TILE_SIZE - m_width / 2) {
+    setX(getX() + (targetX - getX()) / 20);
+  }
+  if (targetY > CAM_HEIGHT / 2 &&
+      targetY < mapHeight * TILE_SIZE - m_height / 2) {
+    setY(getY() + (targetY - getY()) / 20);
+  }
+
+  window.setView(View(Vector2f(getX(), getY()), Vector2f(m_width, m_height)));
+}
+
 void Cam::reset(int x, int y) {
   m_pos.setX(x);
   m_pos.setY(y);

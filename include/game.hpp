@@ -8,6 +8,7 @@
 #include "coord.hpp"
 #include "dayNightCycle.hpp"
 #include "draw.hpp"
+#include "fpsCounter.hpp"
 #include "inventory.hpp"
 #include "inventoryRender.hpp"
 #include "map.hpp"
@@ -52,8 +53,8 @@ private:
   /* day_night_cycle */
   DayNightCycle m_day_night_cycle;
   /* other */
-  int m_game_mode; /** 1 = creative, 2 = survival*/
-  Clock m_clock;   /* clock */
+  int m_game_mode;         /** 1 = creative, 2 = survival*/
+  FpsCounter m_fpsCounter; /* clock */
   /*pause*/
   MenuPause m_menuPause;
 
@@ -63,7 +64,6 @@ public:
   void run();
   /* update*/
   void update();
-  void updateCam();
   void updateCollide();
   void updateMousePos();
   /* render */
@@ -78,6 +78,7 @@ public:
   void handleMouseButtonReleased(sf::Event::MouseButtonEvent &event);
   void handleMouseWheel(float delta);
   void handleSpacePress();
+  /* quit */
   void quit();
   /*save*/
   void save();
@@ -85,7 +86,7 @@ public:
   void putBlock();
   bool is_breakable();
   void breakBlock();
-
+  /* sound */
   void setGameVolume(float volume);
   /* reset */
   void reset();

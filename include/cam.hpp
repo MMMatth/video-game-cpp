@@ -1,6 +1,7 @@
 #ifndef CAM_HPP
 #define CAM_HPP
 
+#include "const.hpp"
 #include "coord.hpp"
 #include <SFML/Graphics.hpp>
 #include <fstream>
@@ -15,16 +16,23 @@ class Cam {
 private:
   bool m_save;
   Coord m_pos;
+  int m_width = CAM_WIDTH;
+  int m_height = CAM_HEIGHT;
 
 public:
   Cam();
   Cam(int x, int y);
   Cam(string csvPath);
   bool loadFromCSV(string csvPath);
+  /* update */
+  void update(int charX, int charY, int charW, int charH, int mapWidth,
+              int mapHeight, RenderWindow &window);
   /* getters */
   int getX() { return m_pos.getX(); }
   int getY() { return m_pos.getY(); }
   Coord getPos() { return m_pos; }
+  int getWidth() { return m_width; }
+  int getHeight() { return m_height; }
 
   /* setters */
   void setX(int x) { m_pos.setX(x); }
