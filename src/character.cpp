@@ -3,8 +3,21 @@
 
 using namespace std;
 
-Character::Character(string path) {
-  ifstream file(path);
+Character::Character(string path) : m_save(true) {
+  if (!loadFromCSV(path)) {
+    m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 0);
+    m_life = 20;
+  }
+  init();
+}
+
+Character::Character(int x, int y, int life)
+    : m_coord(x, y), m_life(life), m_save(false) {
+  init();
+}
+
+bool Character::loadFromCSV(string csvPath) {
+  ifstream file(csvPath);
   if (file.is_open()) {
     string line;
     getline(file, line); // skip the header
@@ -21,22 +34,11 @@ Character::Character(string path) {
     else
       m_coord = Coord(x, y - y % TILE_SIZE);
     m_life = stoi(life_str);
+    return true;
   } else {
-    // we create the file
-    ofstream file(path);
-    if (file.is_open()) {
-      file << "x;y;life\n";
-      file << MAP_WIDTH * TILE_SIZE / 2 << ";" << 0 << 20 << "\n";
-      m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 0);
-    } else {
-      cerr << "Character unable to open file " << path << "\n";
-    }
+    cerr << "Load Character unable to open file " << csvPath << "\n";
+    return false;
   }
-  init();
-}
-
-Character::Character(int x, int y, int life) : m_coord(x, y), m_life(life) {
-  init();
 }
 
 void Character::init() {
@@ -120,13 +122,16 @@ void Character::mooveX(int x) { m_coord.setX(m_coord.getX() + x); }
 void Character::mooveY(int y) { m_coord.setY(m_coord.getY() + y); }
 
 void Character::save(string path) {
-  ofstream file;
-  file.open(path);
-  if (file.is_open()) {
-    file << "x;y;life\n";                                        /* header */
-    file << getX() << ";" << getY() << ";" << getLife() << "\n"; /* position */
-  } else {
-    cerr << "Save Character unable to open file " << path << "\n";
+  if (m_save) {
+    ofstream file;
+    file.open(path);
+    if (file.is_open()) {
+      file << "x;y;life\n"; /* header */
+      file << getX() << ";" << getY() << ";" << getLife()
+           << "\n"; /* position */
+    } else {
+      cerr << "Save Character unable to open file " << path << "\n";
+    }
+    file.close();
   }
-  file.close();
 }

@@ -4,6 +4,7 @@
 #include "block.hpp"
 #include "character.hpp"
 #include "const.hpp"
+#include "mapGenerator.hpp"
 #include "tile.hpp"
 #include <SFML/Graphics.hpp>
 #include <fstream>
@@ -22,8 +23,8 @@ public:
   /* destructor */
   void clear();
   /* init function */
-  void initMap(string nomFichier);
-  void initLength(string nomFichier);
+  bool loadFromCSV(string pathFile);
+  bool initLegthFromCSV(string pathFile);
 
   /* getters */
   vector<vector<Tile>> getMap() { return m_map; }
@@ -51,6 +52,7 @@ public:
   string toString();
 
 private:
+  bool m_save;                /** condition for the save*/
   vector<vector<Tile>> m_map; /**  2D vector contain tile */
   Coord m_workingAreaCoord;   /** coord x,y of the tile in top left */
   int m_workingAreaWidth;     /** amout of tile in the cam in x*/

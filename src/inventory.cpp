@@ -2,17 +2,21 @@
 
 /* constructor  */
 Inventory::Inventory(string csvPath)
-    : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()) {
+    : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()),
+      m_save(true) {
   for (int row = 0; row < INVENTORY_HEIGHT; row++) {
     for (int column = 0; column < INVENTORY_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();
     }
   }
-  loadFromCSV(csvPath);
+  if (!loadFromCSV(csvPath)) {
+    cerr << "Failed to load csv from " << csvPath << "so inv is empty" << endl;
+  };
 }
 
 Inventory::Inventory()
-    : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()) {
+    : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()),
+      m_save(false) {
   for (int row = 0; row < INVENTORY_HEIGHT; row++) {
     for (int column = 0; column < INVENTORY_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();
@@ -20,53 +24,53 @@ Inventory::Inventory()
   }
 }
 
-void Inventory::loadFromCSV(const std::string &csvPath) {
-  std::ifstream file(csvPath);
+bool Inventory::loadFromCSV(const string &csvPath) {
+  ifstream file(csvPath);
   if (!file.is_open()) {
-    std::cerr << "Unable to open file: " << csvPath << "\n";
-    std::exit(EXIT_FAILURE);
+    cerr << "Unable to open file: " << csvPath << "\n";
+    return false;
   }
-  std::string line;
+  string line;
   int row = 0;
-  while (std::getline(file, line)) {
+  while (getline(file, line)) {
     if (row != 0) { // Skip header row
-      std::istringstream ss(line);
-      std::string cell;
-      std::string id;
+      istringstream ss(line);
+      string cell;
+      string id;
       int x, y, amount;
       int column = 0;
 
-      while (std::getline(ss, cell, ';')) {
+      while (getline(ss, cell, ';')) {
         switch (column) {
         case 0:
           id = cell;
           break;
         case 1:
-          x = std::stoi(cell);
+          x = stoi(cell);
           break;
         case 2:
-          y = std::stoi(cell);
+          y = stoi(cell);
           break;
         case 3:
-          amount = std::stoi(cell);
+          amount = stoi(cell);
           break;
         default:
-          std::cerr << "Invalid csv file : " << csvPath << "\n";
-          std::exit(EXIT_FAILURE);
+          cerr << "Inv: invalide csv file\n";
+          return false;
           break;
         }
         column++;
       }
 
       if (x > INVENTORY_HEIGHT || y > INVENTORY_WIDTH) {
-        std::cerr << "Invalid position: (" << x << ", " << y
-                  << ") is greater than the inventory size.\n";
+        cerr << "Invalid position: (" << x << ", " << y
+             << ") is greater than the inventory size.\n";
       } else if (amount > MAX_STACK_SIZE || amount < 0) {
-        std::cerr << "Invalid amount: " << amount
-                  << " is greater than MAX_STACK_SIZE.\n";
+        cerr << "Invalid amount: " << amount
+             << " is greater than MAX_STACK_SIZE.\n";
       } else if (blockMap.find(id) == blockMap.end() &&
                  toolMap.find(id) == toolMap.end()) {
-        std::cerr << "Invalid id: " << id << " is not a valid id.\n";
+        cerr << "Invalid id: " << id << " is not a valid id.\n";
       } else {
         if (blockMap.find(id) != blockMap.end()) {
           m_inventory[x][y].setItem(blockMap[id]);
@@ -81,8 +85,8 @@ void Inventory::loadFromCSV(const std::string &csvPath) {
     }
     row++;
   }
-
   file.close();
+  return true; // all is ok
 }
 
 /* swap function */
@@ -260,20 +264,23 @@ Item Inventory::getItemPosHand() {
 /* other */
 
 void Inventory::save(string csvPath) {
-  ofstream file(csvPath);
-  if (file.is_open()) {
-    file << "id;x;y;amount\n";
-    for (int i = 0; i < INVENTORY_HEIGHT; i++) {
-      for (int j = 0; j < INVENTORY_WIDTH; j++) {
-        if (!m_inventory[i][j].isEmpty() &&
-            m_inventory[i][j].getItem() != NULL) {
-          file << m_inventory[i][j].getItem()->getName() << ";" << i << ";" << j
-               << ";" << m_inventory[i][j].getItem()->getAmount() << "\n";
+  if (m_save) {
+    ofstream file(csvPath);
+    if (file.is_open()) {
+      file << "id;x;y;amount\n";
+      for (int i = 0; i < INVENTORY_HEIGHT; i++) {
+        for (int j = 0; j < INVENTORY_WIDTH; j++) {
+          if (!m_inventory[i][j].isEmpty() &&
+              m_inventory[i][j].getItem() != NULL) {
+            file << m_inventory[i][j].getItem()->getName() << ";" << i << ";"
+                 << j << ";" << m_inventory[i][j].getItem()->getAmount()
+                 << "\n";
+          }
         }
       }
     }
+    file.close();
   }
-  file.close();
 }
 
 string Inventory::toString() {
@@ -286,7 +293,7 @@ string Inventory::toString() {
     }
     str += "\n";
   }
-  str += "[ " + std::string(m_selected_tile.isEmpty() ? " " : "x") + " ]\n";
+  str += "[ " + string(m_selected_tile.isEmpty() ? " " : "x") + " ]\n";
   str += "pos_hand : " + to_string(m_pos_item_hand) + "\n";
   return str;
 }
