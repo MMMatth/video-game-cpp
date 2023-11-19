@@ -3,6 +3,7 @@
 
 #include "block.hpp"
 #include "character.hpp"
+#include "monster.hpp"
 #include "const.hpp"
 #include "tile.hpp"
 #include <SFML/Graphics.hpp>
@@ -44,11 +45,15 @@ public:
   void save(string path);
   void collide(Character *perso, int camX, int camY);
   void collide(Character *perso);
+  bool collideBlockMonster(Monster *monster);
+  void collide(Monster *monster);
+  
   Tile chooseTile(string c, int x, int y);
   void add_tile(Block block, int mouseX, int mouseY);
   void supr_tile(int x, int y);
   void update(int camX, int camY);
   string toString();
+  bool checkMonsterCollisionAt(int x, int y);
 
 private:
   vector<vector<Tile>> m_map; /**  2D vector contain tile */

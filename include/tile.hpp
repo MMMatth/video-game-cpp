@@ -3,6 +3,7 @@
 
 #include "block.hpp"
 #include "character.hpp"
+#include "monster.hpp"
 #include "const.hpp"
 #include "coord.hpp"
 #include <iostream>
@@ -37,6 +38,7 @@ public:
   /* other */
   bool estDansCam(int posCamX, int posCamY, int largeur, int hauteur);
   void collide(Character *perso);
+  bool collide(Monster *monster);
   string toString() { return m_block.toString(); }
 };
 

@@ -1,5 +1,6 @@
 #include "../include/game.hpp"
 #include "../include/menu.hpp"
+#include "../include/monster.hpp"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
@@ -11,6 +12,7 @@ int main() {
   window.setFramerateLimit(FPS_MAX);
   while (window.isOpen()) {
     Event event;
+   // monster.update();
     while (window.pollEvent(event)) {
       if (event.type == Event::Closed) {
         window.close();

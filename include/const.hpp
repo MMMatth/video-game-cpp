@@ -29,6 +29,10 @@
 /*pause*/
 #define IMG_PAUSE_ON "../assets/img/menuSoundOnPause.jpeg"
 #define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"
+/*monster*/
+#define IMG_MONSTER "../assets/img/monster.bmp"
+#define NUM_MONSTERS 20
+#define NUM_FRAMES_MONSTER 3 
 /* inventory */
 #define INVENTORY_HEIGHT 4
 #define INVENTORY_WIDTH 9

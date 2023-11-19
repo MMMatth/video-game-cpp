@@ -10,12 +10,30 @@ Game::Game(RenderWindow &window)
       m_mapRenderer(m_map), m_sound(), m_clock(), m_soundSettings(5),
       m_pause(false), m_clickOnOff(2), m_game_mode(2), m_day_night_cycle(240),
       m_day_night_cycle_clock() {
+    
+    
+  Error(!m_monsterTexture.loadFromFile(IMG_MONSTER),
+        "Error loading IMG_MONSTER texture");
+    
+  for (int i = 0; i < NUM_MONSTERS; ++i) {
+  int randX, randY;
+  do {
+    randX = rand() % (MAP_WIDTH * TILE_SIZE);
+    randY = rand() % (MAP_WIDTH * TILE_SIZE);
+    m_monsters.push_back(Monster(randX, randY, m_monsterTexture));
+  } while (m_map.collideBlockMonster(&m_monsters.back()));
+  
+  m_monsterRenders.push_back(MonsterRender(m_monsters.back()));
+}
+
+
   Error(!pauseTexture.loadFromFile(IMG_PAUSE_ON),
         "Error loading IMG_PAUSE_ON texture");
   pauseSprite.setTexture(pauseTexture);
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(m_soundSettings.getVolume());
+   
 }
 
 void Game::run() {
@@ -78,6 +96,13 @@ void Game::update() {
       m_map.setIsBreaking(false, m_mousePosWorld.getX(),
                           m_mousePosWorld.getY());
     }
+  }
+  for (Monster &monster : m_monsters) {
+    
+    monster.update();
+    m_map.collide(&monster);
+    m_map.collideBlockMonster(&monster);
+    
   }
   updateCam();
   updateMousePos();
@@ -248,7 +273,7 @@ void Game::render() {
   m_mapRenderer.render(m_window, m_sprites);
 
   m_charRenderer.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY());
-
+  
   m_invRender.render(m_window, m_sprites, m_posCam.getX(), m_posCam.getY(),
                      m_mousePosWorld.getX(), m_mousePosWorld.getY());
   drawText(m_posCam.getX() - CAM_WIDTH / 2, m_posCam.getY() - CAM_HEIGHT / 2,
@@ -261,6 +286,10 @@ void Game::render() {
     drawSprites(m_posCam.getX() - CAM_WIDTH / 2,
                 m_posCam.getY() - CAM_HEIGHT / 2, pauseSprite, &m_window,
                 CAM_WIDTH, CAM_HEIGHT);
+  }
+
+  for (size_t i = 0; i < NUM_MONSTERS; ++i) {  
+    m_monsterRenders[i].draw(m_window, m_monsters[i]);
   }
 
   m_window.display();
@@ -321,7 +350,7 @@ void Game::breakBlock() {
   play_sound(&m_buffers["BREAK"], &m_sound);
   int mouseX = m_mousePosWorld.getX();
   int mouseY = m_mousePosWorld.getY();
-  if (m_game_mode = 2) {
+  if (m_game_mode == 2) {
     if (m_map.find_tile(mouseX, mouseY)->getBlock()->getId() != '0') {
       m_inv.addItem(*m_map.find_tile(mouseX, mouseY)->getBlock());
     }

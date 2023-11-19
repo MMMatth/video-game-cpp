@@ -19,6 +19,7 @@
 #include <cassert>
 #include <functional>
 #include <unordered_map>
+#include "../include/monsterRender.hpp"
 
 using namespace sf;
 using namespace std;
@@ -57,9 +58,14 @@ private:
   Texture pauseTexture;
   Sprite pauseSprite;
   int m_clickOnOff;
+  /*monster*/
+  vector<Monster> m_monsters;
+  vector<MonsterRender> m_monsterRenders;
+  Texture m_monsterTexture;
+
 
 public:
-  /* constructor */
+  /* constructor */ 
   Game(RenderWindow &window);
   void run();
   /* update*/

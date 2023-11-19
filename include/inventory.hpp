@@ -1,4 +1,3 @@
-
 #ifndef inventory_hpp
 #define inventory_hpp
 

@@ -167,6 +167,18 @@ void Map::collide(Character *perso, int camX, int camY) {
   }
 }
 
+bool Map::collideBlockMonster(Monster *monster) {
+  for (int y = 0; y < get_height(); y++) {
+    for (int x = 0; x < get_width(); x++) {
+      if (m_map[y][x].getBlock()->isSolid()) {
+        if(m_map[y][x].collide(monster)){return true;}
+      }
+    }
+  }
+
+  return false;
+}
+
 void Map::collide(Character *perso) {
   if (perso->getX() < 0)
     perso->setCollision("left", true);
@@ -176,6 +188,17 @@ void Map::collide(Character *perso) {
     perso->setCollision("up", true);
   if (perso->getY() + perso->getHeight() > get_height() * TILE_SIZE)
     perso->setCollision("down", true);
+}
+
+void Map::collide(Monster *monster) {
+  if (monster->getX() < 0)
+    monster->setCollision("left", true);
+  if (monster->getX() + monster->getWidth() > get_width() * TILE_SIZE)
+    monster->setCollision("right", true);
+  if (monster->getY() < 0)
+    monster->setCollision("up", true);
+  if (monster->getY() + monster->getHeight() > get_height() * TILE_SIZE)
+    monster->setCollision("down", true);
 }
 
 void Map::add_tile(Block block, int mouseX, int mouseY) {
@@ -224,3 +247,19 @@ string Map::toString() {
   }
   return res;
 }
+
+bool Map::checkMonsterCollisionAt(int x, int y) {
+  // Convertir les coordonnées du monde en coordonnées de la carte
+  int mapX = x / TILE_SIZE;
+  int mapY = y / TILE_SIZE;
+
+  // Vérifier si les coordonnées de la carte pointent vers un bloc solide
+  if (mapX >= 0 && mapX < m_width && mapY >= 0 && mapY < m_height) {
+    return m_map[mapY][mapX].getBlock()->isSolid();
+  }
+
+  // Si les coordonnées sont en dehors des limites de la carte, considérer comme une collision
+  return true;
+}
+
+
