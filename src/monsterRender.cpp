@@ -1,25 +1,39 @@
 #include "../include/monsterRender.hpp"
 
+MonsterRender::MonsterRender(Monster &monster) : m_monster(monster) {}
 
-MonsterRender::MonsterRender(Monster &monster): m_monster(monster){}
+void MonsterRender::drawSprite(RenderWindow &window,
+                               unordered_map<string, Sprite> &sprites,
+                               const string &spriteKey, int frame, int x,
+                               int y) {
+  Sprite sprite = sprites[spriteKey];
+  sprite.setTextureRect(
+      IntRect(sprites[spriteKey].getTextureRect().left + frame * 25,
+              sprites[spriteKey].getTextureRect().top, 25, 48));
+  drawSprites(x, y, sprite, &window, m_monster.getWidth(),
+              m_monster.getHeight());
+}
 
 /*Draw function for MonsterRender class*/
-void MonsterRender::draw(RenderWindow& window, Monster& monster) {
-    /*Get direction and sprites from the Monster*/
-    map<string, bool> direction = monster.getDirection();
-    unordered_map<string, Sprite> sprites = monster.getSprites();
+void MonsterRender::render(RenderWindow &window,
+                           unordered_map<string, Sprite> sprites) {
+  /*Calculate the frame for animation based on elapsed time*/
+  cout << "1" << endl;
+  map<string, bool> direction = m_monster.getDirection();
+  cout << "2" << endl;
+  int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % 3;
 
-    /*Calculate the frame for animation based on elapsed time*/
-    int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % NUM_FRAMES_MONSTER;
-    
-    /*Calculate the position of the Monster for drawing*/
-    int x = monster.getX() + (monster.getWidth() / 2); 
-    int y = monster.getY();
+  /*Calculate the position of the Monster for drawing*/
+  int x = m_monster.getX() + (m_monster.getWidth() / 2);
+  int y = m_monster.getY();
 
-    /*Check the direction and draw the appropriate sprite*/
-    if (direction["right"]) {
-        drawSprites(x, y, sprites["moveRight" + to_string(frame + 1)], &window, monster.getWidth(), monster.getHeight());
-    } else if (direction["left"]) {
-        drawSprites(x, y, sprites["moveLeft" + to_string(frame + 1)], &window, monster.getWidth(), monster.getHeight());
-    }
+  /*Check the direction and draw the appropriate sprite*/
+  if (direction["right"]) {
+    drawSprite(window, sprites, "FLYING_MONSTER_RIGHT", frame, x, y);
+  } else if (direction["left"]) {
+    drawSprite(window, sprites, "FLYING_MONSTER_LEFT", frame, x, y);
+  } else {
+    drawSprites(x, y, sprites["FLYING_MONSTER_RIGHT"], &window,
+                m_monster.getWidth(), m_monster.getHeight());
+  }
 }

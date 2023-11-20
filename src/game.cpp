@@ -10,22 +10,13 @@ Game::Game(RenderWindow &window)
       m_fpsCounter(10, 10), m_soundSettings(5), m_game_mode(2),
       m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
       m_menuPause(m_soundSettings, m_sound) {
-  Error(!m_monsterTexture.loadFromFile(IMG_MONSTER),
-        "Error loading IMG_MONSTER texture");
 
-  for (int i = 0; i < NUM_MONSTERS; ++i) {
-    int randX, randY;
-    do {
-      randX = rand() % (MAP_WIDTH * TILE_SIZE);
-      randY = rand() % (MAP_WIDTH * TILE_SIZE);
-      m_monsters.push_back(Monster(randX, randY, m_monsterTexture));
-    } while (m_map.collideBlockMonster(&m_monsters.back()));
-
-    m_monsterRenders.push_back(MonsterRender(m_monsters.back()));
-  }
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(m_soundSettings.getVolume());
+
+  m_monsters.push_back(Monster(m_char.getX(), m_char.getY()));
+  m_monsterRenders.push_back(MonsterRender(m_monsters[0]));
 }
 
 void Game::run() {
@@ -216,8 +207,8 @@ void Game::render() {
 
   m_menuPause.render(m_window, m_cam);
 
-  for (size_t i = 0; i < NUM_MONSTERS; ++i) {
-    m_monsterRenders[i].draw(m_window, m_monsters[i]);
+  for (MonsterRender &monsterRender : m_monsterRenders) {
+    monsterRender.render(m_window, m_sprites);
   }
 
   m_window.display();

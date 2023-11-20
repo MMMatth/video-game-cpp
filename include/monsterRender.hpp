@@ -15,14 +15,15 @@
 using namespace std;
 using namespace sf;
 
-class  MonsterRender{
+class MonsterRender {
 public:
-    MonsterRender(Monster &monster);
-    void draw(RenderWindow& window, Monster& monster);
-    
-private:
-    Clock m_clock;
-    Monster &m_monster;
+  MonsterRender(Monster &monster);
+  void render(RenderWindow &window, unordered_map<string, Sprite> sprites);
+  void drawSprite(RenderWindow &window, unordered_map<string, Sprite> &sprites,
+                  const string &spriteKey, int frame, int x, int y);
+
+  Monster &m_monster;
+  Clock m_clock;
 };
 
 #endif /*MONSTERRENDER_HPP*/

@@ -78,27 +78,27 @@ void Character::update() {
 
   if (m_direction["up"] && !m_collision["up"] && m_timeJump < m_jumpHeight) {
     m_timeJump++;
-    mooveY(-m_speed);
+    moveY(-m_speed);
   } else if (m_direction["up"]) {
     m_direction["up"] = false;
     m_direction["fall"] = true;
   }
   /* we moove the player */
   if (m_direction["fall"] && !m_collision["down"] && !m_direction["up"]) {
-    mooveY(m_speed);
+    moveY(m_speed);
   }
   if (m_direction["right"] && !m_collision["right"]) {
-    mooveX(m_speed);
+    moveX(m_speed);
   }
   if (m_direction["left"] && !m_collision["left"]) {
-    mooveX(-m_speed);
+    moveX(-m_speed);
   }
   if (m_direction["up"] && !m_collision["up"]) {
-    mooveY(-m_speed);
+    moveY(-m_speed);
   }
   if (m_collision["up"] && !m_collision["down"]) {
     m_direction["fall"] = true;
-    mooveY(m_speed);
+    moveY(m_speed);
   }
 
   /* We reset collision because it's going to be refreshed */
@@ -108,18 +108,10 @@ void Character::update() {
   m_collision["right"] = false;
 }
 
-void Character::setCollisionFalseExcept(string key) {
-  for (auto &x : m_collision) {
-    if (x.first != key) {
-      x.second = false;
-    }
-  }
-}
-
 // other methods
-void Character::mooveX(int x) { m_coord.setX(m_coord.getX() + x); }
+void Character::moveX(int x) { m_coord.setX(m_coord.getX() + x); }
 
-void Character::mooveY(int y) { m_coord.setY(m_coord.getY() + y); }
+void Character::moveY(int y) { m_coord.setY(m_coord.getY() + y); }
 
 void Character::save(string path) {
   if (m_save) {

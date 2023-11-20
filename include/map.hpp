@@ -3,9 +3,9 @@
 
 #include "block.hpp"
 #include "character.hpp"
-#include "monster.hpp"
 #include "const.hpp"
 #include "mapGenerator.hpp"
+#include "monster.hpp"
 #include "tile.hpp"
 #include <SFML/Graphics.hpp>
 #include <fstream>
@@ -30,7 +30,7 @@ public:
   /* getters */
   vector<vector<Tile>> getMap() { return m_map; }
   Coord get_cam() { return m_workingAreaCoord; }
-  int get_height() { return m_height; }
+  int get_height() { return m_height - 1; }
   int get_width() { return m_width - 1; }
   Tile get_tile(int y_tile, int x_tile) { return m_map[y_tile][x_tile]; }
   Tile *find_tile(int x, int y);
@@ -48,7 +48,7 @@ public:
   void collide(Character *perso);
   bool collideBlockMonster(Monster *monster);
   void collide(Monster *monster);
-  
+
   Tile chooseTile(string c, int x, int y);
   void add_tile(Block block, int mouseX, int mouseY);
   void supr_tile(int x, int y);

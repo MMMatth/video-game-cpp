@@ -50,7 +50,6 @@ public:
 
   /* m_collision */
   void setCollision(string key, bool value) { this->m_collision[key] = value; }
-  void setCollisionFalseExcept(string key);
   /* other setters */
   void setX(int x) { m_coord.setX(x); }
   void setY(int y) { m_coord.setY(y); }
@@ -62,8 +61,8 @@ public:
   void heal(int heal) { this->m_life += heal; }
 
   /* other */
-  void mooveX(int x);
-  void mooveY(int y);
+  void moveX(int x);
+  void moveY(int y);
   void save(string path);
 
 private:
