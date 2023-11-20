@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Character::Character(string path) : m_save(true) {
+Character::Character(string path) : Entity(0, 0, 0, 0, 0, 0), m_save(true) {
   if (!loadFromCSV(path)) {
     m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 0);
     m_life = 20;
@@ -11,9 +11,16 @@ Character::Character(string path) : m_save(true) {
   init();
 }
 
-Character::Character(int x, int y, int life)
-    : m_coord(x, y), m_life(life), m_save(false) {
-  init();
+Character::Character(int x, int y, int life, int speed, int width, int height,
+                     int jumpHeight, int timeJump, bool save)
+    : Entity(x, y, width, height, speed, life), m_save(save) {
+  m_direction = {{"jump", false},
+                 {"up", false},
+                 {"fall", true},
+                 {"right", false},
+                 {"left", false}};
+  m_collision = {
+      {"up", false}, {"down", false}, {"left", false}, {"right", false}};
 }
 
 bool Character::loadFromCSV(string csvPath) {
@@ -70,7 +77,8 @@ void Character::update() {
     m_direction["fall"] = true;
   }
 
-  /* if the player stop jumping or the player touch the roof and is going up*/
+  /* if the player stop jumping or the player touch the roof and is going
+   * up*/
   if ((!m_direction["jump"] || m_collision["up"]) && m_direction["up"]) {
     m_direction["up"] = false;
     m_direction["fall"] = true;
@@ -107,11 +115,6 @@ void Character::update() {
   m_collision["left"] = false;
   m_collision["right"] = false;
 }
-
-// other methods
-void Character::moveX(int x) { m_coord.setX(m_coord.getX() + x); }
-
-void Character::moveY(int y) { m_coord.setY(m_coord.getY() + y); }
 
 void Character::save(string path) {
   if (m_save) {

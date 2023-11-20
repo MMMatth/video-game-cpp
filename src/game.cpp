@@ -20,9 +20,7 @@ Game::Game(RenderWindow &window)
 }
 
 void Game::run() {
-  cout << "Game::run()" << endl;
   render();
-  cout << "Game::run() render" << endl;
   update();
 }
 
@@ -105,15 +103,15 @@ void Game::handleEvent(Event &event) {
 void Game::handleSpacePress() {
   if (!m_char.getDirection()["up"] && !m_char.getDirection()["fall"]) {
     play_sound(&m_buffers["JUMP"], &m_sound);
-    m_char.setJumping(true);
+    m_char.setDirection("jump", true);
   }
 }
 
 void Game::handleKeyPress(sf::Keyboard::Key key) {
   static const map<Keyboard::Key, function<void()>> keyPressActions = {
       {Keyboard::Space, [&]() { handleSpacePress(); }},
-      {Keyboard::Q, [&]() { m_char.setGoingLeft(true); }},
-      {Keyboard::D, [&]() { m_char.setGoingRight(true); }},
+      {Keyboard::Q, [&]() { m_char.setDirection("left", true); }},
+      {Keyboard::D, [&]() { m_char.setDirection("right", true); }},
       {Keyboard::Escape, [&]() { quit(); }},
       {Keyboard::E, [&]() { m_inv.addItem(toolMap["IRON_PICKAXE"]); }},
       {Keyboard::R, [&]() { m_char.hit(1); }},
@@ -137,9 +135,9 @@ void Game::handleKeyPress(sf::Keyboard::Key key) {
 
 void Game::handleKeyRelease(sf::Keyboard::Key key) {
   static const map<Keyboard::Key, function<void()>> keyReleaseActions = {
-      {Keyboard::Space, [&]() { m_char.setJumping(false); }},
-      {Keyboard::Q, [&]() { m_char.setGoingLeft(false); }},
-      {Keyboard::D, [&]() { m_char.setGoingRight(false); }}};
+      {Keyboard::Space, [&]() { m_char.setDirection("jump", false); }},
+      {Keyboard::Q, [&]() { m_char.setDirection("left", false); }},
+      {Keyboard::D, [&]() { m_char.setDirection("right", false); }}};
   auto action = keyReleaseActions.find(key);
   if (action != keyReleaseActions.end()) {
     action->second();

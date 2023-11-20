@@ -28,7 +28,7 @@ void Tile::collide(Character *character) {
   int char_y = character->getY();
   int char_width = character->getWidth();
   int char_height = character->getHeight();
-  int char_speed = character->getVitesse();
+  int char_speed = character->getSpeed();
 
   int tile_x = m_coord.getX();
   int tile_y = m_coord.getY();
@@ -54,34 +54,39 @@ void Tile::collide(Character *character) {
 }
 
 bool Tile::collide(Monster *monster) {
-    int monster_x = monster->getX() - monster->getWidth()/2;
-    int monster_y = monster->getY();
-    int monster_width = monster->getWidth();
-    int monster_height = monster->getHeight();
-    int monster_speed = monster->getSpeed();
+  int monster_x = monster->getX() - monster->getWidth() / 2;
+  int monster_y = monster->getY();
+  int monster_width = monster->getWidth();
+  int monster_height = monster->getHeight();
+  int monster_speed = monster->getSpeed();
 
-    int tile_x = m_coord.getX();
-    int tile_y = m_coord.getY();
+  int tile_x = m_coord.getX();
+  int tile_y = m_coord.getY();
 
-    if (!m_block.isSolid())
-        return false;
-
-    if (isColliding(monster_x, monster_y, monster_width, monster_height, monster_speed, tile_x, tile_y)) {
-        monster->setCollision("down", true);
-
-        return true;
-    }
-    if (isColliding(monster->getX() + monster->getWidth() + monster_speed , monster_y, monster_width, monster_height, 0, tile_x, tile_y)) {
-        monster->setCollision("right", true);
-        return true;
-    }
-    if (isColliding(monster_x - monster_speed, monster_y, monster_width, monster_height, 0, tile_x, tile_y)) {
-        monster->setCollision("left", true);
-        return true;
-    }
-    if (isColliding(monster_x, monster_y - monster_speed, monster_width, monster_height, 0, tile_x, tile_y)) {
-        monster->setCollision("up", true);
-        return true;
-    }
+  if (!m_block.isSolid())
     return false;
+
+  if (isColliding(monster_x, monster_y, monster_width, monster_height,
+                  monster_speed, tile_x, tile_y)) {
+    monster->setCollision("down", true);
+
+    return true;
+  }
+  if (isColliding(monster->getX() + monster->getWidth() + monster_speed,
+                  monster_y, monster_width, monster_height, 0, tile_x,
+                  tile_y)) {
+    monster->setCollision("right", true);
+    return true;
+  }
+  if (isColliding(monster_x - monster_speed, monster_y, monster_width,
+                  monster_height, 0, tile_x, tile_y)) {
+    monster->setCollision("left", true);
+    return true;
+  }
+  if (isColliding(monster_x, monster_y - monster_speed, monster_width,
+                  monster_height, 0, tile_x, tile_y)) {
+    monster->setCollision("up", true);
+    return true;
+  }
+  return false;
 }
