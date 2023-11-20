@@ -18,7 +18,9 @@ Map::Map(string path)
   m_save = true;
   if (!initLegthFromCSV(path) || !loadFromCSV(path)) {
     cerr << "Map : cant open the map " << path << endl;
-    exit(EXIT_FAILURE);
+    Createmap cm(MAP_WIDTH);
+    cm.generate();
+    cm.saveinfile(path);
   }
 }
 
@@ -166,48 +168,25 @@ void Map::save(string path) {
   }
 }
 
-void Map::collide(Character *perso, int camX, int camY) {
+void Map::collide(Entity *entity, int camX, int camY) {
   for (int y = m_workingAreaCoord.getY(); y < m_workingAreaHeight; y++) {
     for (int x = m_workingAreaCoord.getX(); x < m_workingAreaWidth; x++) {
       if (m_map[y][x].getBlock()->isSolid()) {
-        m_map[y][x].collide(perso);
+        m_map[y][x].collide(entity);
       }
     }
   }
 }
 
-bool Map::collideBlockMonster(Monster *monster) {
-  for (int y = 0; y < get_height(); y++) {
-    for (int x = 0; x < get_width(); x++) {
-      if (m_map[y][x].getBlock()->isSolid()) {
-        if(m_map[y][x].collide(monster)){return true;}
-      }
-    }
-  }
-
-  return false;
-}
-
-void Map::collide(Character *perso) {
-  if (perso->getX() < 0)
-    perso->setCollision("left", true);
-  if (perso->getX() + perso->getWidth() > get_width() * TILE_SIZE)
-    perso->setCollision("right", true);
-  if (perso->getY() < 0)
-    perso->setCollision("up", true);
-  if (perso->getY() + perso->getHeight() > get_height() * TILE_SIZE)
-    perso->setCollision("down", true);
-}
-
-void Map::collide(Monster *monster) {
-  if (monster->getX() < 0)
-    monster->setCollision("left", true);
-  if (monster->getX() + monster->getWidth() > get_width() * TILE_SIZE)
-    monster->setCollision("right", true);
-  if (monster->getY() < 0)
-    monster->setCollision("up", true);
-  if (monster->getY() + monster->getHeight() > get_height() * TILE_SIZE)
-    monster->setCollision("down", true);
+void Map::collide(Entity *entity) {
+  if (entity->getX() < 0)
+    entity->setCollision("left", true);
+  if (entity->getX() + entity->getWidth() > get_width() * TILE_SIZE)
+    entity->setCollision("right", true);
+  if (entity->getY() < 0)
+    entity->setCollision("up", true);
+  if (entity->getY() + entity->getHeight() > get_height() * TILE_SIZE)
+    entity->setCollision("down", true);
 }
 
 void Map::add_tile(Block block, int mouseX, int mouseY) {
@@ -267,8 +246,7 @@ bool Map::checkMonsterCollisionAt(int x, int y) {
     return m_map[mapY][mapX].getBlock()->isSolid();
   }
 
-  // Si les coordonnées sont en dehors des limites de la carte, considérer comme une collision
+  // Si les coordonnées sont en dehors des limites de la carte, considérer comme
+  // une collision
   return true;
 }
-
-

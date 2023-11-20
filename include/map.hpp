@@ -44,10 +44,8 @@ public:
 
   /* other*/
   void save(string path);
-  void collide(Character *perso, int camX, int camY);
-  void collide(Character *perso);
-  bool collideBlockMonster(Monster *monster);
-  void collide(Monster *monster);
+  void collide(Entity *entity, int camX, int camY);
+  void collide(Entity *entity);
 
   Tile chooseTile(string c, int x, int y);
   void add_tile(Block block, int mouseX, int mouseY);

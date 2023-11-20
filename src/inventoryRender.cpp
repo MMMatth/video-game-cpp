@@ -14,11 +14,6 @@ void InventoryRenderer::drawTile(sf::RenderWindow &window,
                 &window, INVENTORY_OBJECT_SIZE, INVENTORY_OBJECT_SIZE);
     // if the item is stackable we draw the amount
     if (m_inventory.getItemAt(Coord(row, column)).isStackable()) {
-      // drawText(x + column * INVENTORY_TILE_SIZE + TOP_LEFT_INV_TILE,
-      //          y + TOP_LEFT_INV_TILE,
-      //          to_string(m_inventory.getItemAt(Coord(row,
-      //          column)).getAmount()), &window, INVENTORY_TILE_SIZE / 6,
-      //          FONT_COLOR, FONT_PATH);
       drawTextWithEdge(
           x + column * INVENTORY_TILE_SIZE + TOP_LEFT_INV_TILE,
           y + TOP_LEFT_INV_TILE,
@@ -26,6 +21,7 @@ void InventoryRenderer::drawTile(sf::RenderWindow &window,
           &window, INVENTORY_TILE_SIZE / 5, WITE_COLOR, BLACK_COLOR, FONT_PATH);
     }
   }
+  // if the tile is selected we draw the selected tile
   if (column == m_inventory.getPosHand() && row == INVENTORY_HEIGHT - 1)
     drawSprites(x + column * INVENTORY_TILE_SIZE, y, sprites["SELECTED_TILE"],
                 &window, INVENTORY_TILE_SIZE, INVENTORY_TILE_SIZE);

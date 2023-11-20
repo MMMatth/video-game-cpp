@@ -59,7 +59,7 @@ public:
 
   /** function who return the selected object */
   bool isOverInv(int x, int y, int camX, int camY);
-  Coord getTileCoord(int mouseX, int mouseY, int persoX, int persoY);
+  Coord getTileCoord(int mouseX, int mouseY, int camX, int camY);
   InventoryTile getSelectedTile();
   InventoryTile getTile(Coord tile_coord);
   int getPosHand();

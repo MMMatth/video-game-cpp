@@ -3,9 +3,9 @@
 
 #include "block.hpp"
 #include "character.hpp"
-#include "monster.hpp"
 #include "const.hpp"
 #include "coord.hpp"
+#include "monster.hpp"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -37,8 +37,7 @@ public:
   void resetBreakingClock() { m_breakingClock.restart(); }
   /* other */
   bool estDansCam(int posCamX, int posCamY, int largeur, int hauteur);
-  void collide(Character *perso);
-  bool collide(Monster *monster);
+  void collide(Entity *entity);
   string toString() { return m_block.toString(); }
 };
 

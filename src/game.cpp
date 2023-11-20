@@ -51,6 +51,8 @@ void Game::updateMousePos() {
 }
 
 void Game::update() {
+  updateMousePos();
+
   Tile *tile = m_map.find_tile(m_mousePosWorld.getX(), m_mousePosWorld.getY());
   if (tile) {
     if (tile->isBreaking() &&
@@ -64,17 +66,20 @@ void Game::update() {
 
   for (Monster &monster : m_monsters) {
     monster.update();
-    m_map.collide(&monster);
-    m_map.collideBlockMonster(&monster);
+    m_map.collide(&monster, m_cam.getX(), m_cam.getY());
   }
   m_day_night_cycle.update();
-  updateMousePos();
+
   m_cam.update(m_char.getX(), m_char.getY(), m_char.getWidth(),
                m_char.getHeight(), m_map.get_width(), m_map.get_height(),
                m_window);
+
   m_map.update(m_cam.getX(), m_cam.getY());
+
   m_char.update();
+
   m_fpsCounter.update();
+
   updateCollide();
 }
 
@@ -149,7 +154,7 @@ void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
     if (!m_menuPause.isPause()) {
       if (m_inv.isOpen()) {
         m_inv.handleClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
-                          m_char.getX(), m_char.getY());
+                          m_cam.getX(), m_cam.getY());
       } else {
         if (m_inv.getItemPosHand().getType() == "TOOL") {
           if (m_game_mode == 2) {
@@ -200,16 +205,14 @@ void Game::render() {
 
   m_charRenderer.render(m_window, m_sprites, m_cam.getX(), m_cam.getY());
 
-  m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
-                     m_mousePosWorld.getY());
-
-  m_fpsCounter.render(m_window, m_cam);
-
-  m_menuPause.render(m_window, m_cam);
-
   for (MonsterRender &monsterRender : m_monsterRenders) {
     monsterRender.render(m_window, m_sprites);
   }
+  m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
+                     m_mousePosWorld.getY());
+  m_fpsCounter.render(m_window, m_cam);
+
+  m_menuPause.render(m_window, m_cam);
 
   m_window.display();
 }

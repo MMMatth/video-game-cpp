@@ -20,7 +20,12 @@ public:
   FpsCounter(int x, int y) : m_clock(), m_coord(x, y){};
 
   /* getters */
-  int getFps() { return 1000 / m_clock.getElapsedTime().asMilliseconds(); }
+  int getFps() {
+    if (m_clock.getElapsedTime().asMilliseconds() == 0) {
+      return 0;
+    }
+    return 1000 / m_clock.getElapsedTime().asMilliseconds();
+  }
 
   void render(RenderWindow &window, Cam &cam) {
     int x = m_coord.getX() + cam.getX() - cam.getWidth() / 2;
