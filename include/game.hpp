@@ -58,10 +58,6 @@ private:
   FpsCounter m_fpsCounter; /* clock */
   /*pause*/
   MenuPause m_menuPause;
-  bool m_pause;
-  Texture pauseTexture;
-  Sprite pauseSprite;
-  int m_clickOnOff;
   /*monster*/
   vector<Monster> m_monsters;
   vector<MonsterRender> m_monsterRenders;
@@ -99,7 +95,7 @@ public:
   void setGameVolume(float volume);
   /* reset */
   void reset();
-  bool isPause() const;
+  bool isPause();
 };
 
 #endif /* GAME_HPP */
