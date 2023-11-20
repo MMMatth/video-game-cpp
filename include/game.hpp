@@ -1,25 +1,28 @@
 #ifndef JEU_HPP
 #define JEU_HPP
 
+#include "../include/monsterRender.hpp"
 #include "../include/otherFunctions.hpp"
+#include "cam.hpp"
 #include "characterRender.hpp"
 #include "const.hpp"
 #include "coord.hpp"
 #include "dayNightCycle.hpp"
 #include "draw.hpp"
+#include "fpsCounter.hpp"
 #include "inventory.hpp"
 #include "inventoryRender.hpp"
 #include "map.hpp"
 #include "mapGenerator.hpp"
 #include "mapRender.hpp"
 #include "menu.hpp"
+#include "menuPause.hpp"
 #include "tool.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <cassert>
 #include <functional>
 #include <unordered_map>
-#include "../include/monsterRender.hpp"
 
 using namespace sf;
 using namespace std;
@@ -37,6 +40,7 @@ private:
   MapRender m_mapRenderer;
   /* cam */
   Coord m_posCam; /* camera position */
+  Cam m_cam;
   /* inventory */
   Inventory m_inv;               /** inventory */
   InventoryRenderer m_invRender; /** inventory render part*/
@@ -49,11 +53,11 @@ private:
   Sound m_sound; /** SFML sound*/
   /* day_night_cycle */
   DayNightCycle m_day_night_cycle;
-  Clock m_day_night_cycle_clock;
   /* other */
-  int m_game_mode; /** 1 = creative, 2 = survival*/
-  Clock m_clock;   /* clock */
+  int m_game_mode;         /** 1 = creative, 2 = survival*/
+  FpsCounter m_fpsCounter; /* clock */
   /*pause*/
+  MenuPause m_menuPause;
   bool m_pause;
   Texture pauseTexture;
   Sprite pauseSprite;
@@ -63,14 +67,12 @@ private:
   vector<MonsterRender> m_monsterRenders;
   Texture m_monsterTexture;
 
-
 public:
-  /* constructor */ 
+  /* constructor */
   Game(RenderWindow &window);
   void run();
   /* update*/
   void update();
-  void updateCam();
   void updateCollide();
   void updateMousePos();
   /* render */
@@ -85,7 +87,7 @@ public:
   void handleMouseButtonReleased(sf::Event::MouseButtonEvent &event);
   void handleMouseWheel(float delta);
   void handleSpacePress();
-  void handlePause();
+  /* quit */
   void quit();
   /*save*/
   void save();
@@ -93,7 +95,7 @@ public:
   void putBlock();
   bool is_breakable();
   void breakBlock();
-
+  /* sound */
   void setGameVolume(float volume);
   /* reset */
   void reset();

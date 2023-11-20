@@ -22,6 +22,7 @@ public:
   /* constructor */
   Character(string path);
   Character(int x, int y, int life);
+  bool loadFromCSV(string csvPath);
   void init();
   /* destructor */
   // ~Personnage();
@@ -66,6 +67,7 @@ public:
   void save(string path);
 
 private:
+  bool m_save;                   /** if true the charcater is save in csv */
   Coord m_coord;                 /** coord in x y of the character*/
   map<string, bool> m_direction; /** Contains booleans for states: fall, jump,
                                     up, right, left. */

@@ -25,6 +25,7 @@ using namespace std;
 
 class Inventory {
 private:
+  bool m_save;
   InventoryTile
       m_inventory[INVENTORY_HEIGHT]
                  [INVENTORY_WIDTH]; /** 2D tab contain every inventory tile*/
@@ -37,7 +38,7 @@ public:
   /* Constructeur */
   Inventory();
   Inventory(string csvPath);
-  void loadFromCSV(const std::string &csvPath);
+  bool loadFromCSV(const std::string &csvPath);
 
   void swapItem(InventoryTile *t1, InventoryTile *t2);
   void addItem(Item item);

@@ -15,11 +15,15 @@ Block getBlock(string id) {
 /* constructor */
 Map::Map(string path)
     : m_workingAreaCoord(0, 0), m_workingAreaWidth(0), m_workingAreaHeight(0) {
-  initLength(path);
-  initMap(path);
+  m_save = true;
+  if (!initLegthFromCSV(path) || !loadFromCSV(path)) {
+    cerr << "Map : cant open the map " << path << endl;
+    exit(EXIT_FAILURE);
+  }
 }
 
 Map::Map(int height, int width) {
+  m_save = false;
   for (int y = 0; y < height; y++) {
     m_map.push_back(std::vector<Tile>());
     for (int x = 0; x < width; x++) {
@@ -37,7 +41,7 @@ void Map::clear() {
 
 /* init function */
 
-void Map::initLength(string pathFile) {
+bool Map::initLegthFromCSV(string pathFile) {
   int width = 0;
   m_width = 0;
   m_height = 0;
@@ -56,10 +60,13 @@ void Map::initLength(string pathFile) {
       width = 0;
       m_height++;
     }
+    return true;
+  } else {
+    return false;
   }
 }
 
-void Map::initMap(string pathFile) {
+bool Map::loadFromCSV(string pathFile) {
   ifstream fichier(pathFile);
   if (fichier) {
     string ligne;
@@ -80,10 +87,10 @@ void Map::initMap(string pathFile) {
       }
       y++;
     }
+    return true;
   } else {
-    cerr << " InitMap : We cant open the map file : " << pathFile << endl;
+    return false;
   }
-  // save(nomFichier);
 }
 
 /* getters */
@@ -145,14 +152,16 @@ void Map::resetBreakingClock(int mouseX, int mouseY) {
 /* other */
 
 void Map::save(string path) {
-  ofstream fichier(path);
-  if (fichier) {
-    for (int y = 0; y < m_height; y++) {
-      for (int x = 0; x < m_width; x++) {
-        fichier << m_map[y][x].getBlock()->getId();
-        fichier << ";";
+  if (m_save) {
+    ofstream fichier(path);
+    if (fichier) {
+      for (int y = 0; y < m_height; y++) {
+        for (int x = 0; x < m_width; x++) {
+          fichier << m_map[y][x].getBlock()->getId();
+          fichier << ";";
+        }
+        fichier << endl;
       }
-      fichier << endl;
     }
   }
 }

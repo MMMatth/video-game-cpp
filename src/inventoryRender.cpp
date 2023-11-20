@@ -68,12 +68,12 @@ void InventoryRenderer::drawSelectedItem(sf::RenderWindow &window,
 }
 
 void InventoryRenderer::render(sf::RenderWindow &window,
-                               unordered_map<string, Sprite> sprites, int camX,
-                               int camY, int mouseX, int mouseY) {
+                               unordered_map<string, Sprite> sprites, Cam &cam,
+                               int mouseX, int mouseY) {
 
-  drawLowerBar(window, sprites, camX, camY);
+  drawLowerBar(window, sprites, cam.getX(), cam.getY());
   if (m_inventory.isOpen()) {
-    drawInv(window, sprites, camX, camY);
+    drawInv(window, sprites, cam.getX(), cam.getY());
   }
-  drawSelectedItem(window, sprites, camX, camY, mouseX, mouseY);
+  drawSelectedItem(window, sprites, cam.getX(), cam.getY(), mouseX, mouseY);
 }

@@ -11,7 +11,6 @@ private:
 
 public:
   SoundSettings(int volume);
-
   int getVolume();
   void setVolume(int volume);
 };

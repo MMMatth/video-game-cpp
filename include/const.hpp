@@ -9,7 +9,10 @@
 /* cam */
 #define CAM_WIDTH WINDOW_WIDTH * 0.75
 #define CAM_HEIGHT WINDOW_HEIGHT * 0.75
+#define CAM_SAVE_PATH "../assets/csv/cam.csv"
 /* character */
+#define CHAR_DEFAULT_COORD_X MAP_WIDTH *TILE_SIZE / 2
+#define CHAR_DEFAULT_COORD_Y TAILLE_PERSONNAGE * 2
 #define TAILLE_PERSONNAGE 64
 #define DEPLACEMENT 5
 #define ANIMATION_SPEED 100
@@ -62,8 +65,12 @@
 #define LEAF_HEIGHT 3
 /* flower */
 #define FLOWER_ECART 10
+/*day night cycle*/
+#define DAY_NIGHT_CYCLE_CSV_PATH "../assets/csv/day_night_cycle.csv"
+#define DAY_NIGHT_CYCLE_IMG_PATH "../assets/img/day_night_cycle.png"
+#define DEFAULT_SKY_COLOR Color(119, 181, 254)
+
 /* other */
-#define SKY_COLOR Color(119, 181, 254)
 #define TILE_SIZE 32
 #define GAME_MODE 1
 
