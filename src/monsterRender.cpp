@@ -18,9 +18,7 @@ void MonsterRender::drawSprite(RenderWindow &window,
 void MonsterRender::render(RenderWindow &window,
                            unordered_map<string, Sprite> sprites) {
   /*Calculate the frame for animation based on elapsed time*/
-  cout << "1" << endl;
   map<string, bool> direction = m_monster.getDirection();
-  cout << "2" << endl;
   int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % 3;
 
   /*Calculate the position of the Monster for drawing*/

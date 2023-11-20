@@ -15,12 +15,14 @@ Game::Game(RenderWindow &window)
   m_buffers = initBuffers();
   m_sound.setVolume(m_soundSettings.getVolume());
 
-  m_monsters.push_back(Monster(m_char.getX(), m_char.getY()));
+  m_monsters.push_back(Monster(m_char.getX(), m_char.getY(), 25, 48, 1, 1));
   m_monsterRenders.push_back(MonsterRender(m_monsters[0]));
 }
 
 void Game::run() {
+  cout << "Game::run()" << endl;
   render();
+  cout << "Game::run() render" << endl;
   update();
 }
 
