@@ -9,22 +9,27 @@
 using namespace sf;
 using namespace std;
 
-class FpsCounter
-
-{
+class FpsCounter {
 private:
   Clock m_clock;
   Coord m_coord;
+  int m_frameCount;
+  int m_fps;
 
 public:
-  FpsCounter(int x, int y) : m_clock(), m_coord(x, y){};
+  FpsCounter(int x, int y)
+      : m_clock(), m_coord(x, y), m_frameCount(0), m_fps(0){};
 
   /* getters */
-  int getFps() {
-    if (m_clock.getElapsedTime().asMilliseconds() == 0) {
-      return 0;
+  int getFps() const { return m_fps; }
+
+  void update() {
+    if (m_clock.getElapsedTime().asSeconds() >= 1.0f) {
+      m_fps = m_frameCount;
+      m_frameCount = 0;
+      m_clock.restart();
     }
-    return 1000 / m_clock.getElapsedTime().asMilliseconds();
+    m_frameCount++;
   }
 
   void render(RenderWindow &window, Cam &cam) {
@@ -33,7 +38,5 @@ public:
     drawTextWithEdge(x, y, "FPS : " + to_string(getFps()), &window, 20,
                      Color::White, Color::Black, FONT_PATH);
   }
-  void update() { m_clock.restart(); }
 };
-
 #endif /* FPS_COUNTER */

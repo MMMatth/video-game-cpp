@@ -3,6 +3,7 @@
 
 /* window */
 #define FPS_MAX 60
+#define TICKS_PER_FRAME 60.f
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define WINDOW_TITLE "jeu"
