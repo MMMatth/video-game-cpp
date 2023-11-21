@@ -36,6 +36,10 @@ void Game::reset() {
 void Game::updateCollide() {
   m_map.collide(&m_char, m_cam.getX(), m_cam.getY());
   m_map.collide(&m_char);
+  for (Monster &monster : m_monsters) {
+    m_map.collide(&monster, m_cam.getX(), m_cam.getY());
+    m_map.collide(&monster);
+  }
 }
 
 void Game::updateMousePos() {
@@ -66,8 +70,8 @@ void Game::update() {
 
   for (Monster &monster : m_monsters) {
     monster.update();
-    m_map.collide(&monster, m_cam.getX(), m_cam.getY());
   }
+
   m_day_night_cycle.update();
 
   m_cam.update(m_char.getX(), m_char.getY(), m_char.getWidth(),
@@ -191,7 +195,7 @@ void Game::handleMouseButtonReleased(sf::Event::MouseButtonEvent &event) {
 }
 
 void Game::handleMouseWheel(float delta) {
-  if (delta > 0) {
+  if (delta < 0) {
     m_inv.nextPosHand();
   } else {
     m_inv.prevPosHand();

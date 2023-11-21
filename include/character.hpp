@@ -24,16 +24,15 @@ public:
   Character(string path);
   Character(int x, int y, int life, int speed, int width, int height,
             int jumpHeight, int timeJump, bool save);
+  // ~Character();
   bool loadFromCSV(string csvPath);
   void init();
-  /* destructor */
-  // ~Personnage();
   /* update */
-  void update() override;
+  void update();
 
   /* getters */
-  int getTimeJump() { return m_timeJump; }
-  int getJumpHeight() { return m_jumpHeight; }
+  int getTimeJump() const { return m_timeJump; }
+  int getJumpHeight() const { return m_jumpHeight; }
 
   /* other setters */
   void setTimeJump(int time) { m_timeJump = time; }

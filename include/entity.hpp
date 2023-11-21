@@ -10,15 +10,6 @@
 
 class Entity {
 public:
-  // Entity() : m_coord(0, 0), m_width(0), m_height(0), m_speed(0), m_life(0) {
-  //   m_direction = {{"right", false},
-  //                  {"left", false},
-  //                  {"jump", false},
-  //                  {"up", false},
-  //                  {"fall", true}};
-  //   m_collision = {
-  //       {"up", false}, {"down", false}, {"left", false}, {"right", false}};
-  // }
   Entity(int x, int y, int width, int height, int speed, int life)
       : m_coord(x, y), m_width(width), m_height(height), m_speed(speed),
         m_life(life) {

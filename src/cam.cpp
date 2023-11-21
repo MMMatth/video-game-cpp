@@ -54,7 +54,7 @@ void Cam::update(int charX, int charY, int charW, int charH, int mapWidth,
   if (targetX > m_width / 2 && targetX < mapWidth * TILE_SIZE - m_width / 2) {
     setX(getX() + (targetX - getX()) / 20);
   }
-  if (targetY > CAM_HEIGHT / 2 &&
+  if (targetY > m_height / 2 &&
       targetY < mapHeight * TILE_SIZE - m_height / 2) {
     setY(getY() + (targetY - getY()) / 20);
   }

@@ -19,11 +19,12 @@ public:
   Block();
   Block(string id, string name, bool isSolid, int time_to_break = 2000,
         bool is_stackable = true, int amount = 1);
+  // ~Block();
 
   /* getters */
   bool isSolid() const { return m_isSolid; }
-  string getId() { return m_id; }
-  int getTimeToBreak() { return m_time_to_break; }
+  string getId() const { return m_id; }
+  int getTimeToBreak() const { return m_time_to_break; }
 
   /* setters */
   void setTimeToBreak(int hardness) { m_time_to_break = hardness; }

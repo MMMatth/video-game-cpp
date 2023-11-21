@@ -235,18 +235,3 @@ string Map::toString() {
   }
   return res;
 }
-
-bool Map::checkMonsterCollisionAt(int x, int y) {
-  // Convertir les coordonnées du monde en coordonnées de la carte
-  int mapX = x / TILE_SIZE;
-  int mapY = y / TILE_SIZE;
-
-  // Vérifier si les coordonnées de la carte pointent vers un bloc solide
-  if (mapX >= 0 && mapX < m_width && mapY >= 0 && mapY < m_height) {
-    return m_map[mapY][mapX].getBlock()->isSolid();
-  }
-
-  // Si les coordonnées sont en dehors des limites de la carte, considérer comme
-  // une collision
-  return true;
-}

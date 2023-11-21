@@ -64,3 +64,8 @@ add_custom_target(clear
     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
 )
 
+add_custom_target(valgrind
+    COMMAND valgrind --leak-check=full --suppressions=../.valgrind.supp --track-origins=yes $<TARGET_FILE:${PROJECT_NAME}>
+    DEPENDS ${PROJECT_NAME}
+    WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
+)

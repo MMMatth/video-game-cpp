@@ -2,8 +2,10 @@
 
 void MapRender::render(RenderWindow &window,
                        unordered_map<string, Sprite> sprites) {
-  for (int y = m_map.get_cam().getY(); y < m_map.get_cam_height(); y++) {
-    for (int x = m_map.get_cam().getX(); x < m_map.get_cam_width(); x++) {
+  for (int y = m_map.get_working_area().getY(); y < m_map.get_cam_height();
+       y++) {
+    for (int x = m_map.get_working_area().getX(); x < m_map.get_cam_width();
+         x++) {
       Tile tile = m_map.get_tile(y, x);
       drawSprites(tile.getX(), tile.getY(), sprites[tile.getBlock()->getName()],
                   &window, TILE_SIZE, TILE_SIZE);

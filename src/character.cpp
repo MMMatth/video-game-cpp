@@ -5,7 +5,7 @@ using namespace std;
 
 Character::Character(string path) : Entity(0, 0, 0, 0, 0, 0), m_save(true) {
   if (!loadFromCSV(path)) {
-    m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 0);
+    m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 64);
     m_life = 20;
   }
   init();

@@ -50,13 +50,11 @@ public:
 
   /* setters */
   void open();
-
   void setPosHand(int newPosHand);
   void nextPosHand();
   void prevPosHand();
 
   /* getters */
-
   /** function who return the selected object */
   bool isOverInv(int x, int y, int camX, int camY);
   Coord getTileCoord(int mouseX, int mouseY, int camX, int camY);

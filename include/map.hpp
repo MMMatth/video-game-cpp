@@ -28,14 +28,14 @@ public:
   bool initLegthFromCSV(string pathFile);
 
   /* getters */
-  vector<vector<Tile>> getMap() { return m_map; }
-  Coord get_cam() { return m_workingAreaCoord; }
-  int get_height() { return m_height - 1; }
-  int get_width() { return m_width - 1; }
-  Tile get_tile(int y_tile, int x_tile) { return m_map[y_tile][x_tile]; }
+  vector<vector<Tile>> getMap() const { return m_map; }
+  Coord get_working_area() const { return m_workingAreaCoord; }
+  int get_height() const { return m_height - 1; }
+  int get_width() const { return m_width - 1; }
+  Tile get_tile(int y_tile, int x_tile) const { return m_map[y_tile][x_tile]; }
   Tile *find_tile(int x, int y);
-  int get_cam_width() { return m_workingAreaWidth; }
-  int get_cam_height() { return m_workingAreaHeight; }
+  int get_cam_width() const { return m_workingAreaWidth; }
+  int get_cam_height() const { return m_workingAreaHeight; }
   bool isBreaking(int mouseX, int mouseY);
   Clock getBreakingClock(int mouseX, int mouseY);
   /* setters */
@@ -52,7 +52,6 @@ public:
   void supr_tile(int x, int y);
   void update(int camX, int camY);
   string toString();
-  bool checkMonsterCollisionAt(int x, int y);
 
 private:
   bool m_save;                /** condition for the save*/
