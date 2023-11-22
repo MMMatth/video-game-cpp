@@ -4,6 +4,7 @@
 #include "../entity/character.hpp"
 #include "../entity/entity.hpp"
 #include "../entity/monster.hpp"
+#include "../entity/walking_monster.hpp"
 
 #include "dayNightCycle.hpp"
 #include "inventory.hpp"
@@ -71,8 +72,8 @@ private:
   /*pause*/
   MenuPause m_menuPause;
   /*monster*/
-  vector<Monster> m_monsters;
-  vector<MonsterRender> m_monsterRenders;
+  WalkingMonster m_monster;
+  MonsterRender m_monsterRender;
   Texture m_monsterTexture;
 
 public:

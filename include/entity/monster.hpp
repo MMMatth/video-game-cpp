@@ -20,7 +20,7 @@ public:
       : Entity(x, y, width, height, speed, life) {
     m_timeJump = 0;
   }
-  void update() override;
+  virtual void update() = 0;
 
 private:
   int m_timeJump;

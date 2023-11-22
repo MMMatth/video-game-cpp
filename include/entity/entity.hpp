@@ -24,7 +24,7 @@ public:
         {"up", false}, {"down", false}, {"left", false}, {"right", false}};
   }
 
-  virtual void update() = 0;
+  // virtual void update() = 0;
 
   /* Getters */
   int getHeight() const { return m_height; }

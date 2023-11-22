@@ -9,14 +9,13 @@ Game::Game(RenderWindow &window)
       m_mousePosCam(0, 0), m_map(MAP_PATH), m_mapRenderer(m_map), m_sound(),
       m_fpsCounter(10, 10), m_soundSettings(5), m_game_mode(2),
       m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
-      m_menuPause(m_soundSettings, m_sound) {
+      m_menuPause(m_soundSettings, m_sound),
+      m_monster(m_char.getX(), m_char.getY(), 25, 48, 1, 1, 50),
+      m_monsterRender(m_monster) {
 
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(m_soundSettings.getVolume());
-
-  m_monsters.push_back(Monster(m_char.getX(), m_char.getY(), 25, 48, 1, 1));
-  m_monsterRenders.push_back(MonsterRender(m_monsters[0]));
 }
 
 void Game::run() {
@@ -36,10 +35,8 @@ void Game::reset() {
 void Game::updateCollide() {
   m_map.collide(&m_char, m_cam.getX(), m_cam.getY());
   m_map.collide(&m_char);
-  for (Monster &monster : m_monsters) {
-    m_map.collide(&monster, m_cam.getX(), m_cam.getY());
-    m_map.collide(&monster);
-  }
+  m_map.collide(&m_monster, m_cam.getX(), m_cam.getY());
+  m_map.collide(&m_monster);
 }
 
 void Game::updateMousePos() {
@@ -68,9 +65,7 @@ void Game::update() {
     }
   }
 
-  for (Monster &monster : m_monsters) {
-    monster.update();
-  }
+  m_monster.update();
 
   m_day_night_cycle.update();
 
@@ -209,11 +204,11 @@ void Game::render() {
 
   m_charRenderer.render(m_window, m_sprites, m_cam.getX(), m_cam.getY());
 
-  for (MonsterRender &monsterRender : m_monsterRenders) {
-    monsterRender.render(m_window, m_sprites);
-  }
+  m_monsterRender.render(m_window, m_sprites);
+
   m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
                      m_mousePosWorld.getY());
+
   m_fpsCounter.render(m_window, m_cam);
 
   m_menuPause.render(m_window, m_cam);
