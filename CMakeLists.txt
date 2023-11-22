@@ -1,58 +1,28 @@
-cmake_minimum_required(VERSION 3.7.0)
+cmake_minimum_required(VERSION 3.10)
 project(game)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 14)
 
-set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
-set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+# Add include directories
+include_directories(include/entity)
+include_directories(include/gameplay)
+include_directories(include/item)
+include_directories(include/lib)
+include_directories(include/map)
+include_directories(include/rendering)
+include_directories(include/ui)
+include_directories(include/utils)
 
+# Add source files
+file(GLOB SOURCES "src/entity/*.cpp" "src/gameplay/*.cpp" "src/item/*.cpp" "src/map/*.cpp" "src/rendering/*.cpp" "src/ui/*.cpp" "src/utils/*.cpp" "src/main.cpp")
 
-file(GLOB SOURCES
-    "${SRC_DIR}/*.cpp"
-)
+add_executable(game ${SOURCES})
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+# Link libraries
+target_link_libraries(game sfml-graphics sfml-window sfml-system sfml-audio)
 
-find_package(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)  # <-- Ajout de 'audio'
-
-if(SFML_FOUND)
-    message(STATUS "Found SFML")
-    include_directories(${SFML_INCLUDE_DIR})
-    target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system sfml-audio)  # <-- Ajout de 'sfml-audio'
-else()
-    message(STATUS "Could not locate SFML")
-endif()
-    
-
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
-
-if(SFML_FOUND)
-    message(STATUS "Found SFML")
-    include_directories(${SFML_INCLUDE_DIR})
-    target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system )
-else()
-    message(STATUS "Could not locate SFML")
-endif()
-
-# Génération de la documentation avec Doxygen
-find_package(Doxygen)
-if(DOXYGEN_FOUND)
-    message(STATUS "Found DOXYGEN")
-    set(DOXYGEN_INPUT ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile)
-    add_custom_target(doc
-        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_INPUT}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMENT "Generating documentation with Doxygen"
-        VERBATIM
-    )
-else()
-    message(WARNING "Doxygen not found. Documentation will not be generated.")
-endif()
-
-# Ajout des commandes pour effacer le build et lancer le programme
+# Custom targets
 add_custom_target(run
-    # COMMAND MAP
     COMMAND ./game
     DEPENDS  game 
     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}

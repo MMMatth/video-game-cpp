@@ -1,6 +1,5 @@
-#include "../include/game.hpp"
-#include "../include/menu.hpp"
-#include "../include/monster.hpp"
+#include "../include/gameplay/game.hpp"
+#include "../include/ui/menu.hpp"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
