@@ -178,9 +178,9 @@ void Createmap::addFlower() {
 
 void Createmap::setMap() {
   addStone();
-  addCave();
   addGrass();
   addDirt();
+  addCave();
   addSky();
   addTree();
   addLeaf();
