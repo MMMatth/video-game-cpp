@@ -1,9 +1,4 @@
 #include "../include/monster.hpp"
-#include "../include/const.hpp"
-#include "../include/draw.hpp"
-#include "../include/map.hpp"
-#include "../include/tile.hpp"
-#include <iostream>
 
 void Monster::update() {
   if (m_direction["jump"] && m_collision["down"]) {
