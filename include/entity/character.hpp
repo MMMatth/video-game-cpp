@@ -2,6 +2,7 @@
 #define PERSONNAGE_HPP
 
 #include "../entity/entity.hpp"
+#include "../map/map.hpp"
 #include "../utils/const.hpp"
 #include "../utils/coord.hpp"
 #include <SFML/Audio.hpp>
@@ -17,6 +18,8 @@
 using namespace sf;
 using namespace std;
 
+class Map;
+
 class Character : public Entity {
 public:
   /* constructor */
@@ -28,6 +31,7 @@ public:
   void init();
   /* update */
   void update();
+  void collide(Map *map, int camX, int camY);
 
   /* getters */
   int getTimeJump() const { return m_timeJump; }

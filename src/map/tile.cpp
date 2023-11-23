@@ -24,7 +24,7 @@ bool isColliding(int char_x, int char_y, int char_width, int char_height,
 }
 
 void Tile::collide(Entity *entity) {
-  int entity_x = entity->getX() - entity->getWidth() / 2;
+  int entity_x = entity->getX() + entity->getWidth() / 2;
   int entity_y = entity->getY();
   int entity_width = entity->getWidth();
   int entity_height = entity->getHeight();

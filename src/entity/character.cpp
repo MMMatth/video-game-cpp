@@ -115,6 +115,11 @@ void Character::update() {
   m_collision["right"] = false;
 }
 
+void Character::collide(Map *map, int camX, int camY) {
+  map->collide(this, camX, camY);
+  map->collide(this);
+}
+
 void Character::save(string path) {
   if (m_save) {
     ofstream file;

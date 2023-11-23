@@ -1,6 +1,7 @@
 #ifndef MONSTERS_HPP
 #define MONSTERS_HPP
 
+#include "../map/map.hpp"
 #include "../rendering/entityRender.hpp"
 #include "flying_monster.hpp"
 #include "monster.hpp"
@@ -25,6 +26,13 @@ public:
   void addMonster(Monster *monster) {
     m_monsters.push_back(monster);
     m_monsterRenderers.push_back(new EntityRender(*monster));
+  }
+
+  void collide(Map *map, int camX, int camY) {
+    for (auto &monster : m_monsters) {
+      map->collide(monster, camX, camY);
+      map->collide(monster);
+    }
   }
 
   /* Other */
