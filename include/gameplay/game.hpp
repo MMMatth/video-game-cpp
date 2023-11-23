@@ -3,8 +3,7 @@
 
 #include "../entity/character.hpp"
 #include "../entity/entity.hpp"
-#include "../entity/monster.hpp"
-#include "../entity/walking_monster.hpp"
+#include "../entity/monsters.hpp"
 
 #include "dayNightCycle.hpp"
 #include "inventory.hpp"
@@ -23,10 +22,9 @@
 
 #include "../map/map.hpp"
 
-#include "../rendering/characterRender.hpp"
+#include "../rendering/entityRender.hpp"
 #include "../rendering/inventoryRender.hpp"
 #include "../rendering/mapRender.hpp"
-#include "../rendering/monsterRender.hpp"
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -46,8 +44,8 @@ private:
   RenderWindow &m_window;                  /** SFML Window*/
   unordered_map<string, Sprite> m_sprites; /** all Sprite*/
   /* character */
-  Character m_char;               /** Character */
-  CharacterRender m_charRenderer; /** character render part*/
+  Character m_char;            /** Character */
+  EntityRender m_charRenderer; /** character render part*/
   /* map */
   Map m_map;
   MapRender m_mapRenderer;
@@ -72,9 +70,8 @@ private:
   /*pause*/
   MenuPause m_menuPause;
   /*monster*/
-  WalkingMonster m_monster;
-  MonsterRender m_monsterRender;
-  Texture m_monsterTexture;
+  Monsters m_monsters;
+  // MonsterRender m_monsterRender;
 
 public:
   /* constructor */

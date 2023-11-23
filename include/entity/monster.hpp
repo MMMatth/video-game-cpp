@@ -17,14 +17,11 @@ using namespace sf;
 class Monster : public Entity {
 public:
   Monster(int x, int y, int width, int height, int speed, int life)
-      : Entity(x, y, width, height, speed, life) {
-    m_timeJump = 0;
-  }
+      : Entity(x, y, width, height, speed, life) {}
   virtual void update() = 0;
 
 private:
-  int m_timeJump;
-  int m_jumpHeight;
+  /* data */
 };
 
 #endif /* MONSTER_HPP */
