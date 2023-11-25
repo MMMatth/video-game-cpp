@@ -81,6 +81,7 @@ public:
   void update();
   void updateCollide();
   void updateMousePos();
+  void updateBreaking();
   /* render */
   void render();
   /* clean */

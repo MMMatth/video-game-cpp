@@ -53,7 +53,7 @@
 #define WITE_COLOR Color::White
 #define BLACK_COLOR Color::Black
 /* map */
-#define MAP_WIDTH 20
+#define MAP_WIDTH 1000
 #define MAP_PATH "../assets/csv/map.csv"
 #define MOUNTAIN_COEF 20 //
 #define UNDERGROUND_COEF 10

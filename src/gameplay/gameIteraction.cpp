@@ -52,3 +52,16 @@ void Game::breakBlock() {
     }
   }
 }
+
+void Game::updateBreaking() {
+  Tile *tile = m_map.find_tile(m_mousePosWorld.getX(), m_mousePosWorld.getY());
+  if (tile) {
+    if (tile->isBreaking() &&
+        tile->getBreakingClock().getElapsedTime().asMilliseconds() >
+            tile->getBlock()->getTimeToBreak()) {
+      breakBlock();
+      m_map.setIsBreaking(false, m_mousePosWorld.getX(),
+                          m_mousePosWorld.getY());
+    }
+  }
+}

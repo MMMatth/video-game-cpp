@@ -29,7 +29,7 @@ Map::Map(int height, int width) {
   for (int y = 0; y < height; y++) {
     m_map.push_back(std::vector<Tile>());
     for (int x = 0; x < width; x++) {
-      m_map[y].push_back(Tile(getBlock("AIR"), x, y));
+      m_map[y].push_back(Tile(getBlock("AIR"), x, y, false));
     }
   }
 }
@@ -79,12 +79,16 @@ bool Map::loadFromCSV(string pathFile) {
       int x = 0;
       m_map.push_back(std::vector<Tile>());
       while (getline(ss, c, ';')) {
-        m_map[y].push_back(chooseTile(c, x, y));
+        if (c[0] == '-') {
+          m_map[y].push_back(chooseTile(c, x, y, true));
+        } else {
+          m_map[y].push_back(chooseTile(c, x, y, false));
+        }
         x++;
       }
       if (x < m_width) {
         for (int i = x; i < m_width; i++) {
-          m_map[y].push_back(chooseTile("0", i, y));
+          m_map[y].push_back(chooseTile("0", i, y, false));
         }
       }
       y++;
@@ -97,7 +101,9 @@ bool Map::loadFromCSV(string pathFile) {
 
 /* getters */
 
-Tile Map::chooseTile(string c, int x, int y) { return Tile(getBlock(c), x, y); }
+Tile Map::chooseTile(string c, int x, int y, bool isBackground) {
+  return Tile(getBlock(c), x, y, isBackground);
+}
 
 Tile *Map::find_tile(int world_x, int world_y) {
   for (int y = m_workingAreaCoord.getY(); y < m_workingAreaHeight; y++) {

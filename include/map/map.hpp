@@ -47,7 +47,7 @@ public:
   void collide(Entity *entity, int camX, int camY);
   void collide(Entity *entity);
 
-  Tile chooseTile(string c, int x, int y);
+  Tile chooseTile(string c, int x, int y, bool isBackground);
   void add_tile(Block block, int mouseX, int mouseY);
   void supr_tile(int x, int y);
   void update(int camX, int camY);

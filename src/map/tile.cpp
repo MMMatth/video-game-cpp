@@ -1,10 +1,12 @@
 #include "../../include/map/tile.hpp"
 
-Tile::Tile(Block block, int x, int y)
-    : m_coord(Coord(x * TILE_SIZE, y * TILE_SIZE)), m_block(block) {}
+Tile::Tile(Block block, int x, int y, bool isBackground)
+    : m_coord(Coord(x * TILE_SIZE, y * TILE_SIZE)), m_block(block),
+      m_isBackground(isBackground) {}
 
-Tile::Tile(int x, int y)
-    : m_coord(Coord(x * TILE_SIZE, y * TILE_SIZE)), m_block(Block()) {}
+Tile::Tile(int x, int y, bool isBackground)
+    : m_coord(Coord(x * TILE_SIZE, y * TILE_SIZE)), m_block(Block()),
+      m_isBackground(isBackground) {}
 
 bool Tile::estDansCam(int posCamX, int posCamY, int largeur, int hauteur) {
   if (m_coord.getX() >= posCamX - largeur &&
@@ -33,7 +35,7 @@ void Tile::collide(Entity *entity) {
   int tile_x = m_coord.getX();
   int tile_y = m_coord.getY();
 
-  if (!m_block.isSolid())
+  if (!m_block.isSolid() || m_isBackground)
     return;
   if (isColliding(entity_x, entity_y, entity_width, entity_height, entity_speed,
                   tile_x, tile_y)) {

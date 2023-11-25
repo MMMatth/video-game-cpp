@@ -51,17 +51,7 @@ void Game::updateMousePos() {
 
 void Game::update() {
   updateMousePos();
-
-  Tile *tile = m_map.find_tile(m_mousePosWorld.getX(), m_mousePosWorld.getY());
-  if (tile) {
-    if (tile->isBreaking() &&
-        tile->getBreakingClock().getElapsedTime().asMilliseconds() >
-            tile->getBlock()->getTimeToBreak()) {
-      breakBlock();
-      m_map.setIsBreaking(false, m_mousePosWorld.getX(),
-                          m_mousePosWorld.getY());
-    }
-  }
+  updateBreaking();
 
   m_monsters.update();
 

@@ -17,16 +17,18 @@ private:
   Coord m_coord;
   bool m_isBreaking;
   Clock m_breakingClock;
+  bool m_isBackground;
 
 public:
   /* constructor */
-  Tile(Block block, int x, int y);
-  Tile(int x, int y);
+  Tile(Block block, int x, int y, bool isBackground);
+  Tile(int x, int y, bool isBackground);
   /* destructor */
   // ~Tile();
   /* getters */
   int getX() const { return m_coord.getX(); }
   int getY() const { return m_coord.getY(); }
+  bool isBackground() const { return m_isBackground; }
   Block *getBlock() { return &m_block; }
   bool isBreaking() { return m_isBreaking; }
   Clock getBreakingClock() { return m_breakingClock; }
