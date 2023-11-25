@@ -166,6 +166,9 @@ void Map::save(string path) {
     if (fichier) {
       for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
+          if (m_map[y][x].isBackground()) {
+            fichier << "-";
+          }
           fichier << m_map[y][x].getBlock()->getId();
           fichier << ";";
         }
@@ -208,6 +211,7 @@ void Map::add_tile(Block block, int mouseX, int mouseY) {
 void Map::supr_tile(int mouseX, int mouseY) {
   Tile *target = find_tile(mouseX, mouseY);
   if (target) {
+    target->setBackground(false);
     target->setBlock(blockMap["AIR"]);
   } else {
     cerr << "supr_tile: target is nullptr" << endl;

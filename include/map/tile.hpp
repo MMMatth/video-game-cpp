@@ -33,6 +33,7 @@ public:
   bool isBreaking() { return m_isBreaking; }
   Clock getBreakingClock() { return m_breakingClock; }
   /* setters */
+  void setBackground(bool isBackground) { m_isBackground = isBackground; }
   void setPosition(Coord position) { m_coord = position; }
   void setBlock(Block block) { m_block = block; }
   void setHardness(int hardness) { m_block.setTimeToBreak(hardness); }

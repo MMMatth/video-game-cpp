@@ -107,6 +107,15 @@ void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
   window->draw(textObj);
 }
 
+void drawRectangle(int x, int y, int width, int height, RenderWindow *window,
+                   Color color, int alpha) {
+  RectangleShape rectangle;
+  rectangle.setSize(Vector2f(width, height));
+  rectangle.setPosition(x, y);
+  rectangle.setFillColor(Color(color.r, color.g, color.b, alpha));
+  window->draw(rectangle);
+}
+
 /* audio */
 unordered_map<string, SoundBuffer> initBuffers() {
   unordered_map<string, SoundBuffer> soundBuffers;
