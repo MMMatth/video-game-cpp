@@ -2,11 +2,11 @@
 
 Tile::Tile(Block block, int x, int y, bool isBackground)
     : m_coord(Coord(x * TILE_SIZE, y * TILE_SIZE)), m_block(block),
-      m_isBackground(isBackground) {}
+      m_isBackground(isBackground), m_isBreaking(false) {}
 
 Tile::Tile(int x, int y, bool isBackground)
     : m_coord(Coord(x * TILE_SIZE, y * TILE_SIZE)), m_block(Block()),
-      m_isBackground(isBackground) {}
+      m_isBackground(isBackground), m_isBreaking(false) {}
 
 bool Tile::estDansCam(int posCamX, int posCamY, int largeur, int hauteur) {
   if (m_coord.getX() >= posCamX - largeur &&

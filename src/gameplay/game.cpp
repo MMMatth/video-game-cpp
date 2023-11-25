@@ -31,8 +31,6 @@ void Game::reset() {
 }
 
 void Game::updateCollide() {
-  // m_map.collide(&m_char, m_cam.getX(), m_cam.getY());
-  // m_map.collide(&m_char);
   m_char.collide(&m_map, m_cam.getX(), m_cam.getY());
   m_monsters.collide(&m_map, m_cam.getX(), m_cam.getY());
 }
@@ -51,6 +49,7 @@ void Game::updateMousePos() {
 
 void Game::update() {
   updateMousePos();
+
   updateBreaking();
 
   m_monsters.update();

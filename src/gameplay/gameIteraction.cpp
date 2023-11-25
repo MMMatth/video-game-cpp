@@ -59,6 +59,7 @@ void Game::updateBreaking() {
     if (tile->isBreaking() &&
         tile->getBreakingClock().getElapsedTime().asMilliseconds() >
             tile->getBlock()->getTimeToBreak()) {
+      cout << "break" << endl;
       breakBlock();
       m_map.setIsBreaking(false, m_mousePosWorld.getX(),
                           m_mousePosWorld.getY());

@@ -80,6 +80,7 @@ bool Map::loadFromCSV(string pathFile) {
       m_map.push_back(std::vector<Tile>());
       while (getline(ss, c, ';')) {
         if (c[0] == '-') {
+          c = c.substr(1, c.size()); // we remove the minus
           m_map[y].push_back(chooseTile(c, x, y, true));
         } else {
           m_map[y].push_back(chooseTile(c, x, y, false));
