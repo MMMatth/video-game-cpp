@@ -18,9 +18,7 @@ Map::Map(string path)
   m_save = true;
   if (!initLegthFromCSV(path) || !loadFromCSV(path)) {
     cerr << "Map : cant open the map " << path << endl;
-    Createmap cm(MAP_WIDTH);
-    cm.generate();
-    cm.saveinfile(path);
+    reset(path);
   }
 }
 
@@ -199,9 +197,10 @@ void Map::collide(Entity *entity) {
     entity->setCollision("down", true);
 }
 
-void Map::add_tile(Block block, int mouseX, int mouseY) {
+void Map::add_tile(Block block, int mouseX, int mouseY, bool isBackground) {
   Tile *target = find_tile(mouseX, mouseY);
   if (target) {
+    target->setBackground(isBackground);
     target->setBlock(block);
   } else {
     cerr << "add_tile : target is nullptr" << endl;
@@ -216,6 +215,12 @@ void Map::supr_tile(int mouseX, int mouseY) {
   } else {
     cerr << "supr_tile: target is nullptr" << endl;
   }
+}
+
+void Map::reset(string path) {
+  Createmap cm(MAP_WIDTH);
+  cm.generate();
+  cm.saveinfile(path);
 }
 
 void Map::update(int camX, int camY) {

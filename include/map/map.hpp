@@ -43,12 +43,13 @@ public:
   void setIsBreaking(bool isBreaking, int mouseX, int mouseY);
 
   /* other*/
+  void reset(string path);
   void save(string path);
   void collide(Entity *entity, int camX, int camY);
   void collide(Entity *entity);
 
   Tile chooseTile(string c, int x, int y, bool isBackground);
-  void add_tile(Block block, int mouseX, int mouseY);
+  void add_tile(Block block, int mouseX, int mouseY, bool isBackground);
   void supr_tile(int x, int y);
   void update(int camX, int camY);
   string toString();

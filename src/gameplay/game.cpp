@@ -25,9 +25,8 @@ void Game::reset() {
   m_char.setX(CHAR_DEFAULT_COORD_X);
   m_char.setY(CHAR_DEFAULT_COORD_Y);
   m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
-  Createmap map(MAP_WIDTH);
-  map.generate();
-  m_map = Map(MAP_PATH);
+  m_map.reset(MAP_PATH); // we reset de map
+  m_map = Map(MAP_PATH); // we reload the map
 }
 
 void Game::updateCollide() {
@@ -159,8 +158,12 @@ void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
   } else if (event.button == Mouse::Right) {
     if (!m_inv.isOpen()) {
       if (m_inv.getItemPosHand().getType() == "BLOCK") {
-        putBlock();
+        putBlock(false); // we add a not background block
       }
+    }
+  } else if (event.button == Mouse::Middle) {
+    if (m_inv.getItemPosHand().getType() == "BLOCK") {
+      putBlock(true); // we add a background block
     }
   }
 }

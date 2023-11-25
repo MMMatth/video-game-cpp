@@ -53,8 +53,8 @@ void EntityRender::drawEntityStatic(RenderWindow &window,
                                     unordered_map<string, Sprite> &sprites,
                                     const string &spriteKey, int x, int y) {
   if (spriteKey == "CHAR_JUMP" || spriteKey == "CHAR_FALL") {
-    drawSprites(x, y, sprites[spriteKey], &window, m_entity.getWidth() * 2,
-                m_entity.getHeight());
+    drawSprites(x - m_entity.getWidth() / 2, y, sprites[spriteKey], &window,
+                m_entity.getWidth() * 2, m_entity.getHeight());
     return;
   }
   drawSprites(x, y, sprites[spriteKey], &window, m_entity.getWidth(),

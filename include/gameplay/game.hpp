@@ -99,7 +99,7 @@ public:
   /*save*/
   void save();
   /* map interaction */
-  void putBlock();
+  void putBlock(bool isBreakable);
   bool is_breakable();
   void breakBlock();
   /* sound */

@@ -77,6 +77,14 @@ void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
   window->draw(sprite);
 }
 
+void drawSpritesWithShader(int x, int y, Sprite sprite, RenderWindow *window,
+                           int width, int height, Shader *shader) {
+  sprite.setPosition(x, y);
+  sprite.setScale(width / sprite.getLocalBounds().width,
+                  height / sprite.getLocalBounds().height);
+  window->draw(sprite, shader);
+}
+
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath) {
   Font font;

@@ -30,6 +30,8 @@ public:
   /* getters */
   int getX() { return m_pos.getX(); }
   int getY() { return m_pos.getY(); }
+  int getTopLeftX() { return m_pos.getX() - m_width / 2; }
+  int getTopLeftY() { return m_pos.getY() - m_height / 2; }
   Coord getPos() { return m_pos; }
   int getWidth() { return m_width; }
   int getHeight() { return m_height; }
