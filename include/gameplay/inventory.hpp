@@ -22,6 +22,12 @@
 
 using namespace std;
 
+/**
+ * @class Inventory
+ * @brief Represents the player's inventory.
+ *
+ * This class manages the player's inventory, including adding, removing, and swapping items.
+*/
 class Inventory {
 private:
   bool m_save;
