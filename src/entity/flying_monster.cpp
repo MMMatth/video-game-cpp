@@ -2,10 +2,16 @@
 
 void FlyingMonster::update() {
   if (m_direction["right"] && !m_collision["right"]) {
-    moveX(m_speed);
+    m_direction["left"] = false; 
+    moveX(m_speed); 
+  }else{
+    m_direction["left"] = true;
   }
   if (m_direction["left"] && !m_collision["left"]) {
-    moveX(-m_speed);
+    m_direction["right"] = false;
+    moveX(-m_speed); 
+  }else{
+    m_direction["right"] = true;
   }
   if (m_direction["up"] && !m_collision["up"]) {
     moveY(-m_speed);

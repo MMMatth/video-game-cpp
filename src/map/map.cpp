@@ -226,6 +226,30 @@ void Map::update(int camX, int camY) {
   m_workingAreaHeight = newCamHeight;
 }
 
+bool Map::collidesWithSolidBlock(Entity *entity) {
+  int entityX = entity->getX();
+  int entityY = entity->getY();
+  int entityWidth = entity->getWidth();
+  int entityHeight = entity->getHeight();
+  for (int y = 0; y < get_height(); y++) {
+    for (int x = 0; x < get_width(); x++) {
+      if (m_map[y][x].getBlock()->isSolid()) {
+        int blockX = x * TILE_SIZE;
+        int blockY = y * TILE_SIZE;
+        if (entityX < blockX + TILE_SIZE &&
+          entityX + entityWidth > blockX &&
+          entityY < blockY + TILE_SIZE &&
+          entityY + entityHeight > blockY) {
+          return true; 
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+
 string Map::toString() {
   string res;
   for (int y = 0; y < m_map.size(); y++) {

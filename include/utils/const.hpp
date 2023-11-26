@@ -35,7 +35,8 @@
 #define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
-#define NUM_MONSTERS 50
+#define NUM_MONSTERS_WALKING 2
+#define NUM_MONSTERS_FLYING 2
 #define NUM_FRAMES_MONSTER 3
 /* inventory */
 #define INVENTORY_HEIGHT 4
@@ -53,7 +54,7 @@
 #define WITE_COLOR Color::White
 #define BLACK_COLOR Color::Black
 /* map */
-#define MAP_WIDTH 20
+#define MAP_WIDTH 200
 #define MAP_PATH "../assets/csv/map.csv"
 #define MOUNTAIN_COEF 20 //
 #define UNDERGROUND_COEF 10

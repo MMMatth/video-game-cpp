@@ -2,6 +2,7 @@
 #define MONSTERS_HPP
 
 #include "../map/map.hpp"
+#include "../item/block.hpp"
 #include "../rendering/entityRender.hpp"
 #include "flying_monster.hpp"
 #include "monster.hpp"
@@ -12,11 +13,22 @@ class Monsters {
 private:
   vector<Monster *> m_monsters;
   vector<EntityRender *> m_monsterRenderers;
+  const Map m_map;
 
 public:
-  Monsters() : m_monsters() {
-    addMonster(new FlyingMonster(100, 100, 50, 50, 5, 5));
-    addMonster(new WalkingMonster(200, 200, 50, 50, 5, 5, 10));
+  Monsters(const Map &map) : m_monsters(), m_map(map) {
+
+    srand(time(NULL));
+
+    for(int i = 0; i < NUM_MONSTERS_FLYING; i++) {
+      addRandomMonster(new FlyingMonster(0, 0, 30, 50, 3, 5), map);
+    }
+
+    for(int i = 0; i < NUM_MONSTERS_WALKING; i++) {
+      addRandomMonster(new WalkingMonster(0, 0, 30, 50, 2, 5, 18), map);
+    }
+    // addMonster(new FlyingMonster(100, 100, 32, 32, 5, 5));
+    // addMonster(new WalkingMonster(200, 200, 32, 32, 5, 5, 10));
   }
 
   /* Getters */
@@ -28,12 +40,27 @@ public:
     m_monsterRenderers.push_back(new EntityRender(*monster));
   }
 
-  void collide(Map *map, int camX, int camY) {
-    for (auto &monster : m_monsters) {
-      map->collide(monster, camX, camY);
-      map->collide(monster);
-    }
+void addRandomMonster(Monster *monster, Map map) {
+  int monsterWidth = monster->getWidth();
+  int monsterHeight = monster->getHeight();
+
+  do {
+    int x = rand() % WINDOW_WIDTH;
+    int y = rand() % WINDOW_HEIGHT;
+    monster->setX(x);
+    monster->setY(y);
+  } while (map.collidesWithSolidBlock(monster));
+
+  m_monsters.push_back(monster);
+  m_monsterRenderers.push_back(new EntityRender(*monster));
+}
+
+void collide(Map *map, int camX, int camY) {
+  for (auto &monster : m_monsters) {
+    map->collide(monster, camX, camY);
+     map->collide(monster);
   }
+}
 
   /* Other */
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,

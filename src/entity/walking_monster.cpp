@@ -19,6 +19,7 @@ void WalkingMonster::update() {
   if (m_direction["up"] && !m_collision["up"] && m_timeJump < m_jumpHeight) {
     m_timeJump++;
     moveY(-m_speed);
+
   } else if (m_direction["up"]) {
     m_direction["up"] = false;
     m_direction["fall"] = true;
@@ -27,15 +28,29 @@ void WalkingMonster::update() {
   if (m_direction["fall"] && !m_collision["down"] && !m_direction["up"]) {
     moveY(m_speed);
   }
+
   if (m_direction["right"] && !m_collision["right"]) {
     moveX(m_speed);
+  }else if(m_direction["right"] && m_collision["right"]) {
+    if(getX() >= 6300){
+      m_direction["right"] = false;
+      m_direction["left"] = true;
+    }else{
+      m_direction["jump"] = true;
+    }
   }
+
   if (m_direction["left"] && !m_collision["left"]) {
     moveX(-m_speed);
+  }else if(m_direction["left"] && m_collision["left"]) {
+    if(getX() <= 0){
+      m_direction["right"] = true;
+      m_direction["left"] = false;
+    }else{
+      m_direction["jump"] = true;
+    }
   }
-  if (m_direction["up"] && !m_collision["up"]) {
-    moveY(-m_speed);
-  }
+  
   if (m_collision["up"] && !m_collision["down"]) {
     m_direction["fall"] = true;
     moveY(m_speed);

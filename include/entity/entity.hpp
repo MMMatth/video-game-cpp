@@ -15,7 +15,7 @@ public:
   Entity(int x, int y, int width, int height, int speed, int life)
       : m_coord(x, y), m_width(width), m_height(height), m_speed(speed),
         m_life(life) {
-    m_direction = {{"right", false},
+    m_direction = {{"right", true},
                    {"left", false},
                    {"jump", false},
                    {"up", false},

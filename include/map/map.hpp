@@ -51,6 +51,7 @@ public:
   void add_tile(Block block, int mouseX, int mouseY);
   void supr_tile(int x, int y);
   void update(int camX, int camY);
+  bool collidesWithSolidBlock(Entity *entity);
   string toString();
 
 private:

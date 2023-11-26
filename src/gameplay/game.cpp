@@ -9,7 +9,7 @@ Game::Game(RenderWindow &window)
       m_mousePosCam(0, 0), m_map(MAP_PATH), m_mapRenderer(m_map), m_sound(),
       m_fpsCounter(10, 10), m_soundSettings(5), m_game_mode(2),
       m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
-      m_menuPause(m_soundSettings, m_sound), m_monsters() {
+      m_menuPause(m_soundSettings, m_sound), m_monsters(m_map) {
 
   m_sprites = initSprites();
   m_buffers = initBuffers();
@@ -51,7 +51,6 @@ void Game::updateMousePos() {
 
 void Game::update() {
   updateMousePos();
-
   Tile *tile = m_map.find_tile(m_mousePosWorld.getX(), m_mousePosWorld.getY());
   if (tile) {
     if (tile->isBreaking() &&
@@ -63,7 +62,9 @@ void Game::update() {
     }
   }
 
-  m_monsters.update();
+ if(!m_day_night_cycle.isDay()){
+    m_monsters.update();
+  }
 
   m_day_night_cycle.update();
 
@@ -203,7 +204,9 @@ void Game::render() {
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
   // m_monsterRender.render(m_window, m_sprites);
-  m_monsters.render(m_window, m_sprites, "FLYING_MONSTER", NUM_FRAMES);
+ if(!m_day_night_cycle.isDay()){
+    m_monsters.render(m_window, m_sprites, "FLYING_MONSTER", NUM_FRAMES_MONSTER);
+ }
 
   m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
                      m_mousePosWorld.getY());
