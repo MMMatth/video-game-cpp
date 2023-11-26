@@ -38,6 +38,12 @@
 using namespace sf;
 using namespace std;
 
+/**
+ * @class Game
+ * @brief Represents the main game class.
+ *
+ * This class manages the game's main loop, updates, rendering, and interactions.
+*/
 class Game {
 private:
   /* graphics */
