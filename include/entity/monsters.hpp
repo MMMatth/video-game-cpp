@@ -9,13 +9,27 @@
 #include "walking_monster.hpp"
 #include <vector>
 
+
+/**
+ * @class Monsters
+ * @brief Represents a collection of monsters in the game.
+ *
+ * This class manages a collection of different types of monsters and provides
+ * functionality to add, update, and render them.
+*/
 class Monsters {
 private:
-  vector<Monster *> m_monsters;
-  vector<EntityRender *> m_monsterRenderers;
-  const Map m_map;
+  vector<Monster *> m_monsters;  // Collection of monsters
+  vector<EntityRender *> m_monsterRenderers;  // Renderers for the monsters
+  const Map m_map;  // Reference to the game map
 
 public:
+  /**
+   * @brief Constructor for Monsters.
+   * @param map Reference to the game map.
+   * @details Initializes the Monsters collection and adds random flying and
+   * walking monsters to it.
+  */
   Monsters(const Map &map) : m_monsters(), m_map(map) {
 
     srand(time(NULL));
@@ -31,38 +45,62 @@ public:
     // addMonster(new WalkingMonster(200, 200, 32, 32, 5, 5, 10));
   }
 
-  /* Getters */
+  /**
+   * @brief Getter for the collection of monsters.
+   * @return Vector containing pointers to monsters.
+  */
   vector<Monster *> getMonsters() const { return m_monsters; }
 
-  /* Setters */
+  /**
+   * @brief Setter to add a monster to the collection.
+   * @param monster Pointer to the monster to be added.
+  */
   void addMonster(Monster *monster) {
     m_monsters.push_back(monster);
     m_monsterRenderers.push_back(new EntityRender(*monster));
   }
 
-void addRandomMonster(Monster *monster, Map map) {
-  int monsterWidth = monster->getWidth();
-  int monsterHeight = monster->getHeight();
+  /**
+   * @brief Adds a random monster to the collection at a valid position on the
+   * map.
+   * @param monster Pointer to the monster to be added.
+   * @param map Reference to the game map.
+  */
+  void addRandomMonster(Monster *monster, Map map) {
+    int monsterWidth = monster->getWidth();
+    int monsterHeight = monster->getHeight();
 
-  do {
-    int x = rand() % WINDOW_WIDTH;
-    int y = rand() % WINDOW_HEIGHT;
-    monster->setX(x);
-    monster->setY(y);
-  } while (map.collidesWithSolidBlock(monster));
+    do {
+      int x = rand() % WINDOW_WIDTH;
+      int y = rand() % WINDOW_HEIGHT;
+      monster->setX(x);
+      monster->setY(y);
+    } while (map.collidesWithSolidBlock(monster));
 
-  m_monsters.push_back(monster);
-  m_monsterRenderers.push_back(new EntityRender(*monster));
-}
-
-void collide(Map *map, int camX, int camY) {
-  for (auto &monster : m_monsters) {
-    map->collide(monster, camX, camY);
-     map->collide(monster);
+    m_monsters.push_back(monster);
+    m_monsterRenderers.push_back(new EntityRender(*monster));
   }
-}
 
-  /* Other */
+  /**
+   * @brief Handles collisions between monsters and the map.
+   * @param map Pointer to the game map.
+   * @param camX Camera X position.
+   * @param camY Camera Y position.
+  */
+  void collide(Map *map, int camX, int camY) {
+    for (auto &monster : m_monsters) {
+      map->collide(monster, camX, camY);
+      map->collide(monster);
+    }
+  }
+
+  /**
+   * @brief Renders all monsters on the screen.
+   * @param window Reference to the game window.
+   * @param sprites Map of sprites for rendering.
+   * @param key Key to select the appropriate sprite.
+   * @param nbFrame Number of frames for animation.
+  */
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
               string key, int nbFrame) {
     for (auto &monsterRender : m_monsterRenderers) {
@@ -70,6 +108,9 @@ void collide(Map *map, int camX, int camY) {
     }
   }
 
+  /**
+   * @brief Updates the state of all monsters.
+  */
   void update() {
     for (auto &monster : m_monsters) {
       monster->update();
