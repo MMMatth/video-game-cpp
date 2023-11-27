@@ -31,7 +31,7 @@ public:
    * Parameterized constructor for Map.
    * @param path The path to a file containing map information (used for loading).
   */
-  Map(string path);*
+  Map(string path);
 
   /**
    * Parameterized constructor for Map.
