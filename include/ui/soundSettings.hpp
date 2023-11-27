@@ -1,5 +1,5 @@
-#ifndef SOUND_HPP
-#define SOUND_HPP
+#ifndef SOUNDSETTINGS_HPP
+#define SOUNDSETTINGS_HPP
 
 #include "../utils/otherFunctions.hpp"
 #include <SFML/Audio.hpp>
@@ -8,14 +8,38 @@
 using namespace std;
 using namespace sf;
 
+/**
+ * @class SoundSettings
+ * @brief Represents sound settings in the game.
+ *
+ * The SoundSettings class manages the volume setting for the game's sound.
+ */
 class SoundSettings {
 private:
-  float m_volume = 5;
+  float m_volume; /**< The volume level for the game's sound. */
 
 public:
-  SoundSettings(int volume);
-  int getVolume();
-  void setVolume(int volume);
+  /**
+   * Parameterized constructor for SoundSettings.
+   * @param volume The initial volume level.
+   */
+  SoundSettings(float volume) : m_volume(volume) {}
+
+  /**
+   * Get the current volume level.
+   * @return The volume level.
+   */
+  float getVolume() const {
+    return m_volume;
+  }
+
+  /**
+   * Set the volume level.
+   * @param volume The new volume level.
+   */
+  void setVolume(float volume) {
+    m_volume = volume;
+  }
 };
 
-#endif /*SOUND_HPP*/
+#endif /* SOUNDSETTINGS_HPP */
