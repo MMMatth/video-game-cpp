@@ -13,138 +13,138 @@ using namespace sf;
 using namespace std;
 
 /**
- * @brief La classe Cam représente une caméra dans le monde du jeu.
+ * @brief The Cam class represents a camera in the game world.
  *
- * La caméra est utilisée pour définir la vue du joueur dans le jeu en définissant
- * une position et des dimensions. Elle peut être mise à jour pour suivre un personnage
- * ou pour s'adapter à une certaine zone de la carte.
+ * The camera is used to define the player's view in the game by setting
+ * a position and dimensions. It can be updated to follow a character
+ * or adapt to a certain area of the map.
  */
 class Cam {
 private:
-  bool m_save;  /**< Condition pour la sauvegarde */
-  Coord m_pos;  /**< Position de la caméra */
-  int m_width;  /**< Largeur de la caméra */
-  int m_height; /**< Hauteur de la caméra */
+  bool m_save;  /**< Condition for saving */
+  Coord m_pos;  /**< Camera position */
+  int m_width;  /**< Camera width */
+  int m_height; /**< Camera height */
 
 public:
   /**
-   * @brief Constructeur par défaut de la classe Cam.
+   * @brief Default constructor of the Cam class.
    *
-   * Initialise la caméra avec une position (0,0) et des dimensions par défaut.
+   * Initializes the camera with a position (0,0) and default dimensions.
    */
   Cam();
 
   /**
-   * @brief Constructeur de la classe Cam avec des paramètres spécifiés.
+   * @brief Constructor of the Cam class with specified parameters.
    *
-   * Initialise la caméra avec une position (x, y) et des dimensions par défaut.
+   * Initializes the camera with a position (x, y) and default dimensions.
    *
-   * @param x Position horizontale de la caméra.
-   * @param y Position verticale de la caméra.
+   * @param x Horizontal position of the camera.
+   * @param y Vertical position of the camera.
    */
   Cam(int x, int y);
 
   /**
-   * @brief Constructeur de la classe Cam à partir d'un fichier CSV.
+   * @brief Constructor of the Cam class from a CSV file.
    *
-   * Initialise la caméra à partir d'un fichier CSV qui contient des informations
-   * sur la position et les dimensions de la caméra.
+   * Initializes the camera from a CSV file that contains information
+   * about the position and dimensions of the camera.
    *
-   * @param csvPath Chemin du fichier CSV.
+   * @param csvPath Path to the CSV file.
    */
   Cam(string csvPath);
 
   /**
-   * @brief Charge les données de la caméra à partir d'un fichier CSV.
+   * @brief Loads camera data from a CSV file.
    *
-   * @param csvPath Chemin du fichier CSV.
-   * @return true si le chargement est réussi, false sinon.
+   * @param csvPath Path to the CSV file.
+   * @return true if loading is successful, false otherwise.
    */
   bool loadFromCSV(string csvPath);
 
   /**
-   * @brief Met à jour la position de la caméra en fonction de la position d'un personnage
-   * et des dimensions de la carte.
+   * @brief Updates the camera position based on the position of a character
+   * and the dimensions of the map.
    *
-   * @param charX Position horizontale du personnage.
-   * @param charY Position verticale du personnage.
-   * @param charW Largeur du personnage.
-   * @param charH Hauteur du personnage.
-   * @param mapWidth Largeur de la carte.
-   * @param mapHeight Hauteur de la carte.
-   * @param window Fenêtre SFML utilisée pour déterminer les dimensions de la vue.
+   * @param charX Horizontal position of the character.
+   * @param charY Vertical position of the character.
+   * @param charW Width of the character.
+   * @param charH Height of the character.
+   * @param mapWidth Width of the map.
+   * @param mapHeight Height of the map.
+   * @param window SFML window used to determine the view dimensions.
    */
   void update(int charX, int charY, int charW, int charH, int mapWidth,
               int mapHeight, RenderWindow &window);
 
   /**
-   * @brief Obtient la position horizontale de la caméra.
+   * @brief Gets the horizontal position of the camera.
    *
-   * @return Position horizontale de la caméra.
+   * @return Horizontal position of the camera.
    */
   int getX() { return m_pos.getX(); }
 
   /**
-   * @brief Obtient la position verticale de la caméra.
+   * @brief Gets the vertical position of the camera.
    *
-   * @return Position verticale de la caméra.
+   * @return Vertical position of the camera.
    */
   int getY() { return m_pos.getY(); }
 
   /**
-   * @brief Obtient la position de la caméra sous forme de coordonnées.
+   * @brief Gets the camera position as coordinates.
    *
-   * @return Coord représentant la position de la caméra.
+   * @return Coord representing the camera position.
    */
   Coord getPos() { return m_pos; }
 
   /**
-   * @brief Obtient la largeur de la caméra.
+   * @brief Gets the width of the camera.
    *
-   * @return Largeur de la caméra.
+   * @return Width of the camera.
    */
   int getWidth() { return m_width; }
 
   /**
-   * @brief Obtient la hauteur de la caméra.
+   * @brief Gets the height of the camera.
    *
-   * @return Hauteur de la caméra.
+   * @return Height of the camera.
    */
   int getHeight() { return m_height; }
 
   /**
-   * @brief Définit la position horizontale de la caméra.
+   * @brief Sets the horizontal position of the camera.
    *
-   * @param x Nouvelle position horizontale de la caméra.
+   * @param x New horizontal position of the camera.
    */
   void setX(int x) { m_pos.setX(x); }
 
   /**
-   * @brief Définit la position verticale de la caméra.
+   * @brief Sets the vertical position of the camera.
    *
-   * @param y Nouvelle position verticale de la caméra.
+   * @param y New vertical position of the camera.
    */
   void setY(int y) { m_pos.setY(y); }
 
   /**
-   * @brief Définit la position de la caméra en utilisant des coordonnées.
+   * @brief Sets the camera position using coordinates.
    *
-   * @param pos Nouvelle position de la caméra.
+   * @param pos New camera position.
    */
   void setPos(Coord pos) { m_pos = pos; }
 
   /**
-   * @brief Réinitialise la position de la caméra.
+   * @brief Resets the camera position.
    *
-   * @param x Nouvelle position horizontale.
-   * @param y Nouvelle position verticale.
+   * @param x New horizontal position.
+   * @param y New vertical position.
    */
   void reset(int x, int y);
 
   /**
-   * @brief Sauvegarde les données de la caméra dans un fichier CSV.
+   * @brief Saves camera data to a CSV file.
    *
-   * @param csvPath Chemin du fichier CSV.
+   * @param csvPath Path to the CSV file.
    */
   void save(string csvPath);
 };

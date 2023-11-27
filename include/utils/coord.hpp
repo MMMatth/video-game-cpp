@@ -4,66 +4,66 @@
 #include <string>
 
 /**
- * @brief La classe Coord représente des coordonnées (x, y).
+ * @brief The Coord class represents coordinates (x, y).
  *
- * Cette classe est utilisée pour stocker et manipuler des coordonnées
- * dans un espace bidimensionnel.
+ * This class is used to store and manipulate coordinates
+ * in a two-dimensional space.
  */
 class Coord {
 public:
   /**
-   * @brief Constructeur par défaut de la classe Coord.
+   * @brief Default constructor of the Coord class.
    *
-   * Initialise les coordonnées à (0, 0).
+   * Initializes coordinates to (0, 0).
    */
   Coord() : m_x(0), m_y(0) {}
 
   /**
-   * @brief Constructeur de la classe Coord avec des coordonnées spécifiées.
+   * @brief Constructor of the Coord class with specified coordinates.
    *
-   * @param x Valeur de la coordonnée horizontale (x).
-   * @param y Valeur de la coordonnée verticale (y).
+   * @param x Value of the horizontal coordinate (x).
+   * @param y Value of the vertical coordinate (y).
    */
   Coord(int x, int y) : m_x(x), m_y(y) {}
 
   /**
-   * @brief Destructeur de la classe Coord.
+   * @brief Destructor of the Coord class.
    */
   ~Coord() {}
 
   /**
-   * @brief Obtient la valeur de la coordonnée horizontale (x).
+   * @brief Gets the value of the horizontal coordinate (x).
    *
-   * @return Valeur de la coordonnée horizontale (x).
+   * @return Value of the horizontal coordinate (x).
    */
   int getX() const { return m_x; }
 
   /**
-   * @brief Obtient la valeur de la coordonnée verticale (y).
+   * @brief Gets the value of the vertical coordinate (y).
    *
-   * @return Valeur de la coordonnée verticale (y).
+   * @return Value of the vertical coordinate (y).
    */
   int getY() const { return m_y; }
 
   /**
-   * @brief Définit la valeur de la coordonnée horizontale (x).
+   * @brief Sets the value of the horizontal coordinate (x).
    *
-   * @param x Nouvelle valeur de la coordonnée horizontale (x).
+   * @param x New value of the horizontal coordinate (x).
    */
   void setX(int x) { m_x = x; }
 
   /**
-   * @brief Définit la valeur de la coordonnée verticale (y).
+   * @brief Sets the value of the vertical coordinate (y).
    *
-   * @param y Nouvelle valeur de la coordonnée verticale (y).
+   * @param y New value of the vertical coordinate (y).
    */
   void setY(int y) { m_y = y; }
 
   /**
-   * @brief Définit les coordonnées avec de nouvelles valeurs pour (x, y).
+   * @brief Sets the coordinates with new values for (x, y).
    *
-   * @param x Nouvelle valeur de la coordonnée horizontale (x).
-   * @param y Nouvelle valeur de la coordonnée verticale (y).
+   * @param x New value of the horizontal coordinate (x).
+   * @param y New value of the vertical coordinate (y).
    */
   void setCoord(int x, int y) {
     m_x = x;
@@ -71,27 +71,27 @@ public:
   }
 
   /**
-   * @brief Vérifie si les coordonnées sont égales à d'autres coordonnées.
+   * @brief Checks if the coordinates are equal to other coordinates.
    *
-   * @param other Autres coordonnées à comparer.
-   * @return true si les coordonnées sont égales, false sinon.
+   * @param other Other coordinates to compare.
+   * @return true if the coordinates are equal, false otherwise.
    */
   bool isEqual(Coord other) {
     return (m_x == other.getX() && m_y == other.getY());
   }
 
   /**
-   * @brief Convertit les coordonnées en une chaîne de caractères.
+   * @brief Converts the coordinates to a string.
    *
-   * @return Chaîne de caractères représentant les coordonnées (x, y).
+   * @return String representing the coordinates (x, y).
    */
   std::string toString() {
     return "(" + std::to_string(m_x) + ", " + std::to_string(m_y) + ")";
   };
 
 private:
-  int m_x; /**< Valeur de la coordonnée horizontale (x). */
-  int m_y; /**< Valeur de la coordonnée verticale (y). */
+  int m_x; /**< Value of the horizontal coordinate (x). */
+  int m_y; /**< Value of the vertical coordinate (y). */
 };
 
 #endif // COORD_HPP

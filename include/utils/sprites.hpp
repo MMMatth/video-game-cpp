@@ -5,115 +5,120 @@
 #include "coord.hpp"
 
 /**
- * @brief Classe représentant les coordonnées et les dimensions d'un sprite.
+ * @brief Class representing the coordinates and dimensions of a sprite.
  */
 class Sprites {
 private:
-  Coord m_coord; ///< Les coordonnées du coin supérieur gauche du sprite.
-  int m_width;   ///< La largeur du sprite.
-  int m_height;  ///< La hauteur du sprite.
+  Coord m_coord; ///< The coordinates of the top-left corner of the sprite.
+  int m_width;   ///< The width of the sprite.
+  int m_height;  ///< The height of the sprite.
 
 public:
   /**
-   * @brief Constructeur avec paramètres.
+   * @brief Parameterized constructor.
    *
-   * @param coord Les coordonnées du coin supérieur gauche du sprite.
-   * @param width La largeur du sprite.
-   * @param height La hauteur du sprite.
+   * @param coord The coordinates of the top-left corner of the sprite.
+   * @param width The width of the sprite.
+   * @param height The height of the sprite.
    */
   Sprites(Coord coord, int width, int height)
       : m_coord(coord), m_width(width), m_height(height) {}
 
   /**
-   * @brief Constructeur avec paramètres.
+   * @brief Parameterized constructor.
    *
-   * @param x La coordonnée horizontale du coin supérieur gauche du sprite.
-   * @param y La coordonnée verticale du coin supérieur gauche du sprite.
-   * @param width La largeur du sprite.
-   * @param height La hauteur du sprite.
+   * @param x The horizontal coordinate of the top-left corner of the sprite.
+   * @param y The vertical coordinate of the top-left corner of the sprite.
+   * @param width The width of the sprite.
+   * @param height The height of the sprite.
    */
   Sprites(int x, int y, int width, int height)
       : m_coord(x, y), m_width(width), m_height(height) {}
 
   /**
-   * @brief Constructeur par défaut.
+   * @brief Default constructor.
    */
   Sprites() : m_coord(0, 0), m_width(0), m_height(0){};
 
   /**
-   * @brief Getter pour la coordonnée horizontale du coin supérieur gauche du sprite.
+   * @brief Destructor.
+   */
+  //   ~Sprites();
+
+  /**
+   * @brief Getter for the horizontal coordinate of the top-left corner of the sprite.
    *
-   * @return La coordonnée horizontale du coin supérieur gauche du sprite.
+   * @return The horizontal coordinate of the top-left corner of the sprite.
    */
   int getX() const { return m_coord.getX(); }
 
   /**
-   * @brief Getter pour la coordonnée verticale du coin supérieur gauche du sprite.
+   * @brief Getter for the vertical coordinate of the top-left corner of the sprite.
    *
-   * @return La coordonnée verticale du coin supérieur gauche du sprite.
+   * @return The vertical coordinate of the top-left corner of the sprite.
    */
   int getY() const { return m_coord.getY(); }
 
   /**
-   * @brief Getter pour la largeur du sprite.
+   * @brief Getter for the width of the sprite.
    *
-   * @return La largeur du sprite.
+   * @return The width of the sprite.
    */
   int getWidth() const { return m_width; }
 
   /**
-   * @brief Getter pour la hauteur du sprite.
+   * @brief Getter for the height of the sprite.
    *
-   * @return La hauteur du sprite.
+   * @return The height of the sprite.
    */
   int getHeight() const { return m_height; }
 
   /**
-   * @brief Getter pour les coordonnées du coin supérieur gauche du sprite.
+   * @brief Getter for the coordinates of the top-left corner of the sprite.
    *
-   * @return Les coordonnées du coin supérieur gauche du sprite.
+   * @return The coordinates of the top-left corner of the sprite.
    */
   Coord getCoord() const { return m_coord; }
 
   /**
-   * @brief Setter pour la coordonnée horizontale du coin supérieur gauche du sprite.
+   * @brief Setter for the horizontal coordinate of the top-left corner of the sprite.
    *
-   * @param x La nouvelle coordonnée horizontale du coin supérieur gauche du sprite.
+   * @param x The new horizontal coordinate of the top-left corner of the sprite.
    */
   void setX(int x) { m_coord.setX(x); }
 
   /**
-   * @brief Setter pour la coordonnée verticale du coin supérieur gauche du sprite.
+   * @brief Setter for the vertical coordinate of the top-left corner of the sprite.
    *
-   * @param y La nouvelle coordonnée verticale du coin supérieur gauche du sprite.
+   * @param y The new vertical coordinate of the top-left corner of the sprite.
    */
   void setY(int y) { m_coord.setY(y); }
 
   /**
-   * @brief Setter pour la largeur du sprite.
+   * @brief Setter for the width of the sprite.
    *
-   * @param width La nouvelle largeur du sprite.
+   * @param width The new width of the sprite.
    */
   void setWidth(int width) { this->m_width = width; }
 
   /**
-   * @brief Setter pour la hauteur du sprite.
+   * @brief Setter for the height of the sprite.
    *
-   * @param height La nouvelle hauteur du sprite.
+   * @param height The new height of the sprite.
    */
   void setHeight(int height) { this->m_height = height; }
 
   /**
-   * @brief Setter pour les coordonnées du coin supérieur gauche du sprite.
+   * @brief Setter for the coordinates of the top-left corner of the sprite.
    *
-   * @param coord Les nouvelles coordonnées du coin supérieur gauche du sprite.
+   * @param coord The new coordinates of the top-left corner of the sprite.
    */
   void setCoord(Coord coord) { this->m_coord = coord; }
 
   /**
-   * @brief Fonction pour obtenir une représentation textuelle des propriétés du sprite.
+   * @brief Function to get a textual representation of the sprite's properties.
    *
-   * @return Une chaîne de caractères représentant les propriétés du sprite.
+   * @return A string representing the properties of the sprite.
    */
   std::string toString() const {
     std::string s = "";

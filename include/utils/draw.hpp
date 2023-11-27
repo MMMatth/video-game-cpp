@@ -14,66 +14,66 @@ using namespace std;
 using namespace sf;
 
 /**
- * @brief Initialise un ensemble de sprites à partir des fichiers d'images.
+ * @brief Initializes a set of sprites from image files.
  *
- * @return Un tableau associatif (unordered_map) de sprites.
+ * @return An associative array (unordered_map) of sprites.
  */
 unordered_map<string, Sprite> initSprites();
 
 /**
- * @brief Dessine un sprite à une position spécifiée sur la fenêtre.
+ * @brief Draws a sprite at a specified position on the window.
  *
- * @param x Position horizontale du sprite.
- * @param y Position verticale du sprite.
- * @param sprite Sprite à dessiner.
- * @param window Fenêtre SFML sur laquelle dessiner.
- * @param width Largeur du sprite.
- * @param height Hauteur du sprite.
+ * @param x Horizontal position of the sprite.
+ * @param y Vertical position of the sprite.
+ * @param sprite Sprite to draw.
+ * @param window SFML window on which to draw.
+ * @param width Width of the sprite.
+ * @param height Height of the sprite.
  */
 void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
                  int height);
 
 /**
- * @brief Dessine un texte à une position spécifiée sur la fenêtre.
+ * @brief Draws text at a specified position on the window.
  *
- * @param x Position horizontale du texte.
- * @param y Position verticale du texte.
- * @param text Chaîne de texte à dessiner.
- * @param window Fenêtre SFML sur laquelle dessiner.
- * @param size Taille du texte.
- * @param color Couleur du texte.
- * @param fontPath Chemin vers le fichier de police (font).
+ * @param x Horizontal position of the text.
+ * @param y Vertical position of the text.
+ * @param text Text string to draw.
+ * @param window SFML window on which to draw.
+ * @param size Size of the text.
+ * @param color Color of the text.
+ * @param fontPath Path to the font file.
  */
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath);
 
 /**
- * @brief Dessine un texte avec une bordure à une position spécifiée sur la fenêtre.
+ * @brief Draws text with an outline at a specified position on the window.
  *
- * @param x Position horizontale du texte.
- * @param y Position verticale du texte.
- * @param text Chaîne de texte à dessiner.
- * @param window Fenêtre SFML sur laquelle dessiner.
- * @param size Taille du texte.
- * @param color Couleur du texte.
- * @param edgeColor Couleur de la bordure du texte.
- * @param fontPath Chemin vers le fichier de police (font).
+ * @param x Horizontal position of the text.
+ * @param y Vertical position of the text.
+ * @param text Text string to draw.
+ * @param window SFML window on which to draw.
+ * @param size Size of the text.
+ * @param color Color of the text.
+ * @param edgeColor Color of the text outline.
+ * @param fontPath Path to the font file.
  */
 void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
                       Color color, Color edgeColor, string fontPath);
 
 /**
- * @brief Initialise un ensemble de buffers audio à partir de fichiers sonores.
+ * @brief Initializes a set of audio buffers from sound files.
  *
- * @return Un tableau associatif (unordered_map) de buffers audio.
+ * @return An associative array (unordered_map) of audio buffers.
  */
 unordered_map<string, SoundBuffer> initBuffers();
 
 /**
- * @brief Joue un son à partir d'un buffer audio donné.
+ * @brief Plays a sound from a given audio buffer.
  *
- * @param buffer Buffer audio du son à jouer.
- * @param sound Objet SFML Sound pour jouer le son.
+ * @param buffer Audio buffer of the sound to play.
+ * @param sound SFML Sound object to play the sound.
  */
 void play_sound(SoundBuffer *buffer, Sound *sound);
 
