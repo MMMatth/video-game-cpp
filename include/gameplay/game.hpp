@@ -4,6 +4,7 @@
 #include "../entity/character.hpp"
 #include "../entity/entity.hpp"
 #include "../entity/monsters.hpp"
+#include "../entity/list.hpp"
 
 #include "dayNightCycle.hpp"
 #include "inventory.hpp"

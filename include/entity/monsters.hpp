@@ -6,15 +6,10 @@
 #include "../rendering/entityRender.hpp"
 #include "flying_monster.hpp"
 #include "monster.hpp"
+#include "list.hpp"
 #include "walking_monster.hpp"
 #include <vector>
 
-
-typedef struct MonsterList *monsterList ; 
-struct MonsterList {
-  Monster *m; 
-  monsterList suivant ;
-};
 
 /**
  * @class Monsters
@@ -86,8 +81,7 @@ public:
   */
   void collide(Map *map, int camX, int camY) {
     monsterList temp = m_monsters;
-    while (!is_empty(temp)) {
-      cout << "non vide " << endl;
+    while (!isEmpty(temp)) {
       map->collide(head(temp), camX, camY);
       map->collide(head(temp));
       temp = rest(temp);
@@ -113,82 +107,9 @@ public:
   */
   void update() {
     monsterList temp = m_monsters;
-    while (!is_empty(temp)) {
+    while (!isEmpty(temp)) {
       head(temp)->update();
       temp = rest(temp);
-    }
-  }
-  
-  // Linked List
-  /**
-   * @brief Creates an empty monster list.
-   *
-   * @return An empty monster list.
-   */
-  monsterList cons_empty(){
-    return nullptr;
-  }
-
-  /**
-   * @brief Adds a monster to the monster list.
-   *
-   * @param m Pointer to the monster to be added.
-   * @param M The existing monster list.
-   * @return Updated monster list with the new monster.
-   */
-  monsterList addMonster(Monster *m, monsterList M){
-    monsterList monster;
-
-    monster = (monsterList)malloc(sizeof(Monster*));
-    monster->m = m;
-    monster->suivant = M;
-
-    return monster;
-  }
-
-  /**
-   * @brief Checks if the monster list is empty.
-   *
-   * @param M The monster list to check.
-   * @return True if the list is empty, false otherwise.
-   */
-  bool is_empty (monsterList M){
-    return M == nullptr;
-  }
-
-  /**
-   * @brief Retrieves the first monster in the list.
-   *
-   * @param M The monster list.
-   * @return The first monster in the list.
-   */
-  Monster* head(monsterList M){
-    if(is_empty(M)){
-      printf ("The list is empty: head\n");
-      exit (0);
-    }
-    return M->m;
-  }
-
-  /**
-   * @brief Retrieves the rest of the monster list excluding the first element.
-   *
-   * @param M The monster list.
-   * @return The monster list excluding the first element.
-   */
-  monsterList rest(monsterList M){
-    return M->suivant;
-  }
-
-  /**
-   * @brief Frees the memory allocated for the monster list.
-   *
-   * @param M The monster list to be freed.
-   */
-  void free_monsterList (monsterList M){
-    if (!is_empty(M)){
-      free_monsterList(rest(M)) ;
-      free (M);
     }
   }
 };
