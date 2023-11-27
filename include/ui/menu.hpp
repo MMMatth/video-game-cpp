@@ -13,29 +13,81 @@
 using namespace sf;
 using namespace std;
 
+/**
+ * @class Menu
+ * @brief Represents the main menu of the game.
+ *
+ * The Menu class handles the main menu functionality, including rendering,
+ * event handling, and managing sound settings.
+ */
 class Menu {
 private:
-  Texture menuTexture;
-  Sprite menuSprite;
-  SoundBuffer buffer;
-  Sound m_sound;
-  bool m_menu;
-  bool m_newGame;
-  RenderWindow &m_window;
-  SoundSettings m_soundSettings;
-  int m_clickOnOff;
+  Texture menuTexture; /**< SFML texture for the menu background. */
+  Sprite menuSprite; /**< SFML sprite for the menu background. */
+  SoundBuffer buffer; /**< SFML sound buffer for menu interactions. */
+  Sound m_sound; /**< SFML sound for menu interactions. */
+  bool m_menu; /**< Flag indicating whether the menu is active. */
+  bool m_newGame; /**< Flag indicating whether a new game should be started. */
+  RenderWindow &m_window; /**< Reference to the SFML RenderWindow. */
+  SoundSettings m_soundSettings; /**< Sound settings for the menu. */
+  int m_clickOnOff; /**< Counter to prevent rapid menu interactions. */
 
 public:
+  /**
+   * Parameterized constructor for Menu.
+   * @param window Reference to the SFML RenderWindow.
+   */
   Menu(RenderWindow &window);
+
+  /**
+   * Handle events for the menu.
+   * @param event SFML Event object.
+   */
   void handleEvent(sf::Event &event);
+
+  /**
+   * Run the menu loop.
+   */
   void run();
+
+  /**
+   * Render the menu on the game window.
+   */
   void render();
+
+  /**
+   * Quit the menu.
+   */
   void quit();
+
+  /**
+   * Set the flag indicating whether a new game should be started.
+   * @param newGame Flag for starting a new game.
+   */
   void setIsNewGame(bool newGame);
+
+  /**
+   * Reset the clickOnOff counter.
+   */
   void resetClickOnOff();
+
+  /**
+   * Check if the menu is active.
+   * @return True if the menu is active, false otherwise.
+   */
   bool isActive() const;
+
+  /**
+   * Check if a new game should be started.
+   * @return True if a new game should be started, false otherwise.
+   */
   bool isNewGame() const;
+
+  /**
+   * Check if the volume is off.
+   * @return True if the volume is off, false otherwise.
+   */
   bool volumeOff() const;
 };
 
-#endif
+#endif // MENU_HPP
