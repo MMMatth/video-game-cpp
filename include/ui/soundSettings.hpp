@@ -23,23 +23,18 @@ public:
    * Parameterized constructor for SoundSettings.
    * @param volume The initial volume level.
    */
-  SoundSettings(float volume) : m_volume(volume) {}
+  SoundSettings(int volume);
 
   /**
    * Get the current volume level.
    * @return The volume level.
    */
-  float getVolume() const {
-    return m_volume;
-  }
-
+  int getVolume();
   /**
    * Set the volume level.
    * @param volume The new volume level.
    */
-  void setVolume(float volume) {
-    m_volume = volume;
-  }
+  void setVolume(int volume);
 };
 
 #endif /* SOUNDSETTINGS_HPP */

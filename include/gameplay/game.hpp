@@ -1,5 +1,5 @@
-#ifndef JEU_HPP
-#define JEU_HPP
+#ifndef GAME_HPP
+#define GAME_HPP
 
 #include "../entity/character.hpp"
 #include "../entity/entity.hpp"

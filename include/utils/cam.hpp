@@ -23,8 +23,8 @@ class Cam {
 private:
   bool m_save;  /**< Condition for saving */
   Coord m_pos;  /**< Camera position */
-  int m_width;  /**< Camera width */
-  int m_height; /**< Camera height */
+  int m_width = CAM_WIDTH;  /**< Camera width */
+  int m_height = CAM_HEIGHT; /**< Camera height */
 
 public:
   /**

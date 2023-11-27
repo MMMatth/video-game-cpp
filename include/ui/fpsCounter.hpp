@@ -58,7 +58,7 @@ public:
   void render(RenderWindow &window, Cam &cam) {
     int x = m_coord.getX() + cam.getX() - cam.getWidth() / 2;
     int y = m_coord.getY() + cam.getY() - cam.getHeight() / 2;
-    drawTextWithEdge(x, y, "FPS : " + to_string(getFps()), &window, 20,
+    drawTextWithEdge(x, y, "FPS:"+to_string(getFps()), &window, 20,
                      Color::White, Color::Black, FONT_PATH);
   }
 };
