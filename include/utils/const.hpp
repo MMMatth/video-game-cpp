@@ -35,8 +35,8 @@
 #define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
-#define NUM_MONSTERS_WALKING 2
-#define NUM_MONSTERS_FLYING 2
+#define NUM_MONSTERS_WALKING 20
+#define NUM_MONSTERS_FLYING 20
 #define NUM_FRAMES_MONSTER 3
 /* inventory */
 #define INVENTORY_HEIGHT 4

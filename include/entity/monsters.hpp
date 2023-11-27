@@ -10,6 +10,12 @@
 #include <vector>
 
 
+typedef struct MonsterList *monsterList ; 
+struct MonsterList {
+  Monster *m; 
+  monsterList suivant ;
+};
+
 /**
  * @class Monsters
  * @brief Represents a collection of monsters in the game.
@@ -19,7 +25,7 @@
 */
 class Monsters {
 private:
-  vector<Monster *> m_monsters;  // Collection of monsters
+  monsterList m_monsters = cons_empty();  // Collection of monsters
   vector<EntityRender *> m_monsterRenderers;  // Renderers for the monsters
   const Map m_map;  // Reference to the game map
 
@@ -45,20 +51,11 @@ public:
     // addMonster(new WalkingMonster(200, 200, 32, 32, 5, 5, 10));
   }
 
-  /**
+ /**
    * @brief Getter for the collection of monsters.
-   * @return Vector containing pointers to monsters.
+   * @return Linked list containing pointers to monsters.
   */
-  vector<Monster *> getMonsters() const { return m_monsters; }
-
-  /**
-   * @brief Setter to add a monster to the collection.
-   * @param monster Pointer to the monster to be added.
-  */
-  void addMonster(Monster *monster) {
-    m_monsters.push_back(monster);
-    m_monsterRenderers.push_back(new EntityRender(*monster));
-  }
+  monsterList getMonsters() const { return m_monsters; }
 
   /**
    * @brief Adds a random monster to the collection at a valid position on the
@@ -77,7 +74,7 @@ public:
       monster->setY(y);
     } while (map.collidesWithSolidBlock(monster));
 
-    m_monsters.push_back(monster);
+    m_monsters = addMonster(monster, m_monsters);
     m_monsterRenderers.push_back(new EntityRender(*monster));
   }
 
@@ -88,9 +85,12 @@ public:
    * @param camY Camera Y position.
   */
   void collide(Map *map, int camX, int camY) {
-    for (auto &monster : m_monsters) {
-      map->collide(monster, camX, camY);
-      map->collide(monster);
+    monsterList temp = m_monsters;
+    while (!is_empty(temp)) {
+      cout << "non vide " << endl;
+      map->collide(head(temp), camX, camY);
+      map->collide(head(temp));
+      temp = rest(temp);
     }
   }
 
@@ -112,8 +112,83 @@ public:
    * @brief Updates the state of all monsters.
   */
   void update() {
-    for (auto &monster : m_monsters) {
-      monster->update();
+    monsterList temp = m_monsters;
+    while (!is_empty(temp)) {
+      head(temp)->update();
+      temp = rest(temp);
+    }
+  }
+  
+  // Linked List
+  /**
+   * @brief Creates an empty monster list.
+   *
+   * @return An empty monster list.
+   */
+  monsterList cons_empty(){
+    return nullptr;
+  }
+
+  /**
+   * @brief Adds a monster to the monster list.
+   *
+   * @param m Pointer to the monster to be added.
+   * @param M The existing monster list.
+   * @return Updated monster list with the new monster.
+   */
+  monsterList addMonster(Monster *m, monsterList M){
+    monsterList monster;
+
+    monster = (monsterList)malloc(sizeof(Monster*));
+    monster->m = m;
+    monster->suivant = M;
+
+    return monster;
+  }
+
+  /**
+   * @brief Checks if the monster list is empty.
+   *
+   * @param M The monster list to check.
+   * @return True if the list is empty, false otherwise.
+   */
+  bool is_empty (monsterList M){
+    return M == nullptr;
+  }
+
+  /**
+   * @brief Retrieves the first monster in the list.
+   *
+   * @param M The monster list.
+   * @return The first monster in the list.
+   */
+  Monster* head(monsterList M){
+    if(is_empty(M)){
+      printf ("The list is empty: head\n");
+      exit (0);
+    }
+    return M->m;
+  }
+
+  /**
+   * @brief Retrieves the rest of the monster list excluding the first element.
+   *
+   * @param M The monster list.
+   * @return The monster list excluding the first element.
+   */
+  monsterList rest(monsterList M){
+    return M->suivant;
+  }
+
+  /**
+   * @brief Frees the memory allocated for the monster list.
+   *
+   * @param M The monster list to be freed.
+   */
+  void free_monsterList (monsterList M){
+    if (!is_empty(M)){
+      free_monsterList(rest(M)) ;
+      free (M);
     }
   }
 };
