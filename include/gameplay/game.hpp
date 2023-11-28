@@ -4,7 +4,6 @@
 #include "../entity/character.hpp"
 #include "../entity/entity.hpp"
 #include "../entity/monsters.hpp"
-#include "../entity/list.hpp"
 
 #include "dayNightCycle.hpp"
 #include "inventory.hpp"
@@ -43,8 +42,9 @@ using namespace std;
  * @class Game
  * @brief Represents the main game class.
  *
- * This class manages the game's main loop, updates, rendering, and interactions.
-*/
+ * This class manages the game's main loop, updates, rendering, and
+ * interactions.
+ */
 class Game {
 private:
   /* graphics */
