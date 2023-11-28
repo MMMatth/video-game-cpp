@@ -3,7 +3,8 @@
 Menu::Menu(RenderWindow &window)
     : m_menu(true), m_window(window), m_sound(), m_newGame(false),
       m_soundSettings(5), m_clickOnOff(2), m_map("../assets/menu_map.csv"),
-      m_mapRenderer(m_map), m_cam(CAM_WIDTH, 850) {
+      m_mapRenderer(m_map), m_cam(CAM_WIDTH, 850),
+      m_dayNightCycle(30, DAY_NIGHT_CYCLE_IMG_PATH) {
   m_sprites = initSprites();
   // we charge the sound
   Error(!buffer.loadFromFile(SOUND_PLAY), "Error loading sound");
@@ -101,6 +102,8 @@ void Menu::update() {
                m_map.get_height(), m_window);
   m_cam.setX(m_cam.getX() + 1);
 
+  m_dayNightCycle.update();
+
   updateButtonColor();
 
   if (m_cam.getX() > m_map.get_width() * TILE_SIZE) {
@@ -109,7 +112,7 @@ void Menu::update() {
 }
 
 void Menu::render() {
-  m_window.clear(DEFAULT_SKY_COLOR);
+  m_window.clear(m_dayNightCycle.getColor());
 
   m_mapRenderer.render(m_window, m_sprites);
   drawTextWithEdge(m_cam.getTopLeftX() + m_cam.getWidth() / 2 - 225,

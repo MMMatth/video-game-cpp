@@ -206,5 +206,5 @@ void Createmap::saveinfile(string filename) {
 void Createmap::generate() {
   setCurveAltitude();
   setMap();
-  saveinfile(MAP_PATH);
+  saveinfile(MAP_SAVE_PATH);
 }

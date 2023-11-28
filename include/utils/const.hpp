@@ -10,7 +10,7 @@
 /* cam */
 #define CAM_WIDTH WINDOW_WIDTH * 0.75
 #define CAM_HEIGHT WINDOW_HEIGHT * 0.75
-#define CAM_SAVE_PATH "../assets/csv/cam.csv"
+#define CAM_SAVE_PATH "../assets/save/cam.csv"
 /* character */
 #define CHAR_DEFAULT_COORD_X MAP_WIDTH *TILE_SIZE / 2
 #define CHAR_DEFAULT_COORD_Y TAILLE_PERSONNAGE * 2
@@ -18,7 +18,7 @@
 #define DEPLACEMENT 5
 #define ANIMATION_SPEED 100
 #define NUM_FRAMES 9
-#define CHARACTER_SAVE_PATH "../assets/csv/character.csv"
+#define CHARACTER_SAVE_PATH "../assets/save/character.csv"
 /* sound */
 #define SOUND_PLAY "../assets/sound/pop.ogg"
 #define SOUND_QUIT SOUND_PLAY
@@ -44,9 +44,9 @@
 #define INVENTORY_TILE_SIZE (CAM_WIDTH / INVENTORY_WIDTH) * 0.8
 #define INVENTORY_OBJECT_SIZE INVENTORY_TILE_SIZE * 0.6
 #define MAX_STACK_SIZE 64
-#define INVENTORY_SAVE_PATH "../assets/csv/inventory.csv"
+#define INVENTORY_SAVE_PATH "../assets/save/inventory.csv"
 /* spritesheet */
-#define SPRITESHEET_CSV_PATH "../assets/csv/spritesheet_data.csv"
+#define SPRITESHEET_INPUT_PATH "../assets/input/spritesheet_data.csv"
 #define SPRITESHEET_IMG_PATH "../assets/img/spritesheet.png"
 /* font */
 #define FONT_PATH "assets/fonts/arial.ttf"
@@ -56,7 +56,8 @@
 #define BLACK_COLOR Color::Black
 /* map */
 #define MAP_WIDTH 500
-#define MAP_PATH "../assets/csv/map.csv"
+#define MAP_SAVE_PATH "../assets/save/map.csv"
+#define MAP_INPUT_PATH "../assets/input/map.csv"
 #define MOUNTAIN_COEF 20 //
 #define UNDERGROUND_COEF 10
 #define SKY_HEIGHT_OVER_MOUTAIN 15
@@ -69,7 +70,7 @@
 /* flower */
 #define FLOWER_ECART 10
 /*day night cycle*/
-#define DAY_NIGHT_CYCLE_CSV_PATH "../assets/csv/day_night_cycle.csv"
+#define DAY_NIGHT_CYCLE_CSV_PATH "../assets/save/day_night_cycle.csv"
 #define DAY_NIGHT_CYCLE_IMG_PATH "../assets/img/day_night_cycle.png"
 #define DEFAULT_SKY_COLOR Color(119, 181, 254)
 

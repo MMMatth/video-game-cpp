@@ -1,6 +1,7 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
+#include "../gameplay/dayNightCycle.hpp"
 #include "../map/map.hpp"
 #include "../rendering/mapRender.hpp"
 #include "../utils/cam.hpp"
@@ -41,6 +42,8 @@ private:
   int phase; /**< Phase of the menu. */
 
   unordered_map<string, Sprite> m_sprites; /**< Sprites for the menu. */
+
+  DayNightCycle m_dayNightCycle; /**< Day-night cycle for the menu. */
 
   Map m_map;               /**< Map for the menu background. */
   MapRender m_mapRenderer; /**< Map renderer for the menu background. */

@@ -6,8 +6,8 @@ using namespace sf;
 Game::Game(RenderWindow &window)
     : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
       m_cam(CAM_SAVE_PATH), m_inv(INVENTORY_SAVE_PATH), m_invRender(m_inv),
-      m_mousePosCam(0, 0), m_map(MAP_PATH), m_mapRenderer(m_map), m_sound(),
-      m_fpsCounter(10, 10), m_soundSettings(5), m_game_mode(2),
+      m_mousePosCam(0, 0), m_map(MAP_SAVE_PATH), m_mapRenderer(m_map),
+      m_sound(), m_fpsCounter(10, 10), m_soundSettings(5), m_game_mode(2),
       m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
       m_menuPause(m_soundSettings, m_sound), m_monsters(m_map) {
 
@@ -25,8 +25,8 @@ void Game::reset() {
   m_char.setX(CHAR_DEFAULT_COORD_X);
   m_char.setY(CHAR_DEFAULT_COORD_Y);
   m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
-  m_map.reset(MAP_PATH); // we reset de map
-  m_map = Map(MAP_PATH); // we reload the map
+  m_map.reset(MAP_SAVE_PATH); // we reset de map
+  m_map = Map(MAP_SAVE_PATH); // we reload the map
 }
 
 void Game::updateCollide() {
@@ -195,16 +195,15 @@ void Game::render() {
 
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
-  // m_monsterRender.render(m_window, m_sprites);
   if (!m_day_night_cycle.isDay()) {
     m_monsters.render(m_window, m_sprites, "FLYING_MONSTER",
                       NUM_FRAMES_MONSTER);
   }
 
-  // m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
-  //  m_mousePosWorld.getY());
+  m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
+                     m_mousePosWorld.getY());
 
-  // m_fpsCounter.render(m_window, m_cam);
+  m_fpsCounter.render(m_window, m_cam);
 
   m_menuPause.render(m_window, m_cam);
 
@@ -219,7 +218,7 @@ void Game::quit() {
 
 void Game::save() {
   m_inv.save(INVENTORY_SAVE_PATH);
-  m_map.save(MAP_PATH);
+  m_map.save(MAP_SAVE_PATH);
   m_cam.save(CAM_SAVE_PATH);
   m_day_night_cycle.save(DAY_NIGHT_CYCLE_CSV_PATH);
   m_char.save(CHARACTER_SAVE_PATH);

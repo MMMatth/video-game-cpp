@@ -30,7 +30,7 @@ void parseLine(const string &line, string &type, int &x, int &y, int &width,
       height = stoi(cell);
       break;
     default:
-      cerr << "Invalid csv file : " << SPRITESHEET_CSV_PATH << "\n";
+      cerr << "Invalid csv file : " << SPRITESHEET_INPUT_PATH << "\n";
       exit(EXIT_FAILURE);
     }
     column++;
@@ -49,9 +49,9 @@ unordered_map<string, Sprite> initSprites() {
   Error(!texture.loadFromFile(SPRITESHEET_IMG_PATH),
         "Unable to load spritesheet image.");
 
-  ifstream file(SPRITESHEET_CSV_PATH);
+  ifstream file(SPRITESHEET_INPUT_PATH);
   if (!file.is_open())
-    handleFileError(SPRITESHEET_CSV_PATH);
+    handleFileError(SPRITESHEET_INPUT_PATH);
 
   string line;
   int row = 0;
