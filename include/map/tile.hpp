@@ -32,15 +32,17 @@ public:
    * @param block The block to be contained in the tile.
    * @param x The x-coordinate of the tile.
    * @param y The y-coordinate of the tile.
+   * @param isBackground Indicates whether the tile is a background tile.
    */
-  Tile(Block block, int x, int y);
+  Tile(Block block, int x, int y, bool isBackground = false);
 
   /**
    * Parameterized constructor for Tile without specifying a block.
    * @param x The x-coordinate of the tile.
    * @param y The y-coordinate of the tile.
+   * @param isBackground Indicates whether the tile is a background tile.
    */
-  Tile(int x, int y);
+  Tile(int x, int y, bool isBackground = false);
 
   /**
    * Get the x-coordinate of the tile.

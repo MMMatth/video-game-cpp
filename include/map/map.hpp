@@ -105,7 +105,7 @@ public:
    * @param y The y-coordinate of the tile.
    * @return The chosen tile.
    */
-  Tile chooseTile(string c, int x, int y);
+  Tile chooseTile(string c, int x, int y, bool isBackground);
 
   /**
    * Adds a tile to the map at the specified coordinates.
@@ -113,7 +113,7 @@ public:
    * @param mouseX The x-coordinate of the mouse position.
    * @param mouseY The y-coordinate of the mouse position.
    */
-  void add_tile(Block block, int mouseX, int mouseY);
+  void add_tile(Block block, int mouseX, int mouseY, bool isBackground);
 
   /**
    * Removes a tile from the map at the specified coordinates.
