@@ -59,91 +59,98 @@ void Menu::run() {
   update();
 }
 
-void Menu::updateButtonColor() {
+void Menu::updateButtonColor(string buttonName, Color colorOf, Color colorTo,
+                             int mouseX, int mouseY, int x, int y, int width,
+                             int height) {
+  if (isInside(mouseX, mouseY, x, y, width, height)) {
+    m_menuButtonsPressed[buttonName] = colorOf;
+  } else {
+    m_menuButtonsPressed[buttonName] = colorTo;
+  }
+}
+
+void Menu::updateButtonColors() {
   int mouseX = Mouse::getPosition(m_window).x;
   int mouseY = Mouse::getPosition(m_window).y;
-  if (phase == 1) { /* button play */
-    if (isInside(mouseX, mouseY, 100, 210, 184, 50)) {
-      m_menuButtonsPressed["play"] = Color::Yellow;
-    } else {
-      m_menuButtonsPressed["play"] = Color::White;
-    }
+  if (phase == 1) {
+    /* button play */
+    updateButtonColor("play", Color::Yellow, Color::White, mouseX, mouseY, 100,
+                      210, 184, 50);
     /* button newGame */
-    if (isInside(mouseX, mouseY, 100, 314, 320, 50)) {
-      m_menuButtonsPressed["newGame"] = Color::Yellow;
-    } else {
-      m_menuButtonsPressed["newGame"] = Color::White;
-    }
+    updateButtonColor("newGame", Color::Yellow, Color::White, mouseX, mouseY,
+                      100, 314, 320, 50);
   } else if (phase == 2) {
     /* button play save*/
-    if (isInside(mouseX, mouseY, 100, 210, 411, 50)) {
-      m_menuButtonsPressed["play_save"] = Color::Yellow;
-    } else {
-      m_menuButtonsPressed["play_save"] = Color::White;
-    }
+    updateButtonColor("play_save", Color::Yellow, Color::White, mouseX, mouseY,
+                      100, 210, 411, 50);
     /* button play input*/
-    if (isInside(mouseX, mouseY, 100, 314, 411, 50)) {
-      m_menuButtonsPressed["play_input"] = Color::Yellow;
-    } else {
-      m_menuButtonsPressed["play_input"] = Color::White;
-    }
+    updateButtonColor("play_input", Color::Yellow, Color::White, mouseX, mouseY,
+                      100, 314, 411, 50);
   }
   /* button quit */
-  if (isInside(mouseX, mouseY, 100, 413, 170, 50)) {
-    m_menuButtonsPressed["quit"] = Color::Yellow;
-  } else {
-    m_menuButtonsPressed["quit"] = Color::White;
-  }
+  updateButtonColor("quit", Color::Yellow, Color::White, mouseX, mouseY, 100,
+                    413, 170, 50);
 }
 
 void Menu::update() {
   m_map.update(m_cam.getX(), m_cam.getY());
+
   m_cam.update(m_cam.getX(), m_cam.getY(), 0, 0, m_map.get_width(),
                m_map.get_height(), m_window);
-  m_cam.setX(m_cam.getX() + 1);
+
+  m_cam.setX(m_cam.getX() + 2);
 
   m_dayNightCycle.update();
 
-  updateButtonColor();
+  updateButtonColors();
 
   if (m_cam.getX() > m_map.get_width() * TILE_SIZE) {
     m_cam.setX(0);
   }
 }
 
+void Menu::renderButton(int x, int y, Color edgeColor, string text,
+                        string key) {
+  drawTextWithEdge(x, y, text, &m_window, 50, m_menuButtonsPressed[key],
+                   sf::Color::Black, MINECRAFT_FONT_PATH);
+}
+
+void Menu::renderButtons() {
+
+  int top_left_hands_x =
+      m_cam.getTopLeftX() + m_cam.getWidth() / 2 - CAM_HEIGHT / 2;
+
+  if (phase == 1) {
+
+    renderButton(top_left_hands_x, m_cam.getTopLeftY() + 150, Color::Black,
+                 "PLAY", "play");
+
+    renderButton(top_left_hands_x, m_cam.getTopLeftY() + 225, Color::Black,
+                 "NEW GAME", "newGame");
+
+  } else if (phase == 2) {
+
+    renderButton(top_left_hands_x, m_cam.getTopLeftY() + 150, Color::Black,
+                 "PLAY SAVE", "play_save");
+
+    renderButton(top_left_hands_x, m_cam.getTopLeftY() + 225, Color::Black,
+                 "PLAY INPUT", "play_input");
+  }
+
+  renderButton(top_left_hands_x, m_cam.getTopLeftY() + 300, Color::Black,
+               "QUIT", "quit");
+}
+
 void Menu::render() {
   m_window.clear(m_dayNightCycle.getColor());
 
   m_mapRenderer.render(m_window, m_sprites);
-  drawTextWithEdge(m_cam.getTopLeftX() + m_cam.getWidth() / 2 - 225,
+
+  drawTextWithEdge(m_cam.getTopLeftX() + m_cam.getWidth() / 2 - CAM_HEIGHT / 2,
                    m_cam.getTopLeftY() + 50, "MINECRAFT 2D", &m_window, 65,
                    sf::Color::White, sf::Color::Black, MINECRAFT_FONT_PATH);
 
-  if (phase == 1) {
-    drawTextWithEdge(
-        m_cam.getTopLeftX() + m_cam.getWidth() / 2 - CAM_HEIGHT / 2,
-        m_cam.getTopLeftY() + 150, "PLAY", &m_window, 50,
-        m_menuButtonsPressed["play"], sf::Color::Black, MINECRAFT_FONT_PATH);
-    drawTextWithEdge(
-        m_cam.getTopLeftX() + m_cam.getWidth() / 2 - CAM_HEIGHT / 2,
-        m_cam.getTopLeftY() + 225, "NEW GAME", &m_window, 50,
-        m_menuButtonsPressed["newGame"], sf::Color::Black, MINECRAFT_FONT_PATH);
-  } else if (phase == 2) {
-    drawTextWithEdge(m_cam.getTopLeftX() + m_cam.getWidth() / 2 -
-                         CAM_HEIGHT / 2,
-                     m_cam.getTopLeftY() + 150, "PLAY SAVE", &m_window, 50,
-                     m_menuButtonsPressed["play_save"], sf::Color::Black,
-                     MINECRAFT_FONT_PATH);
-    drawTextWithEdge(m_cam.getTopLeftX() + m_cam.getWidth() / 2 -
-                         CAM_HEIGHT / 2,
-                     m_cam.getTopLeftY() + 225, "PLAY INPUT", &m_window, 50,
-                     m_menuButtonsPressed["play_input"], sf::Color::Black,
-                     MINECRAFT_FONT_PATH);
-  }
-  drawTextWithEdge(m_cam.getTopLeftX() + m_cam.getWidth() / 2 - CAM_HEIGHT / 2,
-                   m_cam.getTopLeftY() + 300, "QUIT", &m_window, 50,
-                   m_menuButtonsPressed["quit"], sf::Color::Black,
-                   MINECRAFT_FONT_PATH);
+  renderButtons();
 
   m_window.display();
 }

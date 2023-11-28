@@ -68,9 +68,11 @@ public:
    */
   void run();
 
-  /**
-   * Render the menu on the game window.
-   */
+  void renderButton(int x, int y, Color edgeColor, string text, string key);
+
+  void renderButtons();
+
+  /** Render the menu on the game window. */
   void render();
 
   /**
@@ -78,7 +80,10 @@ public:
    */
   void quit();
 
-  void updateButtonColor();
+  void updateButtonColor(string buttonName, Color colorOf, Color colorTo,
+                         int mouseX, int mouseY, int x, int y, int width,
+                         int height);
+  void updateButtonColors();
 
   /** update*/
   void update();
