@@ -50,11 +50,12 @@
 #define SPRITESHEET_IMG_PATH "../assets/img/spritesheet.png"
 /* font */
 #define FONT_PATH "assets/fonts/arial.ttf"
+#define MINECRAFT_FONT_PATH "assets/fonts/minecraft.ttf"
 #define FONT_COLOR Color(218, 225, 16)
 #define WITE_COLOR Color::White
 #define BLACK_COLOR Color::Black
 /* map */
-#define MAP_WIDTH 1000
+#define MAP_WIDTH 500
 #define MAP_PATH "../assets/csv/map.csv"
 #define MOUNTAIN_COEF 20 //
 #define UNDERGROUND_COEF 10

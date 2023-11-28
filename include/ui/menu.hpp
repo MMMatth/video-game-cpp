@@ -1,6 +1,9 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
+#include "../map/map.hpp"
+#include "../rendering/mapRender.hpp"
+#include "../utils/cam.hpp"
 #include "../utils/const.hpp"
 #include "../utils/draw.hpp"
 #include "../utils/otherFunctions.hpp"
@@ -22,15 +25,27 @@ using namespace std;
  */
 class Menu {
 private:
-  Texture menuTexture; /**< SFML texture for the menu background. */
-  Sprite menuSprite; /**< SFML sprite for the menu background. */
   SoundBuffer buffer; /**< SFML sound buffer for menu interactions. */
-  Sound m_sound; /**< SFML sound for menu interactions. */
-  bool m_menu; /**< Flag indicating whether the menu is active. */
+  Sound m_sound;      /**< SFML sound for menu interactions. */
+
+  bool m_menu;    /**< Flag indicating whether the menu is active. */
   bool m_newGame; /**< Flag indicating whether a new game should be started. */
-  RenderWindow &m_window; /**< Reference to the SFML RenderWindow. */
+  RenderWindow &m_window;        /**< Reference to the SFML RenderWindow. */
   SoundSettings m_soundSettings; /**< Sound settings for the menu. */
   int m_clickOnOff; /**< Counter to prevent rapid menu interactions. */
+
+  Shader m_shader; /**< Shader for the menu. */
+
+  Cam m_cam; /**< Camera for the menu. */
+
+  int phase; /**< Phase of the menu. */
+
+  unordered_map<string, Sprite> m_sprites; /**< Sprites for the menu. */
+
+  Map m_map;               /**< Map for the menu background. */
+  MapRender m_mapRenderer; /**< Map renderer for the menu background. */
+
+  map<string, Color> m_menuButtonsPressed; /**< Map of menu buttons pressed. */
 
 public:
   /**
@@ -59,6 +74,11 @@ public:
    * Quit the menu.
    */
   void quit();
+
+  void updateButtonColor();
+
+  /** update*/
+  void update();
 
   /**
    * Set the flag indicating whether a new game should be started.

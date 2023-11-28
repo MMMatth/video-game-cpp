@@ -1,6 +1,6 @@
 #include "../../include/map/mapGenerator.hpp"
 
-#define TREE_IS_BACKGROUND true
+#define TREE_IS_BACKGROUND false
 
 int abs(int x) {
   if (x < 0) {

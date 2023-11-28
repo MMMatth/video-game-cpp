@@ -27,8 +27,11 @@ int main() {
         if (event.type == Event::Closed) {
           window.close();
         }
-        game.handleEvent(event);
-        menu.handleEvent(event);
+        if (menu.isActive()) {
+          menu.handleEvent(event);
+        } else {
+          game.handleEvent(event);
+        }
       }
 
       if (menu.isActive()) {

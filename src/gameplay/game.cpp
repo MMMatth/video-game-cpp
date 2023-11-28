@@ -48,7 +48,6 @@ void Game::updateMousePos() {
 
 void Game::update() {
   updateMousePos();
-
   updateBreaking();
 
   if (!m_day_night_cycle.isDay()) {
@@ -202,10 +201,10 @@ void Game::render() {
                       NUM_FRAMES_MONSTER);
   }
 
-  m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
-                     m_mousePosWorld.getY());
+  // m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
+  //  m_mousePosWorld.getY());
 
-  m_fpsCounter.render(m_window, m_cam);
+  // m_fpsCounter.render(m_window, m_cam);
 
   m_menuPause.render(m_window, m_cam);
 
