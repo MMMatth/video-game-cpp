@@ -17,16 +17,17 @@ using namespace sf;
  *
  * This class encapsulates the properties and behaviors of a tile, including its
  * position, the block it contains, and whether it is currently breaking.
-*/
+ */
 class Tile {
 private:
-  Block m_block;          /**< The block contained in the tile. */
-  Coord m_coord;          /**< The position of the tile. */
-  bool m_isBreaking;      /**< Indicates whether the tile is currently breaking. */
-  Clock m_breakingClock;   /**< Clock used for tracking breaking progress. */
+  bool m_isBackground;
+  Block m_block;     /**< The block contained in the tile. */
+  Coord m_coord;     /**< The position of the tile. */
+  bool m_isBreaking; /**< Indicates whether the tile is currently breaking. */
+  Clock m_breakingClock; /**< Clock used for tracking breaking progress. */
 
 public:
-   /**
+  /**
    * Parameterized constructor for Tile.
    * @param block The block to be contained in the tile.
    * @param x The x-coordinate of the tile.
@@ -52,6 +53,7 @@ public:
    * @return The y-coordinate of the tile.
    */
   int getY() const { return m_coord.getY(); }
+  bool isBackground() const { return m_isBackground; }
 
   /**
    * Get the block contained in the tile.
@@ -70,6 +72,8 @@ public:
    * @return The breaking clock.
    */
   Clock getBreakingClock() { return m_breakingClock; }
+  /* setters */
+  void setBackground(bool isBackground) { m_isBackground = isBackground; }
 
   /**
    * Set the position of the tile.
@@ -96,7 +100,8 @@ public:
   void setBreaking(bool isBreaking) { m_isBreaking = isBreaking; }
 
   /**
-   * Reset the breaking clock, typically used when the breaking process starts anew.
+   * Reset the breaking clock, typically used when the breaking process starts
+   * anew.
    */
   void resetBreakingClock() { m_breakingClock.restart(); }
 

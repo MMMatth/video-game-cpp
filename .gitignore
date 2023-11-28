@@ -1,4 +1,7 @@
 build/
 doc/
-assets/csv/*
-!assets/csv/spritesheet_data.csv
+assets/csv/cam.csv
+assets/csv/character.csv
+assets/csv/day_night_cycle.csv
+assets/csv/inventory.csv
+assets/csv/map.csv

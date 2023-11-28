@@ -21,9 +21,9 @@ using namespace std;
  */
 class Cam {
 private:
-  bool m_save;  /**< Condition for saving */
-  Coord m_pos;  /**< Camera position */
-  int m_width = CAM_WIDTH;  /**< Camera width */
+  bool m_save;               /**< Condition for saving */
+  Coord m_pos;               /**< Camera position */
+  int m_width = CAM_WIDTH;   /**< Camera width */
   int m_height = CAM_HEIGHT; /**< Camera height */
 
 public:
@@ -90,6 +90,8 @@ public:
    * @return Vertical position of the camera.
    */
   int getY() { return m_pos.getY(); }
+  int getTopLeftX() { return m_pos.getX() - m_width / 2; }
+  int getTopLeftY() { return m_pos.getY() - m_height / 2; }
 
   /**
    * @brief Gets the camera position as coordinates.

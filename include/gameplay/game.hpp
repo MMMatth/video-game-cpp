@@ -88,6 +88,7 @@ public:
   void update();
   void updateCollide();
   void updateMousePos();
+  void updateBreaking();
   /* render */
   void render();
   /* clean */
@@ -105,7 +106,7 @@ public:
   /*save*/
   void save();
   /* map interaction */
-  void putBlock();
+  void putBlock(bool isBreakable);
   bool is_breakable();
   void breakBlock();
   /* sound */

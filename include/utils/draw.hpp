@@ -62,6 +62,9 @@ void drawText(int x, int y, string text, RenderWindow *window, int size,
 void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
                       Color color, Color edgeColor, string fontPath);
 
+void drawRectangle(int x, int y, int width, int height, RenderWindow *window,
+                   Color color, int alpha);
+/* audio */
 /**
  * @brief Initializes a set of audio buffers from sound files.
  *

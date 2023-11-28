@@ -18,9 +18,7 @@ Map::Map(string path)
   m_save = true;
   if (!initLegthFromCSV(path) || !loadFromCSV(path)) {
     cerr << "Map : cant open the map " << path << endl;
-    Createmap cm(MAP_WIDTH);
-    cm.generate();
-    cm.saveinfile(path);
+    reset(path);
   }
 }
 
@@ -29,7 +27,7 @@ Map::Map(int height, int width) {
   for (int y = 0; y < height; y++) {
     m_map.push_back(std::vector<Tile>());
     for (int x = 0; x < width; x++) {
-      m_map[y].push_back(Tile(getBlock("AIR"), x, y));
+      m_map[y].push_back(Tile(getBlock("AIR"), x, y, false));
     }
   }
 }
@@ -79,12 +77,17 @@ bool Map::loadFromCSV(string pathFile) {
       int x = 0;
       m_map.push_back(std::vector<Tile>());
       while (getline(ss, c, ';')) {
-        m_map[y].push_back(chooseTile(c, x, y));
+        if (c[0] == '-') {
+          c = c.substr(1, c.size()); // we remove the minus
+          m_map[y].push_back(chooseTile(c, x, y, true));
+        } else {
+          m_map[y].push_back(chooseTile(c, x, y, false));
+        }
         x++;
       }
       if (x < m_width) {
         for (int i = x; i < m_width; i++) {
-          m_map[y].push_back(chooseTile("0", i, y));
+          m_map[y].push_back(chooseTile("0", i, y, false));
         }
       }
       y++;
@@ -97,7 +100,9 @@ bool Map::loadFromCSV(string pathFile) {
 
 /* getters */
 
-Tile Map::chooseTile(string c, int x, int y) { return Tile(getBlock(c), x, y); }
+Tile Map::chooseTile(string c, int x, int y, bool isBackground) {
+  return Tile(getBlock(c), x, y, isBackground);
+}
 
 Tile *Map::find_tile(int world_x, int world_y) {
   for (int y = m_workingAreaCoord.getY(); y < m_workingAreaHeight; y++) {
@@ -159,6 +164,9 @@ void Map::save(string path) {
     if (fichier) {
       for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
+          if (m_map[y][x].isBackground()) {
+            fichier << "-";
+          }
           fichier << m_map[y][x].getBlock()->getId();
           fichier << ";";
         }
@@ -189,9 +197,10 @@ void Map::collide(Entity *entity) {
     entity->setCollision("down", true);
 }
 
-void Map::add_tile(Block block, int mouseX, int mouseY) {
+void Map::add_tile(Block block, int mouseX, int mouseY, bool isBackground) {
   Tile *target = find_tile(mouseX, mouseY);
   if (target) {
+    target->setBackground(isBackground);
     target->setBlock(block);
   } else {
     cerr << "add_tile : target is nullptr" << endl;
@@ -201,10 +210,17 @@ void Map::add_tile(Block block, int mouseX, int mouseY) {
 void Map::supr_tile(int mouseX, int mouseY) {
   Tile *target = find_tile(mouseX, mouseY);
   if (target) {
+    target->setBackground(false);
     target->setBlock(blockMap["AIR"]);
   } else {
     cerr << "supr_tile: target is nullptr" << endl;
   }
+}
+
+void Map::reset(string path) {
+  Createmap cm(MAP_WIDTH);
+  cm.generate();
+  cm.saveinfile(path);
 }
 
 void Map::update(int camX, int camY) {

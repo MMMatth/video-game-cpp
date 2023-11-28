@@ -25,14 +25,11 @@ void Game::reset() {
   m_char.setX(CHAR_DEFAULT_COORD_X);
   m_char.setY(CHAR_DEFAULT_COORD_Y);
   m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
-  Createmap map(MAP_WIDTH);
-  map.generate();
-  m_map = Map(MAP_PATH);
+  m_map.reset(MAP_PATH); // we reset de map
+  m_map = Map(MAP_PATH); // we reload the map
 }
 
 void Game::updateCollide() {
-  // m_map.collide(&m_char, m_cam.getX(), m_cam.getY());
-  // m_map.collide(&m_char);
   m_char.collide(&m_map, m_cam.getX(), m_cam.getY());
   m_monsters.collide(&m_map, m_cam.getX(), m_cam.getY());
 }
@@ -51,18 +48,10 @@ void Game::updateMousePos() {
 
 void Game::update() {
   updateMousePos();
-  Tile *tile = m_map.find_tile(m_mousePosWorld.getX(), m_mousePosWorld.getY());
-  if (tile) {
-    if (tile->isBreaking() &&
-        tile->getBreakingClock().getElapsedTime().asMilliseconds() >
-            tile->getBlock()->getTimeToBreak()) {
-      breakBlock();
-      m_map.setIsBreaking(false, m_mousePosWorld.getX(),
-                          m_mousePosWorld.getY());
-    }
-  }
 
- if(!m_day_night_cycle.isDay()){
+  updateBreaking();
+
+  if (!m_day_night_cycle.isDay()) {
     m_monsters.update();
   }
 
@@ -171,8 +160,12 @@ void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
   } else if (event.button == Mouse::Right) {
     if (!m_inv.isOpen()) {
       if (m_inv.getItemPosHand().getType() == "BLOCK") {
-        putBlock();
+        putBlock(false); // we add a not background block
       }
+    }
+  } else if (event.button == Mouse::Middle) {
+    if (m_inv.getItemPosHand().getType() == "BLOCK") {
+      putBlock(true); // we add a background block
     }
   }
 }
@@ -204,9 +197,10 @@ void Game::render() {
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
   // m_monsterRender.render(m_window, m_sprites);
- if(!m_day_night_cycle.isDay()){
-    m_monsters.render(m_window, m_sprites, "FLYING_MONSTER", NUM_FRAMES_MONSTER);
- }
+  if (!m_day_night_cycle.isDay()) {
+    m_monsters.render(m_window, m_sprites, "FLYING_MONSTER",
+                      NUM_FRAMES_MONSTER);
+  }
 
   m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
                      m_mousePosWorld.getY());

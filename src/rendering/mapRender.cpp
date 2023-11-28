@@ -9,6 +9,10 @@ void MapRender::render(RenderWindow &window,
       Tile tile = m_map.get_tile(y, x);
       drawSprites(tile.getX(), tile.getY(), sprites[tile.getBlock()->getName()],
                   &window, TILE_SIZE, TILE_SIZE);
+      if (tile.isBackground()) {
+        drawRectangle(tile.getX(), tile.getY(), TILE_SIZE, TILE_SIZE, &window,
+                      Color(0, 0, 0), 100);
+      }
       if (tile.isBreaking() && tile.getBlock()->getName() != "AIR") {
         int palier = tile.getBlock()->getTimeToBreak() / 10;
         int frame =

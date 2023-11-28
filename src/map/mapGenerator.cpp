@@ -1,5 +1,7 @@
 #include "../../include/map/mapGenerator.hpp"
 
+#define TREE_IS_BACKGROUND true
+
 int abs(int x) {
   if (x < 0) {
     return -x;
@@ -123,7 +125,7 @@ void Createmap::addTree() {
         if (m_map[y][x] == 1) {                  // we only place tree on grass
           for (int i = 1; i <= TREE_SIZE; i++) { // we add the tree
             if (y - i >= 0) {
-              m_map[y - i][x] = 5; // wood
+              m_map[y - i][x] = (TREE_IS_BACKGROUND ? -5 : 5);
             }
           }
           m_map[y][x] = 2; // we remplace the grass by the dirt
@@ -137,10 +139,11 @@ void Createmap::addTree() {
 void Createmap::addLeaf() {
   for (int x = 0; x < m_width; x++) {
     for (int y = 0; y < m_altitude.size + m_underground_size; y++) {
-      if (m_map[y][x] == 5) { // if we find a tree
+      if (m_map[y][x] == (TREE_IS_BACKGROUND ? -5 : 5)) { // if we find a tree
         for (int j = 0; j < LEAF_HEIGHT; j++) {
           for (int i = 0; i < LEAF_WIDTH; i++) { // we add the leaf
-            m_map[y - j][x - LEAF_WIDTH / 2 + i] = 4;
+            m_map[y - j][x - LEAF_WIDTH / 2 + i] =
+                (TREE_IS_BACKGROUND ? -4 : 4);
           }
           if (j == LEAF_HEIGHT - 1) { // we remove the corners
             m_map[y - j][x - LEAF_WIDTH / 2] = 0;

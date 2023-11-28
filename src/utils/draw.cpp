@@ -77,6 +77,14 @@ void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
   window->draw(sprite);
 }
 
+void drawSpritesWithShader(int x, int y, Sprite sprite, RenderWindow *window,
+                           int width, int height, Shader *shader) {
+  sprite.setPosition(x, y);
+  sprite.setScale(width / sprite.getLocalBounds().width,
+                  height / sprite.getLocalBounds().height);
+  window->draw(sprite, shader);
+}
+
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath) {
   Font font;
@@ -105,6 +113,15 @@ void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
   textObj.setOutlineThickness(1);
   textObj.setPosition(x, y);
   window->draw(textObj);
+}
+
+void drawRectangle(int x, int y, int width, int height, RenderWindow *window,
+                   Color color, int alpha) {
+  RectangleShape rectangle;
+  rectangle.setSize(Vector2f(width, height));
+  rectangle.setPosition(x, y);
+  rectangle.setFillColor(Color(color.r, color.g, color.b, alpha));
+  window->draw(rectangle);
 }
 
 /* audio */

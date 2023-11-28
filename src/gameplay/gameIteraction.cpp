@@ -1,7 +1,7 @@
 #include "../../include/gameplay/game.hpp"
 
 /* map iteraction */
-void Game::putBlock() {
+void Game::putBlock(bool isBackground) {
 
   int mouseX = m_mousePosWorld.getX();
   int mouseY = m_mousePosWorld.getY();
@@ -17,8 +17,8 @@ void Game::putBlock() {
   if (!isMouseOutsideChar) {
     if (m_map.find_tile(mouseX, mouseY)->getBlock()->getId() == '0') {
       play_sound(&m_buffers["PUT_BLOCK"], &m_sound);
-      m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()], mouseX,
-                     mouseY);
+      m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()], mouseX, mouseY,
+                     isBackground);
       if (m_game_mode == 2) {
         m_inv.removeItem(Coord(INVENTORY_HEIGHT - 1, m_inv.getPosHand()), 1);
       }
@@ -49,6 +49,19 @@ void Game::breakBlock() {
       }
       play_sound(&m_buffers["BREAK"], &m_sound);
       m_map.supr_tile(mouseX, mouseY);
+    }
+  }
+}
+
+void Game::updateBreaking() {
+  Tile *tile = m_map.find_tile(m_mousePosWorld.getX(), m_mousePosWorld.getY());
+  if (tile) {
+    if (tile->isBreaking() &&
+        tile->getBreakingClock().getElapsedTime().asMilliseconds() >
+            tile->getBlock()->getTimeToBreak()) {
+      breakBlock();
+      m_map.setIsBreaking(false, m_mousePosWorld.getX(),
+                          m_mousePosWorld.getY());
     }
   }
 }
