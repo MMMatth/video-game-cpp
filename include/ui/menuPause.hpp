@@ -21,9 +21,9 @@ using namespace sf;
  */
 class MenuPause {
 private:
-  bool m_pause; /**< Flag indicating whether the game is paused. */
+  bool m_pause;         /**< Flag indicating whether the game is paused. */
   Texture pauseTexture; /**< SFML texture for the pause menu background. */
-  Sprite pauseSprite; /**< SFML sprite for the pause menu background. */
+  Sprite pauseSprite;   /**< SFML sprite for the pause menu background. */
   Sound &m_sound; /**< Reference to the SFML Sound object for sound settings. */
   SoundSettings &m_soundSettings; /**< Reference to the sound settings. */
   int m_clickOnOff; /**< Counter to prevent rapid menu interactions. */

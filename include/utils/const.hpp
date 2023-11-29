@@ -1,6 +1,9 @@
 #ifndef CONST_HPP
 #define CONST_HPP
 
+/* other */
+// #define
+
 /* window */
 #define FPS_MAX 60
 #define TICKS_PER_FRAME 60.f
@@ -55,7 +58,7 @@
 #define WITE_COLOR Color::White
 #define BLACK_COLOR Color::Black
 /* map */
-#define MAP_WIDTH 500
+#define MAP_WIDTH 50
 #define MAP_SAVE_PATH "../assets/save/map.csv"
 #define MAP_INPUT_PATH "../assets/input/map.csv"
 #define MOUNTAIN_COEF 20 //

@@ -3,18 +3,29 @@
 using namespace std;
 using namespace sf;
 
-Game::Game(RenderWindow &window)
-    : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
-      m_cam(CAM_SAVE_PATH), m_inv(INVENTORY_SAVE_PATH), m_invRender(m_inv),
-      m_mousePosCam(0, 0), m_map(MAP_SAVE_PATH), m_mapRenderer(m_map),
-      m_sound(), m_fpsCounter(10, 10), m_soundSettings(5), m_game_mode(2),
-      m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
-      m_menuPause(m_soundSettings, m_sound), m_monsters(m_map) {
-
-  m_sprites = initSprites();
-  m_buffers = initBuffers();
-  m_sound.setVolume(m_soundSettings.getVolume());
+// clang-format off
+Game::Game(RenderWindow &window, Sound &sound,
+           unordered_map<string, Sprite> &sprites,
+           unordered_map<string, SoundBuffer> &buffers,
+           SoundSettings &soundSettings)
+    : m_window(window), 
+    m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
+    m_cam(CAM_SAVE_PATH), 
+    m_inv(INVENTORY_SAVE_PATH), m_invRender(m_inv),
+    m_mousePosCam(0, 0), 
+    m_map(MAP_SAVE_PATH), m_mapRenderer(m_map),
+    m_fpsCounter(10, 10), 
+    m_sound(sound), 
+    m_soundSettings(soundSettings),
+    m_game_mode(2),
+    m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
+    m_menuPause(m_soundSettings, m_sound), 
+    m_monsters(m_map),
+    m_save(true) {
+  m_sprites = sprites;
+  m_buffers = buffers;
 }
+// clang-format on
 
 void Game::run() {
   render();
@@ -211,7 +222,9 @@ void Game::render() {
 }
 
 void Game::quit() {
-  save();
+  if (m_save) {
+    save();
+  }
   m_window.close();
   clean();
 }

@@ -35,8 +35,6 @@ private:
   SoundSettings m_soundSettings; /**< Sound settings for the menu. */
   int m_clickOnOff; /**< Counter to prevent rapid menu interactions. */
 
-  Shader m_shader; /**< Shader for the menu. */
-
   Cam m_cam; /**< Camera for the menu. */
 
   int phase; /**< Phase of the menu. */
@@ -75,46 +73,26 @@ public:
   /** Render the menu on the game window. */
   void render();
 
-  /**
-   * Quit the menu.
-   */
+  /** Quit the menu.*/
   void quit();
 
   void updateButtonColor(string buttonName, Color colorOf, Color colorTo,
                          int mouseX, int mouseY, int x, int y, int width,
                          int height);
+
   void updateButtonColors();
 
   /** update*/
   void update();
 
-  /**
-   * Set the flag indicating whether a new game should be started.
-   * @param newGame Flag for starting a new game.
-   */
   void setIsNewGame(bool newGame);
 
-  /**
-   * Reset the clickOnOff counter.
-   */
   void resetClickOnOff();
 
-  /**
-   * Check if the menu is active.
-   * @return True if the menu is active, false otherwise.
-   */
   bool isActive() const;
 
-  /**
-   * Check if a new game should be started.
-   * @return True if a new game should be started, false otherwise.
-   */
   bool isNewGame() const;
 
-  /**
-   * Check if the volume is off.
-   * @return True if the volume is off, false otherwise.
-   */
   bool volumeOff() const;
 };
 

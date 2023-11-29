@@ -5,49 +5,46 @@
 using namespace sf;
 
 int main() {
+  /* init windows*/
   RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE);
-  Game game(window);
+  /* init sprites and sounds */
+  unordered_map<string, Sprite> sprites = initSprites();
+  unordered_map<string, SoundBuffer> buffers = initBuffers();
+  SoundSettings soundSettings(5);
+  Sound sound;
+  sound.setVolume(soundSettings.getVolume());
+  /* init the game and the menu */
+  Game game(window, sound, sprites, buffers, soundSettings);
   Menu menu(window);
-  window.setFramerateLimit(144);
 
-  const Time TimePerFrame =
-      seconds(1.f / TICKS_PER_FRAME); // 60 updates per second
-  Clock clock;
-  Time timeSinceLastUpdate = Time::Zero;
-
+  window.setFramerateLimit(FPS_MAX);
   while (window.isOpen()) {
-    Time elapsedTime = clock.restart();
-    timeSinceLastUpdate += elapsedTime;
-
-    while (timeSinceLastUpdate > TimePerFrame) {
-      timeSinceLastUpdate -= TimePerFrame;
-
-      Event event;
-      while (window.pollEvent(event)) {
-        if (event.type == Event::Closed) {
-          window.close();
-        }
-        if (menu.isActive()) {
-          menu.handleEvent(event);
-        } else {
-          game.handleEvent(event);
-        }
+    Event event;
+    while (window.pollEvent(event)) {
+      if (event.type == Event::Closed) {
+        window.close();
       }
-
       if (menu.isActive()) {
-        menu.run();
-      } else if (menu.isNewGame()) {
-        game.reset();
-        menu.setIsNewGame(false);
-      } else if (game.isPause()) {
-        game.render();
+        menu.handleEvent(event);
       } else {
-        if (menu.volumeOff()) {
-          game.setGameVolume(0);
-        }
-        game.run();
+        game.handleEvent(event);
       }
     }
+
+    if (menu.isActive()) {
+      menu.run();
+    } else if (menu.isNewGame()) {
+      game.reset();
+      menu.setIsNewGame(false);
+    } else if (game.isPause()) {
+      game.render();
+    } else {
+      if (menu.volumeOff()) {
+        game.setGameVolume(0);
+      }
+      game.run();
+    }
   }
+
   return EXIT_SUCCESS;
 }

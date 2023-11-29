@@ -73,6 +73,7 @@ private:
   DayNightCycle m_day_night_cycle;
   /* other */
   int m_game_mode;         /** 1 = creative, 2 = survival*/
+  bool m_save;             /** true = save, false = not save*/
   FpsCounter m_fpsCounter; /* clock */
   /*pause*/
   MenuPause m_menuPause;
@@ -82,7 +83,10 @@ private:
 
 public:
   /* constructor */
-  Game(RenderWindow &window);
+  Game(RenderWindow &window, Sound &sound,
+       unordered_map<string, Sprite> &sprites,
+       unordered_map<string, SoundBuffer> &buffers,
+       SoundSettings &soundSettings);
   void run();
   /* update*/
   void update();
@@ -114,6 +118,8 @@ public:
   /* reset */
   void reset();
   bool isPause();
+  /* other */
+  void setSave(bool mode) { m_save = mode; }
 };
 
 #endif /* GAME_HPP */
