@@ -136,6 +136,12 @@ void Character::collide(Map *map, int camX, int camY) {
   map->collide(this);
 }
 
+void Character::reset(bool save, int x, int y, string path) {
+  init();
+  m_coord = Coord(x, y);
+  m_save = save;
+}
+
 void Character::save(string path) {
   if (m_save) {
     ofstream file;

@@ -109,6 +109,18 @@ string DayNightCycle::getHour() {
 
 void DayNightCycle::clear() { m_color.clear(); }
 
+void DayNightCycle::reset(bool save, int time_day_in_sec, string imgPath) {
+  m_save = save;
+  m_time_day_in_sec = time_day_in_sec;
+  m_clock.restart();
+  m_clock_offset = 0;
+  m_color.clear();
+  if (!loadColorsFromImage(imgPath)) {
+    cerr << "Failed to load image from " << imgPath << endl;
+    m_color.push_back(DEFAULT_SKY_COLOR);
+  }
+}
+
 void DayNightCycle::save(string csvPath) {
   if (m_save) {
     ofstream file;

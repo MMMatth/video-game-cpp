@@ -64,6 +64,8 @@ public:
   void heal(int heal) { this->m_life += heal; }
 
   /* other */
+  void reset(bool save, int x, int y,
+             string path = string(SAVE_PATH) + string(CHARACTER_SAVE_PATH));
   void save(string path);
 
 private:

@@ -74,6 +74,7 @@
 /* flower */
 #define FLOWER_ECART 10
 /*day night cycle*/
+#define DEFAULT_TIME_DAY 240 // 4 min
 #define DAY_NIGHT_CYCLE_CSV_PATH "day_night_cycle.csv"
 #define DAY_NIGHT_CYCLE_IMG_PATH "../assets/img/day_night_cycle.png"
 #define DEFAULT_SKY_COLOR Color(119, 181, 254)

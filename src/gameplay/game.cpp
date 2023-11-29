@@ -36,11 +36,19 @@ void Game::run() {
 }
 
 void Game::reset(bool save) {
-  m_char.setX(CHAR_DEFAULT_COORD_X);
-  m_char.setY(CHAR_DEFAULT_COORD_Y);
+  /* we reset the */
+  m_char.reset(save, CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y,
+               string(SAVE_PATH) + CHARACTER_SAVE_PATH);
+  /* reset cam */
   m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
-  m_map.reset(MAP_SAVE_PATH);       // we reset de map
-  m_map = Map(MAP_SAVE_PATH, save); // we reload the map
+  /* reset inventory*/
+  m_inv.reset(save, string(SAVE_PATH) + INVENTORY_SAVE_PATH);
+  m_inv.addItem(toolMap["IRON_PICKAXE"]);
+  /* reset day night cycle */
+  m_day_night_cycle.reset(save, DEFAULT_TIME_DAY, DAY_NIGHT_CYCLE_IMG_PATH);
+  /* reset map */
+  m_map.reset(string(SAVE_PATH) + MAP_SAVE_PATH);       // we reset de map
+  m_map = Map(string(SAVE_PATH) + MAP_SAVE_PATH, save); // we reload the map
 }
 
 void Game::updateCollide() {

@@ -263,6 +263,15 @@ Item Inventory::getItemPosHand() {
 
 /* other */
 
+void Inventory::reset(bool save, string csvPath) {
+  m_save = save;
+  for (int row = 0; row < INVENTORY_HEIGHT; row++) {
+    for (int column = 0; column < INVENTORY_WIDTH; column++) {
+      m_inventory[row][column] = InventoryTile();
+    }
+  }
+}
+
 void Inventory::save(string csvPath) {
   if (m_save) {
     ofstream file(csvPath);
