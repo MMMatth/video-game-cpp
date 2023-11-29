@@ -7,21 +7,24 @@ using namespace sf;
 Game::Game(RenderWindow &window, Sound &sound,
            unordered_map<string, Sprite> &sprites,
            unordered_map<string, SoundBuffer> &buffers,
-           SoundSettings &soundSettings)
-    : m_window(window), 
-    m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
-    m_cam(CAM_SAVE_PATH), 
-    m_inv(INVENTORY_SAVE_PATH), m_invRender(m_inv),
+           SoundSettings &soundSettings, 
+           bool save, bool input)
+    : 
+    m_save_path("jsp"),
+    m_window(window), 
+    m_char( string(input ? INPUT_PATH : SAVE_PATH) + CHARACTER_SAVE_PATH, save), m_charRenderer(m_char),
+    m_cam( string(input ? INPUT_PATH : SAVE_PATH) + CAM_SAVE_PATH, save), 
+    m_inv(string(input ? INPUT_PATH : SAVE_PATH) + INVENTORY_SAVE_PATH, save), m_invRender(m_inv),
     m_mousePosCam(0, 0), 
-    m_map(MAP_SAVE_PATH), m_mapRenderer(m_map),
+    m_map( string(input ? INPUT_PATH : SAVE_PATH) + MAP_SAVE_PATH, save), m_mapRenderer(m_map),
     m_fpsCounter(10, 10), 
     m_sound(sound), 
     m_soundSettings(soundSettings),
     m_game_mode(2),
-    m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
+    m_day_night_cycle( string(input ? INPUT_PATH : SAVE_PATH) + DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
     m_menuPause(m_soundSettings, m_sound), 
     m_monsters(m_map),
-    m_save(true) {
+    m_save(save) {
   m_sprites = sprites;
   m_buffers = buffers;
 }
@@ -32,12 +35,12 @@ void Game::run() {
   update();
 }
 
-void Game::reset() {
+void Game::reset(bool save) {
   m_char.setX(CHAR_DEFAULT_COORD_X);
   m_char.setY(CHAR_DEFAULT_COORD_Y);
   m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
-  m_map.reset(MAP_SAVE_PATH); // we reset de map
-  m_map = Map(MAP_SAVE_PATH); // we reload the map
+  m_map.reset(MAP_SAVE_PATH);       // we reset de map
+  m_map = Map(MAP_SAVE_PATH, save); // we reload the map
 }
 
 void Game::updateCollide() {
@@ -230,11 +233,11 @@ void Game::quit() {
 }
 
 void Game::save() {
-  m_inv.save(INVENTORY_SAVE_PATH);
-  m_map.save(MAP_SAVE_PATH);
-  m_cam.save(CAM_SAVE_PATH);
-  m_day_night_cycle.save(DAY_NIGHT_CYCLE_CSV_PATH);
-  m_char.save(CHARACTER_SAVE_PATH);
+  m_inv.save(string(SAVE_PATH) + INVENTORY_SAVE_PATH);
+  m_map.save(string(SAVE_PATH) + MAP_SAVE_PATH);
+  m_cam.save(string(SAVE_PATH) + CAM_SAVE_PATH);
+  m_day_night_cycle.save(string(SAVE_PATH) + DAY_NIGHT_CYCLE_CSV_PATH);
+  m_char.save(string(SAVE_PATH) + CHARACTER_SAVE_PATH);
 }
 
 void Game::setGameVolume(float volume) { m_sound.setVolume(volume); }

@@ -75,18 +75,18 @@ private:
   int m_game_mode;         /** 1 = creative, 2 = survival*/
   bool m_save;             /** true = save, false = not save*/
   FpsCounter m_fpsCounter; /* clock */
+  string m_save_path;      /** path of the save*/
   /*pause*/
   MenuPause m_menuPause;
   /*monster*/
   Monsters m_monsters;
-  // MonsterRender m_monsterRender;
 
 public:
   /* constructor */
   Game(RenderWindow &window, Sound &sound,
        unordered_map<string, Sprite> &sprites,
        unordered_map<string, SoundBuffer> &buffers,
-       SoundSettings &soundSettings);
+       SoundSettings &soundSettings, bool save, bool input);
   void run();
   /* update*/
   void update();
@@ -116,7 +116,8 @@ public:
   /* sound */
   void setGameVolume(float volume);
   /* reset */
-  void reset();
+  /** @param save : true = we create and after save */
+  void reset(bool save);
   bool isPause();
   /* other */
   void setSave(bool mode) { m_save = mode; }

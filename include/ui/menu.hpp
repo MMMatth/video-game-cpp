@@ -26,11 +26,15 @@ using namespace std;
  */
 class Menu {
 private:
-  SoundBuffer buffer; /**< SFML sound buffer for menu interactions. */
-  Sound m_sound;      /**< SFML sound for menu interactions. */
+  unordered_map<string, SoundBuffer> m_buffers; /**< Sound buffers for the*/
+  Sound m_sound; /**< SFML sound for menu interactions. */
 
-  bool m_menu;    /**< Flag indicating whether the menu is active. */
-  bool m_newGame; /**< Flag indicating whether a new game should be started. */
+  // what we do in the menu
+  bool menu;
+  bool new_game;
+  bool play_input;
+  bool play_save;
+
   RenderWindow &m_window;        /**< Reference to the SFML RenderWindow. */
   SoundSettings m_soundSettings; /**< Sound settings for the menu. */
   int m_clickOnOff; /**< Counter to prevent rapid menu interactions. */
@@ -46,14 +50,17 @@ private:
   Map m_map;               /**< Map for the menu background. */
   MapRender m_mapRenderer; /**< Map renderer for the menu background. */
 
-  map<string, Color> m_menuButtonsPressed; /**< Map of menu buttons pressed. */
+  map<string, Color> m_menuButtonColor; /**< Map of menu buttons pressed. */
 
 public:
   /**
    * Parameterized constructor for Menu.
    * @param window Reference to the SFML RenderWindow.
    */
-  Menu(RenderWindow &window);
+  Menu(RenderWindow &window, Sound &sound,
+       unordered_map<string, Sprite> &sprites,
+       unordered_map<string, SoundBuffer> &buffers,
+       SoundSettings &soundSettings);
 
   /**
    * Handle events for the menu.
@@ -85,13 +92,17 @@ public:
   /** update*/
   void update();
 
-  void setIsNewGame(bool newGame);
-
   void resetClickOnOff();
 
   bool isActive() const;
-
   bool isNewGame() const;
+  bool isPlayInput() const;
+  bool isPlaySave() const;
+
+  void setActive(bool active);
+  void setIsNewGame(bool newGame);
+  void setIsPlayInput(bool playInput);
+  void setIsPlaySave(bool playSave);
 
   bool volumeOff() const;
 };

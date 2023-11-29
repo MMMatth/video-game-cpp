@@ -54,8 +54,9 @@ public:
    * @param y Y-coordinate of the entity.
    */
   void drawEnityAnimationMonster(RenderWindow &window,
-                          unordered_map<string, Sprite> &sprites,
-                          const string &spriteKey, int frame, int x, int y);
+                                 unordered_map<string, Sprite> &sprites,
+                                 const string &spriteKey, int frame, int x,
+                                 int y);
 
   /**
    * Draw the static entity on the window.

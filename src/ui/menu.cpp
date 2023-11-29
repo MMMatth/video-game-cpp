@@ -1,20 +1,54 @@
 #include "../../include/ui/menu.hpp"
 
-Menu::Menu(RenderWindow &window)
-    : m_menu(true), m_window(window), m_sound(), m_newGame(false),
-      m_soundSettings(5), m_clickOnOff(2), m_map("../assets/menu_map.csv"),
-      m_mapRenderer(m_map), m_cam(CAM_WIDTH, 850),
+const int PLAY_BUTTON_X = 100;
+const int PLAY_BUTTON_Y = 210;
+const int PLAY_BUTTON_WIDTH = 184;
+const int PLAY_BUTTON_HEIGHT = 50;
+
+const int NEW_GAME_BUTTON_X = 100;
+const int NEW_GAME_BUTTON_Y = 314;
+const int NEW_GAME_BUTTON_WIDTH = 320;
+const int NEW_GAME_BUTTON_HEIGHT = 50;
+
+const int QUIT_BUTTON_X = 100;
+const int QUIT_BUTTON_Y = 413;
+const int QUIT_BUTTON_WIDTH = 170;
+const int QUIT_BUTTON_HEIGHT = 50;
+
+const int PLAY_SAVE_BUTTON_X = 100;
+const int PLAY_SAVE_BUTTON_Y = 210;
+const int PLAY_SAVE_BUTTON_WIDTH = 411;
+const int PLAY_SAVE_BUTTON_HEIGHT = 50;
+
+const int PLAY_INPUT_BUTTON_X = 100;
+const int PLAY_INPUT_BUTTON_Y = 314;
+const int PLAY_INPUT_BUTTON_WIDTH = 411;
+const int PLAY_INPUT_BUTTON_HEIGHT = 50;
+
+Menu::Menu(RenderWindow &window, Sound &sound,
+           unordered_map<string, Sprite> &sprites,
+           unordered_map<string, SoundBuffer> &buffers,
+           SoundSettings &soundSettings)
+    : m_window(window), m_sound(sound), m_soundSettings(soundSettings),
+      m_clickOnOff(2), m_map("../assets/menu_map.csv", false),
+      m_mapRenderer(m_map), m_cam(CAM_WIDTH, 850, false),
       m_dayNightCycle(30, DAY_NIGHT_CYCLE_IMG_PATH) {
-  m_sprites = initSprites();
+  m_sprites = sprites;
   // we charge the sound
-  Error(!buffer.loadFromFile(SOUND_PLAY), "Error loading sound");
-  m_sound.setVolume(m_soundSettings.getVolume());
+  m_buffers = buffers;
 
   phase = 1;
 
-  m_menuButtonsPressed["play"] = Color::White;
-  m_menuButtonsPressed["newGame"] = Color::White;
-  m_menuButtonsPressed["quit"] = Color::White;
+  // what we do
+  bool menu = true;
+  bool play_save = false;
+  bool play_input = false;
+  bool new_game = false;
+
+  // we init the buttons colors
+  m_menuButtonColor["play"] = Color::White;
+  m_menuButtonColor["newGame"] = Color::White;
+  m_menuButtonColor["quit"] = Color::White;
 }
 void Menu::handleEvent(sf::Event &event) {
   int mouseX = event.mouseButton.x;
@@ -25,28 +59,38 @@ void Menu::handleEvent(sf::Event &event) {
   if (event.type == Event::MouseButtonPressed) {
     printf("mouseX : %d, mouseY : %d\n", mouseX, mouseY);
 
-    if (isInside(mouseX, mouseY, 100, 413, 170, 50)) { // quit button
-      play_sound(&buffer, &m_sound);
+    if (isInside(mouseX, mouseY, QUIT_BUTTON_X, QUIT_BUTTON_Y,
+                 QUIT_BUTTON_WIDTH,
+                 QUIT_BUTTON_HEIGHT)) { // quit button
+      play_sound(&m_buffers["PLAY"], &m_sound);
       quit();
     }
     if (phase == 1) {
-      if (isInside(mouseX, mouseY, 100, 210, 184, 50)) { // play button
-        play_sound(&buffer, &m_sound);
+      if (isInside(mouseX, mouseY, PLAY_BUTTON_X, PLAY_BUTTON_Y,
+                   PLAY_BUTTON_WIDTH,
+                   PLAY_BUTTON_HEIGHT)) { // PLAY button
+        play_sound(&m_buffers["PLAY"], &m_sound);
         phase = 2;
-      } else if (isInside(mouseX, mouseY, 100, 314, 320,
-                          50)) { // new game button
-        play_sound(&buffer, &m_sound);
-        m_menu = false;
-        m_newGame = true;
+      } else if (isInside(mouseX, mouseY, NEW_GAME_BUTTON_X, NEW_GAME_BUTTON_Y,
+                          NEW_GAME_BUTTON_WIDTH,
+                          NEW_GAME_BUTTON_HEIGHT)) { // new game button
+        play_sound(&m_buffers["PLAY"], &m_sound);
+        menu = false;
+        new_game = true;
       }
     } else if (phase == 2) {
-      if (isInside(mouseX, mouseY, 100, 210, 411, 50)) { // play save button
-        play_sound(&buffer, &m_sound);
-        m_menu = false;
-      } else if (isInside(mouseX, mouseY, 100, 314, 411,
-                          50)) { // play input button
-        play_sound(&buffer, &m_sound);
-        m_menu = false;
+      if (isInside(mouseX, mouseY, PLAY_SAVE_BUTTON_X, PLAY_SAVE_BUTTON_Y,
+                   PLAY_SAVE_BUTTON_WIDTH,
+                   PLAY_SAVE_BUTTON_HEIGHT)) { // PLAY save button
+        play_sound(&m_buffers["PLAY"], &m_sound);
+        menu = false;
+        play_save = true;
+      } else if (isInside(mouseX, mouseY, PLAY_INPUT_BUTTON_X,
+                          PLAY_INPUT_BUTTON_Y, PLAY_INPUT_BUTTON_WIDTH,
+                          PLAY_INPUT_BUTTON_HEIGHT)) { // PLAY input button
+        play_sound(&m_buffers["PLAY"], &m_sound);
+        menu = false;
+        play_input = true;
       }
     }
   }
@@ -63,9 +107,9 @@ void Menu::updateButtonColor(string buttonName, Color colorOf, Color colorTo,
                              int mouseX, int mouseY, int x, int y, int width,
                              int height) {
   if (isInside(mouseX, mouseY, x, y, width, height)) {
-    m_menuButtonsPressed[buttonName] = colorOf;
+    m_menuButtonColor[buttonName] = colorOf;
   } else {
-    m_menuButtonsPressed[buttonName] = colorTo;
+    m_menuButtonColor[buttonName] = colorTo;
   }
 }
 
@@ -74,22 +118,27 @@ void Menu::updateButtonColors() {
   int mouseY = Mouse::getPosition(m_window).y;
   if (phase == 1) {
     /* button play */
-    updateButtonColor("play", Color::Yellow, Color::White, mouseX, mouseY, 100,
-                      210, 184, 50);
+    updateButtonColor("play", Color::Yellow, Color::White, mouseX, mouseY,
+                      PLAY_BUTTON_X, PLAY_BUTTON_Y, PLAY_BUTTON_WIDTH,
+                      PLAY_BUTTON_HEIGHT);
     /* button newGame */
     updateButtonColor("newGame", Color::Yellow, Color::White, mouseX, mouseY,
-                      100, 314, 320, 50);
+                      NEW_GAME_BUTTON_X, NEW_GAME_BUTTON_Y,
+                      NEW_GAME_BUTTON_WIDTH, NEW_GAME_BUTTON_HEIGHT);
   } else if (phase == 2) {
     /* button play save*/
     updateButtonColor("play_save", Color::Yellow, Color::White, mouseX, mouseY,
-                      100, 210, 411, 50);
+                      PLAY_SAVE_BUTTON_X, PLAY_SAVE_BUTTON_Y,
+                      PLAY_SAVE_BUTTON_WIDTH, PLAY_SAVE_BUTTON_HEIGHT);
     /* button play input*/
     updateButtonColor("play_input", Color::Yellow, Color::White, mouseX, mouseY,
-                      100, 314, 411, 50);
+                      PLAY_INPUT_BUTTON_X, PLAY_INPUT_BUTTON_Y,
+                      PLAY_INPUT_BUTTON_WIDTH, PLAY_INPUT_BUTTON_HEIGHT);
   }
   /* button quit */
-  updateButtonColor("quit", Color::Yellow, Color::White, mouseX, mouseY, 100,
-                    413, 170, 50);
+  updateButtonColor("quit", Color::Yellow, Color::White, mouseX, mouseY,
+                    QUIT_BUTTON_X, QUIT_BUTTON_Y, QUIT_BUTTON_WIDTH,
+                    QUIT_BUTTON_HEIGHT);
 }
 
 void Menu::update() {
@@ -111,7 +160,7 @@ void Menu::update() {
 
 void Menu::renderButton(int x, int y, Color edgeColor, string text,
                         string key) {
-  drawTextWithEdge(x, y, text, &m_window, 50, m_menuButtonsPressed[key],
+  drawTextWithEdge(x, y, text, &m_window, 50, m_menuButtonColor[key],
                    sf::Color::Black, MINECRAFT_FONT_PATH);
 }
 
@@ -155,11 +204,15 @@ void Menu::render() {
   m_window.display();
 }
 
-bool Menu::isActive() const { return m_menu; }
+bool Menu::isActive() const { return menu; }
+bool Menu::isNewGame() const { return new_game; }
+bool Menu::isPlaySave() const { return play_save; }
+bool Menu::isPlayInput() const { return play_input; }
 
-bool Menu::isNewGame() const { return m_newGame; }
-
-void Menu::setIsNewGame(bool newGame) { m_newGame = newGame; }
+void Menu::setActive(bool active) { menu = active; }
+void Menu::setIsNewGame(bool active) { new_game = active; }
+void Menu::setIsPlaySave(bool active) { play_save = active; }
+void Menu::setIsPlayInput(bool active) { play_input = active; }
 
 bool Menu::volumeOff() const { return m_sound.getVolume() == 0; }
 

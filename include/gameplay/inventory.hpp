@@ -26,8 +26,9 @@ using namespace std;
  * @class Inventory
  * @brief Represents the player's inventory.
  *
- * This class manages the player's inventory, including adding, removing, and swapping items.
-*/
+ * This class manages the player's inventory, including adding, removing, and
+ * swapping items.
+ */
 class Inventory {
 private:
   bool m_save;
@@ -42,7 +43,7 @@ private:
 public:
   /* Constructeur */
   Inventory();
-  Inventory(string csvPath);
+  Inventory(string csvPath, bool save);
   bool loadFromCSV(const std::string &csvPath);
 
   void swapItem(InventoryTile *t1, InventoryTile *t2);

@@ -32,14 +32,14 @@ public:
    * @param path The path to a file containing map information (used for
    * loading).
    */
-  Map(string path);
+  Map(string path, bool save);
 
   /**
    * Parameterized constructor for Map.
    * @param height The height of the map.
    * @param width The width of the map.
    */
-  Map(int height, int width);
+  Map(int height, int width, bool save);
 
   /* destructor */
   void clear();

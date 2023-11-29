@@ -2,8 +2,24 @@
 
 using namespace std;
 
-Character::Character(string path) : Entity(0, 0, 0, 0, 0, 0), m_save(true) {
-  if (!loadFromCSV(path)) {
+const int characterWidth = 28;
+const int characterHeight = 58;
+
+const int characterJumpHeight = 15;
+const int characterTimeJump = 0;
+
+const int characterSpeed = 3;
+const int characterLife = 20;
+
+Character::Character() : Entity(0, 0, 0, 0, 0, 0) {
+  m_jumpHeight = 0;
+  m_timeJump = 0;
+}
+
+Character::Character(string fileName, bool save)
+    : Entity(0, 0, 0, 0, 0, 0), m_save(save) {
+  // string csvPath = path + fileName;
+  if (!loadFromCSV(fileName)) {
     m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 64);
     m_life = 20;
   }
@@ -48,8 +64,8 @@ bool Character::loadFromCSV(string csvPath) {
 }
 
 void Character::init() {
-  m_width = 28;
-  m_height = 58;
+  m_width = characterWidth;
+  m_height = characterHeight;
   m_direction = {{"jump", false},
                  {"up", false},
                  {"fall", true},
@@ -59,9 +75,9 @@ void Character::init() {
   m_collision = {
       {"up", false}, {"down", false}, {"left", false}, {"right", false}};
 
-  m_jumpHeight = 15;
-  m_timeJump = 0;
-  m_speed = 3;
+  m_jumpHeight = characterJumpHeight;
+  m_timeJump = characterTimeJump;
+  m_speed = characterSpeed;
 }
 
 void Character::update() {

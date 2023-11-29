@@ -1,9 +1,9 @@
 #include "../../include/gameplay/inventory.hpp"
 
 /* constructor  */
-Inventory::Inventory(string csvPath)
+Inventory::Inventory(string csvPath, bool save)
     : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()),
-      m_save(true) {
+      m_save(save) {
   for (int row = 0; row < INVENTORY_HEIGHT; row++) {
     for (int column = 0; column < INVENTORY_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();

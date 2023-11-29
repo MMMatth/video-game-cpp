@@ -27,61 +27,17 @@ private:
   int m_height = CAM_HEIGHT; /**< Camera height */
 
 public:
-  /**
-   * @brief Default constructor of the Cam class.
-   *
-   * Initializes the camera with a position (0,0) and default dimensions.
-   */
   Cam();
 
-  /**
-   * @brief Constructor of the Cam class with specified parameters.
-   *
-   * Initializes the camera with a position (x, y) and default dimensions.
-   *
-   * @param x Horizontal position of the camera.
-   * @param y Vertical position of the camera.
-   */
-  Cam(int x, int y);
+  Cam(int x, int y, bool save);
 
-  /**
-   * @brief Constructor of the Cam class from a CSV file.
-   *
-   * Initializes the camera from a CSV file that contains information
-   * about the position and dimensions of the camera.
-   *
-   * @param csvPath Path to the CSV file.
-   */
-  Cam(string csvPath);
+  Cam(string csvPath, bool save);
 
-  /**
-   * @brief Loads camera data from a CSV file.
-   *
-   * @param csvPath Path to the CSV file.
-   * @return true if loading is successful, false otherwise.
-   */
   bool loadFromCSV(string csvPath);
 
-  /**
-   * @brief Updates the camera position based on the position of a character
-   * and the dimensions of the map.
-   *
-   * @param charX Horizontal position of the character.
-   * @param charY Vertical position of the character.
-   * @param charW Width of the character.
-   * @param charH Height of the character.
-   * @param mapWidth Width of the map.
-   * @param mapHeight Height of the map.
-   * @param window SFML window used to determine the view dimensions.
-   */
   void update(int charX, int charY, int charW, int charH, int mapWidth,
               int mapHeight, RenderWindow &window);
 
-  /**
-   * @brief Gets the horizontal position of the camera.
-   *
-   * @return Horizontal position of the camera.
-   */
   int getX() { return m_pos.getX(); }
 
   /**
