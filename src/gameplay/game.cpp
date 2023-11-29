@@ -1,4 +1,5 @@
 #include "../../include/gameplay/game.hpp"
+#include "../../include/rendering/renderlife.hpp"
 
 using namespace std;
 using namespace sf;
@@ -193,6 +194,8 @@ void Game::render() {
   m_window.clear(m_day_night_cycle.getColor());
 
   m_mapRenderer.render(m_window, m_sprites);
+
+  renderLife(m_window, m_sprites, m_char.getLife(), m_cam.getX(), m_cam.getY());
 
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
