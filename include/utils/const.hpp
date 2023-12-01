@@ -38,6 +38,14 @@
 #define NUM_MONSTERS_WALKING 20
 #define NUM_MONSTERS_FLYING 20
 #define NUM_FRAMES_MONSTER 3
+#define HEALTH_BAR_WIDTH 20 
+#define HEALTH_BAR_HEIGHT 3 
+#define HEALTH_BAR_OFFSET 5
+#define MONSTERS_WIDTH 30
+#define MONSTERS_HEIGHT 50
+#define FLYING_MONSTERS_SPEED 3
+#define WALKING_MONSTERS_SPEED 2
+#define JUMP_HEIGHT 18
 /* inventory */
 #define INVENTORY_HEIGHT 4
 #define INVENTORY_WIDTH 9
@@ -53,8 +61,9 @@
 #define FONT_COLOR Color(218, 225, 16)
 #define WITE_COLOR Color::White
 #define BLACK_COLOR Color::Black
+#define RED_COLOR Color::Red
 /* map */
-#define MAP_WIDTH 1000
+#define MAP_WIDTH 100
 #define MAP_PATH "../assets/csv/map.csv"
 #define MOUNTAIN_COEF 20 //
 #define UNDERGROUND_COEF 10
@@ -75,5 +84,7 @@
 /* other */
 #define TILE_SIZE 32
 #define GAME_MODE 1
+#define MAX_LIFE 100
+#define ZERO 0
 
 #endif

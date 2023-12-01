@@ -45,7 +45,7 @@ public:
                           const string &spriteKey, int frame, int x, int y);
 
   /**
-   * Draw the animated monster entity on the window.
+   * Draw the animated flying monster entity on the window.
    * @param window Reference to the SFML RenderWindow.
    * @param sprites Map of sprites containing the animations.
    * @param spriteKey Key to identify the sprite in the sprites map.

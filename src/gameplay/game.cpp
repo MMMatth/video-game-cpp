@@ -11,7 +11,7 @@ Game::Game(RenderWindow &window)
       m_fpsCounter(10, 10), m_soundSettings(5), m_game_mode(2),
       m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
       m_menuPause(m_soundSettings, m_sound), m_monsters(m_map) {
-
+  
   m_sprites = initSprites();
   m_buffers = initBuffers();
   m_sound.setVolume(m_soundSettings.getVolume());
@@ -195,14 +195,13 @@ void Game::render() {
 
   m_mapRenderer.render(m_window, m_sprites);
 
-  renderLife(m_window, m_sprites, m_char.getLife(), m_cam.getX(), m_cam.getY());
+  renderHealthBar(m_window, m_char.getLife(), MAX_LIFE, m_char.getX(), m_char.getY());
 
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
-  // m_monsterRender.render(m_window, m_sprites);
-  if (!m_day_night_cycle.isDay()) {
-    m_monsters.render(m_window, m_sprites, "FLYING_MONSTER",
-                      NUM_FRAMES_MONSTER);
+ if (!m_day_night_cycle.isDay()) {
+    m_monsters.render(m_window, m_sprites, "FLYING_MONSTER", NUM_FRAMES_MONSTER);
+    m_monsters.render(m_window, m_sprites,"WALKING_MONSTER", NUM_FRAMES_MONSTER);
   }
 
   m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),

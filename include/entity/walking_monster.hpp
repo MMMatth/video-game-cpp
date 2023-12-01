@@ -2,6 +2,7 @@
 #define WALKING_MONSTER_HPP
 
 #include "monster.hpp"
+#include "../map/map.hpp"
 
 using namespace std;
 using namespace sf;
@@ -17,7 +18,7 @@ class WalkingMonster : public Monster {
 private:
   int m_timeJump; // Elapsed time during the jump
   int m_jumpHeight; // The limit of time jump
-
+  const Map &m_map;
 public:
   /**
    * @brief Parameterized constructor for WalkingMonster.
@@ -28,10 +29,11 @@ public:
    * @param speed The movement speed of the monster.
    * @param life The life points of the monster.
    * @param jumpHeight The limit of time for jumping.
+   * @param map Reference to the game map.
   */
   WalkingMonster(int x, int y, int width, int height, int speed, int life,
-                 int jumpHeight)
-      : Monster(x, y, width, height, speed, life), m_jumpHeight(jumpHeight) {}
+                 int jumpHeight, const Map &map)
+      : Monster(x, y, width, height, speed, life), m_jumpHeight(jumpHeight),  m_map(map) {}
   
   /**
    * @brief Updates the state and behavior of the walking monster.

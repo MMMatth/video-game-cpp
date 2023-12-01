@@ -19,9 +19,10 @@
  */
 class Monsters {
 private:
-  LinkedList<Monster *> *m_monsters =
-      cons_empty<Monster *>();               // Collection of monsters
-  vector<EntityRender *> m_monsterRenderers; // Renderers for the monsters
+  LinkedList<Monster *> *m_flyingMonsters = cons_empty<Monster *>();               // Collection of flying monsters
+  LinkedList<Monster *> *m_walkingMonsters = cons_empty<Monster *>();               // Collection of walking monsters
+  vector<EntityRender *> m_flyingMonsterRenderers; // Renderers for the monsters
+  vector<EntityRender *> m_walkingMonsterRenderers; // Renderers for the monsters
   const Map m_map;                           // Reference to the game map
 
 public:
@@ -37,7 +38,9 @@ public:
    * @brief Getter for the collection of monsters.
    * @return Linked list containing pointers to monsters.
    */
-  LinkedList<Monster *> *getMonsters() const { return m_monsters; }
+  LinkedList<Monster *> *getFlyingMonsters() const { return m_flyingMonsters; }
+
+  LinkedList<Monster *> *getWalkingMonsters() const { return m_walkingMonsters; }
 
   /**
    * @brief Adds a random monster to the collection at a valid position on the
@@ -68,6 +71,13 @@ public:
    * @brief Updates the state of all monsters.
    */
   void update();
+
+  /**
+ * @brief Renders health bars for the monsters.
+ * @param window Reference to the game window.
+ * @param monsters Linked list of monsters.
+ */
+  void renderMonstersHealthBars(RenderWindow &window, LinkedList<Monster *> *monsters);
 };
 
 #endif

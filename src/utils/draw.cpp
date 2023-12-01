@@ -150,3 +150,29 @@ void play_sound(SoundBuffer *buffer, Sound *sound) {
   sound->setBuffer(*buffer);
   sound->play();
 }
+
+void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x, int y) {
+  // Calculate the length of the health bar based on current and maximum life
+  float healthBarLength = static_cast<float>(currentLife) / maxLife * HEALTH_BAR_WIDTH;
+
+  // Position of the health bar above the monster's head
+  float healthBarX = x;
+  float healthBarY = y;
+
+  // Draw the black background of the health bar
+  RectangleShape backgroundBar(Vector2f(HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT));
+  backgroundBar.setPosition(healthBarX, healthBarY);
+  backgroundBar.setFillColor(Color::Black);
+
+  window.draw(backgroundBar);
+
+  // Draw the red health bar
+  RectangleShape healthBar(Vector2f(healthBarLength, HEALTH_BAR_HEIGHT));
+  healthBar.setPosition(healthBarX, healthBarY);
+  healthBar.setFillColor(Color::Red);
+
+  window.draw(healthBar);
+}
+
+
+

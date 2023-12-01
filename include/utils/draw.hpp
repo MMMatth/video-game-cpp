@@ -80,4 +80,6 @@ unordered_map<string, SoundBuffer> initBuffers();
  */
 void play_sound(SoundBuffer *buffer, Sound *sound);
 
+void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x, int y);
+
 #endif /* DRAW_HPP */

@@ -256,6 +256,7 @@ bool Map::collidesWithSolidBlock(Entity *entity) {
           entityX + entityWidth > blockX &&
           entityY < blockY + TILE_SIZE &&
           entityY + entityHeight > blockY) {
+          cout << "Collision detected at (" << entityX << ", " << entityY << ") with block at (" << blockX << ", " << blockY << ")" << endl;
           return true; 
         }
       }

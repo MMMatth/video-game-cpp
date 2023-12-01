@@ -30,17 +30,19 @@ void WalkingMonster::update() {
   }
 
   if (m_direction["right"] && !m_collision["right"]) {
+    m_direction["jump"] = false;
     moveX(m_speed);
-  }else if(m_direction["right"] && m_collision["right"]) {
-    if(getX() >= 6300){
+  }
+  if(m_direction["right"] && m_collision["right"]) {
+    m_direction["jump"] = true;
+  }
+  if(getX() >= MAP_WIDTH * (TILE_SIZE - 1)){
       m_direction["right"] = false;
       m_direction["left"] = true;
-    }else{
-      m_direction["jump"] = true;
-    }
   }
 
   if (m_direction["left"] && !m_collision["left"]) {
+    m_direction["jump"] = false;
     moveX(-m_speed);
   }else if(m_direction["left"] && m_collision["left"]) {
     if(getX() <= 0){
