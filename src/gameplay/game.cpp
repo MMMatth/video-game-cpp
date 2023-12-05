@@ -24,7 +24,7 @@ Game::Game(RenderWindow &window, Sound &sound,
     m_game_mode(2),
     m_day_night_cycle( string(input ? INPUT_PATH : SAVE_PATH) + DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
     m_menuPause(window, sound, buffers, soundSettings, false), 
-    m_monsters(m_map),
+    m_monsters(m_map, m_char),
     m_save(save) {
   m_sprites = sprites;
   m_buffers = buffers;
