@@ -16,5 +16,6 @@ void handleFileError(const string &filePath) {
 }
 
 bool isInside(int mouseX, int mouseY, int x, int y, int width, int height) {
-  return mouseX >= x && mouseX <= width && mouseY >= y && mouseY <= height;
+  return mouseX >= x && mouseX <= x + width && mouseY >= y &&
+         mouseY <= y + height;
 }

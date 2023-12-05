@@ -5,46 +5,63 @@
 using namespace sf;
 
 int main() {
+  /* init windows*/
   RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE);
-  Game game(window);
-  Menu menu(window);
-  window.setFramerateLimit(144);
+  /* init sprites and sounds */
+  unordered_map<string, Sprite> sprites = initSprites();
+  unordered_map<string, SoundBuffer> buffers = initBuffers();
+  SoundSettings soundSettings(5);
+  Sound sound;
+  sound.setVolume(soundSettings.getVolume());
+  /* game phase */
+  bool isMenu = true;
+  bool isGame = true;
+  /* init the game and the menu */
+  // Game game(window, sound, sprites, buffers, soundSettings, false, false);
+  Menu menu(window, sound, sprites, buffers, soundSettings);
+  Game *game = nullptr;
 
-  const Time TimePerFrame =
-      seconds(1.f / TICKS_PER_FRAME); // 60 updates per second
-  Clock clock;
-  Time timeSinceLastUpdate = Time::Zero;
-
+  window.setFramerateLimit(FPS_MAX);
   while (window.isOpen()) {
-    Time elapsedTime = clock.restart();
-    timeSinceLastUpdate += elapsedTime;
-
-    while (timeSinceLastUpdate > TimePerFrame) {
-      timeSinceLastUpdate -= TimePerFrame;
-
-      Event event;
+    Event event;
+    if (isMenu) {
       while (window.pollEvent(event)) {
         if (event.type == Event::Closed) {
           window.close();
         }
-        game.handleEvent(event);
         menu.handleEvent(event);
       }
-
-      if (menu.isActive()) {
-        menu.run();
-      } else if (menu.isNewGame()) {
-        game.reset();
+      menu.run();
+      if (menu.isNewGame()) {
+        isGame = true;
+        isMenu = false;
+        game = new Game(window, sound, sprites, buffers, soundSettings, true,
+                        false);
+        game->reset(true);
         menu.setIsNewGame(false);
-      } else if (game.isPause()) {
-        game.render();
-      } else {
-        if (menu.volumeOff()) {
-          game.setGameVolume(0);
-        }
-        game.run();
+      } else if (menu.isPlayInput()) {
+        isGame = true;
+        isMenu = false;
+        game = new Game(window, sound, sprites, buffers, soundSettings, false,
+                        true);
+        menu.setIsPlayInput(false);
+      } else if (menu.isPlaySave()) {
+        isGame = true;
+        isMenu = false;
+        game = new Game(window, sound, sprites, buffers, soundSettings, true,
+                        false);
+        menu.setIsPlaySave(false);
       }
+    } else if (isGame && game != nullptr) {
+      while (window.pollEvent(event)) {
+        if (event.type == Event::Closed) {
+          window.close();
+        }
+        game->handleEvent(event);
+      }
+      game->run();
     }
   }
+  delete game;
   return EXIT_SUCCESS;
 }

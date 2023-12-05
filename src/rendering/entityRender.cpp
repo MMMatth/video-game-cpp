@@ -24,15 +24,15 @@ void EntityRender::render(RenderWindow &window,
 
   /*Check the direction and draw the appropriate sprite*/
   if (direction["right"] && isRightKey) {
-    if(key == "CHAR"){
+    if (key == "CHAR") {
       drawEnityAnimation(window, sprites, key + "_RIGHT", frame, x, y);
-    }else{
+    } else {
       drawEnityAnimationMonster(window, sprites, key + "_RIGHT", frame, x, y);
     }
   } else if (direction["left"] && isLeftKey) {
-   if(key == "CHAR"){
+    if (key == "CHAR") {
       drawEnityAnimation(window, sprites, key + "_LEFT", frame, x, y);
-    }else{
+    } else {
       drawEnityAnimationMonster(window, sprites, key + "_LEFT", frame, x, y);
     }
   } else if (direction["jump"] && isJumpKey) {
@@ -57,11 +57,9 @@ void EntityRender::drawEnityAnimation(RenderWindow &window,
               sprites[spriteKey].getTextureRect().top, 25, 48));
   drawSprites(x, y, sprite, &window, m_entity.getWidth(), m_entity.getHeight());
 }
-
-void EntityRender::drawEnityAnimationMonster(RenderWindow &window,
-                                      unordered_map<string, Sprite> &sprites,
-                                      const string &spriteKey, int frame, int x,
-                                      int y) {
+void EntityRender::drawEnityAnimationMonster(
+    RenderWindow &window, unordered_map<string, Sprite> &sprites,
+    const string &spriteKey, int frame, int x, int y) {
   Sprite sprite = sprites[spriteKey];
   sprite.setTextureRect(
       IntRect(sprites[spriteKey].getTextureRect().left + frame * 28,

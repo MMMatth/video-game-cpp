@@ -13,17 +13,17 @@ Block getBlock(string id) {
 }
 
 /* constructor */
-Map::Map(string path)
+Map::Map(string path, bool save)
     : m_workingAreaCoord(0, 0), m_workingAreaWidth(0), m_workingAreaHeight(0) {
-  m_save = true;
+  m_save = save;
   if (!initLegthFromCSV(path) || !loadFromCSV(path)) {
     cerr << "Map : cant open the map " << path << endl;
     reset(path);
   }
 }
 
-Map::Map(int height, int width) {
-  m_save = false;
+Map::Map(int height, int width, bool save) {
+  m_save = save;
   for (int y = 0; y < height; y++) {
     m_map.push_back(std::vector<Tile>());
     for (int x = 0; x < width; x++) {
@@ -252,12 +252,9 @@ bool Map::collidesWithSolidBlock(Entity *entity) {
       if (m_map[y][x].getBlock()->isSolid()) {
         int blockX = x * TILE_SIZE;
         int blockY = y * TILE_SIZE;
-        if (entityX < blockX + TILE_SIZE &&
-          entityX + entityWidth > blockX &&
-          entityY < blockY + TILE_SIZE &&
-          entityY + entityHeight > blockY) {
-          cout << "Collision detected at (" << entityX << ", " << entityY << ") with block at (" << blockX << ", " << blockY << ")" << endl;
-          return true; 
+        if (entityX < blockX + TILE_SIZE && entityX + entityWidth > blockX &&
+            entityY < blockY + TILE_SIZE && entityY + entityHeight > blockY) {
+          return true;
         }
       }
     }
@@ -265,7 +262,6 @@ bool Map::collidesWithSolidBlock(Entity *entity) {
 
   return false;
 }
-
 
 string Map::toString() {
   string res;

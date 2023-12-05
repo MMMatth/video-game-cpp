@@ -1,6 +1,6 @@
 #include "../../include/map/mapGenerator.hpp"
 
-#define TREE_IS_BACKGROUND true
+#define TREE_IS_BACKGROUND false
 
 int abs(int x) {
   if (x < 0) {
@@ -206,5 +206,5 @@ void Createmap::saveinfile(string filename) {
 void Createmap::generate() {
   setCurveAltitude();
   setMap();
-  saveinfile(MAP_PATH);
+  saveinfile(MAP_SAVE_PATH);
 }

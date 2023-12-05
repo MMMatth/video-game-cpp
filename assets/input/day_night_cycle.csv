@@ -1,0 +1,6 @@
+time_day_in_sec;clock_offset
+<<<<<<< HEAD:assets/csv/day_night_cycle.csv
+240;1608
+=======
+240;500
+>>>>>>> Matthieu:assets/input/day_night_cycle.csv

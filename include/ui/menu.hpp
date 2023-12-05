@@ -1,6 +1,10 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
+#include "../gameplay/dayNightCycle.hpp"
+#include "../map/map.hpp"
+#include "../rendering/mapRender.hpp"
+#include "../utils/cam.hpp"
 #include "../utils/const.hpp"
 #include "../utils/draw.hpp"
 #include "../utils/otherFunctions.hpp"
@@ -22,22 +26,41 @@ using namespace std;
  */
 class Menu {
 private:
-  Texture menuTexture; /**< SFML texture for the menu background. */
-  Sprite menuSprite; /**< SFML sprite for the menu background. */
-  SoundBuffer buffer; /**< SFML sound buffer for menu interactions. */
+  unordered_map<string, SoundBuffer> m_buffers; /**< Sound buffers for the*/
   Sound m_sound; /**< SFML sound for menu interactions. */
-  bool m_menu; /**< Flag indicating whether the menu is active. */
-  bool m_newGame; /**< Flag indicating whether a new game should be started. */
-  RenderWindow &m_window; /**< Reference to the SFML RenderWindow. */
+
+  // what we do in the menu
+  bool menu;
+  bool new_game;
+  bool play_input;
+  bool play_save;
+
+  RenderWindow &m_window;        /**< Reference to the SFML RenderWindow. */
   SoundSettings m_soundSettings; /**< Sound settings for the menu. */
   int m_clickOnOff; /**< Counter to prevent rapid menu interactions. */
+
+  Cam m_cam; /**< Camera for the menu. */
+
+  int phase; /**< Phase of the menu. */
+
+  unordered_map<string, Sprite> m_sprites; /**< Sprites for the menu. */
+
+  DayNightCycle m_dayNightCycle; /**< Day-night cycle for the menu. */
+
+  Map m_map;               /**< Map for the menu background. */
+  MapRender m_mapRenderer; /**< Map renderer for the menu background. */
+
+  map<string, Color> m_menuButtonColor; /**< Map of menu buttons pressed. */
 
 public:
   /**
    * Parameterized constructor for Menu.
    * @param window Reference to the SFML RenderWindow.
    */
-  Menu(RenderWindow &window);
+  Menu(RenderWindow &window, Sound &sound,
+       unordered_map<string, Sprite> &sprites,
+       unordered_map<string, SoundBuffer> &buffers,
+       SoundSettings &soundSettings);
 
   /**
    * Handle events for the menu.
@@ -50,43 +73,37 @@ public:
    */
   void run();
 
-  /**
-   * Render the menu on the game window.
-   */
+  void renderButton(int x, int y, Color edgeColor, string text, string key);
+
+  void renderButtons();
+
+  /** Render the menu on the game window. */
   void render();
 
-  /**
-   * Quit the menu.
-   */
+  /** Quit the menu.*/
   void quit();
 
-  /**
-   * Set the flag indicating whether a new game should be started.
-   * @param newGame Flag for starting a new game.
-   */
-  void setIsNewGame(bool newGame);
+  void updateButtonColor(string buttonName, Color colorOf, Color colorTo,
+                         int mouseX, int mouseY, int x, int y, int width,
+                         int height);
 
-  /**
-   * Reset the clickOnOff counter.
-   */
+  void updateButtonColors();
+
+  /** update*/
+  void update();
+
   void resetClickOnOff();
 
-  /**
-   * Check if the menu is active.
-   * @return True if the menu is active, false otherwise.
-   */
   bool isActive() const;
-
-  /**
-   * Check if a new game should be started.
-   * @return True if a new game should be started, false otherwise.
-   */
   bool isNewGame() const;
+  bool isPlayInput() const;
+  bool isPlaySave() const;
 
-  /**
-   * Check if the volume is off.
-   * @return True if the volume is off, false otherwise.
-   */
+  void setActive(bool active);
+  void setIsNewGame(bool newGame);
+  void setIsPlayInput(bool playInput);
+  void setIsPlaySave(bool playSave);
+
   bool volumeOff() const;
 };
 

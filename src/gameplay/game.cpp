@@ -4,30 +4,52 @@
 using namespace std;
 using namespace sf;
 
-Game::Game(RenderWindow &window)
-    : m_window(window), m_char(CHARACTER_SAVE_PATH), m_charRenderer(m_char),
-      m_cam(CAM_SAVE_PATH), m_inv(INVENTORY_SAVE_PATH), m_invRender(m_inv),
-      m_mousePosCam(0, 0), m_map(MAP_PATH), m_mapRenderer(m_map), m_sound(),
-      m_fpsCounter(10, 10), m_soundSettings(5), m_game_mode(2),
-      m_day_night_cycle(DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
-      m_menuPause(m_soundSettings, m_sound), m_monsters(m_map, m_char) {
-  
-  m_sprites = initSprites();
-  m_buffers = initBuffers();
-  m_sound.setVolume(m_soundSettings.getVolume());
+// clang-format off
+Game::Game(RenderWindow &window, Sound &sound,
+           unordered_map<string, Sprite> &sprites,
+           unordered_map<string, SoundBuffer> &buffers,
+           SoundSettings &soundSettings, 
+           bool save, bool input)
+    : 
+    m_save_path("jsp"),
+    m_window(window), 
+    m_char( string(input ? INPUT_PATH : SAVE_PATH) + CHARACTER_SAVE_PATH, save), m_charRenderer(m_char),
+    m_cam( string(input ? INPUT_PATH : SAVE_PATH) + CAM_SAVE_PATH, save), 
+    m_inv(string(input ? INPUT_PATH : SAVE_PATH) + INVENTORY_SAVE_PATH, save), m_invRender(m_inv),
+    m_mousePosCam(0, 0), 
+    m_map( string(input ? INPUT_PATH : SAVE_PATH) + MAP_SAVE_PATH, save), m_mapRenderer(m_map),
+    m_fpsCounter(10, 10), 
+    m_sound(sound), 
+    m_soundSettings(soundSettings),
+    m_game_mode(2),
+    m_day_night_cycle( string(input ? INPUT_PATH : SAVE_PATH) + DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
+    m_menuPause(window, sound, buffers, soundSettings, false), 
+    m_monsters(m_map),
+    m_save(save) {
+  m_sprites = sprites;
+  m_buffers = buffers;
 }
+// clang-format on
 
 void Game::run() {
   render();
   update();
 }
 
-void Game::reset() {
-  m_char.setX(CHAR_DEFAULT_COORD_X);
-  m_char.setY(CHAR_DEFAULT_COORD_Y);
+void Game::reset(bool save) {
+  /* we reset the */
+  m_char.reset(save, CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y,
+               string(SAVE_PATH) + CHARACTER_SAVE_PATH);
+  /* reset cam */
   m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
-  m_map.reset(MAP_PATH); // we reset de map
-  m_map = Map(MAP_PATH); // we reload the map
+  /* reset inventory*/
+  m_inv.reset(save, string(SAVE_PATH) + INVENTORY_SAVE_PATH);
+  m_inv.addItem(toolMap["IRON_PICKAXE"]);
+  /* reset day night cycle */
+  m_day_night_cycle.reset(save, DEFAULT_TIME_DAY, DAY_NIGHT_CYCLE_IMG_PATH);
+  /* reset map */
+  m_map.reset(string(SAVE_PATH) + MAP_SAVE_PATH);       // we reset de map
+  m_map = Map(string(SAVE_PATH) + MAP_SAVE_PATH, save); // we reload the map
 }
 
 void Game::updateCollide() {
@@ -48,27 +70,32 @@ void Game::updateMousePos() {
 }
 
 void Game::update() {
-  updateMousePos();
+  if (m_menuPause.isPause()) {
+    m_menuPause.update();
+  } else {
 
-  updateBreaking();
+    updateMousePos();
 
-  // if (!m_day_night_cycle.isDay()) {
-    m_monsters.update();
-  // }
+    updateBreaking();
 
-  m_day_night_cycle.update();
+    if (!m_day_night_cycle.isDay()) {
+      m_monsters.update();
+    }
 
-  m_cam.update(m_char.getX(), m_char.getY(), m_char.getWidth(),
-               m_char.getHeight(), m_map.get_width(), m_map.get_height(),
-               m_window);
+    m_day_night_cycle.update();
 
-  m_map.update(m_cam.getX(), m_cam.getY());
+    m_cam.update(m_char.getX(), m_char.getY(), m_char.getWidth(),
+                 m_char.getHeight(), m_map.get_width(), m_map.get_height(),
+                 m_window);
 
-  m_char.update();
+    m_map.update(m_cam.getX(), m_cam.getY());
 
-  m_fpsCounter.update();
+    m_char.update();
 
-  updateCollide();
+    m_fpsCounter.update();
+
+    updateCollide();
+  }
 }
 
 void Game::clean() {
@@ -78,18 +105,22 @@ void Game::clean() {
 }
 
 void Game::handleEvent(Event &event) {
-  if (event.type == Event::Closed) {
-    quit();
-  } else if (event.type == Event::KeyPressed) {
-    handleKeyPress(event.key.code);
-  } else if (event.type == Event::KeyReleased) {
-    handleKeyRelease(event.key.code);
-  } else if (event.type == Event::MouseButtonPressed) {
-    handleMouseButtonPressed(event.mouseButton);
-  } else if (event.type == Event::MouseButtonReleased) {
-    handleMouseButtonReleased(event.mouseButton);
-  } else if (event.type == Event::MouseWheelScrolled) {
-    handleMouseWheel(event.mouseWheelScroll.delta);
+  if (m_menuPause.isPause()) {
+    m_menuPause.handleEvent(event);
+  } else {
+    if (event.type == Event::Closed) {
+      quit();
+    } else if (event.type == Event::KeyPressed) {
+      handleKeyPress(event.key.code);
+    } else if (event.type == Event::KeyReleased) {
+      handleKeyRelease(event.key.code);
+    } else if (event.type == Event::MouseButtonPressed) {
+      handleMouseButtonPressed(event.mouseButton);
+    } else if (event.type == Event::MouseButtonReleased) {
+      handleMouseButtonReleased(event.mouseButton);
+    } else if (event.type == Event::MouseWheelScrolled) {
+      handleMouseWheel(event.mouseWheelScroll.delta);
+    }
   }
 }
 
@@ -110,7 +141,7 @@ void Game::handleKeyPress(sf::Keyboard::Key key) {
       {Keyboard::R, [&]() { m_char.hit(1); }},
       {Keyboard::F, [&]() { m_char.heal(1); }},
       {Keyboard::I, [&]() { m_inv.open(); }},
-      {Keyboard::P, [&]() { m_menuPause.handlePause(); }},
+      {Keyboard::P, [&]() { m_menuPause.handle(); }},
       {Keyboard::Num1, [&]() { m_inv.setPosHand(0); }},
       {Keyboard::Num2, [&]() { m_inv.setPosHand(1); }},
       {Keyboard::Num3, [&]() { m_inv.setPosHand(2); }},
@@ -139,24 +170,20 @@ void Game::handleKeyRelease(sf::Keyboard::Key key) {
 
 void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
   if (event.button == Mouse::Left) {
-    if (!m_menuPause.isPause()) {
-      if (m_inv.isOpen()) {
-        m_inv.handleClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
-                          m_cam.getX(), m_cam.getY());
-      } else {
-        if (m_inv.getItemPosHand().getType() == "TOOL") {
-          if (m_game_mode == 2) {
-            m_map.setIsBreaking(true, m_mousePosWorld.getX(),
-                                m_mousePosWorld.getY());
-            m_map.resetBreakingClock(m_mousePosWorld.getX(),
-                                     m_mousePosWorld.getY());
-          } else {
-            breakBlock();
-          }
+    if (m_inv.isOpen()) {
+      m_inv.handleClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
+                        m_cam.getX(), m_cam.getY());
+    } else {
+      if (m_inv.getItemPosHand().getType() == "TOOL") {
+        if (m_game_mode == 2) {
+          m_map.setIsBreaking(true, m_mousePosWorld.getX(),
+                              m_mousePosWorld.getY());
+          m_map.resetBreakingClock(m_mousePosWorld.getX(),
+                                   m_mousePosWorld.getY());
+        } else {
+          breakBlock();
         }
       }
-    } else {
-      m_menuPause.handleMouseButtonPressed(event);
     }
   } else if (event.button == Mouse::Right) {
     if (!m_inv.isOpen()) {
@@ -195,37 +222,42 @@ void Game::render() {
 
   m_mapRenderer.render(m_window, m_sprites);
 
-  renderHealthBar(m_window, m_char.getLife(), MAX_LIFE, m_char.getX(), m_char.getY());
+  renderHealthBar(m_window, m_char.getLife(), MAX_LIFE, m_char.getX(),
+                  m_char.getY());
 
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
- //if (!m_day_night_cycle.isDay()) {
-    m_monsters.render(m_window, m_sprites, "FLYING_MONSTER", NUM_FRAMES_MONSTER);
-    m_monsters.render(m_window, m_sprites,"WALKING_MONSTER", NUM_FRAMES_MONSTER);
- // }
+  if (!m_day_night_cycle.isDay()) {
+    m_monsters.render(m_window, m_sprites, "FLYING_MONSTER",
+                      NUM_FRAMES_MONSTER);
+    m_monsters.render(m_window, m_sprites, "WALKING_MONSTER",
+                      NUM_FRAMES_MONSTER);
+  }
 
   m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
                      m_mousePosWorld.getY());
 
   m_fpsCounter.render(m_window, m_cam);
 
-  m_menuPause.render(m_window, m_cam);
+  m_menuPause.render(m_cam);
 
   m_window.display();
 }
 
 void Game::quit() {
-  save();
+  if (m_save) {
+    save();
+  }
   m_window.close();
   clean();
 }
 
 void Game::save() {
-  m_inv.save(INVENTORY_SAVE_PATH);
-  m_map.save(MAP_PATH);
-  m_cam.save(CAM_SAVE_PATH);
-  m_day_night_cycle.save(DAY_NIGHT_CYCLE_CSV_PATH);
-  m_char.save(CHARACTER_SAVE_PATH);
+  m_inv.save(string(SAVE_PATH) + INVENTORY_SAVE_PATH);
+  m_map.save(string(SAVE_PATH) + MAP_SAVE_PATH);
+  m_cam.save(string(SAVE_PATH) + CAM_SAVE_PATH);
+  m_day_night_cycle.save(string(SAVE_PATH) + DAY_NIGHT_CYCLE_CSV_PATH);
+  m_char.save(string(SAVE_PATH) + CHARACTER_SAVE_PATH);
 }
 
 void Game::setGameVolume(float volume) { m_sound.setVolume(volume); }

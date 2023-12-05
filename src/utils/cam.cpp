@@ -1,8 +1,8 @@
 #include "../../include/utils/cam.hpp"
 
 Cam::Cam() : m_save(false), m_pos() {}
-Cam::Cam(int x, int y) : m_save(false), m_pos(x, y) {}
-Cam::Cam(string csvPath) : m_save(true), m_pos() {
+Cam::Cam(int x, int y, bool save) : m_save(save), m_pos(x, y) {}
+Cam::Cam(string csvPath, bool save) : m_save(save), m_pos() {
   if (!loadFromCSV(csvPath)) {
     cerr << "Failed to load csv from " << csvPath << "so cam is empty" << endl;
   };

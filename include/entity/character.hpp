@@ -19,7 +19,6 @@ using namespace sf;
 using namespace std;
 
 class Map;
-
 /**
  * @class Character
  * @brief Represents a character in the game.
@@ -29,13 +28,10 @@ class Map;
  */
 class Character : public Entity {
 public:
+  Character();
   /* constructor */
-  /**
-   * @brief Constructor for the Character class.
-   * @param path The path to a file containing character information (used for
-   * loading).
-   */
-  Character(string path);
+
+  Character(string fileName, bool save);
   /**
    * @brief Parameterized constructor for the Character class.
    * @param x The initial x-coordinate of the character.
@@ -68,6 +64,8 @@ public:
   void heal(int heal) { this->m_life += heal; }
 
   /* other */
+  void reset(bool save, int x, int y,
+             string path = string(SAVE_PATH) + string(CHARACTER_SAVE_PATH));
   void save(string path);
 
 private:

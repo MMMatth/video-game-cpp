@@ -1,6 +1,10 @@
 #ifndef CONST_HPP
 #define CONST_HPP
 
+/* other */
+// #define
+#define SAVE_PATH "../assets/save/"
+#define INPUT_PATH "../assets/input/"
 /* window */
 #define FPS_MAX 60
 #define TICKS_PER_FRAME 60.f
@@ -10,7 +14,7 @@
 /* cam */
 #define CAM_WIDTH WINDOW_WIDTH * 0.75
 #define CAM_HEIGHT WINDOW_HEIGHT * 0.75
-#define CAM_SAVE_PATH "../assets/csv/cam.csv"
+#define CAM_SAVE_PATH "cam.csv"
 /* character */
 #define CHAR_DEFAULT_COORD_X MAP_WIDTH *TILE_SIZE / 2
 #define CHAR_DEFAULT_COORD_Y TAILLE_PERSONNAGE * 2
@@ -18,7 +22,7 @@
 #define DEPLACEMENT 5
 #define ANIMATION_SPEED 100
 #define NUM_FRAMES 9
-#define CHARACTER_SAVE_PATH "../assets/csv/character.csv"
+#define CHARACTER_SAVE_PATH "character.csv"
 /* sound */
 #define SOUND_PLAY "../assets/sound/pop.ogg"
 #define SOUND_QUIT SOUND_PLAY
@@ -38,8 +42,8 @@
 #define NUM_MONSTERS_WALKING 20
 #define NUM_MONSTERS_FLYING 20
 #define NUM_FRAMES_MONSTER 3
-#define HEALTH_BAR_WIDTH 20 
-#define HEALTH_BAR_HEIGHT 3 
+#define HEALTH_BAR_WIDTH 20
+#define HEALTH_BAR_HEIGHT 3
 #define HEALTH_BAR_OFFSET 5
 #define MONSTERS_WIDTH 30
 #define MONSTERS_HEIGHT 50
@@ -52,19 +56,21 @@
 #define INVENTORY_TILE_SIZE (CAM_WIDTH / INVENTORY_WIDTH) * 0.8
 #define INVENTORY_OBJECT_SIZE INVENTORY_TILE_SIZE * 0.6
 #define MAX_STACK_SIZE 64
-#define INVENTORY_SAVE_PATH "../assets/csv/inventory.csv"
+#define INVENTORY_SAVE_PATH "inventory.csv"
 /* spritesheet */
-#define SPRITESHEET_CSV_PATH "../assets/csv/spritesheet_data.csv"
+#define SPRITESHEET_INPUT_PATH "../assets/input/spritesheet_data.csv"
 #define SPRITESHEET_IMG_PATH "../assets/img/spritesheet.png"
 /* font */
 #define FONT_PATH "assets/fonts/arial.ttf"
+#define MINECRAFT_FONT_PATH "assets/fonts/minecraft.ttf"
 #define FONT_COLOR Color(218, 225, 16)
 #define WITE_COLOR Color::White
 #define BLACK_COLOR Color::Black
 #define RED_COLOR Color::Red
 /* map */
-#define MAP_WIDTH 100
-#define MAP_PATH "../assets/csv/map.csv"
+#define MAP_WIDTH 50
+#define MAP_SAVE_PATH "map.csv"
+#define MAP_INPUT_PATH "../assets/input/map.csv"
 #define MOUNTAIN_COEF 20 //
 #define UNDERGROUND_COEF 10
 #define SKY_HEIGHT_OVER_MOUTAIN 15
@@ -77,7 +83,8 @@
 /* flower */
 #define FLOWER_ECART 10
 /*day night cycle*/
-#define DAY_NIGHT_CYCLE_CSV_PATH "../assets/csv/day_night_cycle.csv"
+#define DEFAULT_TIME_DAY 240 // 4 min
+#define DAY_NIGHT_CYCLE_CSV_PATH "day_night_cycle.csv"
 #define DAY_NIGHT_CYCLE_IMG_PATH "../assets/img/day_night_cycle.png"
 #define DEFAULT_SKY_COLOR Color(119, 181, 254)
 
