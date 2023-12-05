@@ -152,10 +152,7 @@ void play_sound(SoundBuffer *buffer, Sound *sound) {
 }
 
 void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x, int y) {
-  // Calculate the length of the health bar based on current and maximum life
-  float healthBarLength = static_cast<float>(currentLife) / maxLife * HEALTH_BAR_WIDTH;
-
-  // Position of the health bar above the monster's head
+  // Position of the health bar
   float healthBarX = x;
   float healthBarY = y;
 
@@ -166,13 +163,16 @@ void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x, 
 
   window.draw(backgroundBar);
 
-  // Draw the red health bar
-  RectangleShape healthBar(Vector2f(healthBarLength, HEALTH_BAR_HEIGHT));
-  healthBar.setPosition(healthBarX, healthBarY);
-  healthBar.setFillColor(Color::Red);
+  // Check if currentLife is positive before drawing the red health bar
+  if (currentLife > 0) {
+    // Calculate the length of the red health bar based on current and maximum life
+    float healthBarLength = static_cast<float>(currentLife) / maxLife * HEALTH_BAR_WIDTH;
 
-  window.draw(healthBar);
+    // Draw the red health bar
+    RectangleShape healthBar(Vector2f(healthBarLength, HEALTH_BAR_HEIGHT));
+    healthBar.setPosition(healthBarX, healthBarY);
+    healthBar.setFillColor(Color::Red);
+
+    window.draw(healthBar);
+  }
 }
-
-
-

@@ -3,6 +3,8 @@
 
 #include "../entity/entity.hpp"
 #include "../utils/const.hpp"
+#include "../utils/list.hpp"
+#include "character.hpp"
 #include "../utils/coord.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>

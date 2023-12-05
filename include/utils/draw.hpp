@@ -80,6 +80,15 @@ unordered_map<string, SoundBuffer> initBuffers();
  */
 void play_sound(SoundBuffer *buffer, Sound *sound);
 
+/**
+ * @brief Renders a health bar on the screen.
+ *
+ * @param window The rendering window.
+ * @param currentLife The current life of the entity.
+ * @param maxLife The maximum life of the entity.
+ * @param x The X-coordinate where the health bar will be rendered.
+ * @param y The Y-coordinate where the health bar will be rendered.
+ */
 void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x, int y);
 
 #endif /* DRAW_HPP */

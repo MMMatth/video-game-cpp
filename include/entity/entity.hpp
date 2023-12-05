@@ -59,6 +59,7 @@ public:
   void setX(int x) { m_coord.setX(x); } /*< Set the x-coordinate of the entity. */
   void setY(int y) { m_coord.setY(y); }  /*< Set the y-coordinate of the entity. */
   void setLife(int life) { m_life = life; }  /*< Set the current life points of the entity. */
+  void reduceLife(int life) { m_life = m_life - life; }  /*< Reduces life points of the entity. */
   void setDirection(string key, bool value) { m_direction[key] = value; } /*< Set the entity's movement direction. */
   void setCollision(string key, bool value) { m_collision[key] = value; } /*< Set the entity's collision status. */
 

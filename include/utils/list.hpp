@@ -75,4 +75,24 @@ template <typename T> void freeLinkedList(LinkedList<T> *L) {
   }
 }
 
+/**
+ * @brief Removes a specific element from the linked list.
+ *
+ * @param data The element to be removed.
+ * @param L The linked list.
+ * @return The updated linked list after removing the element.
+ */
+template <typename T> LinkedList<T> *removeLink(T data, LinkedList<T> *L) {
+  // Base case: empty list
+  if (isEmpty(L)) {
+    cerr << "Cannot remove element from an empty list" << endl;
+    return nullptr;
+  }else if (head(L) == data) { // Base case: element found at the beginning of the list
+    return removeLink(data, rest(L));
+  }else{ // Recursive case: search for the element in the rest of the list
+    return addLink(head(L), removeLink(data, rest(L)));
+  }
+
+}
+
 #endif
