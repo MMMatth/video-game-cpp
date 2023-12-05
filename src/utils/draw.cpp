@@ -161,10 +161,12 @@ void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x, 
   backgroundBar.setPosition(healthBarX, healthBarY);
   backgroundBar.setFillColor(Color::Black);
 
-  window.draw(backgroundBar);
+  if(currentLife < maxLife){
+    window.draw(backgroundBar);
+  }
 
   // Check if currentLife is positive before drawing the red health bar
-  if (currentLife > 0) {
+  if (currentLife > 0 && currentLife < maxLife) {
     // Calculate the length of the red health bar based on current and maximum life
     float healthBarLength = static_cast<float>(currentLife) / maxLife * HEALTH_BAR_WIDTH;
 

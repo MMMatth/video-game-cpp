@@ -42,6 +42,6 @@ public:
  * This map is used to store predefined tool objects for easy access.
 */
 static map<string, Tool> toolMap = {{"IRON_PICKAXE", Tool("IRON_PICKAXE")},
-                                    {"IRON_AXE", Tool("IRON_AXE")}};
+                                    {"IRON_AXE", Tool("IRON_AXE")}, {"IRON_SWORD", Tool("IRON_SWORD")}};
 
 #endif /* TOOLS_HPP */

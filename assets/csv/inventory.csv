@@ -1,3 +1,4 @@
 id;x;y;amount
 GRASS;0;0;6
 IRON_PICKAXE;3;0;1
+IRON_SWORD;2;0;1
