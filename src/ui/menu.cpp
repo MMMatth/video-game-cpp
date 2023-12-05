@@ -1,26 +1,26 @@
 #include "../../include/ui/menu.hpp"
 
-const int PLAY_BUTTON_X = 75;
+const int PLAY_BUTTON_X = 100;
 const int PLAY_BUTTON_Y = 210;
 const int PLAY_BUTTON_WIDTH = 184;
 const int PLAY_BUTTON_HEIGHT = 50;
 
-const int NEW_GAME_BUTTON_X = 75;
+const int NEW_GAME_BUTTON_X = 100;
 const int NEW_GAME_BUTTON_Y = 314;
 const int NEW_GAME_BUTTON_WIDTH = 320;
 const int NEW_GAME_BUTTON_HEIGHT = 50;
 
-const int QUIT_BUTTON_X = 75;
+const int QUIT_BUTTON_X = 100;
 const int QUIT_BUTTON_Y = 413;
 const int QUIT_BUTTON_WIDTH = 170;
 const int QUIT_BUTTON_HEIGHT = 50;
 
-const int PLAY_SAVE_BUTTON_X = 75;
+const int PLAY_SAVE_BUTTON_X = 100;
 const int PLAY_SAVE_BUTTON_Y = 210;
 const int PLAY_SAVE_BUTTON_WIDTH = 411;
 const int PLAY_SAVE_BUTTON_HEIGHT = 50;
 
-const int PLAY_INPUT_BUTTON_X = 75;
+const int PLAY_INPUT_BUTTON_X = 100;
 const int PLAY_INPUT_BUTTON_Y = 314;
 const int PLAY_INPUT_BUTTON_WIDTH = 411;
 const int PLAY_INPUT_BUTTON_HEIGHT = 50;
@@ -169,23 +169,29 @@ void Menu::renderButtons() {
   int y = m_cam.getY() - m_cam.getHeight() / 2;
   if (phase == 1) {
     int newX = x + PLAY_BUTTON_X;
-    renderButton(x + PLAY_BUTTON_X, y + 150, Color::Black, "PLAY", "play");
+    renderButton(x + PLAY_BUTTON_X * WINDOW_WIDTH / CAM_WIDTH,
+                 y + PLAY_BUTTON_Y * WINDOW_WIDTH / CAM_WIDTH, Color::Black,
+                 "PLAY", "play");
 
-    renderButton(m_cam.getTopLeftX() + NEW_GAME_BUTTON_X,
-                 m_cam.getTopLeftY() + 225, Color::Black, "NEW GAME",
-                 "newGame");
+    renderButton(
+        m_cam.getTopLeftX() + NEW_GAME_BUTTON_X * WINDOW_WIDTH / CAM_WIDTH,
+        m_cam.getTopLeftY() + NEW_GAME_BUTTON_Y * WINDOW_WIDTH / CAM_WIDTH,
+        Color::Black, "NEW GAME", "newGame");
   } else if (phase == 2) {
 
-    renderButton(m_cam.getTopLeftX() + PLAY_SAVE_BUTTON_X,
-                 m_cam.getTopLeftY() + 150, Color::Black, "PLAY SAVE",
-                 "play_save");
+    renderButton(
+        m_cam.getTopLeftX() + PLAY_SAVE_BUTTON_X * WINDOW_WIDTH / CAM_WIDTH,
+        m_cam.getTopLeftY() + PLAY_SAVE_BUTTON_Y * WINDOW_WIDTH / CAM_WIDTH,
+        Color::Black, "PLAY SAVE", "play_save");
 
-    renderButton(m_cam.getTopLeftX() + PLAY_INPUT_BUTTON_X,
-                 m_cam.getTopLeftY() + 225, Color::Black, "PLAY INPUT",
-                 "play_input");
+    renderButton(
+        m_cam.getTopLeftX() + PLAY_INPUT_BUTTON_X * WINDOW_WIDTH / CAM_WIDTH,
+        m_cam.getTopLeftY() + PLAY_INPUT_BUTTON_Y * WINDOW_WIDTH / CAM_WIDTH,
+        Color::Black, "PLAY INPUT", "play_input");
   }
 
-  renderButton(m_cam.getTopLeftX() + QUIT_BUTTON_X, m_cam.getTopLeftY() + 300,
+  renderButton(m_cam.getTopLeftX() + QUIT_BUTTON_X * WINDOW_WIDTH / CAM_WIDTH,
+               m_cam.getTopLeftY() + QUIT_BUTTON_Y * WINDOW_WIDTH / CAM_WIDTH,
                Color::Black, "QUIT", "quit");
 }
 

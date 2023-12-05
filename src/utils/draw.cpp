@@ -110,6 +110,7 @@ void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
   textObj.setFillColor(color);
   textObj.setOutlineColor(edgeColor);
   textObj.setOutlineThickness(1);
+
   textObj.setPosition(x, y);
   window->draw(textObj);
 }

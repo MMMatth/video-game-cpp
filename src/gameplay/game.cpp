@@ -69,26 +69,32 @@ void Game::updateMousePos() {
 }
 
 void Game::update() {
-  updateMousePos();
-  updateBreaking();
+  if (m_menuPause.isPause()) {
+    m_menuPause.update();
+  } else {
 
-  if (!m_day_night_cycle.isDay()) {
-    m_monsters.update();
+    updateMousePos();
+
+    updateBreaking();
+
+    if (!m_day_night_cycle.isDay()) {
+      m_monsters.update();
+    }
+
+    m_day_night_cycle.update();
+
+    m_cam.update(m_char.getX(), m_char.getY(), m_char.getWidth(),
+                 m_char.getHeight(), m_map.get_width(), m_map.get_height(),
+                 m_window);
+
+    m_map.update(m_cam.getX(), m_cam.getY());
+
+    m_char.update();
+
+    m_fpsCounter.update();
+
+    updateCollide();
   }
-
-  m_day_night_cycle.update();
-
-  m_cam.update(m_char.getX(), m_char.getY(), m_char.getWidth(),
-               m_char.getHeight(), m_map.get_width(), m_map.get_height(),
-               m_window);
-
-  m_map.update(m_cam.getX(), m_cam.getY());
-
-  m_char.update();
-
-  m_fpsCounter.update();
-
-  updateCollide();
 }
 
 void Game::clean() {
@@ -98,18 +104,22 @@ void Game::clean() {
 }
 
 void Game::handleEvent(Event &event) {
-  if (event.type == Event::Closed) {
-    quit();
-  } else if (event.type == Event::KeyPressed) {
-    handleKeyPress(event.key.code);
-  } else if (event.type == Event::KeyReleased) {
-    handleKeyRelease(event.key.code);
-  } else if (event.type == Event::MouseButtonPressed) {
-    handleMouseButtonPressed(event.mouseButton);
-  } else if (event.type == Event::MouseButtonReleased) {
-    handleMouseButtonReleased(event.mouseButton);
-  } else if (event.type == Event::MouseWheelScrolled) {
-    handleMouseWheel(event.mouseWheelScroll.delta);
+  if (m_menuPause.isPause()) {
+    m_menuPause.handleEvent(event);
+  } else {
+    if (event.type == Event::Closed) {
+      quit();
+    } else if (event.type == Event::KeyPressed) {
+      handleKeyPress(event.key.code);
+    } else if (event.type == Event::KeyReleased) {
+      handleKeyRelease(event.key.code);
+    } else if (event.type == Event::MouseButtonPressed) {
+      handleMouseButtonPressed(event.mouseButton);
+    } else if (event.type == Event::MouseButtonReleased) {
+      handleMouseButtonReleased(event.mouseButton);
+    } else if (event.type == Event::MouseWheelScrolled) {
+      handleMouseWheel(event.mouseWheelScroll.delta);
+    }
   }
 }
 
@@ -159,24 +169,20 @@ void Game::handleKeyRelease(sf::Keyboard::Key key) {
 
 void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
   if (event.button == Mouse::Left) {
-    if (!m_menuPause.isPause()) {
-      if (m_inv.isOpen()) {
-        m_inv.handleClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
-                          m_cam.getX(), m_cam.getY());
-      } else {
-        if (m_inv.getItemPosHand().getType() == "TOOL") {
-          if (m_game_mode == 2) {
-            m_map.setIsBreaking(true, m_mousePosWorld.getX(),
-                                m_mousePosWorld.getY());
-            m_map.resetBreakingClock(m_mousePosWorld.getX(),
-                                     m_mousePosWorld.getY());
-          } else {
-            breakBlock();
-          }
+    if (m_inv.isOpen()) {
+      m_inv.handleClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
+                        m_cam.getX(), m_cam.getY());
+    } else {
+      if (m_inv.getItemPosHand().getType() == "TOOL") {
+        if (m_game_mode == 2) {
+          m_map.setIsBreaking(true, m_mousePosWorld.getX(),
+                              m_mousePosWorld.getY());
+          m_map.resetBreakingClock(m_mousePosWorld.getX(),
+                                   m_mousePosWorld.getY());
+        } else {
+          breakBlock();
         }
       }
-    } else {
-      m_menuPause.handleMouseButtonPressed(event);
     }
   } else if (event.button == Mouse::Right) {
     if (!m_inv.isOpen()) {
