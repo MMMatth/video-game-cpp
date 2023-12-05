@@ -1,26 +1,26 @@
 #include "../../include/ui/menu.hpp"
 
-const int PLAY_BUTTON_X = 100;
+const int PLAY_BUTTON_X = 75;
 const int PLAY_BUTTON_Y = 210;
 const int PLAY_BUTTON_WIDTH = 184;
 const int PLAY_BUTTON_HEIGHT = 50;
 
-const int NEW_GAME_BUTTON_X = 100;
+const int NEW_GAME_BUTTON_X = 75;
 const int NEW_GAME_BUTTON_Y = 314;
 const int NEW_GAME_BUTTON_WIDTH = 320;
 const int NEW_GAME_BUTTON_HEIGHT = 50;
 
-const int QUIT_BUTTON_X = 100;
+const int QUIT_BUTTON_X = 75;
 const int QUIT_BUTTON_Y = 413;
 const int QUIT_BUTTON_WIDTH = 170;
 const int QUIT_BUTTON_HEIGHT = 50;
 
-const int PLAY_SAVE_BUTTON_X = 100;
+const int PLAY_SAVE_BUTTON_X = 75;
 const int PLAY_SAVE_BUTTON_Y = 210;
 const int PLAY_SAVE_BUTTON_WIDTH = 411;
 const int PLAY_SAVE_BUTTON_HEIGHT = 50;
 
-const int PLAY_INPUT_BUTTON_X = 100;
+const int PLAY_INPUT_BUTTON_X = 75;
 const int PLAY_INPUT_BUTTON_Y = 314;
 const int PLAY_INPUT_BUTTON_WIDTH = 411;
 const int PLAY_INPUT_BUTTON_HEIGHT = 50;
@@ -51,8 +51,8 @@ Menu::Menu(RenderWindow &window, Sound &sound,
   m_menuButtonColor["quit"] = Color::White;
 }
 void Menu::handleEvent(sf::Event &event) {
-  int mouseX = event.mouseButton.x;
-  int mouseY = event.mouseButton.y;
+  int mouseX = Mouse::getPosition(m_window).x;
+  int mouseY = Mouse::getPosition(m_window).y;
   if (event.type == Event::Closed) {
     quit();
   }
@@ -165,29 +165,28 @@ void Menu::renderButton(int x, int y, Color edgeColor, string text,
 }
 
 void Menu::renderButtons() {
-
-  int top_left_hands_x =
-      m_cam.getTopLeftX() + m_cam.getWidth() / 2 - CAM_HEIGHT / 2;
-
+  int x = m_cam.getX() - m_cam.getWidth() / 2;
+  int y = m_cam.getY() - m_cam.getHeight() / 2;
   if (phase == 1) {
+    int newX = x + PLAY_BUTTON_X;
+    renderButton(x + PLAY_BUTTON_X, y + 150, Color::Black, "PLAY", "play");
 
-    renderButton(top_left_hands_x, m_cam.getTopLeftY() + 150, Color::Black,
-                 "PLAY", "play");
-
-    renderButton(top_left_hands_x, m_cam.getTopLeftY() + 225, Color::Black,
-                 "NEW GAME", "newGame");
-
+    renderButton(m_cam.getTopLeftX() + NEW_GAME_BUTTON_X,
+                 m_cam.getTopLeftY() + 225, Color::Black, "NEW GAME",
+                 "newGame");
   } else if (phase == 2) {
 
-    renderButton(top_left_hands_x, m_cam.getTopLeftY() + 150, Color::Black,
-                 "PLAY SAVE", "play_save");
+    renderButton(m_cam.getTopLeftX() + PLAY_SAVE_BUTTON_X,
+                 m_cam.getTopLeftY() + 150, Color::Black, "PLAY SAVE",
+                 "play_save");
 
-    renderButton(top_left_hands_x, m_cam.getTopLeftY() + 225, Color::Black,
-                 "PLAY INPUT", "play_input");
+    renderButton(m_cam.getTopLeftX() + PLAY_INPUT_BUTTON_X,
+                 m_cam.getTopLeftY() + 225, Color::Black, "PLAY INPUT",
+                 "play_input");
   }
 
-  renderButton(top_left_hands_x, m_cam.getTopLeftY() + 300, Color::Black,
-               "QUIT", "quit");
+  renderButton(m_cam.getTopLeftX() + QUIT_BUTTON_X, m_cam.getTopLeftY() + 300,
+               Color::Black, "QUIT", "quit");
 }
 
 void Menu::render() {
@@ -195,9 +194,9 @@ void Menu::render() {
 
   m_mapRenderer.render(m_window, m_sprites);
 
-  drawTextWithEdge(m_cam.getTopLeftX() + m_cam.getWidth() / 2 - CAM_HEIGHT / 2,
-                   m_cam.getTopLeftY() + 50, "MINECRAFT 2D", &m_window, 65,
-                   sf::Color::White, sf::Color::Black, MINECRAFT_FONT_PATH);
+  drawTextWithEdge(m_cam.getTopLeftX() + 75, m_cam.getTopLeftY() + 50,
+                   "MINECRAFT 2D", &m_window, 65, sf::Color::White,
+                   sf::Color::Black, MINECRAFT_FONT_PATH);
 
   renderButtons();
 

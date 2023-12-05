@@ -103,7 +103,6 @@ void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
                       Color color, Color edgeColor, string fontPath) {
   Font font;
   Error(!font.loadFromFile("../" + fontPath), "Error : font load fail");
-
   Text textObj;
   textObj.setFont(font);
   textObj.setString(text);

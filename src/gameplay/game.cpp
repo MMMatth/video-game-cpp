@@ -22,7 +22,7 @@ Game::Game(RenderWindow &window, Sound &sound,
     m_soundSettings(soundSettings),
     m_game_mode(2),
     m_day_night_cycle( string(input ? INPUT_PATH : SAVE_PATH) + DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
-    m_menuPause(m_soundSettings, m_sound), 
+    m_menuPause(window, sound, buffers, soundSettings, false), 
     m_monsters(m_map),
     m_save(save) {
   m_sprites = sprites;
@@ -130,7 +130,7 @@ void Game::handleKeyPress(sf::Keyboard::Key key) {
       {Keyboard::R, [&]() { m_char.hit(1); }},
       {Keyboard::F, [&]() { m_char.heal(1); }},
       {Keyboard::I, [&]() { m_inv.open(); }},
-      {Keyboard::P, [&]() { m_menuPause.handlePause(); }},
+      {Keyboard::P, [&]() { m_menuPause.handle(); }},
       {Keyboard::Num1, [&]() { m_inv.setPosHand(0); }},
       {Keyboard::Num2, [&]() { m_inv.setPosHand(1); }},
       {Keyboard::Num3, [&]() { m_inv.setPosHand(2); }},
@@ -227,7 +227,7 @@ void Game::render() {
 
   m_fpsCounter.render(m_window, m_cam);
 
-  m_menuPause.render(m_window, m_cam);
+  m_menuPause.render(m_cam);
 
   m_window.display();
 }
