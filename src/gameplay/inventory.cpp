@@ -152,18 +152,41 @@ bool isOverTile(int mx, int my, int x, int y) {
 }
 
 /* handle */
-void Inventory::handleClick(int mouseX, int mouseY, int camX, int camY) {
-  if (m_is_open && isOverInv(mouseX, mouseY, camX, camY)) {
-    Coord coord_tile_selected = getTileCoord(mouseX, mouseY, camX, camY);
+void Inventory::handleLeftClick(int mouseX, int mouseY, int persoX,
+                                int persoY) {
+  if (m_is_open && isOverInv(mouseX, mouseY, persoX, persoY)) {
+    Coord coord_tile_selected = getTileCoord(mouseX, mouseY, persoX, persoY);
     InventoryTile *tile_selected =
         &m_inventory[coord_tile_selected.getX()][coord_tile_selected.getY()];
     swapItem(&m_selected_tile, tile_selected);
   } else {
-    cerr << "handleClick : the inventory is not open or the mouse is not over "
+    cerr << "handleLeftClick : the inventory is not open or the mouse is not "
+            "over "
             "the inventory"
          << endl;
   }
 }
+void Inventory::handleRightClick(int mouseX, int mouseY, int persoX,
+                                 int persoY) {
+  if (m_is_open && isOverInv(mouseX, mouseY, persoX, persoY)) {
+    Coord coord_tile_selected = getTileCoord(mouseX, mouseY, persoX, persoY);
+    string id =
+        m_inventory[coord_tile_selected.getX()][coord_tile_selected.getY()]
+            .getItem()
+            ->getName();
+    if (m_craft.hasCraft(id)) {
+      Item *item = m_craft.getCraft(id);
+      addItem(*item);
+      removeItem(coord_tile_selected, 1);
+    }
+  } else {
+    cerr << "handleLeftClick : the inventory is not open or the mouse is not "
+            "over "
+            "the inventory"
+         << endl;
+  }
+}
+
 /* setter */
 void Inventory::open() {
   if (m_is_open) {

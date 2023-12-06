@@ -199,7 +199,9 @@ void Menu::render() {
   m_window.clear(m_dayNightCycle.getColor());
 
   m_mapRenderer.render(m_window, m_sprites);
-
+  drawTextWithEdge(m_cam.getTopLeftX() + 80, m_cam.getTopLeftY() + 55,
+                   "MINECRAFT 2D", &m_window, 65, sf::Color::Black,
+                   sf::Color::Black, MINECRAFT_FONT_PATH);
   drawTextWithEdge(m_cam.getTopLeftX() + 75, m_cam.getTopLeftY() + 50,
                    "MINECRAFT 2D", &m_window, 65, sf::Color::White,
                    sf::Color::Black, MINECRAFT_FONT_PATH);

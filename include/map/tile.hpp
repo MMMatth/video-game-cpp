@@ -127,7 +127,7 @@ public:
    * Get a string representation of the tile.
    * @return A string representation of the block contained in the tile.
    */
-  string toString() { return m_block.toString(); }
+  string toString() { return m_block.to_string(); }
 };
 
 #endif // TILE_HPP
