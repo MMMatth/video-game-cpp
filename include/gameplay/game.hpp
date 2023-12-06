@@ -1,6 +1,11 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "../item/block.hpp"
+#include "../item/item.hpp"
+#include "../item/tool.hpp"
+#include "../item/weapon.hpp"
+
 #include "../entity/character.hpp"
 #include "../entity/entity.hpp"
 #include "../entity/monsters.hpp"
@@ -25,6 +30,7 @@
 #include "../rendering/entityRender.hpp"
 #include "../rendering/inventoryRender.hpp"
 #include "../rendering/mapRender.hpp"
+#include "../rendering/renderlife.hpp"
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -75,7 +81,6 @@ private:
   int m_game_mode;         /** 1 = creative, 2 = survival*/
   bool m_save;             /** true = save, false = not save*/
   FpsCounter m_fpsCounter; /* clock */
-  string m_save_path;      /** path of the save*/
   /*pause*/
   MenuPause m_menuPause;
   /*monster*/

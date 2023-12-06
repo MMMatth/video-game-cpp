@@ -1,5 +1,4 @@
 #include "../../include/gameplay/game.hpp"
-#include "../../include/rendering/renderlife.hpp"
 
 using namespace std;
 using namespace sf;
@@ -11,7 +10,6 @@ Game::Game(RenderWindow &window, Sound &sound,
            SoundSettings &soundSettings, 
            bool save, bool input)
     : 
-    m_save_path("jsp"),
     m_window(window), 
     m_char( string(input ? INPUT_PATH : SAVE_PATH) + CHARACTER_SAVE_PATH, save), m_charRenderer(m_char),
     m_cam( string(input ? INPUT_PATH : SAVE_PATH) + CAM_SAVE_PATH, save), 
@@ -45,6 +43,7 @@ void Game::reset(bool save) {
   /* reset inventory*/
   m_inv.reset(save, string(SAVE_PATH) + INVENTORY_SAVE_PATH);
   m_inv.addItem(toolMap["IRON_PICKAXE"]);
+  m_inv.addItem(weaponMap["IRON_SWORD"]);
   /* reset day night cycle */
   m_day_night_cycle.reset(save, DEFAULT_TIME_DAY, DAY_NIGHT_CYCLE_IMG_PATH);
   /* reset map */
