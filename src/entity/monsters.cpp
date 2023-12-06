@@ -14,8 +14,7 @@ Monsters::Monsters(const Map &map, const Character& m_char) : m_map(map), m_char
 }
 
 void Monsters::addRandomMonster(Monster *monster, Map map) {
-  int monsterWidth = monster->getWidth();
-  int monsterHeight = monster->getHeight();
+  
 
   do {
     int x = rand() % (MAP_WIDTH * TILE_SIZE);
