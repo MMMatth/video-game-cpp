@@ -69,13 +69,16 @@ bool Inventory::loadFromCSV(const string &csvPath) {
         cerr << "Invalid amount: " << amount
              << " is greater than MAX_STACK_SIZE.\n";
       } else if (blockMap.find(id) == blockMap.end() &&
-                 toolMap.find(id) == toolMap.end()) {
+                 toolMap.find(id) == toolMap.end() &&
+                 weaponMap.find(id) == weaponMap.end()) {
         cerr << "Invalid id: " << id << " is not a valid id.\n";
       } else {
         if (blockMap.find(id) != blockMap.end()) {
           m_inventory[x][y].setItem(blockMap[id]);
         } else if (toolMap.find(id) != toolMap.end()) {
           m_inventory[x][y].setItem(toolMap[id]);
+        } else if (weaponMap.find(id) != weaponMap.end()) {
+          m_inventory[x][y].setItem(weaponMap[id]);
         }
         m_inventory[x][y].setAmount(amount);
         if (amount > 1) {

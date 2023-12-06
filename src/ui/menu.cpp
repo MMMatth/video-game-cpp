@@ -57,8 +57,6 @@ void Menu::handleEvent(sf::Event &event) {
     quit();
   }
   if (event.type == Event::MouseButtonPressed) {
-    printf("mouseX : %d, mouseY : %d\n", mouseX, mouseY);
-
     if (isInside(mouseX, mouseY, QUIT_BUTTON_X, QUIT_BUTTON_Y,
                  QUIT_BUTTON_WIDTH,
                  QUIT_BUTTON_HEIGHT)) { // quit button

@@ -1,7 +1,11 @@
 #ifndef inventory_hpp
 #define inventory_hpp
 
+#include "../item/block.hpp"
 #include "../item/item.hpp"
+#include "../item/tool.hpp"
+#include "../item/weapon.hpp"
+
 #include "../utils/const.hpp"
 #include "../utils/coord.hpp"
 #include "inventoryTile.hpp"
