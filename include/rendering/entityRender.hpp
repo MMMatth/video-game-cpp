@@ -79,6 +79,12 @@ public:
    */
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
               string key, int nbFrame);
+  
+   /**
+   * Get a reference to the underlying entity.
+   * @return Reference to the entity being rendered.
+   */
+  Entity& getEntity() { return m_entity; }
 };
 
 #endif /* ENTITYRENDER_HPP */

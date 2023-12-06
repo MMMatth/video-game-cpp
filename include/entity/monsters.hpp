@@ -20,12 +20,10 @@
  */
 class Monsters {
 private:
-  LinkedList<Monster *> *m_flyingMonsters = cons_empty<Monster *>();               // Collection of flying monsters
-  LinkedList<Monster *> *m_walkingMonsters = cons_empty<Monster *>();               // Collection of walking monsters
-  LinkedList<EntityRender *> *m_flyingMonsterRenderers = cons_empty<EntityRender *>();// Renderers for the monsters
-  LinkedList<EntityRender *> *m_walkingMonsterRenderers = cons_empty<EntityRender *>(); // Renderers for the monsters
-  const Map m_map;                           // Reference to the game map
- const Character& m_char; // Character
+  vector<Monster *> m_monsters;               // Collection of monsters
+  vector<EntityRender *> m_monsterRenderers;// Renderers for the monsters
+  Map m_map;                           // Reference to the game map
+  const Character& m_char; // Character
 
 public:
   /**
@@ -34,15 +32,21 @@ public:
    * @details Initializes the Monsters collection and adds random flying and
    * walking monsters to it.
    */
-  Monsters(const Map &map, const Character& m_char);
+  Monsters(Map &map, const Character& m_char);
+
+  ~Monsters() {
+   // Free the memory allocated for monsterRenderers
+    for (EntityRender* renderer : m_monsterRenderers) {
+        delete renderer;
+    }
+  }
+
 
   /**
    * @brief Getter for the collection of monsters.
    * @return Linked list containing pointers to monsters.
    */
-  LinkedList<Monster *> *getFlyingMonsters() const { return m_flyingMonsters; }
-
-  LinkedList<Monster *> *getWalkingMonsters() const { return m_walkingMonsters; }
+  const vector<Monster *> &getMonsters() const { return m_monsters; }
 
   /**
    * @brief Adds a random monster to the collection at a valid position on the
@@ -50,7 +54,7 @@ public:
    * @param monster Pointer to the monster to be added.
    * @param map Reference to the game map.
    */
-  void addRandomMonster(Monster *monster, Map map);
+  void addRandomMonster(Monster *monster, Map &map);
 
   /**
    * @brief Handles collisions between monsters and the map.
@@ -66,8 +70,7 @@ public:
    * @param key Key to select the appropriate sprite.
    * @param nbFrame Number of frames for animation.
    */
-  void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
-              string key, int nbFrame);
+  void render(RenderWindow &window, unordered_map<string, Sprite> sprites, int nbFrame);
 
   /**
    * @brief Updates the state of all monsters.
@@ -79,7 +82,7 @@ public:
  * @param window Reference to the game window.
  * @param monsters Linked list of monsters.
  */
-  void renderMonstersHealthBars(RenderWindow &window, LinkedList<Monster *> *monsters);
+  void renderMonstersHealthBars(RenderWindow &window);
 
   /**
  * @brief Checks for collision between two rectangles.

@@ -77,9 +77,9 @@ void Game::update() {
 
     updateBreaking();
 
-    if (!m_day_night_cycle.isDay()) {
+    // if (!m_day_night_cycle.isDay()) {
       m_monsters.update();
-    }
+    // }
 
     m_day_night_cycle.update();
 
@@ -99,8 +99,6 @@ void Game::update() {
 
 void Game::clean() {
   m_window.clear();
-  m_map.clear();
-  m_day_night_cycle.clear();
 }
 
 void Game::handleEvent(Event &event) {
@@ -226,12 +224,9 @@ void Game::render() {
 
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
-  if (!m_day_night_cycle.isDay()) {
-    m_monsters.render(m_window, m_sprites, "FLYING_MONSTER",
-                      NUM_FRAMES_MONSTER);
-    m_monsters.render(m_window, m_sprites, "WALKING_MONSTER",
-                      NUM_FRAMES_MONSTER);
-  }
+  // if (!m_day_night_cycle.isDay()) {
+    m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
+  // }
 
   m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
                      m_mousePosWorld.getY());
