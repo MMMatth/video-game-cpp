@@ -158,6 +158,8 @@ void Menu::update() {
 
 void Menu::renderButton(int x, int y, Color edgeColor, string text,
                         string key) {
+  drawTextWithEdge(x + 5, y + 5, text, &m_window, 50, sf::Color::Black,
+                   sf::Color::Black, MINECRAFT_FONT_PATH);
   drawTextWithEdge(x, y, text, &m_window, 50, m_menuButtonColor[key],
                    sf::Color::Black, MINECRAFT_FONT_PATH);
 }

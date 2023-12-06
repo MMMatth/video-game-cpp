@@ -97,11 +97,7 @@ void Game::update() {
   }
 }
 
-void Game::clean() {
-  m_window.clear();
-  m_map.clear();
-  m_day_night_cycle.clear();
-}
+void Game::clean() { m_window.clear(); }
 
 void Game::handleEvent(Event &event) {
   if (m_menuPause.isPause()) {
