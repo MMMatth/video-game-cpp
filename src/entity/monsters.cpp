@@ -14,8 +14,6 @@ Monsters::Monsters(Map &map, const Character& m_char) : m_map(map), m_char(m_cha
 }
 
 void Monsters::addRandomMonster(Monster *monster, Map &map) {
-  
-
   do {
     int x = rand() % (MAP_WIDTH * TILE_SIZE);
     int y = rand() % (MAP_WIDTH * 2);
@@ -41,13 +39,12 @@ void Monsters::render(RenderWindow &window, std::unordered_map<std::string, Spri
   renderMonstersHealthBars(window);
 }
 
-
 void Monsters::update() {
   auto itMonster = m_monsters.begin();
   auto itRenderer = m_monsterRenderers.begin();
 
   while (itMonster != m_monsters.end()) {
-    // Check if there is a collision between monster and player and decrease the health of the monster
+    // Check if there is a collision between monster and player
     if (checkPlayerMonsterCollision(m_char, *itMonster)) {
       (*itMonster)->reduceLife(1);
     }
@@ -79,4 +76,3 @@ bool Monsters::checkPlayerMonsterCollision(const Character& m_char, Monster *m_m
   return (checkCollision(m_char.getX(), m_char.getY(), m_char.getWidth(), m_char.getHeight(), m_monster->getX(), m_monster->getY(), m_monster->getWidth(), m_monster->getHeight()));
 
 }
-
