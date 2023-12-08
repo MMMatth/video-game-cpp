@@ -40,7 +40,7 @@ public:
    * @details This function is called during each game update to handle the
    * walking monster's behavior.
   */
-  void update() override;
+  void update(const Character &m_char) override;
   
   // Destructor (if needed)
   //   ~WalkingMonster();

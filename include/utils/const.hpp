@@ -39,7 +39,7 @@
 #define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
-#define NUM_MONSTERS_WALKING 20
+#define NUM_MONSTERS_WALKING 10
 #define NUM_MONSTERS_FLYING 20
 #define NUM_FRAMES_MONSTER 3
 #define HEALTH_BAR_WIDTH 20
@@ -51,6 +51,7 @@
 #define WALKING_MONSTERS_SPEED 2
 #define MONSTERS_SPAWN_RADIUS 50
 #define JUMP_HEIGHT 18
+#define ATTACKDISTANCE 100
 /* inventory */
 #define INVENTORY_HEIGHT 4
 #define INVENTORY_WIDTH 9

@@ -39,7 +39,7 @@ public:
    * @details This function is called to update the flying monster's position,
    * animation, or any other specific behavior.
   */
-  void update() override;
+  void update(const Character &m_char) override;
 
 private:
   /* data */

@@ -43,7 +43,7 @@ public:
    * @details This function must be implemented by derived classes to define
    * specific behavior for each type of monster.
   */
-  virtual void update() = 0;
+  virtual void update(const Character &m_char) = 0;
 
 private:
   /* data */

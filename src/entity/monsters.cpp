@@ -55,7 +55,7 @@ void Monsters::update() {
       delete *itRenderer;  // free the memory
       itRenderer = m_monsterRenderers.erase(itRenderer);
     } else {
-      (*itMonster)->update();
+      (*itMonster)->update(m_char);
       ++itMonster;
       ++itRenderer;
     }
