@@ -13,9 +13,7 @@ private:
   /* data */
 public:
   CharacterRender(Character &character) : EntityRender(character) {}
-  void renderLifeBar(RenderWindow &window,
-                     unordered_map<string, Sprite> &sprites, int camX,
-                     int camY) {
+  void renderLifeBar(RenderWindow &window, unordered_map<string, Sprite> &sprites, int camX, int camY) {
     int life = 10;
     int entire_heart = life / 2;
     int half_heart = life % 2;

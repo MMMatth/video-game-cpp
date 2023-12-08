@@ -186,6 +186,9 @@ void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
       m_inv.handleRightClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
                              m_cam.getX(), m_cam.getY());
     } else {
+      if (m_inv.getItemPosHand().getName() == "IRON_SWORD") {
+        m_monsters.setKillAmonster(true);
+      }
       if (m_inv.getItemPosHand().getType() == "BLOCK") {
         putBlock(false); // we add a not background block
       }
@@ -204,7 +207,9 @@ void Game::handleMouseButtonReleased(sf::Event::MouseButtonEvent &event) {
                           m_mousePosWorld.getY());
     }
   } else if (event.button == Mouse::Right) {
-    // nothing for this time
+    if (m_inv.getItemPosHand().getName() == "IRON_SWORD") {
+      m_monsters.setKillAmonster(false);
+    }
   }
 }
 
@@ -221,8 +226,7 @@ void Game::render() {
 
   m_mapRenderer.render(m_window, m_sprites);
 
-  renderHealthBar(m_window, m_char.getLife(), MAX_LIFE, m_char.getX(),
-                  m_char.getY());
+  // renderHealthBar(m_window, m_char.getLife(), MAX_LIFE, m_char.getX(), m_char.getY());
 
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 

@@ -9,7 +9,7 @@ const int characterJumpHeight = 15;
 const int characterTimeJump = 0;
 
 const int characterSpeed = 3;
-const int characterLife = 20;
+const int characterLife = 100;
 
 Character::Character() : Entity(0, 0, 0, 0, 0, 0) {
   m_jumpHeight = 0;
@@ -21,7 +21,7 @@ Character::Character(string fileName, bool save)
   // string csvPath = path + fileName;
   if (!loadFromCSV(fileName)) {
     m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 64);
-    m_life = 20;
+    m_life = 100;
   }
   init();
 }
