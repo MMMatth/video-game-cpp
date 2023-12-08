@@ -19,38 +19,21 @@ using namespace sf;
 using namespace std;
 
 class Map;
-/**
- * @class Character
- * @brief Represents a character in the game.
- *
- * This class encapsulates the properties and behaviors of a character in the
- * game, such as position, movement, collisions, and life.
- */
+
 class Character : public Entity {
 public:
   Character();
   /* constructor */
 
-  Character(string fileName, bool save);
-  /**
-   * @brief Parameterized constructor for the Character class.
-   * @param x The initial x-coordinate of the character.
-   * @param y The initial y-coordinate of the character.
-   * @param life The initial life of the character.
-   */
-  Character(int x, int y, int life, int speed, int width, int height,
-            int jumpHeight, int timeJump, bool save);
-  /**
-   * @brief Loads character information from a CSV file.
-   * @param csvPath The path to the CSV file containing character information.
-   * @return True if loading is successful, false otherwise.
-   */
+  Character(string fileName, bool save, int maxLife);
+
+  Character(int x, int y, int life, int maxLife, int speed, int width,
+            int height, int jumpHeight, int timeJump, bool save);
+
   bool loadFromCSV(string csvPath);
 
-  /** @brief Initializes the character's properties. */
   void init();
   /* update */
-  /** @brief Updates the character's state and behavior. */
   void update();
   void collide(Map *map, int camX, int camY);
 
@@ -60,8 +43,6 @@ public:
 
   /* other setters */
   void setTimeJump(int time) { m_timeJump = time; }
-  void hit(int damage) { this->m_life -= damage; }
-  void heal(int heal) { this->m_life += heal; }
 
   /* other */
   void reset(bool save, int x, int y,

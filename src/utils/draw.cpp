@@ -3,9 +3,8 @@
 using namespace std;
 using namespace sf;
 
-/* graphics */
-
-unordered_map<string, Texture> textures; // Stocker les textures ici
+/* we init a map for many texture*/
+unordered_map<string, Texture> textures;
 
 void parseLine(const string &line, string &type, int &x, int &y, int &width,
                int &height) {
@@ -90,14 +89,6 @@ void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
   window->draw(sprite);
 }
 
-void drawSpritesWithShader(int x, int y, Sprite sprite, RenderWindow *window,
-                           int width, int height, Shader *shader) {
-  sprite.setPosition(x, y);
-  sprite.setScale(width / sprite.getLocalBounds().width,
-                  height / sprite.getLocalBounds().height);
-  window->draw(sprite, shader);
-}
-
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath) {
   Font font;
@@ -162,35 +153,4 @@ unordered_map<string, SoundBuffer> initBuffers() {
 void play_sound(SoundBuffer *buffer, Sound *sound) {
   sound->setBuffer(*buffer);
   sound->play();
-}
-
-void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x,
-                     int y) {
-  // Position of the health bar
-  float healthBarX = x;
-  float healthBarY = y;
-
-  // Draw the black background of the health bar
-  RectangleShape backgroundBar(Vector2f(HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT));
-  backgroundBar.setPosition(healthBarX, healthBarY);
-  backgroundBar.setFillColor(Color::Black);
-
-  if (currentLife < maxLife) {
-    window.draw(backgroundBar);
-  }
-
-  // Check if currentLife is positive before drawing the red health bar
-  if (currentLife > 0 && currentLife < maxLife) {
-    // Calculate the length of the red health bar based on current and maximum
-    // life
-    float healthBarLength =
-        static_cast<float>(currentLife) / maxLife * HEALTH_BAR_WIDTH;
-
-    // Draw the red health bar
-    RectangleShape healthBar(Vector2f(healthBarLength, HEALTH_BAR_HEIGHT));
-    healthBar.setPosition(healthBarX, healthBarY);
-    healthBar.setFillColor(Color::Red);
-
-    window.draw(healthBar);
-  }
 }

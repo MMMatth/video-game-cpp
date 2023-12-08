@@ -8,29 +8,17 @@
 using namespace std;
 using namespace sf;
 
-/**
- * @class MapRender
- * @brief Responsible for rendering the game map.
- *
- * This class handles the rendering of the game map using SFML.
- */
 class MapRender {
 private:
-  Map &m_map; /**< Reference to the game map. */
+  Map &m_map;
 
 public:
-  /**
-   * Parameterized constructor for MapRender.
-   * @param map Reference to the game map.
-   */
   MapRender(Map &map) : m_map(map) {}
 
-  /**
-   * Render the entire game map on the window.
-   * @param window Reference to the SFML RenderWindow.
-   * @param sprites Map of sprites containing the block images.
-   */
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites);
+
+  void renderMiniMap(RenderWindow &window,
+                     unordered_map<string, Sprite> sprites, int camX, int camY);
 };
 
 #endif // MAPRENDER_HPP

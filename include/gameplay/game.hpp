@@ -31,7 +31,6 @@
 #include "../rendering/entityRender.hpp"
 #include "../rendering/inventoryRender.hpp"
 #include "../rendering/mapRender.hpp"
-#include "../rendering/renderlife.hpp"
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -45,13 +44,6 @@
 using namespace sf;
 using namespace std;
 
-/**
- * @class Game
- * @brief Represents the main game class.
- *
- * This class manages the game's main loop, updates, rendering, and
- * interactions.
- */
 class Game {
 private:
   /* graphics */
@@ -122,7 +114,6 @@ public:
   /* sound */
   void setGameVolume(float volume);
   /* reset */
-  /** @param save : true = we create and after save */
   void reset(bool save);
   bool isPause();
   /* other */

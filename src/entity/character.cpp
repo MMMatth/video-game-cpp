@@ -11,13 +11,13 @@ const int characterTimeJump = 0;
 const int characterSpeed = 3;
 const int characterLife = 100;
 
-Character::Character() : Entity(0, 0, 0, 0, 0, 0) {
+Character::Character() : Entity(0, 0, 0, 0, 0, 0, 0) {
   m_jumpHeight = 0;
   m_timeJump = 0;
 }
 
-Character::Character(string fileName, bool save)
-    : Entity(0, 0, 0, 0, 0, 0), m_save(save) {
+Character::Character(string fileName, bool save, int maxLife)
+    : Entity(0, 0, 0, 0, 0, 0, maxLife), m_save(save) {
   // string csvPath = path + fileName;
   if (!loadFromCSV(fileName)) {
     m_coord = Coord(MAP_WIDTH * TILE_SIZE / 2, 64);
@@ -26,9 +26,9 @@ Character::Character(string fileName, bool save)
   init();
 }
 
-Character::Character(int x, int y, int life, int speed, int width, int height,
-                     int jumpHeight, int timeJump, bool save)
-    : Entity(x, y, width, height, speed, life), m_save(save) {
+Character::Character(int x, int y, int life, int maxLife, int speed, int width,
+                     int height, int jumpHeight, int timeJump, bool save)
+    : Entity(x, y, width, height, speed, life, maxLife), m_save(save) {
   m_direction = {{"jump", false},
                  {"up", false},
                  {"fall", true},
@@ -140,6 +140,7 @@ void Character::reset(bool save, int x, int y, string path) {
   init();
   m_coord = Coord(x, y);
   m_save = save;
+  m_life = CHARACTER_MAX_LIFE;
 }
 
 void Character::save(string path) {

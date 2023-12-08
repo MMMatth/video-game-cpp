@@ -23,6 +23,7 @@
 #define ANIMATION_SPEED 100
 #define NUM_FRAMES 9
 #define CHARACTER_SAVE_PATH "character.csv"
+#define CHARACTER_MAX_LIFE 30
 /* sound */
 #define SOUND_PLAY "../assets/sound/pop.ogg"
 #define SOUND_QUIT SOUND_PLAY
@@ -39,8 +40,8 @@
 #define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
-#define NUM_MONSTERS_WALKING 10
-#define NUM_MONSTERS_FLYING 20
+#define NUM_MONSTERS_WALKING 3
+#define NUM_MONSTERS_FLYING 2
 #define NUM_FRAMES_MONSTER 3
 #define HEALTH_BAR_WIDTH 20
 #define HEALTH_BAR_HEIGHT 3
@@ -51,7 +52,7 @@
 #define WALKING_MONSTERS_SPEED 2
 #define MONSTERS_SPAWN_RADIUS 50
 #define JUMP_HEIGHT 18
-#define ATTACKDISTANCE 100
+#define ATTACKDISTANCE 400
 /* inventory */
 #define INVENTORY_HEIGHT 4
 #define INVENTORY_WIDTH 9
@@ -70,7 +71,7 @@
 #define BLACK_COLOR Color::Black
 #define RED_COLOR Color::Red
 /* map */
-#define MAP_WIDTH 50
+#define MAP_WIDTH 1000
 #define MAP_SAVE_PATH "map.csv"
 #define MAP_INPUT_PATH "../assets/input/map.csv"
 #define MOUNTAIN_COEF 20 //

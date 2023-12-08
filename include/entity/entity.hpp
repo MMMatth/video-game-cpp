@@ -10,20 +10,12 @@
 
 using namespace std;
 
-/**
- * @class Entity
- * @brief Represents a generic entity in the game.
- *
- * This class serves as the base class for all entities in the game, providing
- * common properties and behaviors such as position, movement, collisions, and
- * life points.
- */
-
 class Entity {
 public:
-  Entity(int x, int y, int width, int height, int speed, int life)
+  Entity(int x, int y, int width, int height, int speed, int life, int maxLife)
       : m_coord(x, y), m_width(width), m_height(height), m_speed(speed),
-        m_life(life) {
+        m_life(life), m_maxLife(maxLife) {
+
     m_direction = {{"right", true},
                    {"left", false},
                    {"jump", false},
@@ -33,8 +25,6 @@ public:
         {"up", false}, {"down", false}, {"left", false}, {"right", false}};
   }
 
-  // virtual void update() = 0;
-
   /* Getters */
   int getHeight() const { return m_height; }
   int getWidth() const { return m_width; }
@@ -42,6 +32,7 @@ public:
   int getY() const { return m_coord.getY(); }
   int getSpeed() const { return m_speed; }
   int getLife() const { return m_life; }
+  int getMaxLife() const { return m_maxLife; }
   map<string, bool> getDirection() const { return m_direction; }
   map<string, bool> getCollision() const { return m_collision; }
 
@@ -54,25 +45,39 @@ public:
   void setCollision(string key, bool value) { m_collision[key] = value; }
 
   /* Other */
-  void moveX(int x) {
-    m_coord.setX(m_coord.getX() + x);
-  } /*< Move the entity horizontally by a specified amount. */
-  void moveY(int y) {
-    m_coord.setY(m_coord.getY() + y);
-  } /*< Move the entity vertically by a specified amount. */
+  void moveX(int x) { m_coord.setX(m_coord.getX() + x); }
+  void moveY(int y) { m_coord.setY(m_coord.getY() + y); }
+  bool isColliding(int x, int y, int width, int height) {
+    return (m_coord.getX() < x + width && m_coord.getX() + m_width > x &&
+            m_coord.getY() < y + height && m_coord.getY() + m_height > y);
+  }
+  void heal(int heal) {
+    if (m_life + heal > m_maxLife) {
+      m_life = m_maxLife;
+    } else {
+      m_life += heal;
+    }
+  }
+  void hit(int damage) {
+    if (m_life - damage < 0) {
+      m_life = 0;
+    } else {
+      m_life -= damage;
+    }
+  }
 
 protected:
-  Coord m_coord;                 // Entity's position
-  map<string, bool> m_direction; // Entity's movement direction
-  map<string, bool> m_collision; // Entity's collision
-  int m_height;                  // Entity's height
-  int m_width;                   // Entity's width
-  int m_speed;                   // Entity's movement speed
-  int m_life;                    // Entity's life points
+  Coord m_coord;
+  map<string, bool> m_direction;
+  map<string, bool> m_collision;
+  int m_height;
+  int m_width;
+  int m_speed;
+  int m_life;
+  int m_maxLife;
 
 private:
-  Entity(); // Private default constructor to prevent instantiation without
-            // parameters
+  Entity();
 };
 
 #endif /* ENTITY_HPP */

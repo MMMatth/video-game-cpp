@@ -11,7 +11,7 @@ Game::Game(RenderWindow &window, Sound &sound,
            bool save, bool input)
     : 
     m_window(window), 
-    m_char( string(input ? INPUT_PATH : SAVE_PATH) + CHARACTER_SAVE_PATH, save), m_charRenderer(m_char),
+    m_char( string(input ? INPUT_PATH : SAVE_PATH) + CHARACTER_SAVE_PATH, save, CHARACTER_MAX_LIFE), m_charRenderer(m_char),
     m_cam( string(input ? INPUT_PATH : SAVE_PATH) + CAM_SAVE_PATH, save), 
     m_inv(string(input ? INPUT_PATH : SAVE_PATH) + INVENTORY_SAVE_PATH, save), m_invRender(m_inv),
     m_mousePosCam(0, 0), 
@@ -98,7 +98,7 @@ void Game::update() {
   }
 }
 
-void Game::clean() { m_window.clear(); }
+void Game::clean() {}
 
 void Game::handleEvent(Event &event) {
   if (m_menuPause.isPause()) {
@@ -226,7 +226,7 @@ void Game::render() {
 
   m_mapRenderer.render(m_window, m_sprites);
 
-  // renderHealthBar(m_window, m_char.getLife(), MAX_LIFE, m_char.getX(), m_char.getY());
+  m_mapRenderer.renderMiniMap(m_window, m_sprites, m_cam.getX(), m_cam.getY());
 
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
