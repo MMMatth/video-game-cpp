@@ -236,6 +236,8 @@ void Game::render() {
   m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
                      m_mousePosWorld.getY());
 
+  m_charRenderer.renderLifeBar(m_window, m_sprites, m_cam.getX(), m_cam.getY());
+
   m_fpsCounter.render(m_window, m_cam);
 
   m_menuPause.render(m_cam);

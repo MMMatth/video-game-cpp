@@ -32,8 +32,8 @@
 #define SOUND_PUT_A_BLOCK "../assets/sound/hit.ogg"
 #define VOLUME 5
 /* menu */
-#define IMG_MENU_ON "../assets/img/menuSoundOn.JPEG"
-#define IMG_MENU_OFF "../assets/img/menuSoundOff.JPEG"
+#define VOLUME_ON_IMG_PATH "../assets/img/volume_on.png"
+#define VOLUME_OFF_IMG_PATH "../assets/img/volume_off.png"
 /*pause*/
 #define IMG_PAUSE_ON "../assets/img/menuSoundOnPause.jpeg"
 #define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"

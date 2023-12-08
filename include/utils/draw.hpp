@@ -33,6 +33,10 @@ unordered_map<string, Sprite> initSprites();
 void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
                  int height);
 
+void initSprite(string path, string type);
+
+Sprite createSprite(string type, string path);
+
 /**
  * @brief Draws text at a specified position on the window.
  *
@@ -89,6 +93,7 @@ void play_sound(SoundBuffer *buffer, Sound *sound);
  * @param x The X-coordinate where the health bar will be rendered.
  * @param y The Y-coordinate where the health bar will be rendered.
  */
-void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x, int y);
+void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x,
+                     int y);
 
 #endif /* DRAW_HPP */
