@@ -1,6 +1,6 @@
 #include "../../include/entity/monsters.hpp"
 
-Monsters::Monsters(Map &map, const Character& m_char) : m_map(map), m_char(m_char){
+Monsters::Monsters(Map &map, Character& m_char) : m_map(map), m_char(m_char){
 
   srand(time(NULL));
 
@@ -46,7 +46,10 @@ void Monsters::update() {
   while (itMonster != m_monsters.end()) {
     // Check if there is a collision between monster and player
     if (checkPlayerMonsterCollision(m_char, *itMonster)) {
-      (*itMonster)->reduceLife(1);
+      if(m_killAMonster){
+        (*itMonster)->reduceLife(1);
+      }
+      m_char.hit(1);
     }
 
     if ((*itMonster)->getLife() <= 0) {

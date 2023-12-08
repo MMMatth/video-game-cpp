@@ -15,7 +15,6 @@
  * @class Monsters
  * @brief Represents a collection of monsters in the game.
  *
- * This class manages a collection of different types of monsters and provides
  * functionality to add, update, and render them.
  */
 class Monsters {
@@ -23,7 +22,8 @@ private:
   vector<Monster *> m_monsters;               // Collection of monsters
   vector<EntityRender *> m_monsterRenderers;// Renderers for the monsters
   Map m_map;                           // Reference to the game map
-  const Character& m_char; // Character
+  Character& m_char; // Character
+  bool m_killAMonster = false;
 
 public:
   /**
@@ -32,14 +32,14 @@ public:
    * @details Initializes the Monsters collection and adds random flying and
    * walking monsters to it.
    */
-  Monsters(Map &map, const Character& m_char);
+  Monsters(Map &map, Character& m_char);
 
-  ~Monsters() {
-   // Free the memory allocated for monsterRenderers
-    for (EntityRender* renderer : m_monsterRenderers) {
-        delete renderer;
+    ~Monsters() {
+    // Free the memory allocated for monsterRenderers
+      for (EntityRender* renderer : m_monsterRenderers) {
+          delete renderer;
+      }
     }
-  }
 
 
   /**
@@ -106,7 +106,11 @@ public:
  */
 bool checkPlayerMonsterCollision(const Character& m_char, Monster *m_monster) const;
 
-
+/**
+ * @brief Sets the flag indicating whether the player has chosen to kill a monster.
+ * @param m_choice Boolean flag representing the player's choice.
+ */
+void setKillAmonster(bool m_choice){this->m_killAMonster = m_choice;}
 };
 
 #endif
