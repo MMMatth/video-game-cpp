@@ -22,7 +22,10 @@ void initSprite(string path, string type);
 
 Sprite createSprite(string type, string path);
 
+<<<<<<< HEAD
 /* text */
+=======
+>>>>>>> b5b03dc (i modified monster a bit)
 void drawText(int x, int y, string text, RenderWindow *window, int size,
               Color color, string fontPath);
 
@@ -36,9 +39,12 @@ int getTextHeight(string text, int size, string fontPath);
 void drawRectangle(int x, int y, int width, int height, RenderWindow *window,
                    Color color, int alpha);
 
+<<<<<<< HEAD
 void drawEdge(int x, int y, int width, int height, RenderWindow *window,
               Color color, int alpha);
 /* sound */
+=======
+>>>>>>> b5b03dc (i modified monster a bit)
 unordered_map<string, SoundBuffer> initBuffers();
 
 void play_sound(SoundBuffer *buffer, Sound *sound);

@@ -22,8 +22,18 @@ private:
 
 public:
   Monsters(Map &map, Character &m_char);
+<<<<<<< HEAD
   ~Monsters();
 
+=======
+
+  ~Monsters() {
+    for (MonsterRender *renderer : m_monsterRenderers) {
+      delete renderer;
+    }
+  }
+
+>>>>>>> b5b03dc (i modified monster a bit)
   const vector<Monster *> &getMonsters() const { return m_monsters; }
 
   void addRandomMonster(Monster *monster, Map &map);

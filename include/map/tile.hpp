@@ -28,13 +28,21 @@ private:
   Color m_color;         /**< predominant color of the tile */
 
 public:
+<<<<<<< HEAD
   /* constructor */
   Tile()
       : m_isBackground(false), m_block(), m_coord(0, 0), m_isBreaking(false) {}
+=======
+>>>>>>> b5b03dc (i modified monster a bit)
   Tile(Block block, int x, int y, bool isBackground = false);
 
   Tile(int x, int y, bool isBackground = false);
 
+<<<<<<< HEAD
+=======
+  void initColor();
+
+>>>>>>> b5b03dc (i modified monster a bit)
   /* getters */
   int getX() const { return m_coord.getX(); }
   int getY() const { return m_coord.getY(); }

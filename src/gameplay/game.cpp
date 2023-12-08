@@ -244,7 +244,11 @@ void Game::render() {
     // renderHealthBar(m_window, m_char.getLife(), MAX_LIFE, m_char.getX(),
     //                 m_char.getY());
 
+<<<<<<< HEAD
     m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
+=======
+  m_mapRenderer.renderMiniMap(m_window, m_sprites, m_cam.getX(), m_cam.getY());
+>>>>>>> b5b03dc (i modified monster a bit)
 
     if (!m_day_night_cycle.isDay()) {
       m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);

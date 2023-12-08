@@ -71,7 +71,11 @@
 #define BLACK_COLOR Color::Black
 #define RED_COLOR Color::Red
 /* map */
+<<<<<<< HEAD
 #define MAP_WIDTH 150
+=======
+#define MAP_WIDTH 1000
+>>>>>>> b5b03dc (i modified monster a bit)
 #define MAP_SAVE_PATH "map.csv"
 #define MAP_INPUT_PATH "../assets/input/map.csv"
 #define MOUNTAIN_COEF 20 //
