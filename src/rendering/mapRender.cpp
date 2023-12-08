@@ -27,3 +27,22 @@ void MapRender::render(RenderWindow &window,
     }
   }
 }
+void MapRender::renderMiniMap(RenderWindow &window,
+                              unordered_map<string, Sprite> sprites, int camX,
+                              int camY) {
+  int miniMapScale = 4; // Change this to control the size of the mini-map
+  int miniMapX = 0;
+  int miniMapY = 0;
+
+  for (int y = m_map.get_working_area().getY(); y < m_map.get_cam_height();
+       y++) {
+    for (int x = m_map.get_working_area().getX(); x < m_map.get_cam_width();
+         x++) {
+      Tile tile = m_map.get_tile(y, x);
+      drawSprites(miniMapX + tile.getX() / miniMapScale,
+                  miniMapY + tile.getY() / miniMapScale,
+                  sprites[tile.getBlock()->getName()], &window,
+                  TILE_SIZE / miniMapScale, TILE_SIZE / miniMapScale);
+    }
+  }
+}
