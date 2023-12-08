@@ -5,7 +5,6 @@
 #include "../utils/const.hpp"
 #include "../utils/coord.hpp"
 #include "item.hpp"
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 
@@ -15,9 +14,9 @@ using namespace std;
  * @class Block
  * @brief Represents a block in the game world.
  *
- * This class inherits from the Item class and represents a block with specific properties
- * such as solidity and time to break.
-*/
+ * This class inherits from the Item class and represents a block with specific
+ * properties such as solidity and time to break.
+ */
 class Block : public Item {
 public:
   /* constructor */
@@ -33,10 +32,10 @@ public:
    * @param time_to_break The time it takes to break the block.
    * @param is_stackable Whether the block is stackable.
    * @param amount The amount of the block.
-  */
+   */
   Block(string id, string name, bool isSolid, int time_to_break = 2000,
         bool is_stackable = true, int amount = 1);
-  
+
   // ~Block();
 
   /* getters */
@@ -61,11 +60,11 @@ public:
   /* other */
 
   /** Convert the block to a string representation. */
-  string toString() const;
+  string to_string() const;
 
 private:
-  bool m_isSolid; /** Whether the block is solid. */
-  string m_id;   /** The ID of the block. */
+  bool m_isSolid;      /** Whether the block is solid. */
+  string m_id;         /** The ID of the block. */
   int m_time_to_break; /** The time it takes to break the block. */
 };
 

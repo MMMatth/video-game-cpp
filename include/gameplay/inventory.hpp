@@ -8,6 +8,7 @@
 
 #include "../utils/const.hpp"
 #include "../utils/coord.hpp"
+#include "craft.hpp"
 #include "inventoryTile.hpp"
 #include <cassert>
 #include <fstream>
@@ -43,6 +44,7 @@ private:
                                        item which moves */
   int m_pos_item_hand;              /** int number included between 0 and 8*/
   bool m_is_open;                   /** bool true if the inventory is open */
+  Craft m_craft;                    /** craft object */
 
 public:
   /* Constructeur */
@@ -56,7 +58,8 @@ public:
 
   /* handle */
   /** function who return if a coord is on a tile of the inv*/
-  void handleClick(int mouseX, int mouseY, int persoX, int persoY);
+  void handleLeftClick(int mouseX, int mouseY, int persoX, int persoY);
+  void handleRightClick(int mouseX, int mouseY, int persoX, int persoY);
 
   /* setters */
   void open();

@@ -44,6 +44,8 @@ private:
   int phase; /**< Phase of the menu. */
 
   unordered_map<string, Sprite> m_sprites; /**< Sprites for the menu. */
+  Sprite m_spriteVolumeOff;                /**< Sprite for volume off. */
+  Sprite m_spriteVolumeOn;                 /**< Sprite for volume on. */
 
   DayNightCycle m_dayNightCycle; /**< Day-night cycle for the menu. */
 

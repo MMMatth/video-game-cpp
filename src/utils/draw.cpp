@@ -5,7 +5,7 @@ using namespace sf;
 
 /* graphics */
 
-Texture texture;
+unordered_map<string, Texture> textures; // Stocker les textures ici
 
 void parseLine(const string &line, string &type, int &x, int &y, int &width,
                int &height) {
@@ -44,11 +44,16 @@ void checkData(int x, int y, int width, int height) {
     cerr << "Spritesheet invalid size : " << width << " " << height;
 }
 
+void initSprite(string path, string type) {
+  textures[type] = Texture(); // Initialiser la texture pour ce type
+  if (!textures[type].loadFromFile(path))
+    handleFileError(path);
+}
+
 unordered_map<string, Sprite> initSprites() {
   unordered_map<string, Sprite> sprites;
-  Error(!texture.loadFromFile(SPRITESHEET_IMG_PATH),
-        "Unable to load spritesheet image.");
-
+  initSprite(SPRITESHEET_IMG_PATH,
+             "spritesheet"); // Initialiser la texture pour ce type
   ifstream file(SPRITESHEET_INPUT_PATH);
   if (!file.is_open())
     handleFileError(SPRITESHEET_INPUT_PATH);
@@ -61,12 +66,20 @@ unordered_map<string, Sprite> initSprites() {
       int x, y, width, height;
       parseLine(line, type, x, y, width, height);
       checkData(x, y, width, height);
-      sprites[type] = Sprite(texture, IntRect(x, y, width, height));
+
+      sprites[type] = Sprite(
+          textures["spritesheet"],
+          IntRect(x, y, width, height)); // Utiliser la texture pour ce type
     }
     row++;
   }
-
   return sprites;
+}
+
+Sprite createSprite(string type, string path) {
+  textures[type] = Texture(); // Initialiser la texture pour ce type
+  initSprite(path, type);
+  return Sprite(textures[type]);
 }
 
 void drawSprites(int x, int y, Sprite sprite, RenderWindow *window, int width,
@@ -151,7 +164,8 @@ void play_sound(SoundBuffer *buffer, Sound *sound) {
   sound->play();
 }
 
-void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x, int y) {
+void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x,
+                     int y) {
   // Position of the health bar
   float healthBarX = x;
   float healthBarY = y;
@@ -161,14 +175,16 @@ void renderHealthBar(RenderWindow &window, int currentLife, int maxLife, int x, 
   backgroundBar.setPosition(healthBarX, healthBarY);
   backgroundBar.setFillColor(Color::Black);
 
-  if(currentLife < maxLife){
+  if (currentLife < maxLife) {
     window.draw(backgroundBar);
   }
 
   // Check if currentLife is positive before drawing the red health bar
   if (currentLife > 0 && currentLife < maxLife) {
-    // Calculate the length of the red health bar based on current and maximum life
-    float healthBarLength = static_cast<float>(currentLife) / maxLife * HEALTH_BAR_WIDTH;
+    // Calculate the length of the red health bar based on current and maximum
+    // life
+    float healthBarLength =
+        static_cast<float>(currentLife) / maxLife * HEALTH_BAR_WIDTH;
 
     // Draw the red health bar
     RectangleShape healthBar(Vector2f(healthBarLength, HEALTH_BAR_HEIGHT));

@@ -42,6 +42,7 @@ void Game::reset(bool save) {
   m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
   /* reset inventory*/
   m_inv.reset(save, string(SAVE_PATH) + INVENTORY_SAVE_PATH);
+  /* we add items*/
   m_inv.addItem(toolMap["IRON_PICKAXE"]);
   m_inv.addItem(weaponMap["IRON_SWORD"]);
   /* reset day night cycle */
@@ -78,7 +79,7 @@ void Game::update() {
     updateBreaking();
 
     // if (!m_day_night_cycle.isDay()) {
-      m_monsters.update();
+    m_monsters.update();
     // }
 
     m_day_night_cycle.update();
@@ -97,9 +98,7 @@ void Game::update() {
   }
 }
 
-void Game::clean() {
-  m_window.clear();
-}
+void Game::clean() { m_window.clear(); }
 
 void Game::handleEvent(Event &event) {
   if (m_menuPause.isPause()) {
@@ -168,8 +167,8 @@ void Game::handleKeyRelease(sf::Keyboard::Key key) {
 void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
   if (event.button == Mouse::Left) {
     if (m_inv.isOpen()) {
-      m_inv.handleClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
-                        m_cam.getX(), m_cam.getY());
+      m_inv.handleLeftClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
+                            m_cam.getX(), m_cam.getY());
     } else {
       if (m_inv.getItemPosHand().getType() == "TOOL") {
         if (m_game_mode == 2) {
@@ -183,7 +182,10 @@ void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
       }
     }
   } else if (event.button == Mouse::Right) {
-    if (!m_inv.isOpen()) {
+    if (m_inv.isOpen()) {
+      m_inv.handleRightClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
+                             m_cam.getX(), m_cam.getY());
+    } else {
       if (m_inv.getItemPosHand().getType() == "BLOCK") {
         putBlock(false); // we add a not background block
       }
@@ -225,11 +227,13 @@ void Game::render() {
   m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
   // if (!m_day_night_cycle.isDay()) {
-    m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
+  m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
   // }
 
   m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
                      m_mousePosWorld.getY());
+
+  m_charRenderer.renderLifeBar(m_window, m_sprites, m_cam.getX(), m_cam.getY());
 
   m_fpsCounter.render(m_window, m_cam);
 

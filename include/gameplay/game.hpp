@@ -27,6 +27,7 @@
 
 #include "../map/map.hpp"
 
+#include "../rendering/characterRender.hpp"
 #include "../rendering/entityRender.hpp"
 #include "../rendering/inventoryRender.hpp"
 #include "../rendering/mapRender.hpp"
@@ -57,8 +58,8 @@ private:
   RenderWindow &m_window;                  /** SFML Window*/
   unordered_map<string, Sprite> m_sprites; /** all Sprite*/
   /* character */
-  Character m_char;            /** Character */
-  EntityRender m_charRenderer; /** character render part*/
+  Character m_char;               /** Character */
+  CharacterRender m_charRenderer; /** character render part*/
   /* map */
   Map m_map;
   MapRender m_mapRenderer;
