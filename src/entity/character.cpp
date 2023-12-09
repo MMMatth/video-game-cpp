@@ -5,7 +5,7 @@ using namespace std;
 const int characterWidth = 28;
 const int characterHeight = 58;
 
-const int characterJumpHeight = 15;
+const int characterJumpHeight = 80;
 const int characterTimeJump = 0;
 
 const int characterSpeed = 3;
