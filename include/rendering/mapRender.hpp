@@ -1,6 +1,9 @@
 #ifndef MAPRENDER_HPP
 #define MAPRENDER_HPP
 
+#define NB_BLOCK_MINIMAP 32 // he must be pair
+#define MINIMAP_SCALE 8
+
 #include "../map/map.hpp"
 #include "../utils/draw.hpp"
 #include <SFML/Graphics.hpp>

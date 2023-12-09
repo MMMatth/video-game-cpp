@@ -31,6 +31,9 @@ void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
 void drawRectangle(int x, int y, int width, int height, RenderWindow *window,
                    Color color, int alpha);
 
+void drawEdge(int x, int y, int width, int height, RenderWindow *window,
+              Color color, int alpha);
+
 unordered_map<string, SoundBuffer> initBuffers();
 
 void play_sound(SoundBuffer *buffer, Sound *sound);

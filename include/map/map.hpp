@@ -106,20 +106,7 @@ public:
    * @return The chosen tile.
    */
   Tile chooseTile(string c, int x, int y, bool isBackground);
-
-  /**
-   * Adds a tile to the map at the specified coordinates.
-   * @param block The block to be added as a tile.
-   * @param mouseX The x-coordinate of the mouse position.
-   * @param mouseY The y-coordinate of the mouse position.
-   */
   void add_tile(Block block, int mouseX, int mouseY, bool isBackground);
-
-  /**
-   * Removes a tile from the map at the specified coordinates.
-   * @param x The x-coordinate of the tile.
-   * @param y The y-coordinate of the tile.
-   */
   void supr_tile(int x, int y);
 
   /**

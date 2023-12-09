@@ -127,6 +127,13 @@ void drawRectangle(int x, int y, int width, int height, RenderWindow *window,
   rectangle.setFillColor(Color(color.r, color.g, color.b, alpha));
   window->draw(rectangle);
 }
+void drawEdge(int x, int y, int width, int height, RenderWindow *window,
+              Color color, int alpha) {
+  drawRectangle(x, y, width, 1, window, color, alpha);
+  drawRectangle(x, y, 1, height, window, color, alpha);
+  drawRectangle(x + width, y, 1, height, window, color, alpha);
+  drawRectangle(x, y + height, width, 1, window, color, alpha);
+}
 
 /* audio */
 unordered_map<string, SoundBuffer> initBuffers() {
