@@ -45,7 +45,7 @@ public:
     }
   }
 
-  virtual void render(RenderWindow &window, int camTopX, int camTopY) = 0;
+  virtual void render(RenderWindow &window, int offSetX, int offSetY) = 0;
 };
 
 class TextButton : public Button {
@@ -89,6 +89,8 @@ public:
     /* width and height */
     m_width = getTextWidth(m_text, m_textSize, m_fontPath) * 1.5;
     m_height = getTextHeight(m_text, m_textSize, m_fontPath) * 2;
+    /* shadow */
+    m_shadow = shadow;
   }
 
   void isHover() { m_color = m_hoverColor; }
@@ -103,53 +105,63 @@ public:
     }
   }
 
-  void render(RenderWindow &window, int camTopX, int camTopY) override {
+  void render(RenderWindow &window, int offSetX, int offSetY) override {
     if (m_shadow) {
-      drawText(camTopX + m_coord.getX() * WINDOW_WIDTH / CAM_WIDTH + 5,
-               camTopY + m_coord.getY() * WINDOW_HEIGHT / CAM_HEIGHT + 5,
+      drawText(offSetX + m_coord.getX() * WINDOW_WIDTH / CAM_WIDTH + 5,
+               offSetY + m_coord.getY() * WINDOW_HEIGHT / CAM_HEIGHT + 5,
                m_text, &window, m_textSize, Color::Black, m_fontPath);
     }
-    drawTextWithEdge(camTopX + m_coord.getX() * WINDOW_WIDTH / CAM_WIDTH,
-                     camTopY + m_coord.getY() * WINDOW_HEIGHT / CAM_HEIGHT,
+    drawTextWithEdge(offSetX + m_coord.getX() * WINDOW_WIDTH / CAM_WIDTH,
+                     offSetY + m_coord.getY() * WINDOW_HEIGHT / CAM_HEIGHT,
                      m_text, &window, m_textSize, m_color, m_edgeColor,
                      m_fontPath);
   }
 };
 
-class SpriteButton : public Button {
+class OnOffButton : public Button {
 protected:
   Sprite m_sprite;
+  Sprite m_spriteOn;
+  Sprite m_spriteOff;
+  bool m_on;
 
 public:
-  SpriteButton() { m_sprite = Sprite(); }
-  SpriteButton(int x, int y, int width, int height, function<void()> action,
-               Sprite sprite)
+  OnOffButton() {
+    m_sprite = Sprite();
+    m_spriteOn = Sprite();
+    m_spriteOff = Sprite();
+    m_on = true;
+  }
+  OnOffButton(int x, int y, int width, int height, function<void()> action,
+              Sprite spriteOn, Sprite spriteOff, bool on = true)
       : Button(x, y, width, height, action) {
-    m_sprite = sprite;
+    m_sprite = spriteOn;
+    m_spriteOn = spriteOn;
+    m_spriteOff = spriteOff;
+    m_on = on;
   }
 
-  void render(RenderWindow &window, int camTopX, int camTopY) override {
-    //   m_sprite.setPosition(m_coord.getX(), m_coord.getY());
-    //   window.draw(m_sprite);
+  void switchSprite() { m_on = !m_on; }
+
+  void render(RenderWindow &window, int offSetX, int offSetY) override {
+    if (m_on)
+      m_sprite = m_spriteOn;
+    else
+      m_sprite = m_spriteOff;
+    drawSprites(offSetX + m_coord.getX() * WINDOW_WIDTH / CAM_WIDTH,
+                offSetY + m_coord.getY() * WINDOW_HEIGHT / CAM_HEIGHT, m_sprite,
+                &window, m_width, m_height);
   }
 };
 
 class Ui {
 protected:
   RenderWindow &m_window;
-  unordered_map<string, SpriteButton> m_spriteButton;
+  unordered_map<string, OnOffButton> m_spriteButton;
   unordered_map<string, TextButton> m_textBouttons;
 
 public:
   Ui(RenderWindow &window) : m_window(window) {}
-
-  //   virtual void initButtons() = 0;
-
-  //   virtual void handleEvent(Event &event) = 0;
-
-  //   virtual void update() = 0;
-
-  //   virtual void render() = 0;
 };
 
 #endif // UI_HPP

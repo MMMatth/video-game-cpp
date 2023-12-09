@@ -66,7 +66,7 @@ private:
   Coord m_mousePosWorld; /** mouse coord in the entire world*/
   /* sound*/
   unordered_map<string, SoundBuffer> m_buffers; /** all sound*/
-  SoundSettings m_soundSettings;
+  SoundSettings *m_soundSettings;
   Sound m_sound; /** SFML sound*/
   /* day_night_cycle */
   DayNightCycle m_day_night_cycle;
@@ -117,6 +117,7 @@ public:
   void reset(bool save);
   bool isPause();
   /* other */
+  void mute();
   void setSave(bool mode) { m_save = mode; }
 };
 

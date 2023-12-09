@@ -18,12 +18,13 @@ Game::Game(RenderWindow &window, Sound &sound,
     m_map( string(input ? INPUT_PATH : SAVE_PATH) + MAP_SAVE_PATH, save), m_mapRenderer(m_map),
     m_fpsCounter(10, 10), 
     m_sound(sound), 
-    m_soundSettings(soundSettings),
+    m_soundSettings(&soundSettings),
     m_game_mode(2),
     m_day_night_cycle( string(input ? INPUT_PATH : SAVE_PATH) + DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
     m_menuPause(window, sound, buffers, soundSettings, false, [&]() { quit(); }), 
     m_monsters(m_map, m_char),
     m_save(save) {
+  m_sound.setVolume(m_soundSettings->getVolume());
   m_sprites = sprites;
   m_buffers = buffers;
 }
@@ -93,6 +94,8 @@ void Game::update() {
     m_char.update();
 
     m_fpsCounter.update();
+
+    m_sound.setVolume(m_soundSettings->getVolume());
 
     updateCollide();
   }

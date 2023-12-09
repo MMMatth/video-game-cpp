@@ -20,7 +20,7 @@ private:
   // RenderWindow &m_window;
   unordered_map<string, SoundBuffer> m_buffers;
   Sound m_sound;
-  SoundSettings &m_soundSettings;
+  SoundSettings *m_soundSettings;
 
   // function quit of the game
   function<void()> m_quit;

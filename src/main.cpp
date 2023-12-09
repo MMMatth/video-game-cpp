@@ -10,19 +10,25 @@ int main() {
   /* init sprites and sounds */
   unordered_map<string, Sprite> sprites = initSprites();
   unordered_map<string, SoundBuffer> buffers = initBuffers();
-  SoundSettings soundSettings(5);
+  SoundSettings soundSettings(VOLUME);
   Sound sound;
   sound.setVolume(soundSettings.getVolume());
   /* game phase */
   bool isMenu = true;
-  bool isGame = true;
-  /* init the game and the menu */
-  // Game game(window, sound, sprites, buffers, soundSettings, false, false);
-  Menu menu(window, sound, sprites, buffers, soundSettings);
+  bool isGame = false;
+  cout << isGame << endl;
+  /* init the menu */
+  Menu menu = Menu(window, sound, sprites, buffers, soundSettings);
+  menu.setIsNewGame(false);
+  menu.setIsPlayInput(false);
+  menu.setIsPlaySave(false);
+  /* init the game */
+
   Game *game = nullptr;
 
   window.setFramerateLimit(FPS_MAX);
   while (window.isOpen()) {
+    cout << soundSettings.getVolume() << endl;
     Event event;
     if (isMenu) {
       while (window.pollEvent(event)) {
