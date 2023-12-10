@@ -49,6 +49,8 @@ public:
                                    Monster *m_monster) const;
 
   void setKillAmonster(bool m_choice) { this->m_killAMonster = m_choice; }
+
+  void reset();
 };
 
 #endif

@@ -9,6 +9,7 @@
 #include "../utils/draw.hpp"
 #include "../utils/otherFunctions.hpp"
 #include "soundSettings.hpp"
+#include "ui.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -17,17 +18,10 @@
 using namespace sf;
 using namespace std;
 
-/**
- * @class Menu
- * @brief Represents the main menu of the game.
- *
- * The Menu class handles the main menu functionality, including rendering,
- * event handling, and managing sound settings.
- */
-class Menu {
+class Menu : public Ui {
 private:
-  unordered_map<string, SoundBuffer> m_buffers; /**< Sound buffers for the*/
-  Sound m_sound; /**< SFML sound for menu interactions. */
+  unordered_map<string, SoundBuffer> m_buffers;
+  Sound m_sound;
 
   // what we do in the menu
   bool menu;
@@ -35,13 +29,11 @@ private:
   bool play_input;
   bool play_save;
 
-  RenderWindow &m_window;        /**< Reference to the SFML RenderWindow. */
-  SoundSettings m_soundSettings; /**< Sound settings for the menu. */
-  int m_clickOnOff; /**< Counter to prevent rapid menu interactions. */
+  SoundSettings *m_soundSettings; /**< Sound settings for the menu. */
 
   Cam m_cam; /**< Camera for the menu. */
 
-  int phase; /**< Phase of the menu. */
+  int m_phase; /**< Phase of the menu. */
 
   unordered_map<string, Sprite> m_sprites; /**< Sprites for the menu. */
   Sprite m_spriteVolumeOff;                /**< Sprite for volume off. */
@@ -51,14 +43,11 @@ private:
 
   Map m_map;               /**< Map for the menu background. */
   MapRender m_mapRenderer; /**< Map renderer for the menu background. */
-
-  map<string, Color> m_menuButtonColor; /**< Map of menu buttons pressed. */
+  function<void(int volume)> m_volume;
 
 public:
-  /**
-   * Parameterized constructor for Menu.
-   * @param window Reference to the SFML RenderWindow.
-   */
+  void initButtons();
+
   Menu(RenderWindow &window, Sound &sound,
        unordered_map<string, Sprite> &sprites,
        unordered_map<string, SoundBuffer> &buffers,
@@ -70,31 +59,16 @@ public:
    */
   void handleEvent(sf::Event &event);
 
-  /**
-   * Run the menu loop.
-   */
   void run();
-
-  void renderButton(int x, int y, Color edgeColor, string text, string key);
 
   void renderButtons();
 
-  /** Render the menu on the game window. */
   void render();
 
-  /** Quit the menu.*/
   void quit();
-
-  void updateButtonColor(string buttonName, Color colorOf, Color colorTo,
-                         int mouseX, int mouseY, int x, int y, int width,
-                         int height);
-
-  void updateButtonColors();
 
   /** update*/
   void update();
-
-  void resetClickOnOff();
 
   bool isActive() const;
   bool isNewGame() const;

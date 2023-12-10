@@ -119,6 +119,26 @@ void drawTextWithEdge(int x, int y, string text, RenderWindow *window, int size,
   window->draw(textObj);
 }
 
+int getTextWidth(string text, int size, string fontPath) {
+  Font font;
+  Error(!font.loadFromFile("../" + fontPath), "Error : font load fail");
+  Text textObj;
+  textObj.setFont(font);
+  textObj.setString(text);
+  textObj.setCharacterSize(size);
+  return textObj.getLocalBounds().width;
+}
+
+int getTextHeight(string text, int size, string fontPath) {
+  Font font;
+  Error(!font.loadFromFile("../" + fontPath), "Error : font load fail");
+  Text textObj;
+  textObj.setFont(font);
+  textObj.setString(text);
+  textObj.setCharacterSize(size);
+  return textObj.getLocalBounds().height;
+}
+
 void drawRectangle(int x, int y, int width, int height, RenderWindow *window,
                    Color color, int alpha) {
   RectangleShape rectangle;

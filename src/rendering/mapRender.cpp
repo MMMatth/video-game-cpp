@@ -30,10 +30,8 @@ void MapRender::render(RenderWindow &window,
 void MapRender::renderMiniMap(RenderWindow &window,
                               unordered_map<string, Sprite> sprites, int camX,
                               int camY) {
-  // int offsetX =
-  //     camX + CAM_WIDTH / 2 - NB_BLOCK_MINIMAP * TILE_SIZE / MINIMAP_SCALE -
-  //     10;
-  int offsetX = camX - CAM_WIDTH / 2 + 10;
+  int offsetX =
+      camX + CAM_WIDTH / 2 - NB_BLOCK_MINIMAP * TILE_SIZE / MINIMAP_SCALE - 10;
   int offsetY = camY - CAM_HEIGHT / 2 + 10;
   int width = NB_BLOCK_MINIMAP * TILE_SIZE / MINIMAP_SCALE;
   int height = NB_BLOCK_MINIMAP * TILE_SIZE / MINIMAP_SCALE;
@@ -69,30 +67,4 @@ void MapRender::renderMiniMap(RenderWindow &window,
   }
 
   drawEdge(offsetX, offsetY, width, height, &window, Color(255, 255, 255), 255);
-
-  // for (int y = mini_map_areaY; y < mini_map_areaHeight; y++) {
-  //   for (int x = mini_map_areaX; x < mini_map_areaWidth; x++) {
-  //     Tile tile = m_map.get_tile(y, x);
-  //     int xtemp = x - mini_map_areaX / TILE_SIZE;
-  //     int ytemp = y - mini_map_areaY / TILE_SIZE;
-  //     drawSprites(offsetX + xtemp * (TILE_SIZE / MINIMAP_SCALE),
-  //                 offsetY + ytemp * (TILE_SIZE / MINIMAP_SCALE),
-  //                 sprites[tile.getBlock()->getName()], &window,
-  //                 TILE_SIZE / MINIMAP_SCALE, TILE_SIZE / MINIMAP_SCALE);
-  //   }
-  // }
-
-  // for (int y = m_map.get_working_area().getY(); y < m_map.get_cam_height();
-  //      y++) {
-  //   for (int x = m_map.get_working_area().getX(); x < m_map.get_cam_width();
-  //        x++) {
-  //     Tile tile = m_map.get_tile(y, x);
-  //     int xtemp = x - m_map.get_working_area().getX();
-  //     int ytemp = y - m_map.get_working_area().getY();
-  //     drawSprites(offsetX + xtemp * (TILE_SIZE / MINIMAP_SCALE),
-  //                 offsetY + ytemp * (TILE_SIZE / MINIMAP_SCALE),
-  //                 sprites[tile.getBlock()->getName()], &window,
-  //                 TILE_SIZE / MINIMAP_SCALE, TILE_SIZE / MINIMAP_SCALE);
-  //   }
-  // }
 }

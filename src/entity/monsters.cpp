@@ -1,4 +1,6 @@
 #include "../../include/entity/monsters.hpp"
+#include <chrono>
+#include <thread>
 
 Monsters::Monsters(Map &map, Character &m_char) : m_map(map), m_char(m_char) {
 
@@ -51,15 +53,25 @@ void Monsters::render(RenderWindow &window,
   renderLifes(window, sprites);
 }
 
+
 void Monsters::update() {
+  // Initialize a timer variable
+  static auto lastHitTime = chrono::steady_clock::now();
+  const auto oneSecond = chrono::seconds(1);
+
   for (auto &monster : m_monsters) {
     // Check if there is a collision between monster and player
-    if (checkPlayerMonsterCollision(m_char, monster)) {
+    if (checkPlayerMonsterCollision(m_char, monster)) { 
       if (m_killAMonster) {
         monster->reduceLife(1);
       }
-      m_char.hit(1);
+      
+      if(chrono::steady_clock::now() - lastHitTime >= oneSecond) {
+        lastHitTime = chrono::steady_clock::now();  // Update the last hit time
+        m_char.hit(1);
+      }
     }
+
     monster->update(m_char);
   }
 
@@ -98,4 +110,25 @@ bool Monsters::checkPlayerMonsterCollision(const Character &m_char,
                          m_char.getHeight(), m_monster->getX(),
                          m_monster->getY(), m_monster->getWidth(),
                          m_monster->getHeight()));
+}
+void Monsters::reset() {
+  // Clear existing monsters
+  m_monsters.clear();
+  m_monsterRenderers.clear();
+
+  // Add new random flying monsters
+  for (int i = 0; i < NUM_MONSTERS_FLYING; i++) {
+    addRandomMonster(new FlyingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
+                                       FLYING_MONSTERS_SPEED, MAX_LIFE,
+                                       MAX_LIFE),
+                     m_map);
+  }
+
+  // Add new random walking monsters
+  for (int i = 0; i < NUM_MONSTERS_WALKING; i++) {
+    addRandomMonster(new WalkingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
+                                        WALKING_MONSTERS_SPEED, MAX_LIFE,
+                                        MAX_LIFE, JUMP_HEIGHT, m_map),
+                     m_map);
+  }
 }
