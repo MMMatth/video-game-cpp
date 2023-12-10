@@ -16,17 +16,25 @@ private:
 
 public:
   Craft() {
-    for (auto block : blockMap) {
+    for (auto block : blockMap) { // we create a graph with all the blocks
       Node<Block> *node = new Node<Block>(block.second);
       m_node[block.first] = node;
     }
-    for (auto nodeBlock : m_node) {
+    for (auto nodeBlock : m_node) { // we add all the nodes to the graph
       m_graph.addNode(nodeBlock.second);
     }
+    // we add all the edges
     m_graph.addEdge(m_node["STONE"], m_node["COBBLESTONE"]);
     m_graph.addEdge(m_node["COBBLESTONE"], m_node["STONE"]);
     m_graph.addEdge(m_node["WOOD"], m_node["WOOD_PLANK"]);
     m_graph.addEdge(m_node["WOOD_PLANK"], m_node["LIBRARY"]);
+  }
+
+  ~Craft() {
+    for (auto nodeBlock : m_node) {
+      delete nodeBlock.second;
+    }
+    m_node.clear();
   }
 
   bool hasCraft(string id) {

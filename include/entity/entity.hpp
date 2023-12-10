@@ -12,6 +12,10 @@ using namespace std;
 
 class Entity {
 public:
+  /* Constructeur */
+  Entity()
+      : m_coord(0, 0), m_width(0), m_height(0), m_speed(0), m_life(0),
+        m_maxLife(0) {}
   Entity(int x, int y, int width, int height, int speed, int life, int maxLife)
       : m_coord(x, y), m_width(width), m_height(height), m_speed(speed),
         m_life(life), m_maxLife(maxLife) {
@@ -48,8 +52,8 @@ public:
   void moveX(int x) { m_coord.setX(m_coord.getX() + x); }
   void moveY(int y) { m_coord.setY(m_coord.getY() + y); }
   bool isColliding(int x, int y, int width, int height) {
-    return (m_coord.getX() < x + width && m_coord.getX() + m_width > x &&
-            m_coord.getY() < y + height && m_coord.getY() + m_height > y);
+    return (m_coord.getX() <= x + width && m_coord.getX() + m_width >= x &&
+            m_coord.getY() <= y + height && m_coord.getY() + m_height >= y);
   }
   void heal(int heal) {
     if (m_life + heal > m_maxLife) {
@@ -75,9 +79,6 @@ protected:
   int m_speed;
   int m_life;
   int m_maxLife;
-
-private:
-  Entity();
 };
 
 #endif /* ENTITY_HPP */

@@ -43,6 +43,7 @@ public:
   /* Constructeur */
   Inventory();
   Inventory(string csvPath, bool save);
+  ~Inventory();
   bool loadFromCSV(const std::string &csvPath);
 
   void swapItem(InventoryTile *t1, InventoryTile *t2);

@@ -14,8 +14,17 @@ Monsters::Monsters(Map &map, Character &m_char) : m_map(map), m_char(m_char) {
   for (int i = 0; i < NUM_MONSTERS_WALKING; i++) {
     addRandomMonster(new WalkingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
                                         WALKING_MONSTERS_SPEED, MAX_LIFE,
-                                        MAX_LIFE, JUMP_HEIGHT, map),
+                                        MAX_LIFE, JUMP_HEIGHT),
                      map);
+  }
+}
+
+Monsters::~Monsters() {
+  for (MonsterRender *renderer : m_monsterRenderers) {
+    delete renderer;
+  }
+  for (Monster *monster : m_monsters) {
+    delete monster;
   }
 }
 
