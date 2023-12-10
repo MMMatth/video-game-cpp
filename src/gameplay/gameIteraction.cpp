@@ -16,7 +16,7 @@ void Game::putBlock(bool isBackground) {
 
   if (!isMouseOutsideChar) {
     if (m_map.find_tile(mouseX, mouseY)->getBlock()->getId() == '0') {
-      play_sound(&m_buffers["PUT_BLOCK"], &m_sound);
+      m_soundSettings->playSound("PUT_BLOCK");
       m_map.add_tile(blockMap[m_inv.getItemPosHand().getName()], mouseX, mouseY,
                      isBackground);
       if (m_game_mode == 2) {
@@ -47,7 +47,7 @@ void Game::breakBlock() {
       if (m_game_mode == 2) {
         m_inv.addItem(*m_map.find_tile(mouseX, mouseY)->getBlock());
       }
-      play_sound(&m_buffers["BREAK"], &m_sound);
+      m_soundSettings->playSound("BREAK");
       m_map.supr_tile(mouseX, mouseY);
     }
   }

@@ -23,7 +23,7 @@
 #include "../utils/coord.hpp"
 #include "../utils/draw.hpp"
 #include "../utils/otherFunctions.hpp"
-#include "../utils/sprites.hpp"
+// #include "../utils/sprites.hpp"
 
 #include "../map/map.hpp"
 
@@ -65,9 +65,7 @@ private:
   Coord m_mousePosCam;   /** mouse coord in the cam (Top Left = 0, 0) */
   Coord m_mousePosWorld; /** mouse coord in the entire world*/
   /* sound*/
-  unordered_map<string, SoundBuffer> m_buffers; /** all sound*/
   SoundSettings *m_soundSettings;
-  Sound m_sound; /** SFML sound*/
   /* day_night_cycle */
   DayNightCycle m_day_night_cycle;
   /* other */
@@ -81,9 +79,7 @@ private:
 
 public:
   /* constructor */
-  Game(RenderWindow &window, Sound &sound,
-       unordered_map<string, Sprite> &sprites,
-       unordered_map<string, SoundBuffer> &buffers,
+  Game(RenderWindow &window, unordered_map<string, Sprite> &sprites,
        SoundSettings &soundSettings, bool save, bool input);
   void run();
   /* update*/

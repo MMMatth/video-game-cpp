@@ -2,7 +2,6 @@
 #define ITEM_HPP
 
 #include "../utils/coord.hpp"
-#include "../utils/sprites.hpp"
 #include <string>
 #include <vector>
 using namespace std;
@@ -11,15 +10,15 @@ using namespace std;
  * @class Item
  * @brief Represents an item in the game.
  *
- * This class encapsulates the properties of an item, such as its name, stackability,
- * amount, and type.
-*/
+ * This class encapsulates the properties of an item, such as its name,
+ * stackability, amount, and type.
+ */
 class Item {
 private:
-  string m_name; /** The name of the item. */
-  bool m_is_stackable;   /** Whether the item is stackable. */
-  int m_amout; /** The amount of the item. -1 if not stackable. */
-  string m_type; /** The type of the item. */
+  string m_name;       /** The name of the item. */
+  bool m_is_stackable; /** Whether the item is stackable. */
+  int m_amout;         /** The amount of the item. -1 if not stackable. */
+  string m_type;       /** The type of the item. */
 
 public:
   /* constructeur */
@@ -30,7 +29,7 @@ public:
    * @param is_stackable Whether the item is stackable.
    * @param type The type of the item.
    * @param amount The amount of the item (default is 1).
-  */
+   */
   Item(string name, bool is_stackable, string type, int amout = 1)
       : m_amout(amout), m_name(name), m_is_stackable(is_stackable),
         m_type(type) {}
