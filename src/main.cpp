@@ -28,7 +28,6 @@ int main() {
 
   window.setFramerateLimit(FPS_MAX);
   while (window.isOpen()) {
-    cout << soundSettings.getVolume() << endl;
     Event event;
     if (isMenu) {
       while (window.pollEvent(event)) {
