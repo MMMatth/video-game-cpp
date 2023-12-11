@@ -1,6 +1,6 @@
 # Project
 ## Description
-This project is a simple game made with SFML.
+This project is a simple game made with SFML. Is a 2D game like Minecraft where you can move around the map and build blocks.
 
 ## How to run the project
 First, you need to install the dependencies. You can do it by running the following command:
