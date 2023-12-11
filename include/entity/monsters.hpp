@@ -22,12 +22,7 @@ private:
 
 public:
   Monsters(Map &map, Character &m_char);
-
-  ~Monsters() {
-    for (MonsterRender *renderer : m_monsterRenderers) {
-      delete renderer;
-    }
-  }
+  ~Monsters();
 
   const vector<Monster *> &getMonsters() const { return m_monsters; }
 
@@ -49,8 +44,6 @@ public:
                                    Monster *m_monster) const;
 
   void setKillAmonster(bool m_choice) { this->m_killAMonster = m_choice; }
-
-  void reset();
 };
 
 #endif

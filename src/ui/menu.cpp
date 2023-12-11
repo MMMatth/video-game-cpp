@@ -4,14 +4,14 @@ void Menu::initButtons() {
   m_textBouttons["play"] = TextButton(
       100, 210,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
+        m_soundSettings->playSound("PLAY");
         m_phase = 2;
       },
       Color::White, Color::Yellow, Color::Black, "PLAY", true, 50);
   m_textBouttons["newGame"] = TextButton(
       100, 314,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
+        m_soundSettings->playSound("PLAY");
         menu = false;
         new_game = true;
       },
@@ -19,7 +19,7 @@ void Menu::initButtons() {
   m_textBouttons["play_save"] = TextButton(
       100, 210,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
+        m_soundSettings->playSound("PLAY");
         menu = false;
         play_save = true;
       },
@@ -27,7 +27,7 @@ void Menu::initButtons() {
   m_textBouttons["play_input"] = TextButton(
       100, 314,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
+        m_soundSettings->playSound("PLAY");
         menu = false;
         play_input = true;
       },
@@ -35,7 +35,7 @@ void Menu::initButtons() {
   m_textBouttons["quit"] = TextButton(
       100, 413,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
+        m_soundSettings->playSound("PLAY");
         quit();
       },
       Color::White, Color::Yellow, Color::Black, "QUIT", true, 50);
@@ -46,27 +46,20 @@ void Menu::initButtons() {
   m_spriteButton["volume"] = OnOffButton(
       WINDOW_WIDTH - 100, WINDOW_HEIGHT - 100, 50, 50,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
-        if (m_soundSettings->getVolume() == 0) {
-          m_soundSettings->setVolume(VOLUME);
-        } else {
-          m_soundSettings->setVolume(0);
-        }
-        m_sound.setVolume(m_soundSettings->getVolume());
+        m_soundSettings->playSound("PLAY");
+        m_soundSettings->handleMute();
       },
       spriteVolumeOn, spriteVolumeOff);
 }
 
-Menu::Menu(RenderWindow &window, Sound &sound,
-           unordered_map<string, Sprite> &sprites,
-           unordered_map<string, SoundBuffer> &buffers,
+Menu::Menu(RenderWindow &window, unordered_map<string, Sprite> &sprites,
            SoundSettings &soundSettings)
-    : Ui(window), m_sound(sound), m_soundSettings(&soundSettings),
+    : Ui(window), m_soundSettings(&soundSettings),
       m_map("../assets/menu_map.csv", false), m_mapRenderer(m_map),
       m_cam(CAM_WIDTH, 850, false),
       m_dayNightCycle(30, DAY_NIGHT_CYCLE_IMG_PATH) {
   m_sprites = sprites;
-  m_buffers = buffers;
+  // m_buffers = buffers;
 
   m_phase = 1; // phase of menu with play newGame and quit
 
@@ -175,4 +168,4 @@ void Menu::setIsNewGame(bool active) { new_game = active; }
 void Menu::setIsPlaySave(bool active) { play_save = active; }
 void Menu::setIsPlayInput(bool active) { play_input = active; }
 
-bool Menu::volumeOff() const { return m_sound.getVolume() == 0; }
+bool Menu::volumeOff() const { return m_soundSettings->isMute(); }

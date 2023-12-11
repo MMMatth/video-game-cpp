@@ -28,11 +28,12 @@ private:
   Color m_color;         /**< predominant color of the tile */
 
 public:
+  /* constructor */
+  Tile()
+      : m_isBackground(false), m_block(), m_coord(0, 0), m_isBreaking(false) {}
   Tile(Block block, int x, int y, bool isBackground = false);
 
   Tile(int x, int y, bool isBackground = false);
-
-  void initColor();
 
   /* getters */
   int getX() const { return m_coord.getX(); }

@@ -11,13 +11,15 @@ class WalkingMonster : public Monster {
 private:
   int m_timeJump;   // Elapsed time during the jump
   int m_jumpHeight; // The limit of time jump
-  const Map &m_map;
+  // const Map &m_map;
 
 public:
+  WalkingMonster() : Monster(0, 0, 0, 0, 0, 0, 0) {}
   WalkingMonster(int x, int y, int width, int height, int speed, int life,
-                 int maxLife, int jumpHeight, const Map &map)
+                 int maxLife, int jumpHeight)
       : Monster(x, y, width, height, speed, life, maxLife),
-        m_jumpHeight(jumpHeight), m_map(map) {}
+        m_jumpHeight(jumpHeight) {}
+  ~WalkingMonster() {}
 
   /**
    * @brief Updates the state and behavior of the walking monster.
@@ -25,9 +27,6 @@ public:
    * walking monster's behavior.
    */
   void update(const Character &m_char) override;
-
-  // Destructor (if needed)
-  //   ~WalkingMonster();
 };
 
 #endif /* WALKING_MONSTER_HPP */

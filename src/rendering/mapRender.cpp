@@ -40,18 +40,24 @@ void MapRender::renderMiniMap(RenderWindow &window,
   int mini_map_areaY = (camY / TILE_SIZE) - NB_BLOCK_MINIMAP / 2;
   int mini_map_areaWidth = (camX / TILE_SIZE) + NB_BLOCK_MINIMAP / 2;
   int mini_map_areaHeight = (camY / TILE_SIZE) + NB_BLOCK_MINIMAP / 2;
-  if (mini_map_areaX < 0)
+  if (mini_map_areaX < 0) {
     mini_map_areaX = 0;
-
-  if (mini_map_areaY < 0)
+    mini_map_areaWidth = NB_BLOCK_MINIMAP;
+  }
+  if (mini_map_areaY < 0) {
     mini_map_areaY = 0;
+    mini_map_areaHeight = NB_BLOCK_MINIMAP;
+  }
 
-  if (mini_map_areaWidth > m_map.get_width())
+  if (mini_map_areaWidth > m_map.get_width()) {
+    mini_map_areaX = m_map.get_width() - NB_BLOCK_MINIMAP;
     mini_map_areaWidth = m_map.get_width();
+  }
 
-  if (mini_map_areaHeight > m_map.get_height())
+  if (mini_map_areaHeight > m_map.get_height()) {
+    mini_map_areaY = m_map.get_height() - NB_BLOCK_MINIMAP;
     mini_map_areaHeight = m_map.get_height();
-
+  }
   drawRectangle(offsetX, offsetY, width, height, &window, Color(0, 0, 0), 100);
 
   for (int y = mini_map_areaY; y < mini_map_areaHeight; y++) {

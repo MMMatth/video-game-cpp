@@ -31,7 +31,7 @@
 #define SOUND_BREAK_A_BLOCK "../assets/sound/dig.ogg"
 #define SOUND_MOVE "../assets/sound/move.wav"
 #define SOUND_PUT_A_BLOCK "../assets/sound/hit.ogg"
-#define VOLUME 5
+#define VOLUME 50
 /* menu */
 #define VOLUME_ON_IMG_PATH "../assets/img/volume_on.png"
 #define VOLUME_OFF_IMG_PATH "../assets/img/volume_off.png"

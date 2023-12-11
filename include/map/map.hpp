@@ -41,6 +41,12 @@ public:
    */
   Map(int height, int width, bool save);
 
+  Map()
+      : m_save(false), m_map(), m_workingAreaCoord(0, 0), m_workingAreaWidth(0),
+        m_workingAreaHeight(0), m_width(0), m_height(0) {
+    m_map = vector<vector<Tile>>(0, vector<Tile>(0));
+  }
+
   /* destructor */
   void clear();
 

@@ -18,8 +18,6 @@ private:
   bool m_pause; /**< Flag indicating whether the game is paused. */
 
   // RenderWindow &m_window;
-  unordered_map<string, SoundBuffer> m_buffers;
-  Sound m_sound;
   SoundSettings *m_soundSettings;
 
   // function quit of the game
@@ -28,9 +26,8 @@ private:
 public:
   void initButtons();
 
-  MenuPause(RenderWindow &window, Sound &sound,
-            unordered_map<string, SoundBuffer> &buffers,
-            SoundSettings &soundSettings, bool ispause, function<void()> quit);
+  MenuPause(RenderWindow &window, SoundSettings &soundSettings, bool ispause,
+            function<void()> quit);
 
   void handle();
 

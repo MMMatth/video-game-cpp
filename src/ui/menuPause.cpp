@@ -4,14 +4,14 @@ void MenuPause::initButtons() {
   m_textBouttons["resume"] = TextButton(
       100, 200,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
+        m_soundSettings->playSound("PLAY");
         handle();
       },
       Color::White, Color::Yellow, Color::Black, "Resume", true, 50);
   m_textBouttons["quit"] = TextButton(
       100, 300,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
+        m_soundSettings->playSound("PLAY");
         m_quit();
       },
       Color::White, Color::Yellow, Color::Black, "Quit", true, 50);
@@ -22,24 +22,16 @@ void MenuPause::initButtons() {
   m_spriteButton["volume"] = OnOffButton(
       100, 400, 50, 50,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
-        if (m_soundSettings->getVolume() == 0) {
-          m_soundSettings->setVolume(VOLUME);
-        } else {
-          m_soundSettings->setVolume(0);
-        }
-        m_sound.setVolume(m_soundSettings->getVolume());
+        m_soundSettings->playSound("PLAY");
+        m_soundSettings->handleMute();
       },
       spriteVolumeOn, spriteVolumeOff, m_soundSettings->getVolume() != 0);
 }
 
-MenuPause::MenuPause(RenderWindow &window, Sound &sound,
-                     unordered_map<string, SoundBuffer> &buffers,
-                     SoundSettings &soundSettings, bool ispause,
-                     function<void()> quit)
-    : m_pause(ispause), m_sound(sound), m_soundSettings(&soundSettings),
-      Ui(window), m_quit(quit) {
-  m_buffers = buffers;
+MenuPause::MenuPause(RenderWindow &window, SoundSettings &soundSettings,
+                     bool ispause, function<void()> quit)
+    : m_pause(ispause), m_soundSettings(&soundSettings), Ui(window),
+      m_quit(quit) {
   initButtons();
 }
 

@@ -20,8 +20,8 @@ using namespace std;
 
 class Menu : public Ui {
 private:
-  unordered_map<string, SoundBuffer> m_buffers;
-  Sound m_sound;
+  // unordered_map<string, SoundBuffer> m_buffers;
+  // Sound m_sound;
 
   // what we do in the menu
   bool menu;
@@ -48,16 +48,14 @@ private:
 public:
   void initButtons();
 
-  Menu(RenderWindow &window, Sound &sound,
-       unordered_map<string, Sprite> &sprites,
-       unordered_map<string, SoundBuffer> &buffers,
+  Menu(RenderWindow &window, unordered_map<string, Sprite> &sprites,
        SoundSettings &soundSettings);
 
   /**
    * Handle events for the menu.
    * @param event SFML Event object.
    */
-  void handleEvent(sf::Event &event);
+  void handleEvent(Event &event);
 
   void run();
 

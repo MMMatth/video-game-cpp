@@ -23,6 +23,7 @@ Inventory::Inventory()
     }
   }
 }
+Inventory::~Inventory() {}
 
 bool Inventory::loadFromCSV(const string &csvPath) {
   ifstream file(csvPath);
