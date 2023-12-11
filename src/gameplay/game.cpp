@@ -23,7 +23,7 @@ Game::Game(RenderWindow &window,
     m_menuPause(window,  soundSettings, false, [&]() { quit(); }), 
     m_monsters(m_map, m_char),
     m_save(save),
-    m_menuEnd(window, soundSettings, false, [&]() { quitMenuEnd(); }, [&]() {restartGame(); }){
+    m_menuEnd(window, soundSettings, false, [&]() { quitMenuEnd(); }, [&]() {restartGame(); }, m_monsters){
   m_sprites = sprites;
   // m_buffers = buffers;
 }

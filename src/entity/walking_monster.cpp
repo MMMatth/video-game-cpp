@@ -1,8 +1,8 @@
 #include "../../include/entity/walking_monster.hpp"
 
 void WalkingMonster::update(const Character &m_char) {
-  int deltaX = m_char.getX() - getX();
-  int deltaY = m_char.getY() - getY();
+  int deltaX = m_char.getX() - getX() - DISTANCEMONSTERPLAYER;
+  int deltaY = m_char.getY() - getY() - DISTANCEMONSTERPLAYER;
 
   float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
@@ -16,8 +16,18 @@ void WalkingMonster::update(const Character &m_char) {
   m_direction["left"] = !isRight;
 
   if (distance <= ATTACKDISTANCE && !m_collision[isRight ? "right" : "left"]) {
-    moveX(static_cast<int>(directionX * m_speed * speedVariability));
-    moveY(static_cast<int>(directionY * m_speed * speedVariability));
+    if (m_char.getX() - DISTANCEMONSTERPLAYER > getX()) {
+      m_direction["right"] = true;
+      m_direction["left"] = false;
+      moveX(static_cast<int>(directionX * m_speed * speedVariability));
+      moveY(static_cast<int>(directionY * m_speed * speedVariability));
+    }
+    if(m_char.getX()< getX() - DISTANCEMONSTERPLAYER) {
+      m_direction["right"] = false;
+      m_direction["left"] = true;
+      moveX(static_cast<int>(directionX * m_speed * speedVariability));
+      moveY(static_cast<int>(directionY * m_speed * speedVariability));
+    }
   } else {
     if (m_direction["right"] && !m_collision["right"]) {
       m_direction["jump"] = false;

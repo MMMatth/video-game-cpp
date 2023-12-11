@@ -34,7 +34,7 @@ public:
     if (m_entity.getLife() < 100) {
       window.draw(backgroundBar);
     }
-    if (m_entity.getLife() > 0) {
+    if (m_entity.getLife() > 0 && m_entity.getLife() < 100) {
       window.draw(healthBar);
     }
   }

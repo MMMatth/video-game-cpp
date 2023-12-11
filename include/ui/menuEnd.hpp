@@ -5,6 +5,7 @@
 #include "../utils/draw.hpp"
 #include "../utils/otherFunctions.hpp"
 #include "ui.hpp"
+#include "../entity/monsters.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <functional>
@@ -19,12 +20,12 @@ private:
   SoundSettings *m_soundSettings;
   function<void()> m_quit;
   function<void()> m_restart;
-
+  Monsters &m_monsters;
 public:
   void initButtons();
 
   MenuEnd(RenderWindow &window, SoundSettings &sound, bool isEnd,
-          function<void()> quit, function<void()> restart);
+          function<void()> quit, function<void()> restart, Monsters &monsters );
 
   void handle();
 

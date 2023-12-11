@@ -2,14 +2,12 @@
 
 EntityRender::EntityRender(Entity &entity) : m_entity(entity) {}
 
-void EntityRender::render(RenderWindow &window,
-                          unordered_map<string, Sprite> sprites, string key,
-                          int nbFrame) {
+void EntityRender::render(RenderWindow &window, unordered_map<string, Sprite> sprites, string key, int nbFrame) {
   /* first we recover the collision and direction map*/
   map<string, bool> direction = m_entity.getDirection();
   map<string, bool> collision = m_entity.getCollision();
   /* next we recover the frame of the animation */
-  int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % 3;
+  int frame = (m_clock.getElapsedTime().asMilliseconds() / ANIMATION_SPEED) % NUM_FRAMES_MONSTER;
 
   /*Calculate the position of the Monster for drawing*/
   int x = m_entity.getX() + (m_entity.getWidth() / 2); // center the entity

@@ -41,7 +41,7 @@
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
 #define NUM_MONSTERS_WALKING 3
-#define NUM_MONSTERS_FLYING 2
+#define NUM_MONSTERS_FLYING 1
 #define NUM_FRAMES_MONSTER 3
 #define HEALTH_BAR_WIDTH 20
 #define HEALTH_BAR_HEIGHT 3
@@ -53,6 +53,7 @@
 #define MONSTERS_SPAWN_RADIUS 50
 #define JUMP_HEIGHT 18
 #define ATTACKDISTANCE 400
+#define DISTANCEMONSTERPLAYER 15
 /* inventory */
 #define INVENTORY_HEIGHT 4
 #define INVENTORY_WIDTH 9
