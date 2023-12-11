@@ -48,11 +48,12 @@ void Monsters::collide(Map *map, int camX, int camY) {
   }
 }
 
-void Monsters::render(RenderWindow &window,unordered_map<string, Sprite> sprites, int nbFrame) {
+void Monsters::render(RenderWindow &window,
+                      unordered_map<string, Sprite> sprites, int nbFrame) {
   for (EntityRender *renderer : m_monsterRenderers) {
     if (renderer->getEntity().getSpeed() == FLYING_MONSTERS_SPEED) {
       renderer->render(window, sprites, "FLYING_MONSTER", nbFrame);
-    }else if (renderer->getEntity().getSpeed() == WALKING_MONSTERS_SPEED) {
+    } else if (renderer->getEntity().getSpeed() == WALKING_MONSTERS_SPEED) {
       renderer->render(window, sprites, "WALKING_MONSTER", nbFrame);
     }
   }
@@ -60,51 +61,34 @@ void Monsters::render(RenderWindow &window,unordered_map<string, Sprite> sprites
 }
 
 void Monsters::update() {
-  // Initialize a timer variable
-  static auto lastHitTime = chrono::steady_clock::now();
-  const auto oneSecond = chrono::seconds(1);
 
   for (auto &monster : m_monsters) {
-    // Check if there is a collision between monster and player
-    if (checkPlayerMonsterCollision(m_char, monster)) { 
-      if (m_killAMonster) {
-        monster->reduceLife(1);
-      }
-
-      if(chrono::steady_clock::now() - lastHitTime >= oneSecond) {
-        lastHitTime = chrono::steady_clock::now();  // Update the last hit time
+    monster->update(m_char);
+  }
+  if (m_clock.getElapsedTime().asSeconds() > 1) {
+    m_clock.restart();
+    for (auto &monster : m_monsters)
+      if (checkPlayerMonsterCollision(m_char, monster)) {
+        if (m_killAMonster) {
+          monster->reduceLife(1);
+        }
         m_char.hit(1);
       }
-    }
-
-    if(monster->getLife() <= 0 ){
-      if(monster->getSpeed() == WALKING_MONSTERS_SPEED){
-        setNumWalkingMonstersKilled(1);
-      }
-      if(monster->getSpeed() == FLYING_MONSTERS_SPEED){
-        setNumFlyingMonstersKilled(1);
-      }
-    }
-
-    monster->update(m_char);
-    
   }
 
   // Remove dead monsters
-  m_monsters.erase(remove_if(m_monsters.begin(), m_monsters.end(),
-                                  [](const auto &monster) {
-                                    return monster->getLife() <= 0;
-                                  }),
-                   m_monsters.end());
+  m_monsters.erase(
+      remove_if(m_monsters.begin(), m_monsters.end(),
+                [](const auto &monster) { return monster->getLife() <= 0; }),
+      m_monsters.end());
 
   // Remove corresponding renderers
-  m_monsterRenderers.erase(remove_if(m_monsterRenderers.begin(), m_monsterRenderers.end(),
-                     [](const auto &renderer) {
-                       return renderer->getEntity().getLife() <= 0;
-                     }),
+  m_monsterRenderers.erase(
+      remove_if(m_monsterRenderers.begin(), m_monsterRenderers.end(),
+                [](const auto &renderer) {
+                  return renderer->getEntity().getLife() <= 0;
+                }),
       m_monsterRenderers.end());
-
- 
 }
 
 void Monsters::renderLifes(RenderWindow &window,

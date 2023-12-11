@@ -19,10 +19,12 @@ private:
   Map m_map;                                  // Reference to the game map
   Character &m_char;                          // Character
   bool m_killAMonster = false;
-  int m_numFlyingMonstersKilled , m_numWalkingMonstersKilled;
+  Clock m_clock;
+  int m_numFlyingMonstersKilled, m_numWalkingMonstersKilled;
 
 public:
   Monsters(Map &map, Character &m_char);
+
   ~Monsters();
 
   const vector<Monster *> &getMonsters() const { return m_monsters; }
@@ -48,9 +50,12 @@ public:
 
   int getNumFlyingMonstersKilled() const { return m_numFlyingMonstersKilled; }
   int getNumWalkingMonstersKilled() const { return m_numWalkingMonstersKilled; }
-  void setNumFlyingMonstersKilled(int number) { m_numFlyingMonstersKilled += number ; }
-  void setNumWalkingMonstersKilled(int number){ m_numWalkingMonstersKilled += number; }
-  
+  void setNumFlyingMonstersKilled(int number) {
+    m_numFlyingMonstersKilled += number;
+  }
+  void setNumWalkingMonstersKilled(int number) {
+    m_numWalkingMonstersKilled += number;
+  }
 };
 
 #endif

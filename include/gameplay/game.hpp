@@ -116,7 +116,6 @@ public:
   void reset(bool save);
   bool isPause();
   /* other */
-  void mute();
   void setSave(bool mode) { m_save = mode; }
   void restartGame();
   void quitMenuEnd();
