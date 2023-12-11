@@ -63,15 +63,19 @@ void Monsters::render(RenderWindow &window,
 }
 
 void Monsters::update() {
+
   for (auto &monster : m_monsters) {
-    // Check if there is a collision between monster and player
-    if (checkPlayerMonsterCollision(m_char, monster)) {
-      if (m_killAMonster) {
-        monster->reduceLife(1);
-      }
-      m_char.hit(1);
-    }
     monster->update(m_char);
+  }
+  if (m_clock.getElapsedTime().asSeconds() > 1) {
+    m_clock.restart();
+    for (auto &monster : m_monsters)
+      if (checkPlayerMonsterCollision(m_char, monster)) {
+        if (m_killAMonster) {
+          monster->reduceLife(1);
+        }
+        m_char.hit(1);
+      }
   }
 
   // Remove dead monsters

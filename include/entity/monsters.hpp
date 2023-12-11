@@ -19,9 +19,11 @@ private:
   Map m_map;                                  // Reference to the game map
   Character &m_char;                          // Character
   bool m_killAMonster = false;
+  Clock m_clock;
 
 public:
   Monsters(Map &map, Character &m_char);
+
   ~Monsters();
 
   const vector<Monster *> &getMonsters() const { return m_monsters; }

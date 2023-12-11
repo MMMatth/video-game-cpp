@@ -238,13 +238,12 @@ void Game::render() {
     m_menuEnd.render(m_cam);
     m_window.display();
   } else {
+    /* the sky */
     m_window.clear(m_day_night_cycle.getColor());
-    m_mapRenderer.render(m_window, m_sprites);
-
-    // renderHealthBar(m_window, m_char.getLife(), MAX_LIFE, m_char.getX(),
-    //                 m_char.getY());
 
     m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
+
+    m_mapRenderer.render(m_window, m_sprites);
 
     if (!m_day_night_cycle.isDay()) {
       m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
@@ -253,12 +252,11 @@ void Game::render() {
     m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
                        m_mousePosWorld.getY());
 
-    m_charRenderer.renderLifeBar(m_window, m_sprites, m_cam.getX(),
-                                 m_cam.getY());
-
+    /* hud */
     m_mapRenderer.renderMiniMap(m_window, m_sprites, m_cam.getX(),
                                 m_cam.getY());
-
+    m_charRenderer.renderLifeBar(m_window, m_sprites, m_cam.getX(),
+                                 m_cam.getY());
     m_fpsCounter.render(m_window, m_cam);
 
     m_menuPause.render(m_cam);
