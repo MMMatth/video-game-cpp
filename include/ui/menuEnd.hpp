@@ -16,16 +16,14 @@ using namespace sf;
 class MenuEnd : public Ui {
 private:
   bool m_isEnd; /**< Flag indicating whether to show the end menu. */
-
-  unordered_map<string, SoundBuffer> m_buffers;
-  Sound m_sound;
+  SoundSettings *m_soundSettings;
   function<void()> m_quit;
   function<void()> m_restart;
+
 public:
   void initButtons();
 
-  MenuEnd(RenderWindow &window, Sound &sound,
-          unordered_map<string, SoundBuffer> &buffers, bool isEnd,
+  MenuEnd(RenderWindow &window, SoundSettings &sound, bool isEnd,
           function<void()> quit, function<void()> restart);
 
   void handle();
@@ -38,7 +36,7 @@ public:
 
   bool isEnd() const;
 
-  void setIsEnd(){m_isEnd = false;}
+  void setIsEnd() { m_isEnd = false; }
 };
 
 #endif /* MENUEND_HPP */

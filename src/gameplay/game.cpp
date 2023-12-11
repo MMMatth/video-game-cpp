@@ -23,7 +23,7 @@ Game::Game(RenderWindow &window,
     m_menuPause(window,  soundSettings, false, [&]() { quit(); }), 
     m_monsters(m_map, m_char),
     m_save(save),
-    m_menuEnd(window, sound, buffers, false, [&]() { quitMenuEnd(); }, [&]() {restartGame(); }){
+    m_menuEnd(window, soundSettings, false, [&]() { quitMenuEnd(); }, [&]() {restartGame(); }){
   m_sprites = sprites;
   // m_buffers = buffers;
 }
@@ -39,7 +39,7 @@ void Game::reset(bool save) {
   m_char.reset(save, CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y,
                string(SAVE_PATH) + CHARACTER_SAVE_PATH);
   /*we reset the monsters*/
-  m_monsters.reset();
+  // m_monsters.reset();
   /* reset cam */
   m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
   /* reset inventory*/
@@ -96,7 +96,7 @@ void Game::update() {
 
     m_fpsCounter.update();
 
-    m_sound.setVolume(m_soundSettings->getVolume());
+    // m_sound.setVolume(m_soundSettings->getVolume());
 
     updateCollide();
   }
@@ -255,6 +255,9 @@ void Game::render() {
 
     m_charRenderer.renderLifeBar(m_window, m_sprites, m_cam.getX(),
                                  m_cam.getY());
+
+    m_mapRenderer.renderMiniMap(m_window, m_sprites, m_cam.getX(),
+                                m_cam.getY());
 
     m_fpsCounter.render(m_window, m_cam);
 

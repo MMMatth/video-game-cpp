@@ -17,10 +17,8 @@ class MenuPause : public Ui {
 private:
   bool m_pause; /**< Flag indicating whether the game is paused. */
 
-  // RenderWindow &m_window;
   SoundSettings *m_soundSettings;
 
-  // function quit of the game
   function<void()> m_quit;
 
 public:

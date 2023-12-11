@@ -1,11 +1,9 @@
 #include "../../include/ui/menuEnd.hpp"
 
-MenuEnd::MenuEnd(RenderWindow &window, Sound &sound,
-                 unordered_map<string, SoundBuffer> &buffers, bool isEnd,
+MenuEnd::MenuEnd(RenderWindow &window, SoundSettings &sound, bool isEnd,
                  function<void()> quit, function<void()> restart)
-    : m_isEnd(isEnd), m_sound(sound), m_quit(quit), m_restart(restart),
+    : m_isEnd(isEnd), m_soundSettings(&sound), m_quit(quit), m_restart(restart),
       Ui(window) {
-  m_buffers = buffers;
   initButtons();
 }
 
@@ -13,23 +11,23 @@ void MenuEnd::initButtons() {
   m_textBouttons["restart"] = TextButton(
       100, 200,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
+        m_soundSettings->playSound("PLAY");
         m_restart();
       },
       Color::White, Color::Yellow, Color::Black, "Restart", true, 50);
   m_textBouttons["quit"] = TextButton(
       100, 300,
       [&]() {
-        play_sound(&m_buffers["PLAY"], &m_sound);
+        m_soundSettings->playSound("PLAY");
         m_quit();
       },
       Color::White, Color::Yellow, Color::Black, "Quit", true, 50);
 }
 
 void MenuEnd::handle() {
-  if(m_isEnd){
+  if (m_isEnd) {
     m_isEnd = false;
-  }else{
+  } else {
     m_isEnd = true;
   }
 }
@@ -70,18 +68,15 @@ void MenuEnd::renderButtons(int XtopLeftCorner, int YtopLeftCorner) {
 }
 
 void MenuEnd::render(Cam &cam) {
-  if(isEnd()){
+  if (isEnd()) {
     renderButtons(cam.getTopLeftX(), cam.getTopLeftY());
   }
-  drawTextWithEdge(cam.getTopLeftX() + 80, cam.getTopLeftY() + 55,
-                   "GAME OVER", &m_window, 65, sf::Color::Black,
-                   sf::Color::Black, MINECRAFT_FONT_PATH);
-  drawTextWithEdge(cam.getTopLeftX() + 75, cam.getTopLeftY() + 50,
-                   "GAME OVER", &m_window, 65, sf::Color::Red,
-                   sf::Color::Black, MINECRAFT_FONT_PATH);
+  drawTextWithEdge(cam.getTopLeftX() + 80, cam.getTopLeftY() + 55, "GAME OVER",
+                   &m_window, 65, sf::Color::Black, sf::Color::Black,
+                   MINECRAFT_FONT_PATH);
+  drawTextWithEdge(cam.getTopLeftX() + 75, cam.getTopLeftY() + 50, "GAME OVER",
+                   &m_window, 65, sf::Color::Red, sf::Color::Black,
+                   MINECRAFT_FONT_PATH);
 }
 
-bool MenuEnd::isEnd() const {
-  return m_isEnd;
-}
-
+bool MenuEnd::isEnd() const { return m_isEnd; }
