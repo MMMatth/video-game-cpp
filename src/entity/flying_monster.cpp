@@ -5,14 +5,6 @@ void FlyingMonster::update(const Character &m_char) {
   int deltaX = m_char.getX() - getX() - DISTANCEMONSTERPLAYER;
   int deltaY = m_char.getY() - getY() - DISTANCEMONSTERPLAYER;
 
-  cout << deltaX << " " << deltaY <<endl;
-  cout << "m_char_y" << m_char.getY() <<endl;
-  cout << "m_char_x" << m_char.getX() <<endl;
-   cout << "monster_y" << getY() <<endl;
-  cout << "monster_x" << getX() <<endl;
-
-
-
   // Calculate the distance between the monster and the player
   float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
@@ -20,7 +12,7 @@ void FlyingMonster::update(const Character &m_char) {
   float directionX = deltaX / distance;
   float directionY = deltaY / distance;
 
-  // Ajoutez une certaine variabilité à la vitesse du monstre
+  // Add some variability to the monster's speed
   float speedVariability = static_cast<float>(rand()) / RAND_MAX * 0.5f + 0.5f;
  
   // If the player is within attack distance, move towards the player
@@ -39,7 +31,6 @@ void FlyingMonster::update(const Character &m_char) {
     }
     
   }else{
-    cout << "Invalid direction" << endl;
     // Move the monster if beyond attack distance
     if (m_direction["right"] && !m_collision["right"]) {
       m_direction["left"] = false; 
@@ -53,9 +44,6 @@ void FlyingMonster::update(const Character &m_char) {
     }else{
       m_direction["right"] = true;
     }
-
-    cout <<" Direction right" << m_direction["right"]<<endl;
-    cout <<" Direction left" << m_direction["left"]<<endl;
 
     m_collision["up"] = false;
     m_collision["down"] = false;
