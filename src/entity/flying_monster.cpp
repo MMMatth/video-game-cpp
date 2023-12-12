@@ -11,23 +11,20 @@ void FlyingMonster::update(const Character &m_char) {
   // Normalize the direction to get a unit vector
   float directionX = deltaX / distance;
   float directionY = deltaY / distance;
-
-  // Add some variability to the monster's speed
-  float speedVariability = static_cast<float>(rand()) / RAND_MAX * 0.5f + 0.5f;
  
   // If the player is within attack distance, move towards the player
   if(distance <= ATTACKDISTANCE){
     if (m_char.getX() - DISTANCEMONSTERPLAYER > getX()) {
       m_direction["right"] = true;
       m_direction["left"] = false;
-      moveX(static_cast<int>(directionX * m_speed * speedVariability));
-      moveY(static_cast<int>(directionY * m_speed * speedVariability));
+      moveX(static_cast<int>(directionX * m_speed));
+      moveY(static_cast<int>(directionY * m_speed));
     }
     if(m_char.getX()< getX() - DISTANCEMONSTERPLAYER) {
       m_direction["right"] = false;
       m_direction["left"] = true;
-      moveX(static_cast<int>(directionX * m_speed * speedVariability));
-      moveY(static_cast<int>(directionY * m_speed * speedVariability));
+      moveX(static_cast<int>(directionX * m_speed));
+      moveY(static_cast<int>(directionY * m_speed));
     }
     
   }else{

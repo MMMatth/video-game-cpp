@@ -9,8 +9,6 @@ void WalkingMonster::update(const Character &m_char) {
   float directionX = deltaX / distance;
   float directionY = deltaY / distance;
 
-  float speedVariability = static_cast<float>(rand()) / RAND_MAX * 0.5f + 0.5f;
-
   bool isRight = m_char.getX() > getX();
   m_direction["right"] = isRight;
   m_direction["left"] = !isRight;
@@ -19,14 +17,14 @@ void WalkingMonster::update(const Character &m_char) {
     if (m_char.getX() - DISTANCEMONSTERPLAYER > getX()) {
       m_direction["right"] = true;
       m_direction["left"] = false;
-      moveX(static_cast<int>(directionX * m_speed * speedVariability));
-      moveY(static_cast<int>(directionY * m_speed * speedVariability));
+      moveX(static_cast<int>(directionX * m_speed ));
+      moveY(static_cast<int>(directionY * m_speed));
     }
     if(m_char.getX()< getX() - DISTANCEMONSTERPLAYER) {
       m_direction["right"] = false;
       m_direction["left"] = true;
-      moveX(static_cast<int>(directionX * m_speed * speedVariability));
-      moveY(static_cast<int>(directionY * m_speed * speedVariability));
+      moveX(static_cast<int>(directionX * m_speed));
+      moveY(static_cast<int>(directionY * m_speed));
     }
   } else {
     if (m_direction["right"] && !m_collision["right"]) {
