@@ -13,6 +13,8 @@ int main() {
   unordered_map<string, SoundBuffer> buffers = initBuffers();
   SoundSettings soundSettings(VOLUME, sound, buffers);
   sound.setVolume(soundSettings.getVolume());
+  soundSettings.playMusic("../assets/sound/music.wav", true);
+
   /* game phase */
   bool isMenu = true;
   bool isGame = false;
