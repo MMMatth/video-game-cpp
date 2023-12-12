@@ -77,8 +77,10 @@ private:
   MenuPause m_menuPause;
   /*monster*/
   Monsters m_monsters;
+  bool m_createMonsters;
   /*end*/
   MenuEnd m_menuEnd;
+ 
 
 public:
   /* constructor */

@@ -6,19 +6,7 @@ Monsters::Monsters(Map &map, Character &m_char) : m_map(map), m_char(m_char) {
 
   srand(time(NULL));
   this->m_numFlyingMonstersKilled = this->m_numWalkingMonstersKilled = 0;
-  for (int i = 0; i < NUM_MONSTERS_FLYING; i++) {
-    addRandomMonster(new FlyingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
-                                       FLYING_MONSTERS_SPEED, MAX_LIFE,
-                                       MAX_LIFE),
-                     map);
-  }
-
-  for (int i = 0; i < NUM_MONSTERS_WALKING; i++) {
-    addRandomMonster(new WalkingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
-                                        WALKING_MONSTERS_SPEED, MAX_LIFE,
-                                        MAX_LIFE, JUMP_HEIGHT),
-                     map);
-  }
+ 
 }
 
 Monsters::~Monsters() {
@@ -65,15 +53,20 @@ void Monsters::update() {
   for (auto &monster : m_monsters) {
     monster->update(m_char);
   }
-  if (m_clock.getElapsedTime().asSeconds() > 1) {
-    m_clock.restart();
-    for (auto &monster : m_monsters)
+  
+    
+  for (auto &monster : m_monsters){
+    if (m_clock.getElapsedTime().asSeconds() > 1) {
+      m_clock.restart();
       if (checkPlayerMonsterCollision(m_char, monster)) {
-        if (m_killAMonster) {
-          monster->reduceLife(1);
-        }
         m_char.hit(1);
       }
+    }
+    if(lineOfSight(m_char, monster, LINEOFSIGHT)){
+      if (m_killAMonster) {
+        monster->reduceLife(1);
+      }
+    }
   }
 
   // Remove dead monsters
@@ -110,4 +103,52 @@ bool Monsters::checkPlayerMonsterCollision(const Character &m_char,
                          m_char.getHeight(), m_monster->getX(),
                          m_monster->getY(), m_monster->getWidth(),
                          m_monster->getHeight()));
+}
+
+bool Monsters::checkCollisionWithDistance(int x1, int y1, int width1, int height1,
+                                          int x2, int y2, int width2, int height2,
+                                          float minDistance) const {
+  // Calculate the center
+  float centerX1 = x1 + width1 / 2;
+  float centerY1 = y1 + height1 / 2;
+  float centerX2 = x2 + width2 / 2;
+  float centerY2 = y2 + height2 / 2;
+
+    // Calculate the distance
+  float deltaX = centerX2 - centerX1;
+  float deltaY = centerY2 - centerY1;
+  float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+
+  return distance < (width1 / 2 + width2 / 2 + minDistance);
+}
+
+
+bool Monsters::lineOfSight(const Character &m_char, Monster *m_monster, float minDistance) const {
+    return checkCollisionWithDistance(m_char.getX(), m_char.getY(),
+                                      m_char.getWidth(), m_char.getHeight(),
+                                      m_monster->getX(), m_monster->getY(),
+                                      m_monster->getWidth(), m_monster->getHeight(),
+                                      minDistance);
+}
+
+void Monsters::createMonsters(Map &map, Character &m_char){
+  for (int i = 0; i < NUM_MONSTERS_FLYING; i++) {
+    addRandomMonster(new FlyingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
+                                       FLYING_MONSTERS_SPEED, MAX_LIFE, 
+                                       MAX_LIFE),
+                     map);
+  }
+
+  for (int i = 0; i < NUM_MONSTERS_WALKING; i++) {
+    addRandomMonster(new WalkingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
+                                        WALKING_MONSTERS_SPEED, MAX_LIFE,
+                                        MAX_LIFE, JUMP_HEIGHT),
+                     map);
+  }
+}
+
+void Monsters::setLifeMonsters(){
+  for(auto &monster : m_monsters){
+    monster->setLife(0);
+  }
 }

@@ -24,6 +24,7 @@
 #define NUM_FRAMES 9
 #define CHARACTER_SAVE_PATH "character.csv"
 #define CHARACTER_MAX_LIFE 30
+#define LINEOFSIGHT 100
 /* sound */
 #define SOUND_PLAY "../assets/sound/pop.ogg"
 #define SOUND_QUIT SOUND_PLAY

@@ -49,13 +49,24 @@ public:
   void setKillAmonster(bool m_choice) { this->m_killAMonster = m_choice; }
 
   int getNumFlyingMonstersKilled() const { return m_numFlyingMonstersKilled; }
+
   int getNumWalkingMonstersKilled() const { return m_numWalkingMonstersKilled; }
+
   void setNumFlyingMonstersKilled(int number) {
     m_numFlyingMonstersKilled += number;
   }
+
   void setNumWalkingMonstersKilled(int number) {
     m_numWalkingMonstersKilled += number;
   }
+
+  void createMonsters(Map &map, Character &m_char);
+
+  bool lineOfSight(const Character &m_char, Monster *m_monster, float minDistance) const;
+
+  bool checkCollisionWithDistance(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2, float minDistance) const; 
+  
+  void setLifeMonsters();
 };
 
 #endif

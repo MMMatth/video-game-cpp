@@ -17,7 +17,7 @@ void WalkingMonster::update(const Character &m_char) {
     if (m_char.getX() - DISTANCEMONSTERPLAYER > getX()) {
       m_direction["right"] = true;
       m_direction["left"] = false;
-      moveX(static_cast<int>(directionX * m_speed ));
+      moveX(static_cast<int>(directionX * m_speed));
       moveY(static_cast<int>(directionY * m_speed));
     }
     if(m_char.getX()< getX() - DISTANCEMONSTERPLAYER) {

@@ -23,7 +23,7 @@ Game::Game(RenderWindow &window,
     m_menuPause(window,  soundSettings, false, [&]() { quit(); }), 
     m_monsters(m_map, m_char),
     m_save(save),
-    m_menuEnd(window, soundSettings, false, [&]() { quitMenuEnd(); }, [&]() {restartGame(); }, m_monsters){
+    m_menuEnd(window, soundSettings, false, [&]() { quitMenuEnd(); }, [&]() {restartGame(); }, m_monsters), m_createMonsters(true){
   m_sprites = sprites;
   // m_buffers = buffers;
 }
@@ -80,8 +80,16 @@ void Game::update() {
 
     updateBreaking();
 
+    if(!m_day_night_cycle.isDay() && m_createMonsters){
+      m_monsters.createMonsters(m_map, m_char);
+    }
     if (!m_day_night_cycle.isDay()) {
       m_monsters.update();
+      m_createMonsters = false;
+    }else{
+      m_monsters.setLifeMonsters();
+      m_monsters.update();
+      m_createMonsters = true;
     }
 
     m_day_night_cycle.update();
@@ -245,9 +253,7 @@ void Game::render() {
 
     m_mapRenderer.render(m_window, m_sprites);
 
-    if (!m_day_night_cycle.isDay()) {
-      m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
-    }
+    m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
 
     m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
                        m_mousePosWorld.getY());
