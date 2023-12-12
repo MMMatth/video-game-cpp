@@ -72,6 +72,7 @@ public:
   bool isOpen();
   Item getItemPosHand();
   /* other */
+  void update(bool day);
   void reset(bool save,
              string path = string(SAVE_PATH) + string(INVENTORY_SAVE_PATH));
   void save(string csvPath);

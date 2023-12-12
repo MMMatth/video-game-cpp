@@ -96,7 +96,7 @@ void Game::update() {
 
     m_fpsCounter.update();
 
-    // m_sound.setVolume(m_soundSettings->getVolume());
+    m_inv.update(m_day_night_cycle.isDay());
 
     updateCollide();
   }

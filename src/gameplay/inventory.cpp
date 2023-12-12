@@ -175,10 +175,16 @@ void Inventory::handleRightClick(int mouseX, int mouseY, int persoX,
         m_inventory[coord_tile_selected.getX()][coord_tile_selected.getY()]
             .getItem()
             ->getName();
-    if (m_craft.hasCraft(id)) {
-      Item *item = m_craft.getCraft(id);
-      addItem(*item);
-      removeItem(coord_tile_selected, 1);
+    if (blockMap.find(id) != blockMap.end()) {
+      if (m_craft.hasCraft(id)) {
+        Item *item = m_craft.getCraft(id);
+        addItem(*item);
+        removeItem(coord_tile_selected, 1);
+      } else {
+        cerr << "We can't craft this item" << endl;
+      }
+    } else {
+      cerr << "We can't craft this item" << endl;
     }
   } else {
     cerr << "handleLeftClick : the inventory is not open or the mouse is not "
@@ -318,6 +324,8 @@ void Inventory::save(string csvPath) {
     file.close();
   }
 }
+
+void Inventory::update(bool day) { m_craft.update(day); }
 
 string Inventory::toString() {
   string str = "\n";
