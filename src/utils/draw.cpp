@@ -168,7 +168,7 @@ unordered_map<string, SoundBuffer> initBuffers() {
         "Error loading sound put a block");
   soundBuffers["PUT_BLOCK"] = buffer;
 
-  Error(!buffer.loadFromFile(SOUND_PLAY), "Error loading sound play");
+  Error(!buffer.loadFromFile(SOUND_CLICK), "Error loading sound play");
   soundBuffers["PLAY"] = buffer;
 
   Error(!buffer.loadFromFile(SOUND_JUMP), "Error loading sound jump");

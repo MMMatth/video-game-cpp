@@ -25,8 +25,7 @@
 #define CHARACTER_SAVE_PATH "character.csv"
 #define CHARACTER_MAX_LIFE 30
 /* sound */
-#define SOUND_PLAY "../assets/sound/pop.ogg"
-#define SOUND_QUIT SOUND_PLAY
+#define SOUND_CLICK "../assets/sound/pop.ogg"
 #define SOUND_JUMP "../assets/sound/jump.wav"
 #define SOUND_BREAK_A_BLOCK "../assets/sound/dig.ogg"
 #define SOUND_MOVE "../assets/sound/move.wav"
