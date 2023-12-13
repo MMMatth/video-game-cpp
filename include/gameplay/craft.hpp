@@ -20,23 +20,19 @@ public:
   Craft() {
     m_crafts.push_back(new LinkedList<Block>(blockMap["STONE"]));
     m_crafts.back()->addLink(blockMap["COBBLESTONE"]);
+    m_crafts.back()->addLink(blockMap["BRICK"]);
     m_crafts.back()->makeCircular();
 
     m_crafts.push_back(new LinkedList<Block>(blockMap["WOOD"]));
     m_crafts.back()->addLink(blockMap["WOOD_PLANK"]);
     m_crafts.back()->addLink(blockMap["LIBRARY"]);
 
+    m_crafts.push_back(new LinkedList<Block>(blockMap["DIRT"]));
+    m_crafts.back()->addLink(blockMap["GRASS"]);
+    m_crafts.back()->makeCircular();
+
     m_crafts.push_back(new LinkedList<Block>(blockMap["YELLOW_FLOWER"]));
     m_crafts.back()->addLink(blockMap["RED_FLOWER"]);
-
-    for (auto craft : m_crafts) {
-      Node<Block> *start = craft->getHeadNode();
-      Node<Block> *current = start;
-      do {
-        cout << current->data.getName() << endl;
-        current = current->next;
-      } while (current != start && current != nullptr);
-    }
 
     isday = true;
   }
