@@ -1,14 +1,17 @@
 #include "../../include/gameplay/inventory.hpp"
 
-/* constructor  */
-Inventory::Inventory(string csvPath, bool save)
-    : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()),
-      m_save(save) {
-  for (int row = 0; row < INVENTORY_HEIGHT; row++) {
-    for (int column = 0; column < INVENTORY_WIDTH; column++) {
+void Inventory::initVoidInventory() {
+  for (int row = 0; row < INV_HEIGHT; row++) {
+    for (int column = 0; column < INV_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();
     }
   }
+}
+
+Inventory::Inventory(string csvPath, bool save)
+    : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()),
+      m_save(save) {
+  initVoidInventory();
   if (!loadFromCSV(csvPath)) {
     cerr << "Failed to load csv from " << csvPath << "so inv is empty" << endl;
   };
@@ -17,12 +20,9 @@ Inventory::Inventory(string csvPath, bool save)
 Inventory::Inventory()
     : m_is_open(false), m_pos_item_hand(0), m_selected_tile(InventoryTile()),
       m_save(false) {
-  for (int row = 0; row < INVENTORY_HEIGHT; row++) {
-    for (int column = 0; column < INVENTORY_WIDTH; column++) {
-      m_inventory[row][column] = InventoryTile();
-    }
-  }
+  initVoidInventory();
 }
+
 Inventory::~Inventory() {}
 
 bool Inventory::loadFromCSV(const string &csvPath) {
@@ -63,7 +63,7 @@ bool Inventory::loadFromCSV(const string &csvPath) {
         column++;
       }
 
-      if (x > INVENTORY_HEIGHT || y > INVENTORY_WIDTH) {
+      if (x > INV_HEIGHT || y > INV_WIDTH) {
         cerr << "Invalid position: (" << x << ", " << y
              << ") is greater than the inventory size.\n";
       } else if (amount > MAX_STACK_SIZE || amount < 0) {
@@ -93,16 +93,15 @@ bool Inventory::loadFromCSV(const string &csvPath) {
   return true; // all is ok
 }
 
-/* swap function */
 void Inventory::swapItem(InventoryTile *tile_who_received,
                          InventoryTile *tile_who_give) {
   tile_who_received->swapWith(*tile_who_give);
 }
-/* add and remove item*/
+
 void Inventory::addItem(Item item) {
   // we browse a first time the inventory to see if we can stack the item
-  for (int column = 0; column < INVENTORY_HEIGHT; column++) {
-    for (int row = 0; row < INVENTORY_WIDTH; row++) {
+  for (int column = 0; column < INV_HEIGHT; column++) {
+    for (int row = 0; row < INV_WIDTH; row++) {
       // if we found an item with the same name and it's stackable
       if (m_inventory[column][row].getItem()->getName() == item.getName() &&
           m_inventory[column][row].getItem()->isStackable()) {
@@ -120,8 +119,8 @@ void Inventory::addItem(Item item) {
     }
   }
   // we browse a second time the inventory to see if we can add the item
-  for (int column = 0; column < INVENTORY_HEIGHT; column++) {
-    for (int row = 0; row < INVENTORY_WIDTH; row++) {
+  for (int column = 0; column < INV_HEIGHT; column++) {
+    for (int row = 0; row < INV_WIDTH; row++) {
       if (m_inventory[column][row].isEmpty()) {
         m_inventory[column][row].setItem(item);
         return;
@@ -131,9 +130,9 @@ void Inventory::addItem(Item item) {
   cerr << "addItem : the inventory is full" << endl;
 }
 void Inventory::removeItem(Coord pos, int amount) {
-  assert((pos.getX() >= 0 && pos.getX() < INVENTORY_HEIGHT && pos.getY() >= 0 &&
-          pos.getY() < INVENTORY_WIDTH) &&
-         "removeItem : valeur depasse la taille de l'inventaire");
+  assert((pos.getX() >= 0 && pos.getX() < INV_HEIGHT && pos.getY() >= 0 &&
+          pos.getY() < INV_WIDTH) &&
+         "removeItem : the position is not in the inventory");
   if (m_inventory[pos.getX()][pos.getY()].getItem()->getAmount() > amount) {
     m_inventory[pos.getX()][pos.getY()].getItem()->setAmount(
         m_inventory[pos.getX()][pos.getY()].getItem()->getAmount() - amount);
@@ -148,15 +147,14 @@ void Inventory::removeItem(Coord pos, int amount) {
 }
 
 bool isOverTile(int mx, int my, int x, int y) {
-  return mx >= x && mx <= x + INVENTORY_TILE_SIZE && my >= y &&
-         my <= y + INVENTORY_TILE_SIZE;
+  return mx >= x && mx <= x + INV_TILE_SIZE && my >= y &&
+         my <= y + INV_TILE_SIZE;
 }
 
 /* handle */
-void Inventory::handleLeftClick(int mouseX, int mouseY, int persoX,
-                                int persoY) {
-  if (m_is_open && isOverInv(mouseX, mouseY, persoX, persoY)) {
-    Coord coord_tile_selected = getTileCoord(mouseX, mouseY, persoX, persoY);
+void Inventory::handleLeftClick(int mouseX, int mouseY, int camX, int camY) {
+  if (m_is_open && isOverInv(mouseX, mouseY, camX, camY)) {
+    Coord coord_tile_selected = getTileCoord(mouseX, mouseY, camX, camY);
     InventoryTile *tile_selected =
         &m_inventory[coord_tile_selected.getX()][coord_tile_selected.getY()];
     swapItem(&m_selected_tile, tile_selected);
@@ -167,16 +165,15 @@ void Inventory::handleLeftClick(int mouseX, int mouseY, int persoX,
          << endl;
   }
 }
-void Inventory::handleRightClick(int mouseX, int mouseY, int persoX,
-                                 int persoY) {
-  if (m_is_open && isOverInv(mouseX, mouseY, persoX, persoY)) {
-    Coord coord_tile_selected = getTileCoord(mouseX, mouseY, persoX, persoY);
+void Inventory::handleRightClick(int mouseX, int mouseY, int camX, int camY) {
+  if (m_is_open && isOverInv(mouseX, mouseY, camX, camY)) {
+    Coord coord_tile_selected = getTileCoord(mouseX, mouseY, camX, camY);
     string id =
         m_inventory[coord_tile_selected.getX()][coord_tile_selected.getY()]
             .getItem()
             ->getName();
-    if (blockMap.find(id) != blockMap.end()) {
-      if (m_craft.hasCraft(id)) {
+    if (blockMap.find(id) != blockMap.end()) { // we can craft only block
+      if (m_craft.hasCraft(id)) {              // we can craft this item
         Item *item = m_craft.getCraft(id);
         addItem(*item);
         removeItem(coord_tile_selected, 1);
@@ -194,7 +191,6 @@ void Inventory::handleRightClick(int mouseX, int mouseY, int persoX,
   }
 }
 
-/* setter */
 void Inventory::open() {
   if (m_is_open) {
     m_is_open = false;
@@ -206,14 +202,14 @@ void Inventory::open() {
 }
 
 void Inventory::setPosHand(int indice) {
-  if (indice >= 0 && indice < INVENTORY_WIDTH) {
+  if (indice >= 0 && indice < INV_WIDTH) {
     m_pos_item_hand = indice;
   } else {
     cerr << "setPosHand : the indice is not in the inventory" << endl;
   }
 }
 void Inventory::nextPosHand() {
-  if (m_pos_item_hand < INVENTORY_WIDTH - 1) {
+  if (m_pos_item_hand < INV_WIDTH - 1) {
     m_pos_item_hand++;
   } else {
     m_pos_item_hand = 0;
@@ -223,7 +219,7 @@ void Inventory::prevPosHand() {
   if (m_pos_item_hand > 0) {
     m_pos_item_hand--;
   } else {
-    m_pos_item_hand = INVENTORY_WIDTH - 1;
+    m_pos_item_hand = INV_WIDTH - 1;
   }
 }
 
@@ -234,20 +230,19 @@ bool Inventory::isOverInv(int mx, int my, int camX, int camY) {
     return false;
   }
   // we check we are in the inventory ( not the low bar)
-  for (int row = 0; row < INVENTORY_WIDTH; row++) {
-    for (int column = 0; column < INVENTORY_HEIGHT - 1; column++) {
+  for (int row = 0; row < INV_WIDTH; row++) {
+    for (int column = 0; column < INV_HEIGHT - 1; column++) {
       if (isOverTile(mx, my,
-                     camX - (INVENTORY_WIDTH * INVENTORY_TILE_SIZE) / 2 +
-                         row * INVENTORY_TILE_SIZE,
-                     camY - (INVENTORY_HEIGHT * INVENTORY_TILE_SIZE) / 2 +
-                         column * INVENTORY_TILE_SIZE)) {
+                     camX - (INV_WIDTH * INV_TILE_SIZE) / 2 +
+                         row * INV_TILE_SIZE,
+                     camY - (INV_HEIGHT * INV_TILE_SIZE) / 2 +
+                         column * INV_TILE_SIZE)) {
         return true;
       }
     }
   }
-  for (int column = 0; column < INVENTORY_WIDTH; column++) {
-    if (isOverTile(mx, my,
-                   camX - X_LOWER_BAR_OFFSET + column * INVENTORY_TILE_SIZE,
+  for (int column = 0; column < INV_WIDTH; column++) {
+    if (isOverTile(mx, my, camX - X_LOWER_BAR_OFFSET + column * INV_TILE_SIZE,
                    camY - Y_LOWER_BAR_OFFSET)) {
       return true;
     }
@@ -257,49 +252,44 @@ bool Inventory::isOverInv(int mx, int my, int camX, int camY) {
 }
 
 Coord Inventory::getTileCoord(int mouseX, int mouseY, int camX, int camY) {
-  for (int row = 0; row < INVENTORY_WIDTH; row++) {
-    for (int column = 0; column < INVENTORY_HEIGHT - 1; column++) {
-      if (isOverTile(mouseX, mouseY,
-                     camX - X_INV_OFFSET + row * INVENTORY_TILE_SIZE,
-                     camY - Y_INV_OFFSET + column * INVENTORY_TILE_SIZE)) {
+  // we check we are in the inventory ( not the low bar)
+  for (int row = 0; row < INV_WIDTH; row++) {
+    for (int column = 0; column < INV_HEIGHT - 1; column++) {
+      if (isOverTile(mouseX, mouseY, camX - X_INV_OFFSET + row * INV_TILE_SIZE,
+                     camY - Y_INV_OFFSET + column * INV_TILE_SIZE)) {
         return Coord(column, row);
       }
     }
   }
-  for (int column = 0; column < INVENTORY_WIDTH; column++) {
+  // we check we are in the lower bar
+  for (int column = 0; column < INV_WIDTH; column++) {
     if (isOverTile(mouseX, mouseY,
-                   camX - X_LOWER_BAR_OFFSET + column * INVENTORY_TILE_SIZE,
+                   camX - X_LOWER_BAR_OFFSET + column * INV_TILE_SIZE,
                    camY - Y_LOWER_BAR_OFFSET)) {
-      return Coord(INVENTORY_HEIGHT - 1, column);
+      return Coord(INV_HEIGHT - 1, column);
     }
   }
   return Coord(-1, -1); // if the mouse is not over a tile
 }
 
-InventoryTile Inventory::getSelectedTile() { return m_selected_tile; }
-
 InventoryTile Inventory::getTile(Coord tile_coord) {
   return m_inventory[tile_coord.getX()][tile_coord.getY()];
 }
-
-int Inventory::getPosHand() { return m_pos_item_hand; }
 
 Item Inventory::getItemAt(Coord tile_coord) {
   return *m_inventory[tile_coord.getX()][tile_coord.getY()].getItem();
 }
 
-bool Inventory::isOpen() { return m_is_open; }
-
 Item Inventory::getItemPosHand() {
-  return *m_inventory[INVENTORY_HEIGHT - 1][m_pos_item_hand].getItem();
+  return *m_inventory[INV_HEIGHT - 1][m_pos_item_hand].getItem();
 }
 
 /* other */
 
 void Inventory::reset(bool save, string csvPath) {
   m_save = save;
-  for (int row = 0; row < INVENTORY_HEIGHT; row++) {
-    for (int column = 0; column < INVENTORY_WIDTH; column++) {
+  for (int row = 0; row < INV_HEIGHT; row++) {
+    for (int column = 0; column < INV_WIDTH; column++) {
       m_inventory[row][column] = InventoryTile();
     }
   }
@@ -310,8 +300,8 @@ void Inventory::save(string csvPath) {
     ofstream file(csvPath);
     if (file.is_open()) {
       file << "id;x;y;amount\n";
-      for (int i = 0; i < INVENTORY_HEIGHT; i++) {
-        for (int j = 0; j < INVENTORY_WIDTH; j++) {
+      for (int i = 0; i < INV_HEIGHT; i++) {
+        for (int j = 0; j < INV_WIDTH; j++) {
           if (!m_inventory[i][j].isEmpty() &&
               m_inventory[i][j].getItem() != NULL) {
             file << m_inventory[i][j].getItem()->getName() << ";" << i << ";"
@@ -326,18 +316,3 @@ void Inventory::save(string csvPath) {
 }
 
 void Inventory::update(bool day) { m_craft.update(day); }
-
-string Inventory::toString() {
-  string str = "\n";
-  for (int i = 0; i < INVENTORY_HEIGHT; i++) {
-    for (int j = 0; j < INVENTORY_WIDTH; j++) {
-      str += "[";
-      str += m_inventory[i][j].isEmpty() ? " " : "x";
-      str += "] ";
-    }
-    str += "\n";
-  }
-  str += "[ " + string(m_selected_tile.isEmpty() ? " " : "x") + " ]\n";
-  str += "pos_hand : " + to_string(m_pos_item_hand) + "\n";
-  return str;
-}

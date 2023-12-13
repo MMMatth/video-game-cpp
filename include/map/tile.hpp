@@ -56,8 +56,7 @@ public:
   bool estDansCam(int posCamX, int posCamY, int largeur, int hauteur);
 
   void collide(Entity *entity);
-
-  string toString() { return m_block.to_string(); }
+  bool isCollidingEntity(Entity *entity);
 };
 
 #endif // TILE_HPP

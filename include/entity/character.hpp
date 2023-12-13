@@ -20,33 +20,48 @@ using namespace std;
 
 class Map;
 
+/** @brief class of the character who herite from entity*/
 class Character : public Entity {
 public:
-  Character();
-  /* constructor */
-
-  Character(string fileName, bool save, int maxLife);
-
+  /** @brief constructor whit the csv file
+   * @param fileName the path of the csv file
+   * @param save true -> the character is save in the csv file
+   */
+  Character(string fileName, bool save);
+  /** @brief default constructor
+   * @param save true -> the character is save in the csv file
+   */
   Character(int x, int y, int life, int maxLife, int speed, int width,
             int height, int jumpHeight, int timeJump, bool save);
 
+  /** @brief function who init the coord and the life with a csv File
+   * @return true if the file is open
+   */
   bool loadFromCSV(string csvPath);
 
+  /** @brief function who init with default value*/
   void init();
-  /* update */
+
+  /** @brief update function (mainely movement) */
   void update();
-  void collide(Map *map, int camX, int camY);
+  /** @brief colide with the map (in the map working area )*/
+  void collide(Map *map);
 
   /* getters */
   int getTimeJump() const { return m_timeJump; }
   int getJumpHeight() const { return m_jumpHeight; }
 
-  /* other setters */
+  /* setters */
   void setTimeJump(int time) { m_timeJump = time; }
 
-  /* other */
-  void reset(bool save, int x, int y,
-             string path = string(SAVE_PATH) + string(CHARACTER_SAVE_PATH));
+  /** @brief function who reset at default the character
+   * @param save true -> the character is save in the csv file
+   * @param path the path of the csv file
+   */
+  void reset(bool save,
+             string path = string(SAVE_PATH) + string(CHAR_FILE_NAME));
+
+  /** @brief function who save the character (csv format)*/
   void save(string path);
 
 private:

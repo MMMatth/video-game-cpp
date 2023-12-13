@@ -61,7 +61,12 @@
         "span": "cpp",
         "valarray": "cpp",
         "variant": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "format": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp"
     },
     "editor.formatOnSave": true,
     "[cpp]": {

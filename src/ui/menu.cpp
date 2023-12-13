@@ -115,14 +115,14 @@ void Menu::run() {
 void Menu::update() {
   m_map.update(m_cam.getX(), m_cam.getY());
 
-  m_cam.update(m_cam.getX(), m_cam.getY(), 0, 0, m_map.get_width(),
-               m_map.get_height(), m_window);
+  m_cam.update(m_cam.getX(), m_cam.getY(), 0, 0, m_map.getWidth(),
+               m_map.getHeight(), m_window);
 
   m_cam.setX(m_cam.getX() + 2);
 
   m_dayNightCycle.update();
 
-  if (m_cam.getX() > m_map.get_width() * TILE_SIZE) {
+  if (m_cam.getX() > m_map.getWidth() * TILE_SIZE) {
     m_cam.setX(0);
   }
 }
@@ -142,7 +142,7 @@ void Menu::renderButtons() {
 }
 
 void Menu::render() {
-  m_window.clear(m_dayNightCycle.getColor());
+  m_window.clear(m_dayNightCycle.getCurrentColor());
 
   m_mapRenderer.render(m_window, m_sprites);
 

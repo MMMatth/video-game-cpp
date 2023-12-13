@@ -30,7 +30,7 @@ public:
 
   void addRandomMonster(Monster *monster, Map &map);
 
-  void collide(Map *map, int camX, int camY);
+  void collide(Map *map);
 
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
               int nbFrame);

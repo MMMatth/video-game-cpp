@@ -12,28 +12,34 @@ using namespace std;
 
 class Block : public Item {
 public:
-  /* constructor */
+  /** @brief default constructor */
   Block();
 
+  /** @brief constructor with param
+   * @param id the id of the block (used for the map)
+   * @param name the name of the block
+   * @param isSolid whether the block is solid
+   * @param time_to_break the time it takes to break the block
+   * @param is_stackable whether the block is stackable
+   * @param amount the amount of the block
+   */
   Block(string id, string name, bool isSolid, int time_to_break = 2000,
         bool is_stackable = true, int amount = 1);
 
-  /* getters */
-
+  /** @brief return if the block is Solid */
   bool isSolid() const { return m_isSolid; }
 
+  /** @brief return the id of the block */
   string getId() const { return m_id; }
 
+  /** @brief return the time it takes to break the block */
   int getTimeToBreak() const { return m_time_to_break; }
 
-  /* setters */
-
+  /** @brief set the time it takes to break the block */
   void setTimeToBreak(int hardness) { m_time_to_break = hardness; }
 
+  /** @brief set the isSolid flag of the block */
   void setSolid(bool isSolid) { m_isSolid = isSolid; }
-
-  /* other */
-  string to_string() const;
 
 private:
   bool m_isSolid;      /** Whether the block is solid. */
@@ -41,7 +47,7 @@ private:
   int m_time_to_break; /** The time it takes to break the block. */
 };
 
-/** Map of predefined blocks in the game. */
+/** @brief Map of predefined blocks in the game. */
 static map<string, Block> blockMap = {
     {"AIR", Block("0", "AIR", false, false)},
     {"GRASS", Block("1", "GRASS", true, 100)},

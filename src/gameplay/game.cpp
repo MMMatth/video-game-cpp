@@ -10,16 +10,16 @@ Game::Game(RenderWindow &window,
            bool save, bool input)
     : 
     m_window(window), 
-    m_char( string(input ? INPUT_PATH : SAVE_PATH) + CHARACTER_SAVE_PATH, save, CHARACTER_MAX_LIFE), m_charRenderer(m_char),
+    m_char( string(input ? INPUT_PATH : SAVE_PATH) + CHAR_FILE_NAME, save), m_charRenderer(m_char),
     m_cam( string(input ? INPUT_PATH : SAVE_PATH) + CAM_SAVE_PATH, save), 
-    m_inv(string(input ? INPUT_PATH : SAVE_PATH) + INVENTORY_SAVE_PATH, save), m_invRender(m_inv),
+    m_inv(string(input ? INPUT_PATH : SAVE_PATH) + INV_FILE_NAME, save), m_invRender(m_inv),
     m_mousePosCam(0, 0), 
     m_map( string(input ? INPUT_PATH : SAVE_PATH) + MAP_SAVE_PATH, save), m_mapRenderer(m_map),
     m_fpsCounter(10, 10), 
     // m_sound(sound), 
     m_soundSettings(&soundSettings),
     m_game_mode(2),
-    m_day_night_cycle( string(input ? INPUT_PATH : SAVE_PATH) + DAY_NIGHT_CYCLE_CSV_PATH, DAY_NIGHT_CYCLE_IMG_PATH),
+    m_day_night_cycle( string(input ? INPUT_PATH : SAVE_PATH) + DAY_NIGHT_CYCLE_FILE_NAME, DAY_NIGHT_CYCLE_IMG_PATH),
     m_menuPause(window,  soundSettings, false, [&]() { quit(); }), 
     m_monsters(m_map, m_char),
     m_save(save),
@@ -36,27 +36,26 @@ void Game::run() {
 
 void Game::reset(bool save) {
   /* we reset the */
-  m_char.reset(save, CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y,
-               string(SAVE_PATH) + CHARACTER_SAVE_PATH);
+  m_char.reset(save, string(SAVE_PATH) + CHAR_FILE_NAME);
   /*we reset the monsters*/
   // m_monsters.reset();
   /* reset cam */
-  m_cam.reset(CHAR_DEFAULT_COORD_X, CHAR_DEFAULT_COORD_Y);
+  m_cam.reset(CHAR_X, CHAR_Y);
   /* reset inventory*/
-  m_inv.reset(save, string(SAVE_PATH) + INVENTORY_SAVE_PATH);
+  m_inv.reset(save, string(SAVE_PATH) + INV_FILE_NAME);
   /* we add items*/
   m_inv.addItem(toolMap["IRON_PICKAXE"]);
   m_inv.addItem(weaponMap["IRON_SWORD"]);
   /* reset day night cycle */
-  m_day_night_cycle.reset(save, DEFAULT_TIME_DAY, DAY_NIGHT_CYCLE_IMG_PATH);
+  m_day_night_cycle.reset(save, TIME_IN_DAY, DAY_NIGHT_CYCLE_IMG_PATH);
   /* reset map */
   m_map.reset(string(SAVE_PATH) + MAP_SAVE_PATH);       // we reset de map
   m_map = Map(string(SAVE_PATH) + MAP_SAVE_PATH, save); // we reload the map
 }
 
 void Game::updateCollide() {
-  m_char.collide(&m_map, m_cam.getX(), m_cam.getY());
-  m_monsters.collide(&m_map, m_cam.getX(), m_cam.getY());
+  m_char.collide(&m_map);
+  m_monsters.collide(&m_map);
 }
 
 void Game::updateMousePos() {
@@ -87,7 +86,7 @@ void Game::update() {
     m_day_night_cycle.update();
 
     m_cam.update(m_char.getX(), m_char.getY(), m_char.getWidth(),
-                 m_char.getHeight(), m_map.get_width(), m_map.get_height(),
+                 m_char.getHeight(), m_map.getWidth(), m_map.getHeight(),
                  m_window);
 
     m_map.update(m_cam.getX(), m_cam.getY());
@@ -234,12 +233,12 @@ void Game::handleMouseWheel(float delta) {
 
 void Game::render() {
   if (m_menuEnd.isEnd()) {
-    m_window.clear(m_day_night_cycle.getColor());
+    m_window.clear(m_day_night_cycle.getCurrentColor());
     m_menuEnd.render(m_cam);
     m_window.display();
   } else {
     /* the sky */
-    m_window.clear(m_day_night_cycle.getColor());
+    m_window.clear(m_day_night_cycle.getCurrentColor());
 
     m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
@@ -274,11 +273,11 @@ void Game::quit() {
 }
 
 void Game::save() {
-  m_inv.save(string(SAVE_PATH) + INVENTORY_SAVE_PATH);
+  m_inv.save(string(SAVE_PATH) + INV_FILE_NAME);
   m_map.save(string(SAVE_PATH) + MAP_SAVE_PATH);
   m_cam.save(string(SAVE_PATH) + CAM_SAVE_PATH);
-  m_day_night_cycle.save(string(SAVE_PATH) + DAY_NIGHT_CYCLE_CSV_PATH);
-  m_char.save(string(SAVE_PATH) + CHARACTER_SAVE_PATH);
+  m_day_night_cycle.save(string(SAVE_PATH) + DAY_NIGHT_CYCLE_FILE_NAME);
+  m_char.save(string(SAVE_PATH) + CHAR_FILE_NAME);
 }
 
 void Game::setGameVolume(float volume) { m_soundSettings->setVolume(volume); }

@@ -10,121 +10,33 @@
 
 using namespace std;
 
+/** @brief class who implement craft */
 class Craft {
 private:
-  vector<LinkedList<Block> *> m_crafts;
-  bool isday;
-  bool m_craftChange;
+  vector<LinkedList<Block> *> m_crafts; /** vector of linked List */
+  bool m_isDay; /** Boolean who represent if it's day or night */
 
 public:
-  Craft() {
-    m_crafts.push_back(new LinkedList<Block>(blockMap["STONE"]));
-    m_crafts.back()->addLink(blockMap["COBBLESTONE"]);
-    m_crafts.back()->addLink(blockMap["BRICK"]);
-    m_crafts.back()->makeCircular();
+  /** @brief default constructor*/
+  Craft();
 
-    m_crafts.push_back(new LinkedList<Block>(blockMap["WOOD"]));
-    m_crafts.back()->addLink(blockMap["WOOD_PLANK"]);
-    m_crafts.back()->addLink(blockMap["LIBRARY"]);
+  /** @brief destructor */
+  ~Craft();
 
-    m_crafts.push_back(new LinkedList<Block>(blockMap["DIRT"]));
-    m_crafts.back()->addLink(blockMap["GRASS"]);
-    m_crafts.back()->makeCircular();
+  /** @brief update craft common to day and night
+   * @param day boolean who represent if it's day or night
+   */
+  void update(bool day);
 
-    m_crafts.push_back(new LinkedList<Block>(blockMap["YELLOW_FLOWER"]));
-    m_crafts.back()->addLink(blockMap["RED_FLOWER"]);
+  /** @brief function who return who is a block have craft
+   * @param id string who represent the id of the block in the blockMap
+   */
+  bool hasCraft(string id);
 
-    isday = true;
-  }
-
-  ~Craft() {
-    for (auto craft : m_crafts) {
-      delete craft;
-    }
-  }
-
-  void update(bool day) {
-    if (day != isday) {
-      isday = day;
-      if (!day) {
-        // Si c'est la nuit, ajoutez un craft à la "RED_FLOWER"
-        for (auto craft : m_crafts) {
-          Node<Block> *start = craft->getHeadNode();
-          Node<Block> *current = start;
-          do {
-            if (current->data.getName() == "RED_FLOWER") {
-              craft->addLink(blockMap["TORCH"]);
-              break;
-            }
-            current = current->next;
-          } while (current != start && current != nullptr);
-        }
-      } else {
-        // Si c'est le jour, supprimez le craft "TORCH"
-        for (auto craft : m_crafts) {
-          Node<Block> *start = craft->getHeadNode();
-          Node<Block> *current = start;
-          do {
-            if (current->next != nullptr &&
-                current->next->data.getName() == "TORCH") {
-              Node<Block> *toDelete = current->next;
-              current->next = current->next->next;
-              delete toDelete;
-              break;
-            }
-            current = current->next;
-          } while (current != start && current != nullptr);
-        }
-      }
-    }
-  }
-
-  bool hasCraft(string id) {
-    for (auto craft : m_crafts) {
-      Node<Block> *start = craft->getHeadNode();
-      Node<Block> *current = start;
-      do {
-        if (current->data.getName() == id && current->next != nullptr) {
-          return true;
-        }
-        current = current->next;
-      } while (current != start && current != nullptr);
-    }
-    return false;
-  }
-
-  Block *getCraft(string id) {
-    if (!hasCraft(id)) {
-      cerr << "No craft for " << id << endl;
-      return nullptr;
-    }
-    for (auto craft : m_crafts) {
-      Node<Block> *start = craft->getHeadNode();
-      Node<Block> *current = start;
-      do {
-        if (current->data.getName() == id && current->next != nullptr) {
-          return &current->next->data;
-        }
-        current = current->next;
-      } while (current != start && current != nullptr);
-    }
-    return nullptr;
-  }
-  // void addCraft(string idIn, string idTo) {
-  //   if (hasCraft(idIn)) {
-  //     cerr << "Craft already exists for " << idIn << endl;
-  //     return;
-  //   }
-  //   m_crafts[idIn].addLink(blockMap[idTo]);
-  // }
-
-  // void removeCraft(string id) {
-  //   if (!hasCraft(id)) {
-  //     cerr << "No craft for " << id << endl;
-  //     return;
-  //   }
-  //   m_crafts[id].removeLink(blockMap[id]);
-  // }
+  /** @brief function who return a craft
+   * @param id string who represent the id of the block in the blockMap
+   */
+  Block *getCraft(string id);
 };
 
 #endif /* CRAFT_HPP */

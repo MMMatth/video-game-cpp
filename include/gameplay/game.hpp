@@ -24,7 +24,6 @@
 #include "../utils/coord.hpp"
 #include "../utils/draw.hpp"
 #include "../utils/otherFunctions.hpp"
-// #include "../utils/sprites.hpp"
 
 #include "../map/map.hpp"
 

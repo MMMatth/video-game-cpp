@@ -2,10 +2,10 @@
 
 void MapRender::render(RenderWindow &window,
                        unordered_map<string, Sprite> sprites) {
-  for (int y = m_map.get_working_area().getY(); y < m_map.get_cam_height();
-       y++) {
-    for (int x = m_map.get_working_area().getX(); x < m_map.get_cam_width();
-         x++) {
+  for (int y = m_map.getCoordWorkingArea().getY();
+       y < m_map.getWorkingAreaHeight(); y++) {
+    for (int x = m_map.getCoordWorkingArea().getX();
+         x < m_map.getWorkingAreaWidth(); x++) {
       Tile tile = m_map.get_tile(y, x);
       drawSprites(tile.getX(), tile.getY(), sprites[tile.getBlock()->getName()],
                   &window, TILE_SIZE, TILE_SIZE);
@@ -49,14 +49,14 @@ void MapRender::renderMiniMap(RenderWindow &window,
     mini_map_areaHeight = NB_BLOCK_MINIMAP;
   }
 
-  if (mini_map_areaWidth > m_map.get_width()) {
-    mini_map_areaX = m_map.get_width() - NB_BLOCK_MINIMAP;
-    mini_map_areaWidth = m_map.get_width();
+  if (mini_map_areaWidth > m_map.getWidth()) {
+    mini_map_areaX = m_map.getWidth() - NB_BLOCK_MINIMAP;
+    mini_map_areaWidth = m_map.getWidth();
   }
 
-  if (mini_map_areaHeight > m_map.get_height()) {
-    mini_map_areaY = m_map.get_height() - NB_BLOCK_MINIMAP;
-    mini_map_areaHeight = m_map.get_height();
+  if (mini_map_areaHeight > m_map.getHeight()) {
+    mini_map_areaY = m_map.getHeight() - NB_BLOCK_MINIMAP;
+    mini_map_areaHeight = m_map.getHeight();
   }
   drawRectangle(offsetX, offsetY, width, height, &window, Color(0, 0, 0), 100);
 
