@@ -73,6 +73,5 @@ void WalkingMonster::update(const Character &m_char) {
     m_direction["fall"] = true;
   }
 
-  m_collision["up"] = m_collision["down"] = m_collision["left"] =
-      m_collision["right"] = false;
+  m_collision["up"] = m_collision["down"] = m_collision["left"] = m_collision["right"] = false;
 }

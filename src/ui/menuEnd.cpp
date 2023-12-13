@@ -71,10 +71,10 @@ void MenuEnd::render(Cam &cam) {
   if (isEnd()) {
     renderButtons(cam.getTopLeftX(), cam.getTopLeftY());
   }
-  drawTextWithEdge(cam.getTopLeftX() + 100, cam.getTopLeftY() + 400, "Flying Monsters Killed: " + to_string(m_monsters.getNumFlyingMonstersKilled()) + " / " + to_string(NUM_MONSTERS_FLYING),
+  drawTextWithEdge(cam.getTopLeftX() + 100, cam.getTopLeftY() + 400, "Flying Monsters Killed: " + to_string(m_monsters.getNumFlyingMonstersKilled()) + " / " + to_string(m_monsters.getNumFlyingMonsters()),
                      &m_window, 30, sf::Color::Red, sf::Color::Black,
                      MINECRAFT_FONT_PATH);
-  drawTextWithEdge(cam.getTopLeftX() + 100, cam.getTopLeftY() + 350, "Walking Monsters Killed: " + to_string(m_monsters.getNumWalkingMonstersKilled()) + " / " + to_string(NUM_MONSTERS_WALKING),
+  drawTextWithEdge(cam.getTopLeftX() + 100, cam.getTopLeftY() + 350, "Walking Monsters Killed: " + to_string(m_monsters.getNumWalkingMonstersKilled()) + " / " + to_string(m_monsters.getNumWalkingMonsters()),
                      &m_window, 30, sf::Color::Red, sf::Color::Black,
                      MINECRAFT_FONT_PATH);
   drawTextWithEdge(cam.getTopLeftX() + 100, cam.getTopLeftY() + 10, "GAME OVER",

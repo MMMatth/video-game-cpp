@@ -6,7 +6,7 @@ Monsters::Monsters(Map &map, Character &m_char) : m_map(map), m_char(m_char) {
 
   srand(time(NULL));
   this->m_numFlyingMonstersKilled = this->m_numWalkingMonstersKilled = 0;
- 
+  this->m_numFlyingMonsters = this->m_numWalkingMonsters = 0;
 }
 
 Monsters::~Monsters() {
@@ -54,18 +54,25 @@ void Monsters::update() {
     monster->update(m_char);
   }
   
-    
   for (auto &monster : m_monsters){
-    if (m_clock.getElapsedTime().asSeconds() > 1) {
-      m_clock.restart();
-      if (checkPlayerMonsterCollision(m_char, monster)) {
-        m_char.hit(1);
+    map<string, bool> directionMonster = monster->getDirection();
+    map<string, bool> directionChar = m_char.getDirection();
+    if (checkPlayerMonsterCollision(m_char, monster)) {
+      if(m_clock.getElapsedTime().asSeconds() > 1){
+        m_clock.restart();
+        m_char.hit(1); 
       }
     }
     if(lineOfSight(m_char, monster, LINEOFSIGHT)){
-      if (m_killAMonster) {
+      if (m_killAMonster && (directionMonster["right"] && directionChar["left"] || directionMonster["left"] && directionChar["right"])) {
         monster->reduceLife(1);
       }
+    }
+    if(monster->getLife() <= 0 && monster->getSpeed() == FLYING_MONSTERS_SPEED){
+      setNumFlyingMonstersKilled(1);
+    }
+    if(monster->getLife() <= 0 && monster->getSpeed() == WALKING_MONSTERS_SPEED){
+      setNumWalkingMonstersKilled(1);
     }
   }
 
@@ -84,17 +91,14 @@ void Monsters::update() {
       m_monsterRenderers.end());
 }
 
-void Monsters::renderLifes(RenderWindow &window,
-                           unordered_map<string, Sprite> sprites) {
+void Monsters::renderLifes(RenderWindow &window, unordered_map<string, Sprite> sprites) {
   for (MonsterRender *m_monsterRenderers : m_monsterRenderers) {
     m_monsterRenderers->renderLife(window, sprites);
   }
 }
 
-bool Monsters::checkCollision(int x1, int y1, int width1, int height1, int x2,
-                              int y2, int width2, int height2) const {
-  return (x1 < x2 + width2 && x1 + width1 > x2 && y1 < y2 + height2 &&
-          y1 + height1 > y2);
+bool Monsters::checkCollision(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2) const {
+  return (x1 < x2 + width2 && x1 + width1 > x2 && y1 < y2 + height2 && y1 + height1 > y2);
 }
 
 bool Monsters::checkPlayerMonsterCollision(const Character &m_char,
@@ -133,17 +137,12 @@ bool Monsters::lineOfSight(const Character &m_char, Monster *m_monster, float mi
 
 void Monsters::createMonsters(Map &map, Character &m_char){
   for (int i = 0; i < NUM_MONSTERS_FLYING; i++) {
-    addRandomMonster(new FlyingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
-                                       FLYING_MONSTERS_SPEED, MAX_LIFE, 
-                                       MAX_LIFE),
-                     map);
+    setNumFlyingMonsters(1);
+    addRandomMonster(new FlyingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT, FLYING_MONSTERS_SPEED, MAX_LIFE, MAX_LIFE), map);
   }
-
   for (int i = 0; i < NUM_MONSTERS_WALKING; i++) {
-    addRandomMonster(new WalkingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
-                                        WALKING_MONSTERS_SPEED, MAX_LIFE,
-                                        MAX_LIFE, JUMP_HEIGHT),
-                     map);
+    setNumWalkingMonsters(1);
+    addRandomMonster(new WalkingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT, WALKING_MONSTERS_SPEED, MAX_LIFE, MAX_LIFE, JUMP_HEIGHT), map);
   }
 }
 

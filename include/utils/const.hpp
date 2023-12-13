@@ -24,7 +24,7 @@
 #define NUM_FRAMES 9
 #define CHARACTER_SAVE_PATH "character.csv"
 #define CHARACTER_MAX_LIFE 30
-#define LINEOFSIGHT 100
+#define LINEOFSIGHT 50
 /* sound */
 #define SOUND_PLAY "../assets/sound/pop.ogg"
 #define SOUND_QUIT SOUND_PLAY
@@ -41,8 +41,8 @@
 #define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
-#define NUM_MONSTERS_WALKING 3
-#define NUM_MONSTERS_FLYING 1
+#define NUM_MONSTERS_WALKING 5
+#define NUM_MONSTERS_FLYING 10
 #define NUM_FRAMES_MONSTER 3
 #define HEALTH_BAR_WIDTH 20
 #define HEALTH_BAR_HEIGHT 3
@@ -52,7 +52,7 @@
 #define FLYING_MONSTERS_SPEED 3
 #define WALKING_MONSTERS_SPEED 2
 #define MONSTERS_SPAWN_RADIUS 50
-#define JUMP_HEIGHT 18
+#define JUMP_HEIGHT 16
 #define ATTACKDISTANCE 400
 #define DISTANCEMONSTERPLAYER 15
 /* inventory */
