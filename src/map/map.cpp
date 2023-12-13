@@ -15,7 +15,7 @@ Block getBlock(string id) {
 Map::Map(string path, bool save)
     : m_workingAreaCoord(0, 0), m_workingAreaWidth(0), m_workingAreaHeight(0) {
   m_save = save;
-  if (!initLegthFromCSV(path) || !loadFromCSV(path)) {
+  if (!loadFromCSV(path)) {
     cerr << "Map : cant open the map " << path << endl;
     reset(path);
   }
@@ -37,38 +37,13 @@ Map::Map()
   m_map = vector<vector<Tile>>(0, vector<Tile>(0));
 }
 
-/* init function */
-
-bool Map::initLegthFromCSV(string pathFile) {
-  int width = 0;
-  m_width = 0;
-  m_height = 0;
-  ifstream fichier(pathFile);
-  if (fichier) {
-    string ligne;
-    while (getline(fichier, ligne)) {
-      stringstream ss(ligne);
-      string c;
-      while (getline(ss, c, ';')) {
-        width++;
-      }
-      if (width > m_width) {
-        m_width = width;
-      }
-      width = 0;
-      m_height++;
-    }
-    return true;
-  } else {
-    return false;
-  }
-}
-
 bool Map::loadFromCSV(string pathFile) {
   ifstream fichier(pathFile);
   if (fichier) {
     string ligne;
     int y = 0;
+    m_width = 0;
+    m_height = 0;
     while (getline(fichier, ligne)) {
       stringstream ss(ligne);
       string c;
@@ -83,6 +58,9 @@ bool Map::loadFromCSV(string pathFile) {
         }
         x++;
       }
+      if (x > m_width) {
+        m_width = x;
+      }
       if (x < m_width) {
         for (int i = x; i < m_width; i++) {
           m_map[y].push_back(chooseTile("0", i, y, false));
@@ -90,6 +68,7 @@ bool Map::loadFromCSV(string pathFile) {
       }
       y++;
     }
+    m_height = y;
     return true;
   } else {
     return false;

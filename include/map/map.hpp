@@ -36,12 +36,6 @@ public:
    */
   bool loadFromCSV(string pathFile);
 
-  /** @brief Initializes the map dimensions from a CSV file.
-   * @param pathFile The path to the CSV file containing map information.
-   * @return True if initialization is successful, false otherwise.
-   */
-  bool initLegthFromCSV(string pathFile);
-
   /** @brief function to get the coord of the working area*/
   Coord getCoordWorkingArea() const { return m_workingAreaCoord; }
 
