@@ -14,10 +14,10 @@ private:
   // const Map &m_map;
 
 public:
-  WalkingMonster() : Monster(0, 0, 0, 0, 0, 0, 0) {}
+  WalkingMonster() : Monster(0, 0, 0, 0, 0, 0, 0, "WALKING_MONSTER") {}
   WalkingMonster(int x, int y, int width, int height, int speed, int life,
                  int maxLife, int jumpHeight)
-      : Monster(x, y, width, height, speed, life, maxLife),
+      : Monster(x, y, width, height, speed, life, maxLife, "WALKING_MONSTER"),
         m_jumpHeight(jumpHeight) {}
   ~WalkingMonster() {}
 

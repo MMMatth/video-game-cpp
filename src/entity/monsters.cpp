@@ -2,22 +2,33 @@
 #include <chrono>
 #include <thread>
 
-Monsters::Monsters(Map &map, Character &m_char) : m_map(map), m_char(m_char) {
-
+void Monsters::NewWave() {
   srand(time(NULL));
 
   for (int i = 0; i < NUM_MONSTERS_FLYING; i++) {
     addRandomMonster(new FlyingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
                                        FLYING_MONSTERS_SPEED, MAX_LIFE,
                                        MAX_LIFE),
-                     map);
+                     m_map);
   }
 
   for (int i = 0; i < NUM_MONSTERS_WALKING; i++) {
     addRandomMonster(new WalkingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
                                         WALKING_MONSTERS_SPEED, MAX_LIFE,
                                         MAX_LIFE, JUMP_HEIGHT),
-                     map);
+                     m_map);
+  }
+}
+
+Monsters::Monsters(Map &map, Character &m_char)
+    : m_map(map), m_char(m_char), m_save(false) {
+  NewWave();
+}
+
+Monsters::Monsters(string path, Map &map, Character &chara, bool save)
+    : m_map(map), m_char(chara), m_save(save) {
+  if (!initFromFile(path)) {
+    cerr << "Error while loading monsters from file" << endl;
   }
 }
 
@@ -28,6 +39,64 @@ Monsters::~Monsters() {
   for (Monster *monster : m_monsters) {
     delete monster;
   }
+}
+
+bool Monsters::initFromFile(string path) {
+  ifstream file(path);
+  if (!file.is_open()) {
+    cerr << "Unable to open file: " << path << "\n";
+    return false;
+  }
+  string line;
+  int row = 0;
+  while (getline(file, line)) {
+    if (row != 0) { // Skip header row
+      istringstream ss(line);
+      string cell, type;
+      int x, y, speed, life;
+      int column = 0;
+      while (getline(ss, cell, ';')) {
+        switch (column) {
+        case 0:
+          x = stoi(cell); // Convert string to int
+          break;
+        case 1:
+          y = stoi(cell);
+          break;
+        case 2:
+          speed = stoi(cell);
+          break;
+        case 3:
+          life = stoi(cell);
+          break;
+        case 4:
+          type = cell;
+          break;
+        default: // Invalid csv file
+          cerr << "Monsters: invalide csv file\n";
+          return false;
+          break;
+        }
+        column++;
+      }
+      if (type == "FLYING_MONSTER") {
+        addRandomMonster(new FlyingMonster(x, y, MONSTERS_WIDTH,
+                                           MONSTERS_HEIGHT, speed, life, life),
+                         m_map);
+      } else if (type == "WALKING_MONSTER") {
+        addRandomMonster(new WalkingMonster(x, y, MONSTERS_WIDTH,
+                                            MONSTERS_HEIGHT, speed, life, life,
+                                            JUMP_HEIGHT),
+                         m_map);
+      } else {
+        cerr << "Monsters: invalide type\n";
+        return false;
+      }
+    }
+    row++;
+  }
+  file.close();
+  return true;
 }
 
 void Monsters::addRandomMonster(Monster *monster, Map &map) {
@@ -78,18 +147,17 @@ void Monsters::update() {
   }
 
   // Remove dead monsters
-  m_monsters.erase(std::remove_if(m_monsters.begin(), m_monsters.end(),
-                                  [](const auto &monster) {
-                                    return monster->getLife() <= 0;
-                                  }),
-                   m_monsters.end());
+  m_monsters.erase(
+      remove_if(m_monsters.begin(), m_monsters.end(),
+                [](const auto &monster) { return monster->getLife() <= 0; }),
+      m_monsters.end());
 
   // Remove corresponding renderers
   m_monsterRenderers.erase(
-      std::remove_if(m_monsterRenderers.begin(), m_monsterRenderers.end(),
-                     [](const auto &renderer) {
-                       return renderer->getEntity().getLife() <= 0;
-                     }),
+      remove_if(m_monsterRenderers.begin(), m_monsterRenderers.end(),
+                [](const auto &renderer) {
+                  return renderer->getEntity().getLife() <= 0;
+                }),
       m_monsterRenderers.end());
 }
 
@@ -112,4 +180,30 @@ bool Monsters::checkPlayerMonsterCollision(const Character &m_char,
                          m_char.getHeight(), m_monster->getX(),
                          m_monster->getY(), m_monster->getWidth(),
                          m_monster->getHeight()));
+}
+
+bool Monsters::save(string path) {
+  if (m_save) {
+    ofstream file(path);
+    if (!file.is_open()) {
+      cerr << "Unable to open file: " << path << "\n";
+      return false;
+    }
+    file << "x;y;speed;life;type\n";
+    for (Monster *monster : m_monsters) {
+      file << monster->getX() << ";" << monster->getY() << ";"
+           << monster->getSpeed() << ";" << monster->getLife() << ";"
+           << monster->getType() << "\n";
+    }
+    file.close();
+    return true;
+  }
+  return false;
+}
+
+void Monsters::reset(bool save) {
+  m_monsters.clear();
+  m_monsterRenderers.clear();
+  m_save = save;
+  NewWave();
 }

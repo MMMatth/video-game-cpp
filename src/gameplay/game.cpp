@@ -21,7 +21,7 @@ Game::Game(RenderWindow &window,
     m_game_mode(2),
     m_day_night_cycle( string(input ? INPUT_PATH : SAVE_PATH) + DAY_NIGHT_CYCLE_FILE_NAME, DAY_NIGHT_CYCLE_IMG_PATH),
     m_menuPause(window,  soundSettings, false, [&]() { quit(); }), 
-    m_monsters(m_map, m_char),
+    m_monsters(string(input ? INPUT_PATH : SAVE_PATH) + MONSTER_FILE_NAME,  m_map, m_char,save),
     m_save(save),
     m_menuEnd(window, soundSettings, false, [&]() { quitMenuEnd(); }, [&]() {restartGame(); }){
   m_sprites = sprites;
@@ -38,7 +38,7 @@ void Game::reset(bool save) {
   /* we reset the */
   m_char.reset(save, string(SAVE_PATH) + CHAR_FILE_NAME);
   /*we reset the monsters*/
-  // m_monsters.reset();
+  m_monsters.reset(save);
   /* reset cam */
   m_cam.reset(CHAR_X, CHAR_Y);
   /* reset inventory*/
@@ -278,6 +278,7 @@ void Game::save() {
   m_cam.save(string(SAVE_PATH) + CAM_SAVE_PATH);
   m_day_night_cycle.save(string(SAVE_PATH) + DAY_NIGHT_CYCLE_FILE_NAME);
   m_char.save(string(SAVE_PATH) + CHAR_FILE_NAME);
+  m_monsters.save(string(SAVE_PATH) + MONSTER_FILE_NAME);
 }
 
 void Game::setGameVolume(float volume) { m_soundSettings->setVolume(volume); }

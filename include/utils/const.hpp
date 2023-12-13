@@ -57,6 +57,7 @@
 #define MONSTERS_SPAWN_RADIUS 50
 #define JUMP_HEIGHT 18
 #define ATTACKDISTANCE 400
+#define MONSTER_FILE_NAME "monsters.csv"
 
 /* inventory default data*/
 #define INV_HEIGHT 4 // amout of tile in the inv in height

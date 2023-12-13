@@ -20,11 +20,24 @@ private:
   Character &m_char;                          // Character
   bool m_killAMonster = false;
   Clock m_clock;
+  bool m_save;
 
 public:
+  /** @brief function who add other monster*/
+  void NewWave();
+
   Monsters(Map &map, Character &m_char);
 
+  /** @brief constructor who use csvFile */
+  Monsters(string path, Map &map, Character &chara, bool save);
+
   ~Monsters();
+
+  /** @brief function who init monsters from file
+   * @param path the path of the file
+   * @return true if the file is open
+   */
+  bool initFromFile(string path);
 
   const vector<Monster *> &getMonsters() const { return m_monsters; }
 
@@ -36,6 +49,15 @@ public:
               int nbFrame);
 
   void update();
+
+  /** @brief function who save monsters in csv file
+   * @param path the path of the file
+   * @return true if the file is save
+   */
+  bool save(string path);
+
+  /** @brief function who reset monsters */
+  void reset(bool save);
 
   void renderLifes(RenderWindow &window, unordered_map<string, Sprite> sprites);
 
