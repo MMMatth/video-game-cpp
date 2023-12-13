@@ -26,6 +26,9 @@ public:
   SoundSettings(int volume, Sound &sound,
                 unordered_map<string, SoundBuffer> &buffers);
 
+  /** @brief destructor for the sound settings */
+  ~SoundSettings();
+
   /** @brief a function who get the current volume */
   int getVolume();
 

@@ -14,6 +14,16 @@ template <typename T> class LinkedList {
 private:
   Node<T> *head;
 
+  void freeLinkedList() {
+    Node<T> *start = head;
+    Node<T> *current = start;
+    do {
+      Node<T> *nextNode = current->next;
+      delete current;
+      current = nextNode;
+    } while (current != start && current != nullptr);
+  }
+
 public:
   LinkedList() : head(nullptr) {}
   LinkedList(T data) {
@@ -22,7 +32,7 @@ public:
     head->next = nullptr;
   }
 
-  ~LinkedList() { delete head; }
+  ~LinkedList() { freeLinkedList(); }
 
   bool isEmpty() { return head == nullptr; }
 
@@ -100,16 +110,6 @@ public:
       cerr << "The list is empty: removeLink" << endl;
       return;
     }
-  }
-
-  string toString() {
-    string str = "";
-    Node<T> *current = head;
-    while (current != nullptr) {
-      str += to_string(current->data) + " ";
-      current = current->next;
-    }
-    return str;
   }
 
 private:

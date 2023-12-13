@@ -43,6 +43,8 @@ public:
 
   void addRandomMonster(Monster *monster, Map &map);
 
+  void addMonster(Monster *monster);
+
   void collide(Map *map);
 
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,

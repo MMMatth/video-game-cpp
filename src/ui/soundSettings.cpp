@@ -5,6 +5,8 @@ SoundSettings::SoundSettings(int volume, Sound &sound,
     : m_currentVolume(volume), m_soundVolume(volume), m_sound(sound),
       m_buffers(buffers) {}
 
+SoundSettings::~SoundSettings() {}
+
 int SoundSettings::getVolume() { return m_currentVolume; }
 
 void SoundSettings::setVolume(int volume) { m_currentVolume = volume; }

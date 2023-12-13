@@ -22,6 +22,8 @@ void Monsters::NewWave() {
 
 Monsters::Monsters(Map &map, Character &m_char)
     : m_map(map), m_char(m_char), m_save(false) {
+  m_monsterRenderers = vector<MonsterRender *>();
+  m_monsters = vector<Monster *>();
   NewWave();
 }
 
@@ -33,6 +35,7 @@ Monsters::Monsters(string path, Map &map, Character &chara, bool save)
 }
 
 Monsters::~Monsters() {
+  cout << "Monsters destructor" << endl;
   for (MonsterRender *renderer : m_monsterRenderers) {
     delete renderer;
   }
@@ -79,15 +82,17 @@ bool Monsters::initFromFile(string path) {
         }
         column++;
       }
-      if (type == "FLYING_MONSTER") {
-        addRandomMonster(new FlyingMonster(x, y, MONSTERS_WIDTH,
-                                           MONSTERS_HEIGHT, speed, life, life),
-                         m_map);
-      } else if (type == "WALKING_MONSTER") {
-        addRandomMonster(new WalkingMonster(x, y, MONSTERS_WIDTH,
-                                            MONSTERS_HEIGHT, speed, life, life,
-                                            JUMP_HEIGHT),
-                         m_map);
+      if (type.compare("FLYING_MONSTER") == 0) {
+        Monster *monster = new FlyingMonster(
+            x, y, MONSTERS_WIDTH, MONSTERS_HEIGHT, speed, life, life);
+        m_monsters.push_back(monster);
+        m_monsterRenderers.push_back(new MonsterRender(*monster));
+      } else if (type.compare("WALKING_MONSTER") == 0) {
+        Monster *monster =
+            new WalkingMonster(x, y, MONSTERS_WIDTH, MONSTERS_HEIGHT, speed,
+                               life, life, JUMP_HEIGHT);
+        m_monsters.push_back(monster);
+        m_monsterRenderers.push_back(new MonsterRender(*monster));
       } else {
         cerr << "Monsters: invalide type\n";
         return false;
@@ -147,18 +152,24 @@ void Monsters::update() {
   }
 
   // Remove dead monsters
-  m_monsters.erase(
-      remove_if(m_monsters.begin(), m_monsters.end(),
-                [](const auto &monster) { return monster->getLife() <= 0; }),
-      m_monsters.end());
+  for (auto it = m_monsters.begin(); it != m_monsters.end();) {
+    if ((*it)->getLife() <= 0) {
+      delete *it;
+      it = m_monsters.erase(it);
+    } else {
+      ++it;
+    }
+  }
 
   // Remove corresponding renderers
-  m_monsterRenderers.erase(
-      remove_if(m_monsterRenderers.begin(), m_monsterRenderers.end(),
-                [](const auto &renderer) {
-                  return renderer->getEntity().getLife() <= 0;
-                }),
-      m_monsterRenderers.end());
+  for (auto it = m_monsterRenderers.begin(); it != m_monsterRenderers.end();) {
+    if ((*it)->getEntity().getLife() <= 0) {
+      delete *it;
+      it = m_monsterRenderers.erase(it);
+    } else {
+      ++it;
+    }
+  }
 }
 
 void Monsters::renderLifes(RenderWindow &window,
