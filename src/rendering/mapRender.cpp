@@ -7,38 +7,24 @@ void MapRender::render(RenderWindow &window,
     for (int x = m_map.getCoordWorkingArea().getX();
          x < m_map.getWorkingAreaWidth(); x++) {
       Tile tile = m_map.get_tile(y, x);
-      renderBlock(tile, window, sprites);
-      renderShade(tile, window);
-      renderBreakPhase(tile, window, sprites);
+      drawSprites(tile.getX(), tile.getY(), sprites[tile.getBlock()->getName()],
+                  &window, TILE_SIZE, TILE_SIZE);
+      if (tile.isBackground()) {
+        drawRectangle(tile.getX(), tile.getY(), TILE_SIZE, TILE_SIZE, &window,
+                      Color(0, 0, 0), 100);
+      }
+      if (tile.isBreaking() && tile.getBlock()->getName() != "AIR") {
+        int palier = tile.getBlock()->getTimeToBreak() / 10;
+        int frame =
+            tile.getBreakingClock().getElapsedTime().asMilliseconds() / palier;
+        Sprite sprite = sprites["DESTROY_STAGE"];
+        sprite.setTextureRect(
+            IntRect(sprites["DESTROY_STAGE"].getTextureRect().left + frame * 16,
+                    sprites["DESTROY_STAGE"].getTextureRect().top, 16, 16));
+        drawSprites(tile.getX(), tile.getY(), sprite, &window, TILE_SIZE,
+                    TILE_SIZE);
+      }
     }
-  }
-}
-
-void MapRender::renderBlock(Tile &tile, RenderWindow &window,
-                            unordered_map<string, Sprite> sprites) {
-  drawSprites(tile.getX(), tile.getY(), sprites[tile.getBlock()->getName()],
-              &window, TILE_SIZE, TILE_SIZE);
-}
-
-void MapRender::renderShade(Tile &tile, RenderWindow &window) {
-  if (tile.isBackground()) {
-    drawRectangle(tile.getX(), tile.getY(), TILE_SIZE, TILE_SIZE, &window,
-                  Color(0, 0, 0), 100);
-  }
-}
-
-void MapRender::renderBreakPhase(Tile &tile, RenderWindow &window,
-                                 unordered_map<string, Sprite> sprites) {
-  if (tile.isBreaking() && tile.getBlock()->getName() != "AIR") {
-    int palier = tile.getBlock()->getTimeToBreak() / 10;
-    int frame =
-        tile.getBreakingClock().getElapsedTime().asMilliseconds() / palier;
-    Sprite sprite = sprites["DESTROY_STAGE"];
-    sprite.setTextureRect(
-        IntRect(sprites["DESTROY_STAGE"].getTextureRect().left + frame * 16,
-                sprites["DESTROY_STAGE"].getTextureRect().top, 16, 16));
-    drawSprites(tile.getX(), tile.getY(), sprite, &window, TILE_SIZE,
-                TILE_SIZE);
   }
 }
 
