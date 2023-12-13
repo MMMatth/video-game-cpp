@@ -8,18 +8,9 @@ Tile::Tile(int x, int y, bool isBackground)
     : m_coord(Coord(x * TILE_SIZE, y * TILE_SIZE)), m_block(Block()),
       m_isBackground(isBackground), m_isBreaking(false) {}
 
-bool Tile::estDansCam(int posCamX, int posCamY, int largeur, int hauteur) {
-  if (m_coord.getX() >= posCamX - largeur &&
-      m_coord.getX() <= posCamX + largeur &&
-      m_coord.getY() >= posCamY - hauteur &&
-      m_coord.getY() <= posCamY + hauteur) {
-    return true;
-  }
-  return false;
-}
-
-bool isColliding(int entity_x, int entity_y, int entity_width,
-                 int entity_height, int entity_speed, int tile_x, int tile_y) {
+bool Tile::isColliding(int entity_x, int entity_y, int entity_width,
+                       int entity_height, int entity_speed, int tile_x,
+                       int tile_y) {
   return tile_x + TILE_SIZE > entity_x && tile_x < entity_x + entity_width &&
          tile_y + TILE_SIZE > entity_y &&
          tile_y < entity_y + entity_height + entity_speed;

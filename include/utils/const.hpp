@@ -82,21 +82,26 @@
 #define WITE_COLOR Color::White
 #define BLACK_COLOR Color::Black
 #define RED_COLOR Color::Red
-/* map */
-#define MAP_WIDTH 150
-#define MAP_SAVE_PATH "map.csv"
-#define MAP_INPUT_PATH "../assets/input/map.csv"
-#define MOUNTAIN_COEF 20 //
-#define UNDERGROUND_COEF 10
-#define SKY_HEIGHT_OVER_MOUTAIN 15
-#define DIRT_HEIGHT 3
-/* tree */
+
+/* map generator param */
+#define MAP_WIDTH 150       // the width of the map in tile
+#define MOUNTAIN_COEF 20    // the coef of the mountain
+#define UNDERGROUND_COEF 10 // the coef of the underground
+#define SKY_HEIGHT_OVER_MOUTAIN                                                \
+  15                                   // the amout of sky tile over the biggest
+                                       // moutain
+#define DIRT_HEIGHT 3                  // amout of dirt tile over the stone
+#define TREE_IS_BACKGROUND true        // if the tree is in background
+#define CURVE_ALLTITUDE_FREQUENCY 0.01 // the frequency for perlin noise
+#define CAVE_FREQUENCY 0.09 // the frequency for NoiseType_OpenSimplex2S noise
 #define TREE_SIZE 4
 #define ECART_TREE 10
 #define LEAF_WIDTH 5
 #define LEAF_HEIGHT 3
-/* flower */
 #define FLOWER_ECART 10
+/* other map param */
+#define MAP_SAVE_PATH "map.csv"
+#define MAP_INPUT_PATH "../assets/input/map.csv"
 
 /*day night cycle default date */
 #define TIME_IN_DAY 240 // time in second

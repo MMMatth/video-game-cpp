@@ -1,7 +1,5 @@
 #include "../../include/map/mapGenerator.hpp"
 
-#define TREE_IS_BACKGROUND false
-
 int abs(int x) {
   if (x < 0) {
     return -x;
@@ -11,53 +9,45 @@ int abs(int x) {
 
 Createmap::Createmap(int width) {
   m_width = width;
-  m_seed = time(NULL);
+  m_seed = time(NULL); // we set the seed randomly
 }
 
 void Createmap::setCurveAltitude() {
-  FastNoiseLite m_perlin_noise;   // we create a perlin noise
-  m_perlin_noise.SetSeed(m_seed); // we set the seed
+  FastNoiseLite m_perlin_noise;
+  m_perlin_noise.SetSeed(m_seed);
   m_perlin_noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-  m_perlin_noise.SetFrequency(0.01);
-  /* we search the min and the max */
-  m_altitude.max =
+  m_perlin_noise.SetFrequency(CURVE_ALLTITUDE_FREQUENCY);
+
+  m_altitude.max = m_altitude.min =
       abs(m_perlin_noise.GetNoise((float)0, (float)0) * MOUNTAIN_COEF);
-  m_altitude.min =
-      abs(m_perlin_noise.GetNoise((float)0, (float)0) * MOUNTAIN_COEF);
+
   for (int i = 0; i < m_width; i++) {
-    m_curve_altitude.push_back(
-        abs(m_perlin_noise.GetNoise((float)i, (float)0) *
-            MOUNTAIN_COEF)); // we add the altitude in the array
-    if (m_curve_altitude[i] > m_altitude.max) {
-      m_altitude.max = m_curve_altitude[i];
-    }
-    if (m_curve_altitude[i] < m_altitude.min) {
-      m_altitude.min = m_curve_altitude[i];
-    }
+    int altitude =
+        abs(m_perlin_noise.GetNoise((float)i, (float)0.0) * MOUNTAIN_COEF);
+    m_curve_altitude.push_back(altitude);
+
+    m_altitude.max = max(m_altitude.max, altitude);
+    m_altitude.min = min(m_altitude.min, altitude);
   }
+
   m_altitude.size = m_altitude.max - m_altitude.min + 1;
   m_underground_size = m_altitude.size * UNDERGROUND_COEF;
 }
 
 void Createmap::addStone() {
-  /* we add the underground part */
+  // Add stone blocks to the underground layer
   for (int y = 0; y < m_underground_size; y++) {
-    m_map.push_back(vector<int>());
-    for (int x = 0; x < m_width; x++) {
-      m_map[y].push_back(3);
-    }
+    m_map.push_back(vector<int>(m_width, 3));
   }
-  /* we add the moutain part */
+
+  // Add stone blocks to the surface layer based on the altitude curve
   for (int y = m_underground_size; y < m_altitude.size + m_underground_size;
-       y = y + 1) {
-    m_map.insert(m_map.begin(), vector<int>()); // we add a line on the top
+       y++) {
+    vector<int> row;
     for (int x = 0; x < m_width; x++) {
-      if (y < m_curve_altitude[x] + m_underground_size) {
-        m_map[0].push_back(3);
-      } else {
-        m_map[0].push_back(0);
-      }
+      row.push_back(y < m_curve_altitude[x] + m_underground_size ? 3 : 0);
     }
+    m_map.insert(m_map.begin(), row);
   }
 }
 
@@ -65,7 +55,7 @@ void Createmap::addCave() {
   FastNoiseLite cave_noise;
   cave_noise.SetSeed(m_seed);
   cave_noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2S);
-  cave_noise.SetFrequency(0.09);
+  cave_noise.SetFrequency(CAVE_FREQUENCY);
   for (int y = 0; y < m_map.size(); y++) {
     for (int x = 0; x < m_map[y].size(); x++) {
       if (cave_noise.GetNoise((float)x, (float)y) > 0.3) {
@@ -113,10 +103,9 @@ void Createmap::addSky() {
   }
 }
 
-void Createmap::addTree() {
-  srand(time(NULL));
+void Createmap::addTrunk() {
   int ecarts = 0;
-  int ecarts_max = rand() % ECART_TREE + 10;
+  int ecarts_max = time(NULL) % ECART_TREE + 10;
   for (int x = 0; x < m_width; x++) {
     ecarts++;
     if (ecarts == ecarts_max) {
@@ -132,10 +121,11 @@ void Createmap::addTree() {
           break;           // when we place the tree we break the loop
         }
       }
-      ecarts_max = rand() % ECART_TREE + 10;
+      ecarts_max = time(NULL) % ECART_TREE + 10;
     }
   }
 }
+
 void Createmap::addLeaf() {
   for (int x = 0; x < m_width; x++) {
     for (int y = 0; y < m_altitude.size + m_underground_size; y++) {
@@ -185,9 +175,9 @@ void Createmap::setMap() {
   addDirt();
   addCave();
   addSky();
-  addTree();
-  addLeaf();
   addFlower();
+  addTrunk();
+  addLeaf();
 }
 
 void Createmap::saveinfile(string filename) {

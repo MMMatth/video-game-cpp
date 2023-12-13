@@ -7,26 +7,41 @@ void MapRender::render(RenderWindow &window,
     for (int x = m_map.getCoordWorkingArea().getX();
          x < m_map.getWorkingAreaWidth(); x++) {
       Tile tile = m_map.get_tile(y, x);
-      drawSprites(tile.getX(), tile.getY(), sprites[tile.getBlock()->getName()],
-                  &window, TILE_SIZE, TILE_SIZE);
-      if (tile.isBackground()) {
-        drawRectangle(tile.getX(), tile.getY(), TILE_SIZE, TILE_SIZE, &window,
-                      Color(0, 0, 0), 100);
-      }
-      if (tile.isBreaking() && tile.getBlock()->getName() != "AIR") {
-        int palier = tile.getBlock()->getTimeToBreak() / 10;
-        int frame =
-            tile.getBreakingClock().getElapsedTime().asMilliseconds() / palier;
-        Sprite sprite = sprites["DESTROY_STAGE"];
-        sprite.setTextureRect(
-            IntRect(sprites["DESTROY_STAGE"].getTextureRect().left + frame * 16,
-                    sprites["DESTROY_STAGE"].getTextureRect().top, 16, 16));
-        drawSprites(tile.getX(), tile.getY(), sprite, &window, TILE_SIZE,
-                    TILE_SIZE);
-      }
+      renderBlock(tile, window, sprites);
+      renderShade(tile, window);
+      renderBreakPhase(tile, window, sprites);
     }
   }
 }
+
+void MapRender::renderBlock(Tile &tile, RenderWindow &window,
+                            unordered_map<string, Sprite> sprites) {
+  drawSprites(tile.getX(), tile.getY(), sprites[tile.getBlock()->getName()],
+              &window, TILE_SIZE, TILE_SIZE);
+}
+
+void MapRender::renderShade(Tile &tile, RenderWindow &window) {
+  if (tile.isBackground()) {
+    drawRectangle(tile.getX(), tile.getY(), TILE_SIZE, TILE_SIZE, &window,
+                  Color(0, 0, 0), 100);
+  }
+}
+
+void MapRender::renderBreakPhase(Tile &tile, RenderWindow &window,
+                                 unordered_map<string, Sprite> sprites) {
+  if (tile.isBreaking() && tile.getBlock()->getName() != "AIR") {
+    int palier = tile.getBlock()->getTimeToBreak() / 10;
+    int frame =
+        tile.getBreakingClock().getElapsedTime().asMilliseconds() / palier;
+    Sprite sprite = sprites["DESTROY_STAGE"];
+    sprite.setTextureRect(
+        IntRect(sprites["DESTROY_STAGE"].getTextureRect().left + frame * 16,
+                sprites["DESTROY_STAGE"].getTextureRect().top, 16, 16));
+    drawSprites(tile.getX(), tile.getY(), sprite, &window, TILE_SIZE,
+                TILE_SIZE);
+  }
+}
+
 void MapRender::renderMiniMap(RenderWindow &window,
                               unordered_map<string, Sprite> sprites, int camX,
                               int camY) {
@@ -40,6 +55,7 @@ void MapRender::renderMiniMap(RenderWindow &window,
   int mini_map_areaY = (camY / TILE_SIZE) - NB_BLOCK_MINIMAP / 2;
   int mini_map_areaWidth = (camX / TILE_SIZE) + NB_BLOCK_MINIMAP / 2;
   int mini_map_areaHeight = (camY / TILE_SIZE) + NB_BLOCK_MINIMAP / 2;
+
   if (mini_map_areaX < 0) {
     mini_map_areaX = 0;
     mini_map_areaWidth = NB_BLOCK_MINIMAP;
@@ -58,8 +74,11 @@ void MapRender::renderMiniMap(RenderWindow &window,
     mini_map_areaY = m_map.getHeight() - NB_BLOCK_MINIMAP;
     mini_map_areaHeight = m_map.getHeight();
   }
-  drawRectangle(offsetX, offsetY, width, height, &window, Color(0, 0, 0), 100);
 
+  drawRectangle(offsetX, offsetY, width, height, &window, Color(0, 0, 0),
+                100); // draw the background
+
+  // draw the map
   for (int y = mini_map_areaY; y < mini_map_areaHeight; y++) {
     for (int x = mini_map_areaX; x < mini_map_areaWidth; x++) {
       Tile tile = m_map.get_tile(y, x);
@@ -72,5 +91,6 @@ void MapRender::renderMiniMap(RenderWindow &window,
     }
   }
 
+  // draw the border
   drawEdge(offsetX, offsetY, width, height, &window, Color(255, 255, 255), 255);
 }

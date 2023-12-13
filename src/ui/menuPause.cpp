@@ -1,6 +1,7 @@
 #include "../../include/ui/menuPause.hpp"
 
 void MenuPause::initButtons() {
+  // resume button
   m_textBouttons["resume"] = TextButton(
       100, 200,
       [&]() {
@@ -8,6 +9,8 @@ void MenuPause::initButtons() {
         handle();
       },
       Color::White, Color::Yellow, Color::Black, "Resume", true, 50);
+
+  // quit button
   m_textBouttons["quit"] = TextButton(
       100, 300,
       [&]() {
@@ -16,10 +19,11 @@ void MenuPause::initButtons() {
       },
       Color::White, Color::Yellow, Color::Black, "Quit", true, 50);
 
+  // volume button
   Sprite spriteVolumeOn = createSprite("1", "../assets/img/volume_on.png");
   Sprite spriteVolumeOff = createSprite("2", "../assets/img/volume_off.png");
 
-  m_spriteButton["volume"] = OnOffButton(
+  m_OnOffButton["volume"] = OnOffButton(
       100, 400, 50, 50,
       [&]() {
         m_soundSettings->playSound("PLAY");
@@ -62,7 +66,7 @@ void MenuPause::handleEvent(Event &event) {
       for (auto &button : m_textBouttons) {
         button.second.handle(mouseX, mouseY);
       }
-      for (auto &button : m_spriteButton) {
+      for (auto &button : m_OnOffButton) {
         button.second.handle(mouseX, mouseY);
         if (button.second.isInside(mouseX, mouseY)) {
           button.second.switchSprite();
@@ -81,7 +85,7 @@ void MenuPause::renderButtons(int XtopLeftCorner, int YtopLeftCorner) {
   for (auto &button : m_textBouttons) {
     button.second.render(m_window, XtopLeftCorner, YtopLeftCorner);
   }
-  for (auto &button : m_spriteButton) {
+  for (auto &button : m_OnOffButton) {
     button.second.render(m_window, XtopLeftCorner, YtopLeftCorner);
   }
 }

@@ -2,8 +2,8 @@
 
 SoundSettings::SoundSettings(int volume, Sound &sound,
                              unordered_map<string, SoundBuffer> &buffers)
-    : m_currentVolume(volume), m_soundVolume(volume), m_musicVolume(volume),
-      m_sound(sound), m_buffers(buffers) {}
+    : m_currentVolume(volume), m_soundVolume(volume), m_sound(sound),
+      m_buffers(buffers) {}
 
 int SoundSettings::getVolume() { return m_currentVolume; }
 
@@ -22,7 +22,7 @@ bool SoundSettings::playMusic(string musicName, bool loop) {
     return false;
   }
   m_music.setLoop(loop);
-  m_music.setVolume(m_musicVolume);
+  m_music.setVolume(m_currentVolume);
   m_music.play();
   return true;
 }
