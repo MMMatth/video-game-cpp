@@ -12,11 +12,10 @@ Block getBlock(string id) {
   return blockMap["AIR"];
 }
 
-/* constructor */
 Map::Map(string path, bool save)
     : m_workingAreaCoord(0, 0), m_workingAreaWidth(0), m_workingAreaHeight(0) {
   m_save = save;
-  if (!initLegthFromCSV(path) || !loadFromCSV(path)) {
+  if (!loadFromCSV(path)) {
     cerr << "Map : cant open the map " << path << endl;
     reset(path);
   }
@@ -31,39 +30,11 @@ Map::Map(int height, int width, bool save) {
     }
   }
 }
-/* destructor */
-void Map::clear() {
-  for (int y = 0; y < m_height; y++) {
-    m_map[y].clear();
-  }
-  m_map.clear();
-}
 
-/* init function */
-
-bool Map::initLegthFromCSV(string pathFile) {
-  int width = 0;
-  m_width = 0;
-  m_height = 0;
-  ifstream fichier(pathFile);
-  if (fichier) {
-    string ligne;
-    while (getline(fichier, ligne)) {
-      stringstream ss(ligne);
-      string c;
-      while (getline(ss, c, ';')) {
-        width++;
-      }
-      if (width > m_width) {
-        m_width = width;
-      }
-      width = 0;
-      m_height++;
-    }
-    return true;
-  } else {
-    return false;
-  }
+Map::Map()
+    : m_save(false), m_map(), m_workingAreaCoord(0, 0), m_workingAreaWidth(0),
+      m_workingAreaHeight(0), m_width(0), m_height(0) {
+  m_map = vector<vector<Tile>>(0, vector<Tile>(0));
 }
 
 bool Map::loadFromCSV(string pathFile) {
@@ -71,6 +42,8 @@ bool Map::loadFromCSV(string pathFile) {
   if (fichier) {
     string ligne;
     int y = 0;
+    m_width = 0;
+    m_height = 0;
     while (getline(fichier, ligne)) {
       stringstream ss(ligne);
       string c;
@@ -85,6 +58,9 @@ bool Map::loadFromCSV(string pathFile) {
         }
         x++;
       }
+      if (x > m_width) {
+        m_width = x;
+      }
       if (x < m_width) {
         for (int i = x; i < m_width; i++) {
           m_map[y].push_back(chooseTile("0", i, y, false));
@@ -92,16 +68,15 @@ bool Map::loadFromCSV(string pathFile) {
       }
       y++;
     }
+    m_height = y;
     return true;
   } else {
     return false;
   }
 }
 
-/* getters */
-
-Tile Map::chooseTile(string c, int x, int y, bool isBackground) {
-  return Tile(getBlock(c), x, y, isBackground);
+Tile Map::chooseTile(string blockId, int x, int y, bool isBackground) {
+  return Tile(getBlock(blockId), x, y, isBackground);
 }
 
 Tile *Map::find_tile(int world_x, int world_y) {
@@ -176,7 +151,7 @@ void Map::save(string path) {
   }
 }
 
-void Map::collide(Entity *entity, int camX, int camY) {
+void Map::collide(Entity *entity) {
   for (int y = m_workingAreaCoord.getY(); y < m_workingAreaHeight; y++) {
     for (int x = m_workingAreaCoord.getX(); x < m_workingAreaWidth; x++) {
       if (m_map[y][x].getBlock()->isSolid()) {
@@ -184,21 +159,31 @@ void Map::collide(Entity *entity, int camX, int camY) {
       }
     }
   }
-}
-
-void Map::collide(Entity *entity) {
   if (entity->getX() < 0)
     entity->setCollision("left", true);
-  if (entity->getX() + entity->getWidth() > get_width() * TILE_SIZE)
+  if (entity->getX() + entity->getWidth() > getWidth() * TILE_SIZE)
     entity->setCollision("right", true);
   if (entity->getY() < 0)
     entity->setCollision("up", true);
-  if (entity->getY() + entity->getHeight() > get_height() * TILE_SIZE)
+  if (entity->getY() + entity->getHeight() > getHeight() * TILE_SIZE)
     entity->setCollision("down", true);
 }
 
-void Map::add_tile(Block block, int mouseX, int mouseY, bool isBackground) {
-  Tile *target = find_tile(mouseX, mouseY);
+bool Map::isCollide(Entity *Entity) {
+  for (int y = m_workingAreaCoord.getY(); y < m_workingAreaHeight; y++) {
+    for (int x = m_workingAreaCoord.getX(); x < m_workingAreaWidth; x++) {
+      if (m_map[y][x].getBlock()->isSolid()) {
+        if (m_map[y][x].isCollidingEntity(Entity)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+void Map::add_tile(Block block, int x, int y, bool isBackground) {
+  Tile *target = find_tile(x, y);
   if (target) {
     target->setBackground(isBackground);
     target->setBlock(block);
@@ -207,8 +192,8 @@ void Map::add_tile(Block block, int mouseX, int mouseY, bool isBackground) {
   }
 }
 
-void Map::supr_tile(int mouseX, int mouseY) {
-  Tile *target = find_tile(mouseX, mouseY);
+void Map::remove_tile(int x, int y) {
+  Tile *target = find_tile(x, y);
   if (target) {
     target->setBackground(false);
     target->setBlock(blockMap["AIR"]);
@@ -232,43 +217,12 @@ void Map::update(int camX, int camY) {
     newCamX = 0;
   if (newCamY < 0)
     newCamY = 0;
-  if (newCamWidth >= get_width())
-    newCamWidth = get_width();
-  if (newCamHeight >= get_height())
-    newCamHeight = get_height();
+  if (newCamWidth >= getWidth())
+    newCamWidth = getWidth();
+  if (newCamHeight >= getHeight())
+    newCamHeight = getHeight();
 
   m_workingAreaCoord.setCoord(newCamX, newCamY);
   m_workingAreaWidth = newCamWidth;
   m_workingAreaHeight = newCamHeight;
-}
-
-bool Map::collidesWithSolidBlock(Entity *entity) {
-  int entityX = entity->getX();
-  int entityY = entity->getY();
-  int entityWidth = entity->getWidth();
-  int entityHeight = entity->getHeight();
-  for (int y = 0; y < get_height(); y++) {
-    for (int x = 0; x < get_width(); x++) {
-      if (m_map[y][x].getBlock()->isSolid()) {
-        int blockX = x * TILE_SIZE;
-        int blockY = y * TILE_SIZE;
-        if (entityX < blockX + TILE_SIZE && entityX + entityWidth > blockX &&
-            entityY < blockY + TILE_SIZE && entityY + entityHeight > blockY) {
-          return true;
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
-string Map::toString() {
-  string res;
-  for (int y = 0; y < m_map.size(); y++) {
-    for (int x = 0; x < m_map[y].size(); x++) {
-      res += m_map[y][x].toString();
-    }
-  }
-  return res;
 }

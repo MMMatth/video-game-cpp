@@ -15,19 +15,22 @@
 #define CAM_WIDTH WINDOW_WIDTH * 0.75
 #define CAM_HEIGHT WINDOW_HEIGHT * 0.75
 #define CAM_SAVE_PATH "cam.csv"
-/* character */
-#define CHAR_DEFAULT_COORD_X MAP_WIDTH *TILE_SIZE / 2
-#define CHAR_DEFAULT_COORD_Y TAILLE_PERSONNAGE * 2
-#define TAILLE_PERSONNAGE 64
-#define DEPLACEMENT 5
+
+/* character default */
+#define CHAR_WIDTH 28
+#define CHAR_HEIGHT 58
+#define CHAR_JUMP_HEIGHT 80
+#define CHAR_SPEED 3
+#define CHAR_LIFE 100
+#define CHAR_MAX_LIFE 30
 #define ANIMATION_SPEED 100
 #define NUM_FRAMES 9
-#define CHARACTER_SAVE_PATH "character.csv"
-#define CHARACTER_MAX_LIFE 30
+#define CHAR_FILE_NAME "character.csv"
+#define CHAR_X MAP_WIDTH *TILE_SIZE / 2
+#define CHAR_Y CHAR_HEIGHT * 2
 #define LINEOFSIGHT 50
 /* sound */
-#define SOUND_PLAY "../assets/sound/pop.ogg"
-#define SOUND_QUIT SOUND_PLAY
+#define SOUND_CLICK "../assets/sound/pop.ogg"
 #define SOUND_JUMP "../assets/sound/jump.wav"
 #define SOUND_BREAK_A_BLOCK "../assets/sound/dig.ogg"
 #define SOUND_MOVE "../assets/sound/move.wav"
@@ -54,6 +57,21 @@
 #define MONSTERS_SPAWN_RADIUS 50
 #define JUMP_HEIGHT 16
 #define ATTACKDISTANCE 400
+
+/* inventory default data*/
+#define INV_HEIGHT 4 // amout of tile in the inv in height
+#define INV_WIDTH 9  // amout of tile in the inv in width
+#define INV_TILE_SIZE (CAM_WIDTH / INV_WIDTH) * 0.8 // tile size in pixel
+#define INV_OBJ_SIZE INV_TILE_SIZE * 0.6            // obj size in tile
+#define MAX_STACK_SIZE 64 // max amount of item in a stack
+#define INV_FILE_NAME "inventory.csv"
+// inventory position
+#define X_LOWER_BAR_OFFSET (INV_WIDTH * INV_TILE_SIZE) / 2
+#define Y_LOWER_BAR_OFFSET -(CAM_HEIGHT / 2 - INV_TILE_SIZE * 2)
+#define X_INV_OFFSET (INV_WIDTH * INV_TILE_SIZE) / 2
+#define Y_INV_OFFSET (INV_HEIGHT * INV_TILE_SIZE) / 2
+#define TOP_LEFT_INV_TILE (INV_TILE_SIZE - INV_OBJ_SIZE) / 2
+
 #define DISTANCEMONSTERPLAYER 15
 /* inventory */
 #define INVENTORY_HEIGHT 4
@@ -87,11 +105,12 @@
 #define LEAF_HEIGHT 3
 /* flower */
 #define FLOWER_ECART 10
-/*day night cycle*/
-#define DEFAULT_TIME_DAY 240 // 4 min
-#define DAY_NIGHT_CYCLE_CSV_PATH "day_night_cycle.csv"
-#define DAY_NIGHT_CYCLE_IMG_PATH "../assets/img/day_night_cycle.png"
+
+/*day night cycle default date */
+#define TIME_IN_DAY 240 // time in second
 #define DEFAULT_SKY_COLOR Color(119, 181, 254)
+#define DAY_NIGHT_CYCLE_FILE_NAME "day_night_cycle.csv"
+#define DAY_NIGHT_CYCLE_IMG_PATH "../assets/img/day_night_cycle.png"
 
 /* other */
 #define TILE_SIZE 32

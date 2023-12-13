@@ -3,14 +3,14 @@
 /* constructor */
 
 DayNightCycle::DayNightCycle()
-    : m_time_day_in_sec(240), m_color(), m_clock(), m_clock_in_sec(0),
-      m_clock_offset(0), m_save(false) {
+    : m_time_day_in_sec(240), m_clock_in_sec(0), m_clock_offset(0),
+      m_save(false) {
   m_color.push_back(DEFAULT_SKY_COLOR);
 }
 
 DayNightCycle::DayNightCycle(int time_day_in_sec, string imgPath)
-    : m_color(), m_clock(), m_clock_in_sec(0), m_clock_offset(0),
-      m_time_day_in_sec(time_day_in_sec), m_save(false) {
+    : m_clock_in_sec(0), m_clock_offset(0), m_time_day_in_sec(time_day_in_sec),
+      m_save(false) {
   if (!loadColorsFromImage(imgPath)) {
     cerr << "Failed to load image from " << imgPath << endl;
     m_color.push_back(DEFAULT_SKY_COLOR);
@@ -29,6 +29,8 @@ DayNightCycle::DayNightCycle(string csvPath, string imgPath)
     m_color.push_back(DEFAULT_SKY_COLOR);
   };
 }
+
+DayNightCycle::~DayNightCycle() {}
 
 bool DayNightCycle::loadFromCSV(string csvPath) {
   ifstream file;
@@ -73,8 +75,7 @@ void DayNightCycle::update() {
 }
 
 /* getters */
-
-Color DayNightCycle::getColor() {
+Color DayNightCycle::getCurrentColor() {
   /* we use fmod because m_clock in sec is a float */
   int clock = fmod(m_clock_in_sec, m_time_day_in_sec);
   int index = (clock * m_color.size()) / m_time_day_in_sec;
@@ -105,16 +106,13 @@ string DayNightCycle::getHour() {
 
   return timeStream.str();
 }
-/* other */
-
-void DayNightCycle::clear() { m_color.clear(); }
 
 void DayNightCycle::reset(bool save, int time_day_in_sec, string imgPath) {
   m_save = save;
   m_time_day_in_sec = time_day_in_sec;
   m_clock.restart();
   m_clock_offset = 0;
-  m_color.clear();
+  m_color.clear(); // we erase the old color
   if (!loadColorsFromImage(imgPath)) {
     cerr << "Failed to load image from " << imgPath << endl;
     m_color.push_back(DEFAULT_SKY_COLOR);
@@ -133,12 +131,4 @@ void DayNightCycle::save(string csvPath) {
     }
     file.close();
   }
-}
-
-string DayNightCycle::toString() {
-  stringstream ss;
-  for (const auto &color : m_color) {
-    ss << color.r << " " << color.g << " " << color.b << "\n";
-  }
-  return ss.str();
 }

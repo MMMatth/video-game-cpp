@@ -4,50 +4,39 @@
 #include "../item/block.hpp"
 #include "../item/item.hpp"
 
-#include "../utils/graph.hpp"
-#include <map>
+#include "../utils/list.hpp"
+#include <array>
+#include <vector>
 
 using namespace std;
 
+/** @brief class who implement craft */
 class Craft {
 private:
-  map<string, Node<Block> *> m_node;
-  DirectedGraph<Block> m_graph;
+  vector<LinkedList<Block> *> m_crafts; /** vector of linked List */
+  bool m_isDay; /** Boolean who represent if it's day or night */
 
 public:
-  Craft() {
-    for (auto block : blockMap) { // we create a graph with all the blocks
-      Node<Block> *node = new Node<Block>(block.second);
-      m_node[block.first] = node;
-    }
-    for (auto nodeBlock : m_node) { // we add all the nodes to the graph
-      m_graph.addNode(nodeBlock.second);
-    }
-    // we add all the edges
-    m_graph.addEdge(m_node["STONE"], m_node["COBBLESTONE"]);
-    m_graph.addEdge(m_node["COBBLESTONE"], m_node["STONE"]);
-    m_graph.addEdge(m_node["WOOD"], m_node["WOOD_PLANK"]);
-    m_graph.addEdge(m_node["WOOD_PLANK"], m_node["LIBRARY"]);
-  }
+  /** @brief default constructor*/
+  Craft();
 
-  ~Craft() {
-    for (auto nodeBlock : m_node) {
-      delete nodeBlock.second;
-    }
-    m_node.clear();
-  }
+  /** @brief destructor */
+  ~Craft();
 
-  bool hasCraft(string id) {
-    return m_graph.hasNeighbor(m_node[id]) && m_node.find(id) != m_node.end();
-  }
+  /** @brief update craft common to day and night
+   * @param day boolean who represent if it's day or night
+   */
+  void update(bool day);
 
-  Block *getCraft(string id) {
-    if (!hasCraft(id)) {
-      cerr << "No craft for " << id << endl;
-      return nullptr;
-    }
-    return &m_graph.getNeighbor(m_node[id])->value;
-  }
+  /** @brief function who return who is a block have craft
+   * @param id string who represent the id of the block in the blockMap
+   */
+  bool hasCraft(string id);
+
+  /** @brief function who return a craft
+   * @param id string who represent the id of the block in the blockMap
+   */
+  Block *getCraft(string id);
 };
 
 #endif /* CRAFT_HPP */

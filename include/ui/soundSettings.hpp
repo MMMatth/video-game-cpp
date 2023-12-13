@@ -14,10 +14,12 @@ using namespace sf;
 class SoundSettings {
 private:
   float m_currentVolume; /**< The volume level for the game's sound. */
-  float m_volume;
+  float m_soundVolume;
+  float m_musicVolume;
 
   unordered_map<string, SoundBuffer> m_buffers;
   Sound m_sound;
+  Music m_music;
 
 public:
   SoundSettings(int volume, Sound &sound,
@@ -32,6 +34,8 @@ public:
   bool isMute();
 
   void playSound(string soundName);
+
+  bool playMusic(string musicName, bool loop);
 };
 
 #endif /* SOUNDSETTINGS_HPP */

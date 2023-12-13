@@ -16,44 +16,60 @@
 #include <string>
 #include <vector>
 
-/* what needs to be subtracted from the cam to get the lower bar position */
-#define X_LOWER_BAR_OFFSET (INVENTORY_WIDTH * INVENTORY_TILE_SIZE) / 2
-#define Y_LOWER_BAR_OFFSET -(CAM_HEIGHT / 2 - INVENTORY_TILE_SIZE * 2)
-/* what needs to be subtracted from the cam to get the inv position */
-#define X_INV_OFFSET (INVENTORY_WIDTH * INVENTORY_TILE_SIZE) / 2
-#define Y_INV_OFFSET (INVENTORY_HEIGHT * INVENTORY_TILE_SIZE) / 2
-
-#define TOP_LEFT_INV_TILE (INVENTORY_TILE_SIZE - INVENTORY_OBJECT_SIZE) / 2
-
 using namespace std;
 
+/** @brief class who implement the inv*/
 class Inventory {
 private:
-  bool m_save;
-  InventoryTile
-      m_inventory[INVENTORY_HEIGHT]
-                 [INVENTORY_WIDTH]; /** 2D tab contain every inventory tile*/
-  InventoryTile m_selected_tile;    /**  inventory tile temporarily contains the
-                                       item which moves */
-  int m_pos_item_hand;              /** int number included between 0 and 8*/
-  bool m_is_open;                   /** bool true if the inventory is open */
-  Craft m_craft;                    /** craft object */
+  bool m_save; /** bool true if the inventory is save */
+  InventoryTile m_inventory[INV_HEIGHT][INV_WIDTH]; /** 2D tab contain every
+                                                       inventory tile*/
+  InventoryTile m_selected_tile; /**  inventory tile temporarily contains the
+                                    item which moves */
+  int m_pos_item_hand;           /** int number included between 0 and 8*/
+  bool m_is_open;                /** bool true if the inventory is open */
+  Craft m_craft;                 /** craft object */
 
 public:
-  /* Constructeur */
-  Inventory();
-  Inventory(string csvPath, bool save);
-  ~Inventory();
-  bool loadFromCSV(const std::string &csvPath);
+  /** @brief a function who init a void inv*/
+  void initVoidInventory();
 
+  /** @brief default constructor */
+  Inventory();
+
+  /** @brief constructor who load the inventory from a csv file */
+  Inventory(string csvPath, bool save);
+
+  /** @brief destructor */
+  ~Inventory();
+
+  /** @brief function who init data from csv file */
+  bool loadFromCSV(const string &csvPath);
+
+  /** @brief function who swap two item in two tile
+   * @param t1 the first tile
+   * @param t2 the second tile
+   */
   void swapItem(InventoryTile *t1, InventoryTile *t2);
+
+  /** @brief function who add a item in the inv
+   * @param item the item to add
+   */
   void addItem(Item item);
+
+  /** @brief function who removeItem
+   * @param pos the coord of the tile to remove
+   * @param amount the amount of item to remove
+   */
   void removeItem(Coord pos, int amount);
 
-  /* handle */
-  /** function who return if a coord is on a tile of the inv*/
-  void handleLeftClick(int mouseX, int mouseY, int persoX, int persoY);
-  void handleRightClick(int mouseX, int mouseY, int persoX, int persoY);
+  /** @brief function who handle the left click (mainly move item)
+   * @param mouseX the x position of the mouse
+   */
+  void handleLeftClick(int mouseX, int mouseY, int camX, int camY);
+
+  /** @brief function who handle the right click ( mainly craft part )*/
+  void handleRightClick(int mouseX, int mouseY, int camX, int camY);
 
   /* setters */
   void open();
@@ -61,21 +77,44 @@ public:
   void nextPosHand();
   void prevPosHand();
 
-  /* getters */
-  /** function who return the selected object */
+  /** @brief function who return true if the x and y is over the inv*/
   bool isOverInv(int x, int y, int camX, int camY);
+
+  /** @brief function who return the pos of a tile depending on x and y
+   * @return the coord of the tile (-1 , -1) if the tile is not in the inv
+   */
   Coord getTileCoord(int mouseX, int mouseY, int camX, int camY);
-  InventoryTile getSelectedTile();
+
+  /** @brief function who return the Tile with the item selected */
+  InventoryTile getSelectedTile() { return m_selected_tile; }
+
+  /** @brief function who return the tile at the coord*/
   InventoryTile getTile(Coord tile_coord);
-  int getPosHand();
+
+  /** @brief function who return the pos of the hand*/
+  int getPosHand() { return m_pos_item_hand; }
+
+  /** @brief function who return the item at the coord*/
   Item getItemAt(Coord tile_coord);
-  bool isOpen();
+
+  /** @brief function who return true if the inv is open*/
+  bool isOpen() { return m_is_open; }
+
+  /** @brief function who return the item at the pos hand*/
   Item getItemPosHand();
-  /* other */
+
+  /** @brief function who reset the inv
+   * @param save true if we want to save the inv
+   * @param path the path of the file to save
+   */
   void reset(bool save,
-             string path = string(SAVE_PATH) + string(INVENTORY_SAVE_PATH));
+             string path = string(SAVE_PATH) + string(INV_FILE_NAME));
+
+  /** @brief function who save the inv in a csv file */
   void save(string csvPath);
-  string toString();
+
+  /** @brief function for update the craft*/
+  void update(bool day);
 };
 
 #endif /* inventory_hpp */

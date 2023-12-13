@@ -1,77 +1,127 @@
-  #ifndef LIST_HPP
-  #define LIST_HPP
+#ifndef LIST_HPP
+#define LIST_HPP
 
-  #include <iostream>
+#include <iostream>
 
-  using namespace std;
+template <typename T> struct Node {
+  T data;
+  Node *next;
+};
 
-  template <typename T> class LinkedList {
-  private:
-    struct Node {
-      T data;
-      Node *next;
-    };
-    Node *head;
+using namespace std;
 
-  public:
-    LinkedList() : head(nullptr) {}
+template <typename T> class LinkedList {
+private:
+  Node<T> *head;
 
-    // ~LinkedList() { freeLinkedList(); }
+public:
+  LinkedList() : head(nullptr) {}
+  LinkedList(T data) {
+    head = new Node<T>;
+    head->data = data;
+    head->next = nullptr;
+  }
 
-    bool isEmpty() { return head == nullptr; }
+  ~LinkedList() { delete head; }
 
-    void addLink(T data) {
-      Node *newLink = new Node;
-      newLink->data = data;
-      newLink->next = head;
+  bool isEmpty() { return head == nullptr; }
+
+  bool isLinked() { return head->next != nullptr; }
+
+  bool isCircular() {
+    if (isEmpty()) {
+      cerr << "The list is empty: isCircular" << endl;
+      return false;
+    }
+    Node<T> *current = head;
+    while (current->next != nullptr) {
+      if (current->next == head) {
+        return true;
+      }
+      current = current->next;
+    }
+    return false;
+  }
+
+  void addLink(T data) {
+    Node<T> *newLink = new Node<T>;
+    newLink->data = data;
+    newLink->next = nullptr;
+
+    if (isEmpty()) {
       head = newLink;
-    }
-
-    T getHead() {
-      if (isEmpty()) {
-        cerr << "The list is empty: getHead" << endl;
-        exit(0);
-      }
-      return head->data;
-    }
-
-    void removeLink(T data) {
-      if (isEmpty()) {
-        cerr << "The list is empty: removeLink" << endl;
-        return;
-      }
-      Node **indirect = &head;
-      while (*indirect != nullptr) {
-        if ((*indirect)->data == data) {
-          Node *oldNode = *indirect;
-          *indirect = (*indirect)->next;
-          delete oldNode;
-          return;
-        }
-        indirect = &(*indirect)->next;
-      }
-    }
-
-    string toString() {
-      string str = "";
-      Node *current = head;
-      while (current != nullptr) {
-        str += to_string(current->data) + " ";
+    } else {
+      Node<T> *current = head;
+      while (current->next != nullptr) {
         current = current->next;
       }
-      return str;
+      current->next = newLink;
     }
+  }
 
-  private:
-    // void freeLinkedList() {
-    //   Node *current = head;
-    //   while (current != nullptr) {
-    //     Node *nextNode = current->next;
-    //     delete current;
-    //     current = nextNode;
-    //   }
-    //   head = nullptr;
-    // }
-  };
+  void makeCircular() {
+    if (isEmpty()) {
+      cerr << "The list is empty: makeCircular" << endl;
+      return;
+    }
+    Node<T> *current = head;
+    while (current->next != nullptr) {
+      current = current->next;
+    }
+    current->next = head;
+  }
 
-  #endif
+  T *getHead() {
+    if (isEmpty()) {
+      cerr << "The list is empty: getHead" << endl;
+      exit(0);
+    }
+    return &head->data;
+  }
+
+  Node<T> *getHeadNode() {
+    if (isEmpty()) {
+      cerr << "The list is empty: getHeadNode" << endl;
+      exit(0);
+    }
+    return head;
+  }
+
+  Node<T> *getNextNode() {
+    if (isEmpty()) {
+      cerr << "The list is empty: getNextNode" << endl;
+      exit(0);
+    }
+    return head->next;
+  }
+
+  void removeLink(T data) {
+    if (isEmpty()) {
+      cerr << "The list is empty: removeLink" << endl;
+      return;
+    }
+  }
+
+  string toString() {
+    string str = "";
+    Node<T> *current = head;
+    while (current != nullptr) {
+      str += to_string(current->data) + " ";
+      current = current->next;
+    }
+    return str;
+  }
+
+private:
+  // void freeLinkedList() {
+  //   Node *current = head;
+  //   while (current != nullptr) {
+  //     Node *nextNode = current->next;
+  //     delete current;
+  //     current = nextNode;
+  //   }
+  //   head = nullptr;
+  // }
+};
+
+#endif

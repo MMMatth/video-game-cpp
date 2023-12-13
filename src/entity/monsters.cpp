@@ -24,14 +24,13 @@ void Monsters::addRandomMonster(Monster *monster, Map &map) {
     int y = rand() % (MAP_WIDTH * 2);
     monster->setX(x);
     monster->setY(y);
-  } while (map.collidesWithSolidBlock(monster));
+  } while (map.isCollide(monster));
   m_monsters.push_back(monster);
   m_monsterRenderers.push_back(new MonsterRender(*monster));
 }
 
-void Monsters::collide(Map *map, int camX, int camY) {
+void Monsters::collide(Map *map) {
   for (Monster *monster : m_monsters) {
-    map->collide(monster, camX, camY);
     map->collide(monster);
   }
 }
