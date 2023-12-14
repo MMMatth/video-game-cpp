@@ -12,15 +12,22 @@
 #include "walking_monster.hpp"
 #include <vector>
 
+struct MonsterWithRender {
+  Monster *monster;
+  MonsterRender *monsterRender;
+};
+
 class Monsters {
 private:
-  vector<Monster *> m_monsters;               // Collection of monsters
-  vector<MonsterRender *> m_monsterRenderers; // Renderers for the monsters
-  Map m_map;                                  // Reference to the game map
-  Character &m_char;                          // Character
+  vector<MonsterWithRender>
+      m_monstersWithRender; /**< vector with monster and the render monster */
+  Map m_map;                /**< map */
+  Character &m_char;        // Character
   bool m_killAMonster = false;
   Clock m_clock;
   bool m_save;
+
+  bool m_isDay;
 
 public:
   /** @brief function who add other monster*/
@@ -31,6 +38,7 @@ public:
   /** @brief constructor who use csvFile */
   Monsters(string path, Map &map, Character &chara, bool save);
 
+  /** @brief destructor */
   ~Monsters();
 
   /** @brief function who init monsters from file
@@ -39,18 +47,18 @@ public:
    */
   bool initFromFile(string path);
 
-  const vector<Monster *> &getMonsters() const { return m_monsters; }
+  const vector<MonsterWithRender> &getMonsters() const {
+    return m_monstersWithRender;
+  }
 
   void addRandomMonster(Monster *monster, Map &map);
-
-  void addMonster(Monster *monster);
 
   void collide(Map *map);
 
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
               int nbFrame);
 
-  void update();
+  void update(bool isDay);
 
   /** @brief function who save monsters in csv file
    * @param path the path of the file

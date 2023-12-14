@@ -21,26 +21,21 @@ void Monsters::NewWave() {
 }
 
 Monsters::Monsters(Map &map, Character &m_char)
-    : m_map(map), m_char(m_char), m_save(false) {
-  m_monsterRenderers = vector<MonsterRender *>();
-  m_monsters = vector<Monster *>();
-  NewWave();
+    : m_map(map), m_char(m_char), m_save(false), m_isDay(true) {
+  m_monstersWithRender = vector<MonsterWithRender>();
 }
 
 Monsters::Monsters(string path, Map &map, Character &chara, bool save)
-    : m_map(map), m_char(chara), m_save(save) {
+    : m_map(map), m_char(chara), m_save(save), m_isDay(true) {
   if (!initFromFile(path)) {
     cerr << "Error while loading monsters from file" << endl;
   }
 }
 
 Monsters::~Monsters() {
-  cout << "Monsters destructor" << endl;
-  for (MonsterRender *renderer : m_monsterRenderers) {
-    delete renderer;
-  }
-  for (Monster *monster : m_monsters) {
-    delete monster;
+  for (MonsterWithRender monsterWithRender : m_monstersWithRender) {
+    delete monsterWithRender.monster;
+    delete monsterWithRender.monsterRender;
   }
 }
 
@@ -85,14 +80,13 @@ bool Monsters::initFromFile(string path) {
       if (type.compare("FLYING_MONSTER") == 0) {
         Monster *monster = new FlyingMonster(
             x, y, MONSTERS_WIDTH, MONSTERS_HEIGHT, speed, life, life);
-        m_monsters.push_back(monster);
-        m_monsterRenderers.push_back(new MonsterRender(*monster));
+        m_monstersWithRender.push_back({monster, new MonsterRender(*monster)});
+
       } else if (type.compare("WALKING_MONSTER") == 0) {
         Monster *monster =
             new WalkingMonster(x, y, MONSTERS_WIDTH, MONSTERS_HEIGHT, speed,
                                life, life, JUMP_HEIGHT);
-        m_monsters.push_back(monster);
-        m_monsterRenderers.push_back(new MonsterRender(*monster));
+        m_monstersWithRender.push_back({monster, new MonsterRender(*monster)});
       } else {
         cerr << "Monsters: invalide type\n";
         return false;
@@ -111,61 +105,69 @@ void Monsters::addRandomMonster(Monster *monster, Map &map) {
     monster->setX(x);
     monster->setY(y);
   } while (map.isCollide(monster));
-  m_monsters.push_back(monster);
-  m_monsterRenderers.push_back(new MonsterRender(*monster));
+  m_monstersWithRender.push_back({monster, new MonsterRender(*monster)});
 }
 
 void Monsters::collide(Map *map) {
-  for (Monster *monster : m_monsters) {
-    map->collide(monster);
+  for (MonsterWithRender monsterWithRender : m_monstersWithRender) {
+    map->collide(monsterWithRender.monster);
   }
 }
 
 void Monsters::render(RenderWindow &window,
                       std::unordered_map<std::string, Sprite> sprites,
                       int nbFrame) {
-  for (EntityRender *renderer : m_monsterRenderers) {
-    if (renderer->getEntity().getSpeed() == FLYING_MONSTERS_SPEED) {
-      renderer->render(window, sprites, "FLYING_MONSTER", nbFrame);
+  for (MonsterWithRender monsterWithRender : m_monstersWithRender) {
+    if (monsterWithRender.monster->getSpeed() == FLYING_MONSTERS_SPEED) {
+      monsterWithRender.monsterRender->render(window, sprites, "FLYING_MONSTER",
+                                              nbFrame);
     }
-    if (renderer->getEntity().getSpeed() == WALKING_MONSTERS_SPEED) {
-      renderer->render(window, sprites, "WALKING_MONSTER", nbFrame);
+    if (monsterWithRender.monster->getSpeed() == WALKING_MONSTERS_SPEED) {
+      monsterWithRender.monsterRender->render(window, sprites,
+                                              "WALKING_MONSTER", nbFrame);
     }
   }
   renderLifes(window, sprites);
 }
 
-void Monsters::update() {
+void Monsters::update(bool isDay) {
 
-  for (auto &monster : m_monsters) {
-    monster->update(m_char);
+  if (!isDay && isDay != m_isDay) {
+    m_isDay = isDay;
+    NewWave();
+  } else {
+    m_isDay = isDay;
   }
+
+  // if is day monsters dead
+  if (isDay) {
+    for (auto &monster : m_monstersWithRender) {
+      monster.monster->reduceLife(1);
+    }
+  }
+
+  for (auto &monster : m_monstersWithRender) {
+    monster.monster->update(m_char);
+  }
+
+  // Check collision with player and monsters
   if (m_clock.getElapsedTime().asSeconds() > 1) {
     m_clock.restart();
-    for (auto &monster : m_monsters)
-      if (checkPlayerMonsterCollision(m_char, monster)) {
+    for (auto &monster : m_monstersWithRender)
+      if (checkPlayerMonsterCollision(m_char, monster.monster)) {
         if (m_killAMonster) {
-          monster->reduceLife(1);
+          monster.monster->reduceLife(1);
         }
         m_char.hit(1);
       }
   }
 
-  // Remove dead monsters
-  for (auto it = m_monsters.begin(); it != m_monsters.end();) {
-    if ((*it)->getLife() <= 0) {
-      delete *it;
-      it = m_monsters.erase(it);
-    } else {
-      ++it;
-    }
-  }
-
-  // Remove corresponding renderers
-  for (auto it = m_monsterRenderers.begin(); it != m_monsterRenderers.end();) {
-    if ((*it)->getEntity().getLife() <= 0) {
-      delete *it;
-      it = m_monsterRenderers.erase(it);
+  for (auto it = m_monstersWithRender.begin();
+       it != m_monstersWithRender.end();) {
+    if ((*it).monster->getLife() <= 0) {
+      delete (*it).monster;
+      delete (*it).monsterRender;
+      it = m_monstersWithRender.erase(it);
     } else {
       ++it;
     }
@@ -174,8 +176,8 @@ void Monsters::update() {
 
 void Monsters::renderLifes(RenderWindow &window,
                            unordered_map<string, Sprite> sprites) {
-  for (MonsterRender *m_monsterRenderers : m_monsterRenderers) {
-    m_monsterRenderers->renderLife(window, sprites);
+  for (MonsterWithRender monsterWithRender : m_monstersWithRender) {
+    monsterWithRender.monsterRender->renderLife(window, sprites);
   }
 }
 
@@ -201,10 +203,10 @@ bool Monsters::save(string path) {
       return false;
     }
     file << "x;y;speed;life;type\n";
-    for (Monster *monster : m_monsters) {
-      file << monster->getX() << ";" << monster->getY() << ";"
-           << monster->getSpeed() << ";" << monster->getLife() << ";"
-           << monster->getType() << "\n";
+    for (MonsterWithRender monster : m_monstersWithRender) {
+      file << monster.monster->getX() << ";" << monster.monster->getY() << ";"
+           << monster.monster->getSpeed() << ";" << monster.monster->getLife()
+           << ";" << monster.monster->getType() << "\n";
     }
     file.close();
     return true;
@@ -213,8 +215,6 @@ bool Monsters::save(string path) {
 }
 
 void Monsters::reset(bool save) {
-  m_monsters.clear();
-  m_monsterRenderers.clear();
+  m_monstersWithRender.clear();
   m_save = save;
-  NewWave();
 }

@@ -36,12 +36,15 @@
 #define SOUND_MOVE "../assets/sound/move.wav"
 #define SOUND_PUT_A_BLOCK "../assets/sound/hit.ogg"
 #define VOLUME 50
+
 /* menu */
 #define VOLUME_ON_IMG_PATH "../assets/img/volume_on.png"
 #define VOLUME_OFF_IMG_PATH "../assets/img/volume_off.png"
+
 /*pause*/
 #define IMG_PAUSE_ON "../assets/img/menuSoundOnPause.jpeg"
 #define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"
+
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
 #define NUM_MONSTERS_WALKING 3
@@ -85,7 +88,7 @@
 #define RED_COLOR Color::Red
 
 /* map generator param */
-#define MAP_WIDTH 150       // the width of the map in tile
+#define MAP_WIDTH 50        // the width of the map in tile
 #define MOUNTAIN_COEF 20    // the coef of the mountain
 #define UNDERGROUND_COEF 10 // the coef of the underground
 #define SKY_HEIGHT_OVER_MOUTAIN                                                \
@@ -96,6 +99,7 @@
 #define CURVE_ALLTITUDE_FREQUENCY 0.01 // the frequency for perlin noise
 #define CAVE_FREQUENCY 0.09 // the frequency for NoiseType_OpenSimplex2S noise
 #define TREE_SIZE 4
+#define TILE_SIZE 32
 #define ECART_TREE 10
 #define LEAF_WIDTH 5
 #define LEAF_HEIGHT 3
@@ -111,7 +115,6 @@
 #define DAY_NIGHT_CYCLE_IMG_PATH "../assets/img/day_night_cycle.png"
 
 /* other */
-#define TILE_SIZE 32
 #define GAME_MODE 1
 #define MAX_LIFE 100
 #define ZERO 0

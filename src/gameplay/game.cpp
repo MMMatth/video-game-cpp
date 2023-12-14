@@ -79,9 +79,9 @@ void Game::update() {
 
     updateBreaking();
 
-    if (!m_day_night_cycle.isDay()) {
-      m_monsters.update();
-    }
+    // if (!m_day_night_cycle.isDay()) {
+    m_monsters.update(m_day_night_cycle.isDay());
+    // }
 
     m_day_night_cycle.update();
 
@@ -234,26 +234,25 @@ void Game::handleMouseWheel(float delta) {
 void Game::render() {
   if (m_menuEnd.isEnd()) {
     m_window.clear(m_day_night_cycle.getCurrentColor());
+
     m_menuEnd.render(m_cam);
+
     m_window.display();
   } else {
     /* the sky */
     m_window.clear(m_day_night_cycle.getCurrentColor());
 
-    m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
-
     m_mapRenderer.render(m_window, m_sprites);
 
-    if (!m_day_night_cycle.isDay()) {
-      m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
-    }
+    m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
-    m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
-                       m_mousePosWorld.getY());
+    m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
 
     /* hud */
     m_mapRenderer.renderMiniMap(m_window, m_sprites, m_cam.getX(),
                                 m_cam.getY());
+    m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
+                       m_mousePosWorld.getY());
     m_charRenderer.renderLifeBar(m_window, m_sprites, m_cam.getX(),
                                  m_cam.getY());
     m_fpsCounter.render(m_window, m_cam);
