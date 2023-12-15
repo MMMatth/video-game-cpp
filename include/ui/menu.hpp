@@ -46,8 +46,10 @@ private:
   function<void(int volume)> m_volume;
 
 public:
+  /** @brief function who init every button */
   void initButtons();
 
+  /** @brief constructor for the menu */
   Menu(RenderWindow &window, unordered_map<string, Sprite> &sprites,
        SoundSettings &soundSettings);
 
@@ -57,25 +59,43 @@ public:
    */
   void handleEvent(Event &event);
 
+  /** @brief function who render and update menu */
   void run();
 
+  /** @brief function who render the buttons */
   void renderButtons();
 
+  /** @brief function who render the menu */
   void render();
 
+  /** @brief function who quit the menu */
   void quit();
 
-  /** update*/
+  /** @brief function who return true if the menu is active */
   void update();
 
+  /** @brief function who return true if the menu is active */
   bool isActive() const;
+
+  /** @brief function who return true if we decine to create a new game */
   bool isNewGame() const;
+
+  /** @brief function who return true if want to play with input file */
   bool isPlayInput() const;
+
+  /** @brief function who return true if want to play with save file */
   bool isPlaySave() const;
 
+  /** @brief function who set the active to true or false */
   void setActive(bool active);
+
+  /** @brief function who set the newGame to true or false */
   void setIsNewGame(bool newGame);
+
+  /** @brief function who set the playInput to true or false */
   void setIsPlayInput(bool playInput);
+
+  /** @brief function who set the playSave to true or false */
   void setIsPlaySave(bool playSave);
 
   bool volumeOff() const;

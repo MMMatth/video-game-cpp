@@ -12,37 +12,31 @@
 using namespace std;
 using namespace sf;
 
-/**
- * @class EntityRender
- * @brief Responsible for rendering an entity in the game.
- *
- * This class handles the rendering of an entity, including animation and static
- * rendering.
- */
+/** @brief Renders an entity. */
 class EntityRender {
 protected:
   Clock m_clock;    /**< Clock used for controlling animations. */
   Entity &m_entity; /**< Reference to the entity being rendered. */
 
 public:
+  /** @brief constructor for entity render */
   EntityRender(Entity &entity);
 
+  /** @brief draw the entity with an animation */
   void drawEnityAnimation(RenderWindow &window,
                           unordered_map<string, Sprite> &sprites,
                           const string &spriteKey, int frame, int x, int y);
 
-  void drawEnityAnimationMonster(RenderWindow &window,
-                                 unordered_map<string, Sprite> &sprites,
-                                 const string &spriteKey, int frame, int x,
-                                 int y);
-
+  /** @brief draw the entity without animation */
   void drawEntityStatic(RenderWindow &window,
                         unordered_map<string, Sprite> &sprites,
                         const string &spriteKey, int x, int y);
 
+  /** @brief render the character depend the entity direction */
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
               string key, int nbFrame);
 
+  /** @brief get the entity */
   Entity &getEntity() { return m_entity; }
 };
 

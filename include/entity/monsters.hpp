@@ -12,20 +12,45 @@
 #include "walking_monster.hpp"
 #include <vector>
 
+struct MonsterWithRender {
+  Monster *monster;
+  MonsterRender *monsterRender;
+};
+
 class Monsters {
 private:
-  vector<Monster *> m_monsters;               // Collection of monsters
-  vector<MonsterRender *> m_monsterRenderers; // Renderers for the monsters
-  Map m_map;                                  // Reference to the game map
-  Character &m_char;                          // Character
+  vector<MonsterWithRender>
+      m_monstersWithRender; /**< vector with monster and the render monster */
+  Map m_map;                /**< map */
+  Character &m_char;        // Character
   bool m_killAMonster = false;
   Clock m_clock;
+  bool m_save;
+  bool m_isDay;
   int m_numFlyingMonsters, m_numWalkingMonsters;
   int m_numFlyingMonstersKilled, m_numWalkingMonstersKilled;
 
 public:
+  /** @brief function who add other monster*/
+  void NewWave();
+
   Monsters(Map &map, Character &m_char);
+
+  /** @brief constructor who use csvFile */
+  Monsters(string path, Map &map, Character &chara, bool save);
+
+  /** @brief destructor */
   ~Monsters();
+
+  /** @brief function who init monsters from file
+   * @param path the path of the file
+   * @return true if the file is open
+   */
+  bool initFromFile(string path);
+
+  const vector<MonsterWithRender> &getMonsters() const {
+    return m_monstersWithRender;
+  }
 
   /*Getters*/
   const vector<Monster *> &getMonsters() const { return m_monsters; }
@@ -53,7 +78,18 @@ public:
 
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
               int nbFrame);
-  void update();
+
+  void update(bool isDay);
+
+  /** @brief function who save monsters in csv file
+   * @param path the path of the file
+   * @return true if the file is save
+   */
+  bool save(string path);
+
+  /** @brief function who reset monsters */
+  void reset(bool save);
+
   void createMonsters(Map &map, Character &m_char);
   void renderLifes(RenderWindow &window, unordered_map<string, Sprite> sprites);
   bool checkCollision(int x1, int y1, int width1, int height1, int x2, int y2,

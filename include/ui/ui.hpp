@@ -11,157 +11,135 @@
 using namespace std;
 using namespace sf;
 
+/** @brief a class who represent a button */
 class Button {
 protected:
-  /* position */
-  Coord m_coord;
-  int m_width, m_height;
-  /* action */
-  function<void()> m_action;
+  Coord m_coord;             /** position of the button */
+  int m_width, m_height;     /** width and height of the button */
+  function<void()> m_action; /** action of the button */
 
 public:
-  Button() {
-    m_coord = Coord(0, 0);
-    m_width = 0;
-    m_height = 0;
-  }
-  Button(int x, int y, int width, int height, function<void()> action)
-      : m_coord(x, y), m_action(action) {
-    m_width = width;
-    m_height = height;
-  }
+  /** @brief default constructor */
+  Button();
 
-  bool isInside(int mouseX, int mouseY) {
-    if (mouseX >= m_coord.getX() && mouseX <= m_coord.getX() + m_width &&
-        mouseY >= m_coord.getY() && mouseY <= m_coord.getY() + m_height) {
-      return true;
-    }
-    return false;
-  }
+  /** @brief constructor with param */
+  Button(int x, int y, int width, int height, function<void()> action);
 
-  void handle(int mouseX, int mouseY) {
-    if (isInside(mouseX, mouseY)) {
-      m_action();
-    }
-  }
+  /** @brief a function who return true if the x and y is in the button
+   * @param x the x coord (in pixel) a mouse for example
+   * @param y the y coord (in pixel) a mouse for example
+   */
+  bool isInside(int x, int y);
 
-  virtual void render(RenderWindow &window, int offSetX, int offSetY) = 0;
+  /** @brief a function who handle the button
+   * @param mouseX the x coord (in pixel) a mouse for example
+   * @param mouseY the y coord (in pixel) a mouse for example
+   */
+  void handle(int mouseX, int mouseY);
+  /** @brief a vitrual function for the render */
+  virtual void render(RenderWindow &window, int offSetX = 0,
+                      int offSetY = 0) = 0;
 };
 
+/** @brief class who implement a text button (herite from button )*/
 class TextButton : public Button {
 protected:
-  bool m_shadow;
+  bool m_shadow; /** if the button have a shadow */
   /* color part */
-  Color m_color;
-  Color m_standardColor;
-  Color m_hoverColor;
-  Color m_edgeColor;
+  Color m_color;         /** current color of the button */
+  Color m_standardColor; /** standard color of the button */
+  Color m_hoverColor;    /** color when the mouse is hover the button */
+  Color m_edgeColor;     /** color of the edge of the button */
   /* text part */
-  string m_text;
-  int m_textSize;
-  string m_fontPath;
+  string m_text;     /** text of the button */
+  int m_textSize;    /** size of the text */
+  string m_fontPath; /** path of the font */
 
 public:
-  TextButton() : Button() {
-    m_shadow = true;
-    m_color = Color::White;
-    m_standardColor = Color::White;
-    m_hoverColor = Color::White;
-    m_edgeColor = Color::Black;
+  /** @brief default constructor */
+  TextButton();
 
-    m_text = "";
-    m_textSize = 0;
-    m_fontPath = "";
-  }
+  /** @brief constructor
+   * @param x the x coord (in pixel) of the button
+   * @param y the y coord (in pixel) of the button
+   * @param action the action of the button
+   * @param color the color of the button
+   * @param hoverColor the color when the mouse is hover the button
+   * @param edgeColor the color of the edge of the button
+   * @param text the text of the button
+   * @param shadow if the button have a shadow
+   * @param textSize the size of the text
+   * @param fontPath the path of the font
+   */
   TextButton(int x, int y, function<void()> action, Color color,
              Color hoverColor, Color edgeColor, string text, bool shadow = true,
-             int textSize = 30, string fontPath = MINECRAFT_FONT_PATH)
-      : Button(x, y, 0, 0, action) {
-    /* color */
-    m_color = color;
-    m_standardColor = color;
-    m_hoverColor = hoverColor;
-    m_edgeColor = edgeColor;
-    /* text */
-    m_text = text;
-    m_textSize = textSize;
-    m_fontPath = fontPath;
-    /* width and height */
-    m_width = getTextWidth(m_text, m_textSize, m_fontPath) * 1.5;
-    m_height = getTextHeight(m_text, m_textSize, m_fontPath) * 2;
-    /* shadow */
-    m_shadow = shadow;
-  }
+             int textSize = 30, string fontPath = MINECRAFT_FONT_PATH);
 
-  void isHover() { m_color = m_hoverColor; }
+  /** @brief function when is called change the color to the hover color */
+  void isHover();
 
-  void isNotHover() { m_color = m_standardColor; }
+  /** @brief function when is called change the color to the standard color */
+  void isNotHover();
 
-  void switchColor() {
-    if (m_color == m_standardColor) {
-      m_color = m_hoverColor;
-    } else {
-      m_color = m_standardColor;
-    }
-  }
+  /** @brief function who switch the color of the button */
+  void switchColor();
 
-  void render(RenderWindow &window, int offSetX, int offSetY) override {
-    if (m_shadow) {
-      drawText(offSetX + m_coord.getX() * WINDOW_WIDTH / CAM_WIDTH + 5,
-               offSetY + m_coord.getY() * WINDOW_HEIGHT / CAM_HEIGHT + 5,
-               m_text, &window, m_textSize, Color::Black, m_fontPath);
-    }
-    drawTextWithEdge(offSetX + m_coord.getX() * WINDOW_WIDTH / CAM_WIDTH,
-                     offSetY + m_coord.getY() * WINDOW_HEIGHT / CAM_HEIGHT,
-                     m_text, &window, m_textSize, m_color, m_edgeColor,
-                     m_fontPath);
-  }
+  /** @brief a function who render the button (override from button)
+   * @param window the window where the button is render
+   * @param offSetX  x offset of the button (in pixel) (0 by default)
+   * @param offSetY  y offset of the button (in pixel) (0 by default)
+   */
+  void render(RenderWindow &window, int offSetX, int offSetY) override;
 };
 
+/** @brief class who implement a sprite button (herite from button )*/
 class OnOffButton : public Button {
 protected:
-  Sprite m_sprite;
-  Sprite m_spriteOn;
-  Sprite m_spriteOff;
-  bool m_on;
+  Sprite m_sprite;    /** current sprite of the button */
+  Sprite m_spriteOn;  /** sprite when the button is on */
+  Sprite m_spriteOff; /** sprite when the button is off */
+  bool m_on;          /** if the button is on */
 
 public:
-  OnOffButton() {
-    m_sprite = Sprite();
-    m_spriteOn = Sprite();
-    m_spriteOff = Sprite();
-    m_on = true;
-  }
+  /** @brief default constructor */
+  OnOffButton();
+
+  /** @brief  constructor
+   * @param x the x coord (in pixel) of the button
+   * @param y the y coord (in pixel) of the button
+   * @param width the width of the button
+   * @param height the height of the button
+   * @param action the action of the button
+   * @param spriteOn the sprite when the button is on
+   * @param spriteOff the sprite when the button is off
+   * @param on if the button is on
+   */
   OnOffButton(int x, int y, int width, int height, function<void()> action,
-              Sprite spriteOn, Sprite spriteOff, bool on = true)
-      : Button(x, y, width, height, action) {
-    m_sprite = spriteOn;
-    m_spriteOn = spriteOn;
-    m_spriteOff = spriteOff;
-    m_on = on;
-  }
+              Sprite spriteOn, Sprite spriteOff, bool on = true);
 
-  void switchSprite() { m_on = !m_on; }
+  /** @brief function who switch the state of the button */
+  void switchSprite();
 
-  void render(RenderWindow &window, int offSetX, int offSetY) override {
-    if (m_on)
-      m_sprite = m_spriteOn;
-    else
-      m_sprite = m_spriteOff;
-    drawSprites(offSetX + m_coord.getX() * WINDOW_WIDTH / CAM_WIDTH,
-                offSetY + m_coord.getY() * WINDOW_HEIGHT / CAM_HEIGHT, m_sprite,
-                &window, m_width, m_height);
-  }
+  /** @brief a function who render the button (override from button)
+   * @param window the window where the button is render
+   * @param offSetX the x offset of the button (in pixel) (0 by default)
+   * @param offSetY the y offset of the button (in pixel) (0 by default)
+   */
+  void render(RenderWindow &window, int offSetX, int offSetY) override;
 };
 
+/** @brief class who represent a ui */
 class Ui {
 protected:
-  RenderWindow &m_window;
-  unordered_map<string, OnOffButton> m_spriteButton;
-  unordered_map<string, TextButton> m_textBouttons;
+  RenderWindow &m_window; /**  the window where the ui is render */
+  unordered_map<string, OnOffButton> m_OnOffButton; /** many OnOffButton */
+  unordered_map<string, TextButton> m_textBouttons; /** many TextButton */
 
 public:
-  Ui(RenderWindow &window) : m_window(window) {}
+  /** @brief constructor
+   * @param window the window where the ui is render
+   */
+  Ui(RenderWindow &window);
 };
 
 #endif // UI_HPP

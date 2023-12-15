@@ -22,17 +22,9 @@ void EntityRender::render(RenderWindow &window, unordered_map<string, Sprite> sp
 
   /*Check the direction and draw the appropriate sprite*/
   if (direction["right"] && isRightKey) {
-    if (key == "CHAR") {
-      drawEnityAnimation(window, sprites, key + "_RIGHT", frame, x, y);
-    } else {
-      drawEnityAnimationMonster(window, sprites, key + "_RIGHT", frame, x, y);
-    }
+    drawEnityAnimation(window, sprites, key + "_RIGHT", frame, x, y);
   } else if (direction["left"] && isLeftKey) {
-    if (key == "CHAR") {
-      drawEnityAnimation(window, sprites, key + "_LEFT", frame, x, y);
-    } else {
-      drawEnityAnimationMonster(window, sprites, key + "_LEFT", frame, x, y);
-    }
+    drawEnityAnimation(window, sprites, key + "_LEFT", frame, x, y);
   } else if (direction["jump"] && isJumpKey) {
     drawEntityStatic(window, sprites, key + "_JUMP", x, y);
   } else if (direction["fall"] && isFallKey) {
@@ -50,18 +42,13 @@ void EntityRender::drawEnityAnimation(RenderWindow &window,
                                       const string &spriteKey, int frame, int x,
                                       int y) {
   Sprite sprite = sprites[spriteKey];
-  sprite.setTextureRect(
-      IntRect(sprites[spriteKey].getTextureRect().left + frame * 25,
-              sprites[spriteKey].getTextureRect().top, 25, 48));
-  drawSprites(x, y, sprite, &window, m_entity.getWidth(), m_entity.getHeight());
-}
-void EntityRender::drawEnityAnimationMonster(
-    RenderWindow &window, unordered_map<string, Sprite> &sprites,
-    const string &spriteKey, int frame, int x, int y) {
-  Sprite sprite = sprites[spriteKey];
-  sprite.setTextureRect(
-      IntRect(sprites[spriteKey].getTextureRect().left + frame * 28,
-              sprites[spriteKey].getTextureRect().top, 28, 32));
+  int width_spritesheet = sprite.getTextureRect().width;
+  int height_spritesheet = sprite.getTextureRect().height;
+  int x_spritesheet = sprite.getTextureRect().left;
+  int y_spritesheet = sprite.getTextureRect().top;
+  sprite.setTextureRect(IntRect(x_spritesheet + frame * width_spritesheet,
+                                y_spritesheet, width_spritesheet,
+                                height_spritesheet));
   drawSprites(x, y, sprite, &window, m_entity.getWidth(), m_entity.getHeight());
 }
 

@@ -36,12 +36,15 @@
 #define SOUND_MOVE "../assets/sound/move.wav"
 #define SOUND_PUT_A_BLOCK "../assets/sound/hit.ogg"
 #define VOLUME 50
+
 /* menu */
 #define VOLUME_ON_IMG_PATH "../assets/img/volume_on.png"
 #define VOLUME_OFF_IMG_PATH "../assets/img/volume_off.png"
+
 /*pause*/
 #define IMG_PAUSE_ON "../assets/img/menuSoundOnPause.jpeg"
 #define IMG_PAUSE_OFF "../assets/img/menuSoundOffPause.jpeg"
+
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
 #define NUM_MONSTERS_WALKING 5
@@ -57,6 +60,7 @@
 #define MONSTERS_SPAWN_RADIUS 50
 #define JUMP_HEIGHT 16
 #define ATTACKDISTANCE 400
+#define MONSTER_FILE_NAME "monsters.csv"
 
 /* inventory default data*/
 #define INV_HEIGHT 4 // amout of tile in the inv in height
@@ -90,21 +94,27 @@
 #define WITE_COLOR Color::White
 #define BLACK_COLOR Color::Black
 #define RED_COLOR Color::Red
-/* map */
-#define MAP_WIDTH 150
-#define MAP_SAVE_PATH "map.csv"
-#define MAP_INPUT_PATH "../assets/input/map.csv"
-#define MOUNTAIN_COEF 20 //
-#define UNDERGROUND_COEF 10
-#define SKY_HEIGHT_OVER_MOUTAIN 15
-#define DIRT_HEIGHT 3
-/* tree */
+
+/* map generator param */
+#define MAP_WIDTH 50        // the width of the map in tile
+#define MOUNTAIN_COEF 20    // the coef of the mountain
+#define UNDERGROUND_COEF 10 // the coef of the underground
+#define SKY_HEIGHT_OVER_MOUTAIN                                                \
+  15                                   // the amout of sky tile over the biggest
+                                       // moutain
+#define DIRT_HEIGHT 3                  // amout of dirt tile over the stone
+#define TREE_IS_BACKGROUND true        // if the tree is in background
+#define CURVE_ALLTITUDE_FREQUENCY 0.01 // the frequency for perlin noise
+#define CAVE_FREQUENCY 0.09 // the frequency for NoiseType_OpenSimplex2S noise
 #define TREE_SIZE 4
+#define TILE_SIZE 32
 #define ECART_TREE 10
 #define LEAF_WIDTH 5
 #define LEAF_HEIGHT 3
-/* flower */
 #define FLOWER_ECART 10
+/* other map param */
+#define MAP_SAVE_PATH "map.csv"
+#define MAP_INPUT_PATH "../assets/input/map.csv"
 
 /*day night cycle default date */
 #define TIME_IN_DAY 240 // time in second
@@ -113,7 +123,6 @@
 #define DAY_NIGHT_CYCLE_IMG_PATH "../assets/img/day_night_cycle.png"
 
 /* other */
-#define TILE_SIZE 32
 #define GAME_MODE 1
 #define MAX_LIFE 100
 #define ZERO 0

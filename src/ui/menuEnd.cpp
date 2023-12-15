@@ -49,7 +49,7 @@ void MenuEnd::handleEvent(Event &event) {
       for (auto &button : m_textBouttons) {
         button.second.handle(mouseX, mouseY);
       }
-      for (auto &button : m_spriteButton) {
+      for (auto &button : m_OnOffButton) {
         button.second.handle(mouseX, mouseY);
         if (button.second.isInside(mouseX, mouseY)) {
           button.second.switchSprite();
@@ -62,7 +62,7 @@ void MenuEnd::renderButtons(int XtopLeftCorner, int YtopLeftCorner) {
   for (auto &button : m_textBouttons) {
     button.second.render(m_window, XtopLeftCorner, YtopLeftCorner);
   }
-  for (auto &button : m_spriteButton) {
+  for (auto &button : m_OnOffButton) {
     button.second.render(m_window, XtopLeftCorner, YtopLeftCorner);
   }
 }

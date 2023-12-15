@@ -43,7 +43,7 @@ void Menu::initButtons() {
   Sprite spriteVolumeOn = createSprite("1", "../assets/img/volume_on.png");
   Sprite spriteVolumeOff = createSprite("2", "../assets/img/volume_off.png");
 
-  m_spriteButton["volume"] = OnOffButton(
+  m_OnOffButton["volume"] = OnOffButton(
       WINDOW_WIDTH - 100, WINDOW_HEIGHT - 100, 50, 50,
       [&]() {
         m_soundSettings->playSound("PLAY");
@@ -97,10 +97,10 @@ void Menu::handleEvent(sf::Event &event) {
       }
       m_textBouttons["quit"].handle(mouseX, mouseY);
 
-      if (m_spriteButton["volume"].isInside(mouseX, mouseY))
-        m_spriteButton["volume"].switchSprite();
+      if (m_OnOffButton["volume"].isInside(mouseX, mouseY))
+        m_OnOffButton["volume"].switchSprite();
 
-      m_spriteButton["volume"].handle(mouseX, mouseY);
+      m_OnOffButton["volume"].handle(mouseX, mouseY);
     }
   }
 }
@@ -137,7 +137,7 @@ void Menu::renderButtons() {
     m_textBouttons["play_save"].render(m_window, x, y);
     m_textBouttons["play_input"].render(m_window, x, y);
   }
-  m_spriteButton["volume"].render(m_window, x, y);
+  m_OnOffButton["volume"].render(m_window, x, y);
   m_textBouttons["quit"].render(m_window, x, y);
 }
 

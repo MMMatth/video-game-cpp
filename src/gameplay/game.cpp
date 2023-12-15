@@ -21,7 +21,7 @@ Game::Game(RenderWindow &window,
     m_game_mode(2),
     m_day_night_cycle( string(input ? INPUT_PATH : SAVE_PATH) + DAY_NIGHT_CYCLE_FILE_NAME, DAY_NIGHT_CYCLE_IMG_PATH),
     m_menuPause(window,  soundSettings, false, [&]() { quit(); }), 
-    m_monsters(m_map, m_char),
+    m_monsters(string(input ? INPUT_PATH : SAVE_PATH) + MONSTER_FILE_NAME,  m_map, m_char,save),
     m_save(save),
     m_menuEnd(window, soundSettings, false, [&]() { quitMenuEnd(); }, [&]() {restartGame(); }, m_monsters), m_createMonsters(true){
   m_sprites = sprites;
@@ -38,7 +38,7 @@ void Game::reset(bool save) {
   /* we reset the */
   m_char.reset(save, string(SAVE_PATH) + CHAR_FILE_NAME);
   /*we reset the monsters*/
-  // m_monsters.reset();
+  m_monsters.reset(save);
   /* reset cam */
   m_cam.reset(CHAR_X, CHAR_Y);
   /* reset inventory*/
@@ -79,17 +79,9 @@ void Game::update() {
 
     updateBreaking();
 
-    if(!m_day_night_cycle.isDay() && m_createMonsters){
-      m_monsters.createMonsters(m_map, m_char);
-    }
-    if (!m_day_night_cycle.isDay()) {
-      m_monsters.update();
-      m_createMonsters = false;
-    }else{
-      m_monsters.setLifeMonsters();
-      m_monsters.update();
-      m_createMonsters = true;
-    }
+    // if (!m_day_night_cycle.isDay()) {
+    m_monsters.update(m_day_night_cycle.isDay());
+    // }
 
     m_day_night_cycle.update();
 
@@ -242,24 +234,25 @@ void Game::handleMouseWheel(float delta) {
 void Game::render() {
   if (m_menuEnd.isEnd()) {
     m_window.clear(m_day_night_cycle.getCurrentColor());
+
     m_menuEnd.render(m_cam);
+
     m_window.display();
   } else {
     /* the sky */
     m_window.clear(m_day_night_cycle.getCurrentColor());
 
-    m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
-
     m_mapRenderer.render(m_window, m_sprites);
 
-    m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
+    m_charRenderer.render(m_window, m_sprites, "CHAR", NUM_FRAMES);
 
-    m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
-                       m_mousePosWorld.getY());
+    m_monsters.render(m_window, m_sprites, NUM_FRAMES_MONSTER);
 
     /* hud */
     m_mapRenderer.renderMiniMap(m_window, m_sprites, m_cam.getX(),
                                 m_cam.getY());
+    m_invRender.render(m_window, m_sprites, m_cam, m_mousePosWorld.getX(),
+                       m_mousePosWorld.getY());
     m_charRenderer.renderLifeBar(m_window, m_sprites, m_cam.getX(),
                                  m_cam.getY());
     m_fpsCounter.render(m_window, m_cam);
@@ -284,6 +277,7 @@ void Game::save() {
   m_cam.save(string(SAVE_PATH) + CAM_SAVE_PATH);
   m_day_night_cycle.save(string(SAVE_PATH) + DAY_NIGHT_CYCLE_FILE_NAME);
   m_char.save(string(SAVE_PATH) + CHAR_FILE_NAME);
+  m_monsters.save(string(SAVE_PATH) + MONSTER_FILE_NAME);
 }
 
 void Game::setGameVolume(float volume) { m_soundSettings->setVolume(volume); }

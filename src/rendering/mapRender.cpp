@@ -27,6 +27,7 @@ void MapRender::render(RenderWindow &window,
     }
   }
 }
+
 void MapRender::renderMiniMap(RenderWindow &window,
                               unordered_map<string, Sprite> sprites, int camX,
                               int camY) {
@@ -40,6 +41,7 @@ void MapRender::renderMiniMap(RenderWindow &window,
   int mini_map_areaY = (camY / TILE_SIZE) - NB_BLOCK_MINIMAP / 2;
   int mini_map_areaWidth = (camX / TILE_SIZE) + NB_BLOCK_MINIMAP / 2;
   int mini_map_areaHeight = (camY / TILE_SIZE) + NB_BLOCK_MINIMAP / 2;
+
   if (mini_map_areaX < 0) {
     mini_map_areaX = 0;
     mini_map_areaWidth = NB_BLOCK_MINIMAP;
@@ -58,8 +60,11 @@ void MapRender::renderMiniMap(RenderWindow &window,
     mini_map_areaY = m_map.getHeight() - NB_BLOCK_MINIMAP;
     mini_map_areaHeight = m_map.getHeight();
   }
-  drawRectangle(offsetX, offsetY, width, height, &window, Color(0, 0, 0), 100);
 
+  drawRectangle(offsetX, offsetY, width, height, &window, Color(0, 0, 0),
+                100); // draw the background
+
+  // draw the map
   for (int y = mini_map_areaY; y < mini_map_areaHeight; y++) {
     for (int x = mini_map_areaX; x < mini_map_areaWidth; x++) {
       Tile tile = m_map.get_tile(y, x);
@@ -72,5 +77,6 @@ void MapRender::renderMiniMap(RenderWindow &window,
     }
   }
 
+  // draw the border
   drawEdge(offsetX, offsetY, width, height, &window, Color(255, 255, 255), 255);
 }
