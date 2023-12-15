@@ -47,7 +47,7 @@ void Game::reset(bool save) {
   m_inv.addItem(toolMap["IRON_PICKAXE"]);
   m_inv.addItem(weaponMap["IRON_SWORD"]);
   /* reset day night cycle */
-  m_day_night_cycle.reset(save, TIME_IN_DAY, DAY_NIGHT_CYCLE_IMG_PATH);
+  m_day_night_cycle.reset(save, DAY_NIGHT_CYCLE_IMG_PATH);
   /* reset map */
   m_map.reset(string(SAVE_PATH) + MAP_SAVE_PATH);       // we reset de map
   m_map = Map(string(SAVE_PATH) + MAP_SAVE_PATH, save); // we reload the map

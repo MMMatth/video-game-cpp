@@ -6,8 +6,8 @@ Character::Character(string filePath, bool save)
     : Entity(0, 0, 0, 0, 0, 0, CHAR_MAX_LIFE), m_save(save) {
   if (!loadFromCSV(filePath)) {
     // if the file doesn't open we have to define the coord and life
-    m_coord = Coord(CHAR_X, CHAR_Y); // we use default value
-    m_life = CHAR_MAX_LIFE;          // we use default value
+    reset(save, filePath);
+    this->save(filePath);
   }
   init();
 }

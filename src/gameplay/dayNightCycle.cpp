@@ -21,8 +21,8 @@ DayNightCycle::DayNightCycle(string csvPath, string imgPath)
     : m_color(), m_clock(), m_clock_in_sec(0), m_clock_offset(0), m_save(true) {
   if (!loadFromCSV(csvPath)) {
     cerr << "Failed to load csv from " << csvPath << endl;
-    m_time_day_in_sec = 240;
-    m_clock_offset = 0;
+    reset(m_save, imgPath);
+    this->save(csvPath);
   };
   if (!loadColorsFromImage(imgPath)) {
     cerr << "Failed to load image from " << imgPath << endl;
@@ -107,9 +107,9 @@ string DayNightCycle::getHour() {
   return timeStream.str();
 }
 
-void DayNightCycle::reset(bool save, int time_day_in_sec, string imgPath) {
+void DayNightCycle::reset(bool save, string imgPath) {
   m_save = save;
-  m_time_day_in_sec = time_day_in_sec;
+  m_time_day_in_sec = TIME_IN_DAY;
   m_clock.restart();
   m_clock_offset = 0;
   m_color.clear(); // we erase the old color

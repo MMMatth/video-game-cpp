@@ -63,8 +63,7 @@ public:
   string getHour();
 
   /** function who reset the day night cycle*/
-  void reset(bool save, int time_day_in_sec,
-             string imgPath = string(DAY_NIGHT_CYCLE_IMG_PATH));
+  void reset(bool save, string imgPath = string(DAY_NIGHT_CYCLE_IMG_PATH));
 
   /** @brief function who save the time in a day and the actual time passed*/
   void save(string csvPath);

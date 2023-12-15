@@ -115,7 +115,7 @@ bool Map::isBreaking(int mouseX, int mouseY) {
 /* setters */
 void Map::setIsBreaking(bool isBreaking, int mouseX, int mouseY) {
   Tile *target = find_tile(mouseX, mouseY);
-  if (target) {
+  if (target != nullptr) {
     target->setBreaking(isBreaking);
   } else {
     cerr << "setIsBreaking : target is nullptr" << endl;
@@ -206,6 +206,7 @@ void Map::reset(string path) {
   Createmap cm(MAP_WIDTH);
   cm.generate();
   cm.saveinfile(path);
+  loadFromCSV(path);
 }
 
 void Map::update(int camX, int camY) {

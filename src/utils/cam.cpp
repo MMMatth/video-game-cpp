@@ -7,6 +7,8 @@ Cam::Cam(int x, int y, bool save) : m_save(save), m_pos(x, y) {}
 Cam::Cam(string csvPath, bool save) : m_save(save), m_pos() {
   if (!loadFromCSV(csvPath)) {
     cerr << "Failed to load csv from " << csvPath << "so cam is empty" << endl;
+    reset(CHAR_X, CHAR_Y); // Default position
+    this->save(csvPath);
   };
 }
 

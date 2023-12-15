@@ -29,8 +29,13 @@ Monsters::Monsters(Map &map, Character &m_char)
 
 Monsters::Monsters(string path, Map &map, Character &chara, bool save)
     : m_map(map), m_char(chara), m_save(save), m_isDay(true) {
+  m_monstersWithRender = vector<MonsterWithRender>();
+  m_numFlyingMonstersKilled = m_numWalkingMonstersKilled = 0;
+  m_numFlyingMonsters = m_numWalkingMonsters = 0;
   if (!initFromFile(path)) {
     cerr << "Error while loading monsters from file" << endl;
+    this->save(path);
+    // reset(save);
   }
 }
 

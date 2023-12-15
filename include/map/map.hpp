@@ -55,7 +55,13 @@ public:
    * @param y_tile the y coord of the tile (in tile)
    * @param x_tile the x coord of the tile (in tile)
    */
-  Tile get_tile(int y_tile, int x_tile) const { return m_map[y_tile][x_tile]; }
+  Tile get_tile(int y_tile, int x_tile) const {
+    if (y_tile < 0 || y_tile >= m_map.size() || x_tile < 0 ||
+        x_tile >= m_map[0].size()) {
+      return Tile();
+    }
+    return m_map[y_tile][x_tile];
+  }
 
   /** @brief function to get a tile in the map
    * @param x the x coord in the game (in pixel)
