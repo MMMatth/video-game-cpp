@@ -198,10 +198,6 @@ void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
       m_inv.handleRightClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
                              m_cam.getX(), m_cam.getY());
     } else {
-      // if (m_inv.getItemPosHand().getName() == "IRON_SWORD") {
-      //   cout << "kill a monster" << endl;
-      //   m_monsters.setKillAmonster(true);
-      // }
       if (m_inv.getItemPosHand().getType() == "BLOCK") {
         putBlock(false); // we add a not background block
       }
@@ -220,9 +216,7 @@ void Game::handleMouseButtonReleased(sf::Event::MouseButtonEvent &event) {
                           m_mousePosWorld.getY());
     }
   } else if (event.button == Mouse::Right) {
-    if (m_inv.getItemPosHand().getName() == "IRON_SWORD") {
-      m_monsters.setKillAmonster(false);
-    }
+    // nothing
   }
 }
 

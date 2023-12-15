@@ -29,7 +29,7 @@
 #define CHAR_X MAP_WIDTH *TILE_SIZE / 2
 #define CHAR_Y CHAR_HEIGHT * 2
 #define RADUIS_ATTACK 500
-#define RADUIS_ATTACK_SWORD 25
+#define CHAR_ATTACK 25
 
 /* sound */
 #define SOUND_CLICK "../assets/sound/pop.ogg"
@@ -49,8 +49,8 @@
 
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
-#define NUM_MONSTERS_WALKING 5
-#define NUM_MONSTERS_FLYING 3
+#define NUM_MONSTERS_WALKING 10
+#define NUM_MONSTERS_FLYING 6
 #define NUM_FRAMES_MONSTER 3
 #define HEALTH_BAR_WIDTH 20
 #define HEALTH_BAR_HEIGHT 3

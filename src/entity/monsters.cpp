@@ -165,18 +165,6 @@ void Monsters::update(bool isDay) {
       }
   }
 
-  for (auto &monster : m_monstersWithRender) {
-    map<string, bool> directionMonster = monster.entity->getDirection();
-    map<string, bool> directionChar = m_char.getDirection();
-    if (isWithinDistanceChar(m_char, monster.entity, RADUIS_ATTACK)) {
-      if (m_killAMonster && directionMonster["right"] &&
-              directionChar["left"] ||
-          directionMonster["left"] && directionChar["right"]) {
-        monster.entity->reduceLife(1);
-      }
-    }
-  }
-
   // check if monster is dead and delete it if it is
   for (auto it = m_monstersWithRender.begin();
        it != m_monstersWithRender.end();) {
@@ -241,13 +229,13 @@ void Monsters::reset(bool save) {
   m_save = save;
 }
 
-void Monsters::handleEvent(Event &event, Weapon weapon, int mouseX,
+void Monsters::handleEvent(Event &event, Weapon &weapon, int mouseX,
                            int mouseY) {
   if (event.type == Event::MouseButtonPressed) {
     if (event.mouseButton.button == Mouse::Left) {
       for (MonsterWithRender monster : m_monstersWithRender) {
         if (monster.entity->isColliding(mouseX, mouseY, 5, 5)) {
-          monster.entity->reduceLife(50);
+          monster.entity->reduceLife(CHAR_ATTACK);
         }
       }
     }

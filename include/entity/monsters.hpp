@@ -25,7 +25,6 @@ private:
       m_monstersWithRender; /**< vector with monster and the render monster */
   Map m_map;                /**< map */
   Character &m_char;        // Character
-  bool m_killAMonster = false;
   Clock m_clock;
   bool m_save;
   bool m_isDay;
@@ -64,7 +63,6 @@ public:
   int getNumWalkingMonsters() const { return m_numWalkingMonsters; }
 
   /*Setters*/
-  void setKillAmonster(bool m_choice) { this->m_killAMonster = m_choice; }
 
   void setNumFlyingMonstersKilled(int number) {
     m_numFlyingMonstersKilled += number;
@@ -76,8 +74,6 @@ public:
 
   void setNumWalkingMonsters(int number) { m_numWalkingMonsters += number; }
 
-  void setLifeMonsters();
-
   /*others*/
   void addRandomMonster(Monster *monster, Map &map);
 
@@ -86,7 +82,7 @@ public:
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
               int nbFrame);
 
-  void handleEvent(Event &event, Weapon item, int xOffset, int yOffset);
+  void handleEvent(Event &event, Weapon &weapon, int xOffset, int yOffset);
 
   void update(bool isDay);
 
