@@ -22,7 +22,9 @@ DayNightCycle::DayNightCycle(string csvPath, string imgPath)
   if (!loadFromCSV(csvPath)) {
     cerr << "Failed to load csv from " << csvPath << endl;
     reset(m_save, imgPath);
+    m_save = true;
     this->save(csvPath);
+    m_save = false;
   };
   if (!loadColorsFromImage(imgPath)) {
     cerr << "Failed to load image from " << imgPath << endl;

@@ -15,7 +15,10 @@ Inventory::Inventory(string csvPath, bool save)
   if (!loadFromCSV(csvPath)) {
     cerr << "Failed to load csv from " << csvPath << "so inv is empty" << endl;
     reset(save, csvPath); // Default position
-    this->save(csvPath);
+    // we init save to true
+    m_save = true;
+    this->save(csvPath); // we save the inventory
+    m_save = save;       // we reset save
   };
 }
 

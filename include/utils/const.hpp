@@ -100,11 +100,11 @@
 #define RED_COLOR Color::Red
 
 /* map generator param */
-#define MAP_WIDTH 512       // the width of the map in tile
-#define MOUNTAIN_COEF 50    // the coef of the mountain
-#define UNDERGROUND_COEF 10 // the coef of the underground
+#define MAP_WIDTH 126      // the width of the map in tile
+#define MOUNTAIN_COEF 16   // the coef of the mountain
+#define UNDERGROUND_COEF 8 // the coef of the underground
 #define SKY_HEIGHT_OVER_MOUTAIN                                                \
-  15                                   // the amout of sky tile over the biggest
+  32                                   // the amout of sky tile over the biggest
                                        // moutain
 #define DIRT_HEIGHT 3                  // amout of dirt tile over the stone
 #define TREE_IS_BACKGROUND true        // if the tree is in background

@@ -17,7 +17,9 @@ Map::Map(string path, bool save)
   m_save = save;
   if (!loadFromCSV(path)) {
     cerr << "Map : cant open the map " << path << endl;
+    m_save = true;
     reset(path);
+    m_save = save;
   }
 }
 

@@ -34,7 +34,9 @@ Monsters::Monsters(string path, Map &map, Character &chara, bool save)
   m_numFlyingMonsters = m_numWalkingMonsters = 0;
   if (!initFromFile(path)) {
     cerr << "Error while loading monsters from file" << endl;
+    m_save = true;
     this->save(path);
+    m_save = false;
     // reset(save);
   }
 }
