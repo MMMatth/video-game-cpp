@@ -197,6 +197,7 @@ void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
                              m_cam.getX(), m_cam.getY());
     } else {
       if (m_inv.getItemPosHand().getName() == "IRON_SWORD") {
+        cout << "kill a monster" << endl;
         m_monsters.setKillAmonster(true);
       }
       if (m_inv.getItemPosHand().getType() == "BLOCK") {
