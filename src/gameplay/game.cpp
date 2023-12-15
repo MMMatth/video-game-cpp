@@ -79,9 +79,7 @@ void Game::update() {
 
     updateBreaking();
 
-    // if (!m_day_night_cycle.isDay()) {
     m_monsters.update(m_day_night_cycle.isDay());
-    // }
 
     m_day_night_cycle.update();
 
@@ -113,7 +111,11 @@ void Game::handleEvent(Event &event) {
   } else if (m_menuEnd.isEnd()) {
     m_menuEnd.handleEvent(event);
   } else {
-
+    if (m_inv.getItemPosHand().getType() == "WEAPON") {
+      Weapon *weapon = m_inv.getWeaponInHand();
+      m_monsters.handleEvent(event, *weapon, m_mousePosWorld.getX(),
+                             m_mousePosWorld.getY());
+    }
     if (event.type == Event::Closed) {
       quit();
     } else if (event.type == Event::KeyPressed) {
@@ -196,10 +198,10 @@ void Game::handleMouseButtonPressed(sf::Event::MouseButtonEvent &event) {
       m_inv.handleRightClick(m_mousePosWorld.getX(), m_mousePosWorld.getY(),
                              m_cam.getX(), m_cam.getY());
     } else {
-      if (m_inv.getItemPosHand().getName() == "IRON_SWORD") {
-        cout << "kill a monster" << endl;
-        m_monsters.setKillAmonster(true);
-      }
+      // if (m_inv.getItemPosHand().getName() == "IRON_SWORD") {
+      //   cout << "kill a monster" << endl;
+      //   m_monsters.setKillAmonster(true);
+      // }
       if (m_inv.getItemPosHand().getType() == "BLOCK") {
         putBlock(false); // we add a not background block
       }

@@ -36,8 +36,8 @@ Monsters::Monsters(string path, Map &map, Character &chara, bool save)
 
 Monsters::~Monsters() {
   for (MonsterWithRender monsterWithRender : m_monstersWithRender) {
-    delete monsterWithRender.monster;
-    delete monsterWithRender.monsterRender;
+    delete monsterWithRender.entity;
+    delete monsterWithRender.render;
   }
 }
 
@@ -112,7 +112,7 @@ void Monsters::addRandomMonster(Monster *monster, Map &map) {
 
 void Monsters::collide(Map *map) {
   for (MonsterWithRender monsterWithRender : m_monstersWithRender) {
-    map->collide(monsterWithRender.monster);
+    map->collide(monsterWithRender.entity);
   }
 }
 
@@ -120,13 +120,13 @@ void Monsters::render(RenderWindow &window,
                       std::unordered_map<std::string, Sprite> sprites,
                       int nbFrame) {
   for (MonsterWithRender monsterWithRender : m_monstersWithRender) {
-    if (monsterWithRender.monster->getSpeed() == FLYING_MONSTERS_SPEED) {
-      monsterWithRender.monsterRender->render(window, sprites, "FLYING_MONSTER",
-                                              nbFrame);
+    if (monsterWithRender.entity->getSpeed() == FLYING_MONSTERS_SPEED) {
+      monsterWithRender.render->render(window, sprites, "FLYING_MONSTER",
+                                       nbFrame);
     }
-    if (monsterWithRender.monster->getSpeed() == WALKING_MONSTERS_SPEED) {
-      monsterWithRender.monsterRender->render(window, sprites,
-                                              "WALKING_MONSTER", nbFrame);
+    if (monsterWithRender.entity->getSpeed() == WALKING_MONSTERS_SPEED) {
+      monsterWithRender.render->render(window, sprites, "WALKING_MONSTER",
+                                       nbFrame);
     }
   }
   renderLifes(window, sprites);
@@ -144,35 +144,35 @@ void Monsters::update(bool isDay) {
   // if is day monsters dead
   if (isDay) {
     for (auto &monster : m_monstersWithRender) {
-      monster.monster->reduceLife(1);
+      monster.entity->reduceLife(1);
     }
   }
 
   // we update the monsters (movement)
   for (auto &monster : m_monstersWithRender) {
-    monster.monster->update(m_char);
+    monster.entity->update(m_char);
   }
 
   // Check collision with player and monsters
   if (m_clock.getElapsedTime().asSeconds() > 1) {
     m_clock.restart();
     for (auto &monster : m_monstersWithRender)
-      if (checkPlayerMonsterCollision(m_char, monster.monster)) {
-        if (m_killAMonster) {
-          monster.monster->reduceLife(1);
-        }
+      if (checkPlayerMonsterCollision(m_char, monster.entity)) {
+        // if (m_killAMonster) {
+        //   monster.monster->reduceLife(1);
+        // }
         m_char.hit(1);
       }
   }
 
   for (auto &monster : m_monstersWithRender) {
-    map<string, bool> directionMonster = monster.monster->getDirection();
+    map<string, bool> directionMonster = monster.entity->getDirection();
     map<string, bool> directionChar = m_char.getDirection();
-    if (isWithinDistanceChar(m_char, monster.monster, RADUIS_ATTACK)) {
+    if (isWithinDistanceChar(m_char, monster.entity, RADUIS_ATTACK)) {
       if (m_killAMonster && directionMonster["right"] &&
               directionChar["left"] ||
           directionMonster["left"] && directionChar["right"]) {
-        monster.monster->reduceLife(1);
+        monster.entity->reduceLife(1);
       }
     }
   }
@@ -180,15 +180,15 @@ void Monsters::update(bool isDay) {
   // check if monster is dead and delete it if it is
   for (auto it = m_monstersWithRender.begin();
        it != m_monstersWithRender.end();) {
-    if ((*it).monster->getLife() <= 0) {
+    if ((*it).entity->getLife() <= 0) {
       // we update the number of monsters killed
-      if ((*it).monster->getSpeed() == FLYING_MONSTERS_SPEED) {
+      if ((*it).entity->getSpeed() == FLYING_MONSTERS_SPEED) {
         setNumFlyingMonstersKilled(1);
-      } else if ((*it).monster->getSpeed() == WALKING_MONSTERS_SPEED) {
+      } else if ((*it).entity->getSpeed() == WALKING_MONSTERS_SPEED) {
         setNumWalkingMonstersKilled(1);
       }
-      delete (*it).monster;
-      delete (*it).monsterRender;
+      delete (*it).entity;
+      delete (*it).render;
       it = m_monstersWithRender.erase(it);
     } else {
       ++it;
@@ -199,7 +199,7 @@ void Monsters::update(bool isDay) {
 void Monsters::renderLifes(RenderWindow &window,
                            unordered_map<string, Sprite> sprites) {
   for (MonsterWithRender m_monster : m_monstersWithRender) {
-    m_monster.monsterRender->renderLife(window, sprites);
+    m_monster.render->renderLife(window, sprites);
   }
 }
 
@@ -226,9 +226,9 @@ bool Monsters::save(string path) {
     }
     file << "x;y;speed;life;type\n";
     for (MonsterWithRender monster : m_monstersWithRender) {
-      file << monster.monster->getX() << ";" << monster.monster->getY() << ";"
-           << monster.monster->getSpeed() << ";" << monster.monster->getLife()
-           << ";" << monster.monster->getType() << "\n";
+      file << monster.entity->getX() << ";" << monster.entity->getY() << ";"
+           << monster.entity->getSpeed() << ";" << monster.entity->getLife()
+           << ";" << monster.entity->getType() << "\n";
     }
     file.close();
     return true;
@@ -239,6 +239,19 @@ bool Monsters::save(string path) {
 void Monsters::reset(bool save) {
   m_monstersWithRender.clear();
   m_save = save;
+}
+
+void Monsters::handleEvent(Event &event, Weapon weapon, int mouseX,
+                           int mouseY) {
+  if (event.type == Event::MouseButtonPressed) {
+    if (event.mouseButton.button == Mouse::Left) {
+      for (MonsterWithRender monster : m_monstersWithRender) {
+        if (monster.entity->isColliding(mouseX, mouseY, 5, 5)) {
+          monster.entity->reduceLife(50);
+        }
+      }
+    }
+  }
 }
 
 bool Monsters::isWithinDistance(int x1, int y1, int width1, int height1, int x2,

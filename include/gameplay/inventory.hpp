@@ -94,8 +94,24 @@ public:
   /** @brief function who return the pos of the hand*/
   int getPosHand() { return m_pos_item_hand; }
 
-  /** @brief function who return the item at the coord*/
+  /** @brief get item at a coord
+   * @param tile_coord the coord of the tile (int tile)
+   */
   Item getItemAt(Coord tile_coord);
+
+  /** @brief function who return the pointer to the item in the pos hand*/
+  Item *getItemPosHandPtr(); // Change this method to return a pointer
+
+  /** @brief function who return weapon
+   * @return the weapon in the hand or nullptr if there is no weapon
+   */
+  Weapon *getWeaponInHand() {
+    Item *itemInHand = getItemPosHandPtr();
+    if (itemInHand && itemInHand->getType() == "WEAPON") {
+      return static_cast<Weapon *>(itemInHand);
+    }
+    return nullptr;
+  }
 
   /** @brief function who return true if the inv is open*/
   bool isOpen() { return m_is_open; }

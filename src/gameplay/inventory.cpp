@@ -284,6 +284,10 @@ Item Inventory::getItemPosHand() {
   return *m_inventory[INV_HEIGHT - 1][m_pos_item_hand].getItem();
 }
 
+Item *Inventory::getItemPosHandPtr() {
+  return m_inventory[INV_HEIGHT - 1][m_pos_item_hand].getItem();
+}
+
 /* other */
 
 void Inventory::reset(bool save, string csvPath) {

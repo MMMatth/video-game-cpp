@@ -2,10 +2,12 @@
 #define MONSTERS_HPP
 
 #include "../item/block.hpp"
+#include "../item/weapon.hpp"
 #include "../map/map.hpp"
 #include "../rendering/entityRender.hpp"
 #include "../rendering/monsterRender.hpp"
 #include "../utils/list.hpp"
+
 #include "character.hpp"
 #include "flying_monster.hpp"
 #include "monster.hpp"
@@ -13,8 +15,8 @@
 #include <vector>
 
 struct MonsterWithRender {
-  Monster *monster;
-  MonsterRender *monsterRender;
+  Monster *entity;
+  MonsterRender *render;
 };
 
 class Monsters {
@@ -84,6 +86,8 @@ public:
   void render(RenderWindow &window, unordered_map<string, Sprite> sprites,
               int nbFrame);
 
+  void handleEvent(Event &event, Weapon item, int xOffset, int yOffset);
+
   void update(bool isDay);
 
   /** @brief function who save monsters in csv file
@@ -96,13 +100,18 @@ public:
   void reset(bool save);
 
   void createMonsters(Map &map, Character &m_char);
+
   void renderLifes(RenderWindow &window, unordered_map<string, Sprite> sprites);
+
   bool checkCollision(int x1, int y1, int width1, int height1, int x2, int y2,
                       int width2, int height2) const;
+
   bool checkPlayerMonsterCollision(const Character &m_char,
                                    Monster *m_monster) const;
+
   bool isWithinDistanceChar(const Character &m_char, Monster *m_monster,
                             float minDistance) const;
+
   bool isWithinDistance(int x1, int y1, int width1, int height1, int x2, int y2,
                         int width2, int height2, float minDistance) const;
 };

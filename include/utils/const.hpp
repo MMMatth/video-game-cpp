@@ -29,6 +29,7 @@
 #define CHAR_X MAP_WIDTH *TILE_SIZE / 2
 #define CHAR_Y CHAR_HEIGHT * 2
 #define RADUIS_ATTACK 500
+#define RADUIS_ATTACK_SWORD 25
 
 /* sound */
 #define SOUND_CLICK "../assets/sound/pop.ogg"
@@ -85,9 +86,11 @@
 #define INVENTORY_OBJECT_SIZE INVENTORY_TILE_SIZE * 0.6
 #define MAX_STACK_SIZE 64
 #define INVENTORY_SAVE_PATH "inventory.csv"
+
 /* spritesheet */
 #define SPRITESHEET_INPUT_PATH "../assets/input/spritesheet_data.csv"
 #define SPRITESHEET_IMG_PATH "../assets/img/spritesheet.png"
+
 /* font */
 #define FONT_PATH "assets/fonts/arial.ttf"
 #define MINECRAFT_FONT_PATH "assets/fonts/minecraft.ttf"
@@ -97,8 +100,8 @@
 #define RED_COLOR Color::Red
 
 /* map generator param */
-#define MAP_WIDTH 50        // the width of the map in tile
-#define MOUNTAIN_COEF 20    // the coef of the mountain
+#define MAP_WIDTH 512       // the width of the map in tile
+#define MOUNTAIN_COEF 50    // the coef of the mountain
 #define UNDERGROUND_COEF 10 // the coef of the underground
 #define SKY_HEIGHT_OVER_MOUTAIN                                                \
   15                                   // the amout of sky tile over the biggest
