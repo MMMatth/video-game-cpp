@@ -84,6 +84,7 @@ We suppose the night color is in the middle of the image and the day color is at
 
 ## SpriteSheet
 We use a spritesheet for every image exept for the mute / unmute button.
+
 ![spritesheet](./assets/img/spritesheet.png)
 
 ## How to run the project
