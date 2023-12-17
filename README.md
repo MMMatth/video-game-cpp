@@ -3,6 +3,9 @@
 This project is a simple game made with SFML.
 
 ## KeyBindings
+- **Right click** - Place a block
+- **Left click** - Break a block or attack a monster
+- **Middle click** - Place a block in the background
 - **Q** - Go left
 - **D** - Go right
 - **Space** - Jump
@@ -83,7 +86,7 @@ To change the sky color we use a gradient image :
 We suppose the night color is in the middle of the image and the day color is at the start and the end of the image.
 
 ## SpriteSheet
-We use a spritesheet for every image exept for the mute / unmute button.
+We use a spritesheet for every image exept for the mute / unmute button and the background gradient image.
 
 ![spritesheet](./assets/img/spritesheet.png)
 

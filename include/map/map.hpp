@@ -30,6 +30,9 @@ public:
   /** @brief  default constructor*/
   Map();
 
+  /** @brief destructor*/
+  ~Map();
+
   /** @brief Initializes the map data from a CSV file.
    * @param pathFile The path to the CSV file containing map information.
    * @return True if initialization is successful, false otherwise.

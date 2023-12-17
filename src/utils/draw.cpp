@@ -37,6 +37,8 @@ void parseLine(const string &line, string &type, int &x, int &y, int &width,
 }
 
 void checkData(int x, int y, int width, int height) {
+  if (x == -1 && y == -1)
+    return;
   if (x < 0 || y < 0)
     cerr << "Spritesheet invalid position : " << x << " " << y;
   if (width < 0 || height < 0)

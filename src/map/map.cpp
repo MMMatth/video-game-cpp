@@ -39,6 +39,13 @@ Map::Map()
   m_map = vector<vector<Tile>>(0, vector<Tile>(0));
 }
 
+Map::~Map() {
+  for (int y = 0; y < m_height; y++) {
+    m_map[y].clear();
+  }
+  m_map.clear();
+}
+
 bool Map::loadFromCSV(string pathFile) {
   ifstream fichier(pathFile);
   if (fichier) {
