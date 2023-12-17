@@ -29,6 +29,7 @@ int main() {
 
   window.setFramerateLimit(FPS_MAX);
   while (window.isOpen()) {
+    srand(time(NULL));
     Event event;
     if (isMenu) {
       while (window.pollEvent(event)) {

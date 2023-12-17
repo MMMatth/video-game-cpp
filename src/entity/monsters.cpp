@@ -3,7 +3,6 @@
 #include <thread>
 
 void Monsters::NewWave() {
-  srand(time(NULL));
 
   for (int i = 0; i < NUM_MONSTERS_FLYING; i++) {
     addRandomMonster(new FlyingMonster(0, 0, MONSTERS_WIDTH, MONSTERS_HEIGHT,
@@ -109,8 +108,9 @@ bool Monsters::initFromFile(string path) {
 
 void Monsters::addRandomMonster(Monster *monster, Map &map) {
   do {
-    int x = rand() % (MAP_WIDTH * TILE_SIZE);
-    int y = rand() % (MAP_WIDTH * 2);
+    int x = m_char.getX() - (rand() % (MONSTERS_SPAWN_RADIUS * TILE_SIZE)) / 2 +
+            (rand() % (MONSTERS_SPAWN_RADIUS * TILE_SIZE));
+    int y = m_char.getY();
     monster->setX(x);
     monster->setY(y);
   } while (map.isCollide(monster));

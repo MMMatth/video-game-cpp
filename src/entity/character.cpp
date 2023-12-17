@@ -88,6 +88,10 @@ void Character::update() {
     m_timeJump++;    // we increment the time of the jump
     moveY(-m_speed); // we move the player
   }
+  if (m_direction["up"] && !m_collision["up"] && m_timeJump >= m_jumpHeight) {
+    m_direction["up"] = false;
+    m_direction["fall"] = true;
+  }
   if (m_direction["fall"] && !m_collision["down"] && !m_direction["up"]) {
     moveY(m_speed);
   }

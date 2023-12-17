@@ -19,7 +19,7 @@
 /* character default */
 #define CHAR_WIDTH 28
 #define CHAR_HEIGHT 58
-#define CHAR_JUMP_HEIGHT 80
+#define CHAR_JUMP_HEIGHT 16
 #define CHAR_SPEED 3
 #define CHAR_LIFE 100
 #define CHAR_MAX_LIFE 30
@@ -49,14 +49,17 @@
 
 /*monster*/
 #define IMG_MONSTER "../assets/img/monster.bmp"
-#define NUM_MONSTERS_WALKING 10
-#define NUM_MONSTERS_FLYING 6
+#define NUM_MONSTERS_WALKING 5
+#define NUM_MONSTERS_FLYING 3
 #define NUM_FRAMES_MONSTER 3
+
 #define HEALTH_BAR_WIDTH 20
 #define HEALTH_BAR_HEIGHT 3
 #define HEALTH_BAR_OFFSET 5
+
 #define MONSTERS_WIDTH 30
 #define MONSTERS_HEIGHT 50
+
 #define FLYING_MONSTERS_SPEED 3
 #define WALKING_MONSTERS_SPEED 2
 #define MONSTERS_SPAWN_RADIUS 50
